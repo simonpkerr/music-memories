@@ -1,0 +1,21 @@
+#/web/bundles/framework/
+/app/bootstrap*
+/app/cache/*
+/app/logs/*
+/vendor/
+/app/config/parameters.ini
+
+# Bootstrap
+app/bootstrap*
+
+# Symfony directories
+vendor/*
+*/logs/*
+*/cache/*
+web/uploads/*
+web/bundles/framework
+web/bundles/sensiodistribution
+web/bundles/webprofiler
+
+# Configuration files
+app/config/parameters.ini

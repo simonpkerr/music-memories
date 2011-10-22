@@ -1,0 +1,12 @@
+welcomeDefault:
+    pattern:  /
+    defaults: { _controller: ThinkBackWelcomeBundle:Default:index }
+
+welcome:
+    pattern:  /index
+    defaults: { _controller: ThinkBackWelcomeBundle:Default:index }
+  
+error:
+  pattern: /error
+  defaults: { _controller: ThinkBackWelcomeBundle:Default:error }
+  

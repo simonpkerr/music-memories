@@ -1,0 +1,71 @@
+<?php
+
+namespace ThinkBack\WelcomeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+/**
+ * ThinkBack\WelcomeBundle\Entity\MediaType
+ */
+class MediaType
+{
+    /**
+     * @var integer $id
+     */
+    private $id;
+
+    /**
+     * @var string $name
+     */
+    private $name;
+    
+    protected $artWorks;
+    
+    public function __construct(){
+        $this->artWorks = new ArrayCollection();
+    }
+
+    public function getArtWorks(){
+        return $this->artWorks;
+    }
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Add artWorks
+     *
+     * @param ThinkBack\WelcomeBundle\Entity\Art $artWorks
+     */
+    public function addArtWorks(\ThinkBack\WelcomeBundle\Entity\Art $artWorks)
+    {
+        $this->artWorks[] = $artWorks;
+    }
+}

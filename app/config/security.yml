@@ -1,0 +1,58 @@
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        #[ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        fos_userbundle:
+          id: fos_user.user_manager
+        in_memory:
+            users:
+                user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+                admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+        #main:
+          #entity: { class: ThinkBack\UserBundle\Entity\User, property: username }    
+                
+    #this section determines the patterns for which areas are secured
+    #and which are open. So in the code below, the login action is open
+    #but the check path is secured
+    #the access control area determines which areas of the site are secured
+    #in this case all routes beginning with 'admin'    
+    firewalls:
+        main:
+          pattern: ^/
+          form_login:
+            provider: fos_userbundle
+          logout: true
+          anonymous: true
+          
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+#        login:
+#            pattern:  ^/login$
+#            security: false
+#
+#        secured_area:
+#            pattern:    ^/
+#            form_login:
+#                check_path: /login_check
+#                login_path: /login
+#            logout:
+#                path:   /logout
+#                target: /index
+#            anonymous: ~
+            #http_basic:
+            #    realm: "Secured Demo Area"
+
+    access_control:
+       - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: ^/admin/, role: ROLE_ADMIN }
+

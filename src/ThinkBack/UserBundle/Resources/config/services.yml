@@ -1,0 +1,15 @@
+parameters:
+#    i_spy_si_user.example.class: ThinkBack\UserBundle\Example
+
+services:
+  ThinkBack_user.registration.form.type:
+    class: ThinkBack\UserBundle\Form\Type\RegistrationFormType
+    arguments: [%fos_user.model.user.class%]
+    tags:
+      - { name: form.type, alias: ThinkBack_user_registration }
+
+
+#    i_spy_si_user.example:
+#        class: %i_spy_si_user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
