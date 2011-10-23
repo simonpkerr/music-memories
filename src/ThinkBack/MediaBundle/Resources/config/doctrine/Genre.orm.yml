@@ -1,0 +1,26 @@
+ThinkBack\MediaBundle\Entity\Genre:
+  type: entity
+  repositoryClass: ThinkBack\MediaBundle\Repository\GenreRepository
+  table: null
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    genreName:
+      type: string
+      length: 100
+    mediaType_id:
+      type: integer
+    amazonBrowseNodeId:
+      type: string
+      length: 10
+    sevenDigitalTag:
+      type: string
+      length: 50
+  lifecycleCallbacks: {  }
+  manyToOne:
+    mediaType:
+      targetEntity: MediaType
+    

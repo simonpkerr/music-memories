@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 22, 2011 at 12:52 AM
+-- Generation Time: Oct 23, 2011 at 09:26 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -22,10 +22,10 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `apitypes`
+-- Table structure for table `apitype`
 --
 
-CREATE TABLE IF NOT EXISTS `apitypes` (
+CREATE TABLE IF NOT EXISTS `apitype` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `apiName` varchar(75) NOT NULL,
   `apiHost` varchar(150) NOT NULL,
@@ -33,31 +33,31 @@ CREATE TABLE IF NOT EXISTS `apitypes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
--- Dumping data for table `apitypes`
+-- Dumping data for table `apitype`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `decades`
+-- Table structure for table `decade`
 --
 
-CREATE TABLE IF NOT EXISTS `decades` (
+CREATE TABLE IF NOT EXISTS `decade` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `decade` int(11) NOT NULL,
+  `decadeName` int(11) NOT NULL,
   `amazonBrowseNodeId` varchar(10) NOT NULL,
-  `7DigitalTag` varchar(10) DEFAULT NULL,
+  `sevenDigitalTag` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
--- Dumping data for table `decades`
+-- Dumping data for table `decade`
 --
 
-INSERT INTO `decades` (`id`, `decade`, `amazonBrowseNodeId`, `7DigitalTag`) VALUES
-(1, 1930, '562085011', NULL),
-(2, 1940, '562086011', NULL),
+INSERT INTO `decade` (`id`, `decadeName`, `amazonBrowseNodeId`, `sevenDigitalTag`) VALUES
+(1, 1930, '562085011', ''),
+(2, 1940, '562086011', ''),
 (3, 1950, '562087011', '1950s'),
 (4, 1960, '562088011', '1960s'),
 (5, 1970, '562089011', '1970s'),
@@ -68,102 +68,141 @@ INSERT INTO `decades` (`id`, `decade`, `amazonBrowseNodeId`, `7DigitalTag`) VALU
 -- --------------------------------------------------------
 
 --
--- Table structure for table `genres`
+-- Table structure for table `fos_user`
 --
 
-CREATE TABLE IF NOT EXISTS `genres` (
+CREATE TABLE IF NOT EXISTS `fos_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `genreTitle` varchar(150) NOT NULL,
-  `mediaTypeId` int(11) NOT NULL,
-  `amazonBrowseNodeId` varchar(10) DEFAULT NULL,
-  `7DigitalTag` varchar(75) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+  `username` varchar(255) NOT NULL,
+  `username_canonical` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `email_canonical` varchar(255) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  `algorithm` varchar(255) NOT NULL,
+  `salt` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `last_login` datetime DEFAULT NULL,
+  `locked` tinyint(1) NOT NULL,
+  `expired` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  `confirmation_token` varchar(255) DEFAULT NULL,
+  `password_requested_at` datetime DEFAULT NULL,
+  `roles` longtext NOT NULL COMMENT '(DC2Type:array)',
+  `credentials_expired` tinyint(1) NOT NULL,
+  `credentials_expire_at` datetime DEFAULT NULL,
+  `firstname` varchar(65) NOT NULL,
+  `surname` varchar(65) NOT NULL,
+  `dateofbirth` date NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_957A647992FC23A8` (`username_canonical`),
+  UNIQUE KEY `UNIQ_957A6479A0D96FBF` (`email_canonical`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
--- Dumping data for table `genres`
+-- Dumping data for table `fos_user`
 --
 
-INSERT INTO `genres` (`id`, `genreTitle`, `mediaTypeId`, `amazonBrowseNodeId`, `7DigitalTag`) VALUES
-(1, 'Action and Adventure', 1, '501778', NULL),
-(2, 'Adult', 1, '1025436', NULL),
-(3, 'Anime', 1, '3336941', NULL),
-(4, 'childrens', 1, '501858', NULL),
-(5, 'Classics', 1, '501976', NULL),
-(6, 'comedy', 1, '501866', NULL),
-(7, 'Crime, Thrillers and Mystery', 1, '501880', NULL),
-(8, 'Documentary', 1, '501958', NULL),
-(9, 'Drama', 1, '501872', NULL),
-(10, 'Horror', 1, '162441011', NULL),
-(11, 'Interactive', 1, '162440011', NULL),
-(12, 'Music', 1, '501888', NULL),
-(13, 'Musicals and Classical', 1, '1108824', NULL),
-(14, 'Science fiction and Fantasy: ', 1, '501912', NULL),
-(15, 'Sports', 1, '295573011', NULL),
-(16, 'Action', 2, '546262031', NULL),
-(17, 'All television', 2, '285270', NULL),
-(18, 'Childrens TV', 2, '501960', NULL),
-(19, 'Comedy', 2, '501962', NULL),
-(20, 'Crime, Thrillers and Mystery', 2, '16281381', NULL),
-(21, 'Drama', 2, '501966', NULL),
-(22, 'Horror', 2, '501970', NULL),
-(23, 'Music and Entertainment', 2, '503424', NULL),
-(24, 'Natural world', 2, '503420', NULL),
-(25, 'Science fiction and Fantasy', 2, '501972', NULL),
-(26, 'Soaps', 2, '501974', NULL),
-(27, 'TV Series', 2, '12970731', NULL),
-(28, 'Alternative and Indie', 3, NULL, 'alternative-indie'),
-(29, 'Blues', 3, NULL, 'blues'),
-(30, 'Childrens Music', 3, NULL, 'children'),
-(31, 'Classical', 3, NULL, 'classical'),
-(32, 'Country', 3, NULL, 'country'),
-(33, 'Dance', 3, NULL, 'dance'),
-(34, 'Electronic', 3, NULL, 'electronic'),
-(35, 'Easy Listening', 3, NULL, 'easy-listening'),
-(36, 'Folk and Songwriter', 3, NULL, 'folk'),
-(37, 'Hard Rock and Metal', 3, NULL, 'hard-rock-metal'),
-(38, 'Jazz', 3, NULL, 'jazz'),
-(39, 'Pop', 3, NULL, 'pop'),
-(40, 'Britpop', 3, NULL, 'britpop'),
-(41, 'R and B Soul', 3, NULL, 'randb-soul'),
-(42, 'Rap and Hip-hop', 3, NULL, 'hip-hop-rap'),
-(43, 'Reggae', 3, NULL, 'reggae'),
-(44, 'Rock', 3, NULL, 'rock'),
-(45, 'Rock and Roll', 3, NULL, 'rock-and-roll'),
-(46, 'Indie', 3, NULL, 'indie-rock'),
-(47, 'Soundtracks', 3, NULL, 'soundtrack'),
-(48, 'World Music', 3, NULL, 'world');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mediatypes`
+-- Table structure for table `genre`
 --
 
-CREATE TABLE IF NOT EXISTS `mediatypes` (
+CREATE TABLE IF NOT EXISTS `genre` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mediaType_id` int(11) NOT NULL,
+  `amazonBrowseNodeId` varchar(10) NOT NULL,
+  `sevenDigitalTag` varchar(50) NOT NULL,
+  `genreName` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_42911CFC4FBBC852` (`mediaType_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+
+--
+-- Dumping data for table `genre`
+--
+
+INSERT INTO `genre` (`id`, `mediaType_id`, `amazonBrowseNodeId`, `sevenDigitalTag`, `genreName`) VALUES
+(1, 1, '501778', '', 'Action and Adventure'),
+(2, 1, '1025436', '', 'Adult'),
+(3, 1, '3336941', '', 'Anime'),
+(4, 1, '501858', '', 'Childrens'),
+(5, 1, '501976', '', 'Classics'),
+(6, 1, '501866', '', 'Comedy'),
+(7, 1, '501880', '', 'Crime, Thrillers and Mystery'),
+(8, 1, '501958', '', 'Documentary'),
+(9, 1, '501872', '', 'Drama'),
+(10, 1, '162441011', '', 'Horror'),
+(11, 1, '162440011', '', 'Interactive'),
+(12, 1, '501888', '', 'Music'),
+(13, 1, '1108824', '', 'Musicals and Classical'),
+(14, 1, '501912', '', 'Science fiction and Fantasy'),
+(15, 1, '295573011', '', 'Sports'),
+(16, 2, '546262031', '', 'Action'),
+(17, 2, '285270', '', 'All television'),
+(18, 2, '501960', '', 'Childrens TV'),
+(19, 2, '501962', '', 'Comedy'),
+(20, 2, '16281381', '', 'Crime, Thrillers and Mystery'),
+(21, 2, '501966', '', 'Drama'),
+(22, 2, '501970', '', 'Horror'),
+(23, 2, '503424', '', 'Music and Entertainment'),
+(24, 2, '503420', '', 'Natural world'),
+(25, 2, '501972', '', 'Science fiction and Fantasy'),
+(26, 2, '501974', '', 'Soaps'),
+(27, 2, '12970731', '', 'TV Series'),
+(28, 3, '', 'alternative-indie', 'Alternative and Indie'),
+(29, 3, '', 'blues', 'Blues'),
+(30, 3, '', 'children', 'Childrens Music'),
+(31, 3, '', 'classical', 'Classical'),
+(32, 3, '', 'country', 'Country'),
+(33, 3, '', 'dance', 'Dance'),
+(34, 3, '', 'electronic', 'Electronic'),
+(35, 3, '', 'easy-listening', 'Easy Listening'),
+(36, 3, '', 'folk', 'Folk and Songwriter'),
+(37, 3, '', 'hard-rock-metal', 'Hard Rock and Metal'),
+(38, 3, '', 'jazz', 'Jazz'),
+(39, 3, '', 'pop', 'Pop'),
+(40, 3, '', 'britpop', 'Britpop'),
+(41, 3, '', 'randb-soul', 'R and B Soul'),
+(42, 3, '', 'hip-hop-rap', 'Rap and Hip-hop'),
+(43, 3, '', 'reggae', 'Reggae'),
+(44, 3, '', 'rock', 'Rock'),
+(45, 3, '', 'rock-and-roll', 'Rock and Roll'),
+(46, 3, '', 'indie-rock', 'Indie'),
+(47, 3, '', 'soundtrack', 'Soundtracks'),
+(48, 3, '', 'world', 'World Music');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mediatype`
+--
+
+CREATE TABLE IF NOT EXISTS `mediatype` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mediaName` varchar(75) NOT NULL,
-  `amazonBrowseNodeId` varchar(10) DEFAULT NULL,
-  `mediaNameSlug` varchar(75) NOT NULL,
+  `amazonBrowseNodeId` varchar(10) NOT NULL,
+  `mediaNameSlug` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `mediatypes`
+-- Dumping data for table `mediatype`
 --
 
-INSERT INTO `mediatypes` (`id`, `mediaName`, `amazonBrowseNodeId`, `mediaNameSlug`) VALUES
+INSERT INTO `mediatype` (`id`, `mediaName`, `amazonBrowseNodeId`, `mediaNameSlug`) VALUES
 (1, 'Film', '283926', 'film'),
 (2, 'TV', '342350011', 'tv'),
-(3, 'Music', NULL, 'music');
+(3, 'Music', '', 'music');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `recommendeditems`
+-- Table structure for table `recommendeditem`
 --
 
-CREATE TABLE IF NOT EXISTS `recommendeditems` (
+CREATE TABLE IF NOT EXISTS `recommendeditem` (
   `id` int(11) NOT NULL,
   `itemId` varchar(50) NOT NULL,
   `mediaTypeId` int(11) NOT NULL,
@@ -176,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `recommendeditems` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `recommendeditems`
+-- Dumping data for table `recommendeditem`
 --
 
 
@@ -198,3 +237,13 @@ CREATE TABLE IF NOT EXISTS `yearofbirthlinktable` (
 -- Dumping data for table `yearofbirthlinktable`
 --
 
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `genre`
+--
+ALTER TABLE `genre`
+  ADD CONSTRAINT `FK_42911CFC4FBBC852` FOREIGN KEY (`mediaType_id`) REFERENCES `mediatype` (`id`);

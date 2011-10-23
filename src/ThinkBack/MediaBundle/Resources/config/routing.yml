@@ -1,0 +1,12 @@
+indexDefault:
+    pattern:  /
+    defaults: { _controller: ThinkBackMediaBundle:Default:index }
+
+index:
+    pattern:  /index
+    defaults: { _controller: ThinkBackMediaBundle:Default:index }
+  
+error:
+  pattern: /error
+  defaults: { _controller: ThinkBackMediaBundle:Default:error }
+  

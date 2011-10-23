@@ -1,7 +1,7 @@
 Symfony Standard Edition
 ========================
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony2
+Media to the Symfony Standard Edition - a fully-functional Symfony2
 application that you can use as the skeleton for your new app. If you want
 to learn more about the features included, see the "What's Inside?" section.
 
@@ -72,7 +72,7 @@ web version of the Symfony requirements check via:
 
     http://localhost/Symfony/web/config.php
 
-If everything looks good, click the "Bypass configuration and go to the Welcome page"
+If everything looks good, click the "Bypass configuration and go to the Media page"
 link to load up your first Symfony page.
 
 You can also use a web-based configurator by clicking on the "Configure your

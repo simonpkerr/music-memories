@@ -1,11 +1,11 @@
 <?php
 
-namespace ThinkBack\WelcomeBundle\Entity;
+namespace ThinkBack\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ThinkBack\WelcomeBundle\Entity\Work
+ * ThinkBack\MediaBundle\Entity\Work
  */
 class Work
 {

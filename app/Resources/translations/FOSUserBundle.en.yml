@@ -30,7 +30,7 @@ registration.submit: Register
 registration.flash.user_created: The user has been created successfully
 
 registration.email: |
-    Welcome %username%!
+    Media %username%!
     Hello %username%!
 
     To finish validating your account - please visit %confirmationUrl%

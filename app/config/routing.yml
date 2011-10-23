@@ -2,8 +2,8 @@ ThinkBackUserBundle:
     resource: "@ThinkBackUserBundle/Resources/config/routing.yml"
     prefix:   /
 
-ThinkBackWelcomeBundle:
-    resource: "@ThinkBackWelcomeBundle/Resources/config/routing.yml"
+ThinkBackMediaBundle:
+    resource: "@ThinkBackMediaBundle/Resources/config/routing.yml"
     prefix:   /
      
 fos_user_security:

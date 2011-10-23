@@ -1,0 +1,20 @@
+
+<select name="decades" id="decades">
+{% for decade in decades %}
+        <option value="{{ decade.id }}">{{ decade.decadeName }}</option>
+{% endfor %}
+    
+</select>
+
+<select name="mediaType" id="mediaType" >
+{% for mediaType in mediaTypes %}
+        <optgroup label="{{mediaType.mediaName}}">
+            {% for genre in mediaType.genres %}
+                <option value="{{ genre.id }}">{{ genre.genreName }}</option>
+            {% endfor %}
+        </optgroup>
+{% endfor %}
+</select>
+
+
+

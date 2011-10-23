@@ -1,0 +1,23 @@
+ThinkBack\MediaBundle\Entity\Decade:
+  type: entity
+  repositoryClass: ThinkBack\MediaBundle\Repository\DecadeRepository
+  table: null
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    decadeName:
+      type: integer
+    amazonBrowseNodeId:
+      type: string
+      length: 10
+    sevenDigitalTag:
+      type: string
+      length: 10
+  lifecycleCallbacks: {  }
+#  manyToOne:
+#    mediaType:
+#      targetEntity: MediaType
+      

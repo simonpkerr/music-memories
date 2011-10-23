@@ -1,0 +1,126 @@
+<?php
+
+namespace ThinkBack\MediaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ThinkBack\MediaBundle\Entity\Decade
+ */
+class Decade
+{
+    /**
+     * @var integer $id
+     */
+    private $id;
+
+    //associatied media type
+    //protected $mediaType;
+    //private $mediaType_id;
+    
+    /**
+     * @var integer $decade
+     */
+    private $decade;
+
+    /**
+     * @var string $amazonBrowseNodeId
+     */
+    private $amazonBrowseNodeId;
+
+    /**
+     * @var string $sevenDigitalTag
+     */
+    private $sevenDigitalTag;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set mediaTypeId
+     *
+     * @param integer $mediaTypeId
+     */
+//    public function setMediaTypeId($mediaTypeId)
+//    {
+//        $this->mediaType_id = $mediaTypeId;
+//    }
+//
+//    /**
+//     * Get mediaTypeId
+//     *
+//     * @return integer 
+//     */
+//    public function getMediaTypeId()
+//    {
+//        return $this->mediaType_id;
+//    }
+    
+    /**
+     * Set decade
+     *
+     * @param integer $decade
+     */
+    public function setDecade($decade)
+    {
+        $this->decade = $decade;
+    }
+
+    /**
+     * Get decade
+     *
+     * @return integer 
+     */
+    public function getDecade()
+    {
+        return $this->decade;
+    }
+
+    /**
+     * Set amazonBrowseNodeId
+     *
+     * @param string $amazonBrowseNodeId
+     */
+    public function setAmazonBrowseNodeId($amazonBrowseNodeId)
+    {
+        $this->amazonBrowseNodeId = $amazonBrowseNodeId;
+    }
+
+    /**
+     * Get amazonBrowseNodeId
+     *
+     * @return string 
+     */
+    public function getAmazonBrowseNodeId()
+    {
+        return $this->amazonBrowseNodeId;
+    }
+
+    /**
+     * Set sevenDigitalTag
+     *
+     * @param string $sevenDigitalTag
+     */
+    public function setsevenDigitalTag($sevenDigitalTag)
+    {
+        $this->sevenDigitalTag = $sevenDigitalTag;
+    }
+
+    /**
+     * Get sevenDigitalTag
+     *
+     * @return string 
+     */
+    public function getsevenDigitalTag()
+    {
+        return $this->sevenDigitalTag;
+    }
+}
