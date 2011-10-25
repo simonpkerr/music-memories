@@ -19,9 +19,9 @@ class Decade
     //private $mediaType_id;
     
     /**
-     * @var integer $decade
+     * @var integer $decadeName
      */
-    private $decade;
+    private $decadeName;
 
     /**
      * @var string $amazonBrowseNodeId
@@ -43,45 +43,25 @@ class Decade
     {
         return $this->id;
     }
-
+   
     /**
-     * Set mediaTypeId
+     * Set decadeName
      *
-     * @param integer $mediaTypeId
+     * @param integer $decadeName
      */
-//    public function setMediaTypeId($mediaTypeId)
-//    {
-//        $this->mediaType_id = $mediaTypeId;
-//    }
-//
-//    /**
-//     * Get mediaTypeId
-//     *
-//     * @return integer 
-//     */
-//    public function getMediaTypeId()
-//    {
-//        return $this->mediaType_id;
-//    }
-    
-    /**
-     * Set decade
-     *
-     * @param integer $decade
-     */
-    public function setDecade($decade)
+    public function setDecadeName($decadeName)
     {
-        $this->decade = $decade;
+        $this->decadeName = $decadeName;
     }
 
     /**
-     * Get decade
+     * Get decadeName
      *
      * @return integer 
      */
-    public function getDecade()
+    public function getDecadeName()
     {
-        return $this->decade;
+        return $this->decadeName;
     }
 
     /**
@@ -109,7 +89,7 @@ class Decade
      *
      * @param string $sevenDigitalTag
      */
-    public function setsevenDigitalTag($sevenDigitalTag)
+    public function setSevenDigitalTag($sevenDigitalTag)
     {
         $this->sevenDigitalTag = $sevenDigitalTag;
     }
@@ -119,7 +99,7 @@ class Decade
      *
      * @return string 
      */
-    public function getsevenDigitalTag()
+    public function getSevenDigitalTag()
     {
         return $this->sevenDigitalTag;
     }

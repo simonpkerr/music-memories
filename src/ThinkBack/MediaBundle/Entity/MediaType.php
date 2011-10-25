@@ -115,4 +115,14 @@ class MediaType
     {
         return $this->amazonBrowseNodeId;
     }
+
+    /**
+     * Add genres
+     *
+     * @param ThinkBack\MediaBundle\Entity\Genre $genres
+     */
+    public function addGenre(\ThinkBack\MediaBundle\Entity\Genre $genres)
+    {
+        $this->genres[] = $genres;
+    }
 }

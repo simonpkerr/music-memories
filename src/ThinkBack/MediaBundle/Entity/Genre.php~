@@ -29,7 +29,11 @@ class Genre
      */
     protected $sevenDigitalTag;
 
-
+    /**
+     * @var string $genreName
+     */
+    private $genreName;
+    
     /**
      * Get id
      *
@@ -120,4 +124,26 @@ class Genre
         return $this->mediaType;
     }
    
+    
+
+
+    /**
+     * Set genreName
+     *
+     * @param string $genreName
+     */
+    public function setGenreName($genreName)
+    {
+        $this->genreName = $genreName;
+    }
+
+    /**
+     * Get genreName
+     *
+     * @return string 
+     */
+    public function getGenreName()
+    {
+        return $this->genreName;
+    }
 }

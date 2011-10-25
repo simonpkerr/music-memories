@@ -14,7 +14,7 @@
         <div id="header">
             {# the 'path' function can be used to target any particular route defined in the routing config file #}
             <a href="{{path('index')}}" title="Go back to ThinkBack home page">ThinkBack</a>
-            {% render "ThinkBackMediaBundle:Media:loadMediaSelectionArguments" %}
+            {% render "ThinkBackMediaBundle:Media:mediaSelection" %}
         </div>
         <div id="page-title">
             <h1>{% block pageTitle %}{% endblock %}</h1>

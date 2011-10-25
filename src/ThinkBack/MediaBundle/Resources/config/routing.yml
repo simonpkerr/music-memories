@@ -10,3 +10,10 @@ error:
   pattern: /error
   defaults: { _controller: ThinkBackMediaBundle:Default:error }
   
+mediaSelection:
+  pattern: /mediaSelection
+  defaults: { _controller: ThinkBackMediaBundle:Media:mediaSelection }
+  
+mediaSearch:
+  pattern: /mediaSearch/{decade}/{media}/{genre}
+  defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearch }
