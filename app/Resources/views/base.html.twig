@@ -21,7 +21,8 @@
         </div>
         {% block body %}{% endblock %}
         {% block javascripts %}
-           {# <script src="{{ asset('bundles/ThinkBack/scripts/main.js') }}" type="text/javascript"></script>#}
+            <script src="{{ asset('bundles/ThinkBack/scripts/jquery-1.7.min.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/ThinkBack/scripts/tb-scripts.js') }}" type="text/javascript"></script>
         {% endblock %}
     </body>
 </html>
