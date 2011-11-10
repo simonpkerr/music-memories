@@ -35,12 +35,11 @@ class MediaController extends Controller
         if($request->getMethod() == 'POST'){
             $form->bindRequest($request);
             if($form->isValid()){
-                return $this->redirect($this->generateUrl('mediaSearch', array(
-                    'decade'    => $mediaSelection->getDecades()->getDecadeName(),
-                    'media'     => $mediaSelection->getMediaTypes()->getMediaName(),
-                    'genre'     => $mediaSelection->getSelectedMediaGenres(),
-                    ))
-                );
+                //pass to search action that then redirects
+                return $this->forward('ThinkBackMediaBundle:Media:mediaSearch', array(
+                   'mediaSelection' => $mediaSelection, 
+                ));
+                
             }
             
         }else{
@@ -52,9 +51,17 @@ class MediaController extends Controller
         }
     }
     
-    public function mediaSearchAction($decade, $media, $genre){
-        return new Response('decade =' . $decade .  '. media = ' . $media . '. genre = ' . $genre);
-           
+    /*
+     * perform the search, then redirect to the search action to show the results
+     */
+    public function mediaSearchAction($mediaSelection){
+        /*return $this->redirect($this->generateUrl('mediaSearch', array(
+                    'decade'    => $mediaSelection->getDecades()->getDecadeName(),
+                    'media'     => $mediaSelection->getMediaTypes()->getMediaName(),
+                    'genre'     => $mediaSelection->getSelectedMediaGenres(),
+                    ))
+                );*/
+        return new Response('decade =' . $mediaSelection->getDecades()->getDecadeName());
     }
     
 }

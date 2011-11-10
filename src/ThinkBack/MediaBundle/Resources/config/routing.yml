@@ -15,5 +15,5 @@ mediaSelection:
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaSelection }
   
 mediaSearch:
-  pattern: /mediaSearch/{decade}/{media}/{genre}
+  pattern: /mediaSearch/{mediaSelection}
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearch }
