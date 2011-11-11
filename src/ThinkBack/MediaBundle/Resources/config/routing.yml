@@ -13,7 +13,11 @@ error:
 mediaSelection:
   pattern: /mediaSelection
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaSelection }
+  requirements:
+    _method: GET
   
-mediaSearch:
-  pattern: /mediaSearch/{decade}/{media}/{genre}
-  defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearch }
+mediaSearchResults:
+  pattern: /mediaSearchResults/
+  defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearchResults }
+  requirements:
+    _method: POST

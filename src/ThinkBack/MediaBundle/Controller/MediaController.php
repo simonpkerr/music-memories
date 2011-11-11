@@ -18,7 +18,7 @@ class MediaController extends Controller
         return $this->getDoctrine()->getEntityManager();
     }
     
-    public function mediaSelectionAction(Request $request = null){
+    private function getMediaSelectForm(){
         $em = $this->getEntityManager();
         
         //get the various selection options
@@ -30,25 +30,12 @@ class MediaController extends Controller
                 
         //create a form using the mediaSelectionType class and the data
         $form = $this->createForm(new MediaSelectionType(), $mediaSelection);
-        
-        //if the form was submitted
-        if($request->getMethod() == 'POST'){
-            $form->bindRequest($request);
-            if($form->isValid()){
-                //pass to search action that then redirects
-                /*return $this->forward('ThinkBackMediaBundle:Media:mediaSearch', array(
-                   'mediaSelection' => $mediaSelection, 
-                ));*/
-                return $this->redirect($this->generateUrl('mediaSearch', array(
-                    'decade'    => $mediaSelection->getDecades()->getId(),
-                    'media'     => $mediaSelection->getMediaTypes()->getId(),
-                    'genre'     => $mediaSelection->getSelectedMediaGenres(),
-                    ))
-                );
+        return $form;
+    }
+    
+    public function mediaSelectionAction(){
                 
-            }
-            
-        }
+        $form = $this->getMediaSelectForm();
         
         //just returns a partial segment of code to show the form for selecting media
         return $this->render('ThinkBackMediaBundle:Media:mediaSelectionPartial.html.twig', array(
@@ -61,9 +48,27 @@ class MediaController extends Controller
     /*
      * perform the search, then redirect to the search action to show the results
      */
-    public function mediaSearchAction($decade, $media, $genre){
+    public function mediaSearchResultsAction(Request $request){
+        $form = $this->getMediaSelectForm();
         
-        return new Response('decade =' . $decade);
+        //if the form was submitted
+        $form->bindRequest($request);
+        if($form->isValid()){
+            
+            $mediaSelection = $form->getData();
+            //do the look up 
+            return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
+                'decade' => $mediaSelection->getDecades()->getDecadeName(),
+            ));
+
+        }
+        
+        return $this->render('ThinkBackMediaBundle:Media:mediaSelectionPartial.html.twig', array(
+           'form' => $form->createView(), 
+        ));
+            
+        
+        
         /*return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
             'decade'    => $mediaSelection->getDecades()->getDecadeName(),
             'media'     => $mediaSelection->getMediaTypes()->getMediaName(),
