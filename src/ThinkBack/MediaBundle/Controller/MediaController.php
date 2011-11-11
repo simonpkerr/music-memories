@@ -36,32 +36,41 @@ class MediaController extends Controller
             $form->bindRequest($request);
             if($form->isValid()){
                 //pass to search action that then redirects
-                return $this->forward('ThinkBackMediaBundle:Media:mediaSearch', array(
+                /*return $this->forward('ThinkBackMediaBundle:Media:mediaSearch', array(
                    'mediaSelection' => $mediaSelection, 
-                ));
+                ));*/
+                return $this->redirect($this->generateUrl('mediaSearch', array(
+                    'decade'    => $mediaSelection->getDecades()->getId(),
+                    'media'     => $mediaSelection->getMediaTypes()->getId(),
+                    'genre'     => $mediaSelection->getSelectedMediaGenres(),
+                    ))
+                );
                 
             }
             
-        }else{
-        
-            return $this->render('ThinkBackMediaBundle:Media:mediaSelectionPartial.html.twig', array(
-               'form' => $form->createView(), 
-            ));
-            
         }
+        
+        //just returns a partial segment of code to show the form for selecting media
+        return $this->render('ThinkBackMediaBundle:Media:mediaSelectionPartial.html.twig', array(
+           'form' => $form->createView(), 
+        ));
+            
+        
     }
     
     /*
      * perform the search, then redirect to the search action to show the results
      */
-    public function mediaSearchAction($mediaSelection){
-        /*return $this->redirect($this->generateUrl('mediaSearch', array(
-                    'decade'    => $mediaSelection->getDecades()->getDecadeName(),
-                    'media'     => $mediaSelection->getMediaTypes()->getMediaName(),
-                    'genre'     => $mediaSelection->getSelectedMediaGenres(),
-                    ))
-                );*/
-        return new Response('decade =' . $mediaSelection->getDecades()->getDecadeName());
+    public function mediaSearchAction($decade, $media, $genre){
+        
+        return new Response('decade =' . $decade);
+        /*return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
+            'decade'    => $mediaSelection->getDecades()->getDecadeName(),
+            'media'     => $mediaSelection->getMediaTypes()->getMediaName(),
+            'genre'     => $mediaSelection->getSelectedMediaGenres(),
+            //also pass data to be displayed
+        ));*/
+        //return new Response('decade =' . $mediaSelection->getDecades()->getDecadeName());
     }
     
 }
