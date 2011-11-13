@@ -2,7 +2,7 @@ $(document).ready(function(){
 var $allGenres = eval($("#mediaSelection_genres").val());
 var $selectedMediaGenres = $("select#mediaSelection_selectedMediaGenres");
 
-populateGenres($("#mediaSelection_mediaTypes").val());
+//populateGenres($("#mediaSelection_mediaTypes").val());
 $("select#mediaSelection_mediaTypes").change(function(){
     populateGenres($(this).val())
 });

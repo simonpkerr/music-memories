@@ -18,24 +18,83 @@ class MediaController extends Controller
         return $this->getDoctrine()->getEntityManager();
     }
     
-    private function getMediaSelectForm(){
+    
+    /*
+     * sets the media, decade and genre in a session that can be used
+     * to set the values of the select options
+     */
+    private function setSessionData($data){
+        $session = $this->getRequest()->getSession();
+        /*$session->set('media', $mediaSelection->getMediaTypes()->getId());
+        $session->set('decade', $mediaSelection->getDecades()->getId());
+        $session->set('genre', $mediaSelection->getMediaTypes()->getId());
+         * 
+         */
+        $session->set('mediaSelection', $data);
+    }
+    
+    private function getSessionData(){
+        $session = $this->getRequest()->getSession();
+        
+        if($session->has('mediaSelectionRequest')){
+            /*return array(
+                'media'     =>  $session->get('media', 0),
+                'decade'    =>  $session->get('decade', 0),
+                'genre'     =>  $session->get('genre', 0),
+            );*/
+            return array(
+               'mediaSelection' => $session->get('mediaSelectionRequest'),
+            );
+        } else
+            return null;
+        
+    }
+    
+    
+    public function mediaSelectionAction(Request $request = null){
         $em = $this->getEntityManager();
         
         //get the various selection options
         $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
-        
+                
         //add them to the mediaSelection object
         $mediaSelection = new MediaSelection();
         $mediaSelection->setGenres($genres);
-                
-        //create a form using the mediaSelectionType class and the data
+        
+        if($this->getSessionData()!=null){
+            $data = $this->getSessionData();
+            $mediaSelection->setDecades($data['decades']);
+        }
+        
+        //$previousMediaSelections = $this->getSessionData();
+        //if($previousMediaSelections != null)
+        //    $form = $this->createForm(new MediaSelectionType(), $mediaSelection, $this->getSessionData());
+        //else
+            
         $form = $this->createForm(new MediaSelectionType(), $mediaSelection);
-        return $form;
-    }
-    
-    public function mediaSelectionAction(){
+        
+        
+        if($request->getMethod() == 'POST'){
+            $form->bindRequest($request);
+            if($form->isValid()){
                 
-        $form = $this->getMediaSelectForm();
+                $data = $form->getData();
+                $this->setSessionData($data);
+                
+                return $this->redirect($this->generateUrl('mediaSearchResults', array(
+                    'decade'    => $mediaSelection->getDecades()->getDecadeName(),
+                    'media'     => $mediaSelection->getMediaTypes()->getMediaName(),
+                    'genre'     => $mediaSelection->getSelectedMediaGenres()->getGenreName(),
+                    )));
+                
+
+            }
+        }
+        /*else {
+            if($this->getSessionData() != null){
+                $form->bind($this->getSessionData());
+            }
+        }*/
         
         //just returns a partial segment of code to show the form for selecting media
         return $this->render('ThinkBackMediaBundle:Media:mediaSelectionPartial.html.twig', array(
@@ -48,26 +107,13 @@ class MediaController extends Controller
     /*
      * perform the search, then redirect to the search action to show the results
      */
-    public function mediaSearchResultsAction(Request $request){
-        $form = $this->getMediaSelectForm();
+    public function mediaSearchResultsAction($decade, $media, $genre){
         
-        //if the form was submitted
-        $form->bindRequest($request);
-        if($form->isValid()){
-            
-            $mediaSelection = $form->getData();
-            //do the look up 
-            return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
-                'decade' => $mediaSelection->getDecades()->getDecadeName(),
-            ));
+       return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
+           'decade' => $decade,
+       ));
 
-        }
-        
-        return $this->render('ThinkBackMediaBundle:Media:mediaSelectionPartial.html.twig', array(
-           'form' => $form->createView(), 
-        ));
-            
-        
+       
         
         /*return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
             'decade'    => $mediaSelection->getDecades()->getDecadeName(),

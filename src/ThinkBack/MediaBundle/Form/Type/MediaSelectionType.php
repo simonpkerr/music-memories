@@ -12,13 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class MediaSelectionType extends AbstractType{
     
-    public function buildForm(FormBuilder $builder, array $options){
+    public function buildForm(FormBuilder $builder, array $options = null){
         
         //entity field mapped to the decade class displaying the id and decadeName properties
         $builder->add('decades', 'entity', array(
             'label'     => 'Decade',
             'property'  => 'decadeName',
             'class'     => 'ThinkBackMediaBundle:Decade',
+            
         ));
         
         //entity field mapped to the mediatype class displaying the id and mediaName properties
@@ -29,11 +30,22 @@ class MediaSelectionType extends AbstractType{
         ));
         
         //selected genres select field
-        $builder->add('selectedMediaGenres', 'choice', array(
+        /*$builder->add('selectedMediaGenres', 'choice', array(
             'label'     => 'Genre',
             'choices'   => array(
                 'All',
             ),
+        ));*/
+        
+        $builder->add('selectedMediaGenres','entity', array(
+            'label'         =>  'Genre',
+            'property'      =>  'genreName',
+            'empty_value'   =>  'All',
+            'class'         =>  'ThinkBackMediaBundle:Genre',
+            'query_builder'  =>  function(EntityRepository $er){
+                return $er->createQueryBuilder('g')
+                        ->orderBy('g.genreName', 'ASC');
+            },
         ));
         
         //hidden field to hold all genres 
@@ -44,11 +56,12 @@ class MediaSelectionType extends AbstractType{
         return 'mediaSelection';
     }
     
-   /* public function getDefaultOptions(array $options){
+    public function getDefaultOptions(array $options){
         return array(
           'data_class' => 'ThinkBack\MediaBundle\Entity\MediaSelection',  
         );
-    }*/
+    }
+    
     
 }
 
