@@ -10,6 +10,7 @@ class GenreRepository extends EntityRepository
     public function getAllGenres(){
         $genres = $this->createQueryBuilder('g')
                 ->select(array('g.id', 'g.genreName', 'g.mediaType_id'))
+                ->orderBy('g.genreName')
                 ->getQuery()
                 ->getResult();
         

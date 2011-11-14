@@ -25,76 +25,70 @@ class MediaController extends Controller
      */
     private function setSessionData($data){
         $session = $this->getRequest()->getSession();
-        /*$session->set('media', $mediaSelection->getMediaTypes()->getId());
-        $session->set('decade', $mediaSelection->getDecades()->getId());
-        $session->set('genre', $mediaSelection->getMediaTypes()->getId());
-         * 
-         */
         $session->set('mediaSelection', $data);
+        
     }
     
     private function getSessionData(){
         $session = $this->getRequest()->getSession();
         
-        if($session->has('mediaSelectionRequest')){
-            /*return array(
-                'media'     =>  $session->get('media', 0),
-                'decade'    =>  $session->get('decade', 0),
-                'genre'     =>  $session->get('genre', 0),
-            );*/
-            return array(
-               'mediaSelection' => $session->get('mediaSelectionRequest'),
-            );
+        if($session->has('mediaSelection')){
+            return $session->get('mediaSelection');
         } else
             return null;
         
     }
     
-    
     public function mediaSelectionAction(Request $request = null){
         $em = $this->getEntityManager();
-        
-        //get the various selection options
-        $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
-                
-        //add them to the mediaSelection object
         $mediaSelection = new MediaSelection();
-        $mediaSelection->setGenres($genres);
         
-        if($this->getSessionData()!=null){
-            $data = $this->getSessionData();
-            $mediaSelection->setDecades($data['decades']);
+        /*
+         * if the data was posted before and is now saved in the session
+         * retrieve it, merge it back into the entity manager (otherwise it 
+         * throws the error 'entities must be managed' and use it to populate
+         * the form, otherwise just use the empty media selection object
+         */
+        $sessionFormData = $this->getSessionData();
+        if($sessionFormData != null){
+            $mediaTypes = $sessionFormData->getMediaTypes();
+            $mediaTypes = $this->getEntityManager()->merge($mediaTypes);
+            $mediaSelection->setMediaTypes($mediaTypes);
+            
+            $decades = $sessionFormData->getDecades();
+            $decades = $this->getEntityManager()->merge($decades);
+            $mediaSelection->setDecades($decades);
+            
+            $selectedMediaGenres = $sessionFormData->getSelectedMediaGenres();
+            $selectedMediaGenres = $this->getEntityManager()->merge($selectedMediaGenres);
+            $mediaSelection->setSelectedMediaGenres($selectedMediaGenres);
+            
+            $mediaSelection->setGenres($sessionFormData->getGenres());
+        }else{
+            $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
+            $mediaSelection->setGenres($genres);
         }
         
-        //$previousMediaSelections = $this->getSessionData();
-        //if($previousMediaSelections != null)
-        //    $form = $this->createForm(new MediaSelectionType(), $mediaSelection, $this->getSessionData());
-        //else
-            
         $form = $this->createForm(new MediaSelectionType(), $mediaSelection);
-        
         
         if($request->getMethod() == 'POST'){
             $form->bindRequest($request);
             if($form->isValid()){
                 
-                $data = $form->getData();
-                $this->setSessionData($data);
-                
+                $this->setSessionData($form->getData());
+                                
                 return $this->redirect($this->generateUrl('mediaSearchResults', array(
                     'decade'    => $mediaSelection->getDecades()->getDecadeName(),
                     'media'     => $mediaSelection->getMediaTypes()->getMediaName(),
                     'genre'     => $mediaSelection->getSelectedMediaGenres()->getGenreName(),
                     )));
-                
-
+            }else{
+                return $this->render('ThinkBackMediaBundle:Default:error.html.twig', array(
+                    'form' => $form->createView(),
+                ));
             }
         }
-        /*else {
-            if($this->getSessionData() != null){
-                $form->bind($this->getSessionData());
-            }
-        }*/
+       
         
         //just returns a partial segment of code to show the form for selecting media
         return $this->render('ThinkBackMediaBundle:Media:mediaSelectionPartial.html.twig', array(
