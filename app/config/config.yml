@@ -70,7 +70,6 @@ stof_doctrine_extensions:
   default_locale: en
   orm:
       default:
-        tree: true
-        timestampable: 
-  mongodb:
-      default: ~
+        sluggable: true
+        timestampable: true
+  
