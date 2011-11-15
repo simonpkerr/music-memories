@@ -14,7 +14,6 @@ class MediaSelectionType extends AbstractType{
     
     public function buildForm(FormBuilder $builder, array $options = null){
         
-        
         //entity field mapped to the decade class displaying the id and decadeName properties
         $builder->add('decades', 'entity', array(
             'label'     => 'Decade',
@@ -78,6 +77,8 @@ class MediaSelectionType extends AbstractType{
           'data_class' => 'ThinkBack\MediaBundle\Entity\MediaSelection',  
         );
     }
+    
+    
     
     
 }

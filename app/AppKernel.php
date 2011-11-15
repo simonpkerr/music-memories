@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new ThinkBack\MediaBundle\ThinkBackMediaBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new ThinkBack\UserBundle\ThinkBackUserBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
