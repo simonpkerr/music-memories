@@ -78,9 +78,9 @@ class MediaController extends Controller
                 $this->setSessionData($form->getData());
                                 
                 return $this->redirect($this->generateUrl('mediaSearchResults', array(
-                    'decade'    => $mediaSelection->getDecades()->getDecadeName(),
-                    'media'     => $mediaSelection->getMediaTypes()->getMediaName(),
-                    'genre'     => $mediaSelection->getSelectedMediaGenres()->getGenreName(),
+                    'decade'    => $mediaSelection->getDecades()->getSlug(),
+                    'media'     => $mediaSelection->getMediaTypes()->getSlug(),
+                    'genre'     => $mediaSelection->getSelectedMediaGenres()->getSlug(),
                     )));
             }else{
                 return $this->render('ThinkBackMediaBundle:Default:error.html.twig', array(
@@ -105,17 +105,55 @@ class MediaController extends Controller
         
        return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
            'decade' => $decade,
+           'media'  => $media,
+           'genre'  => $genre,
+           //pass data to display
        ));
 
        
+    }
+    
+    public function setSlugsAction($table){
+        $em = $this->getEntityManager();
+        switch($table){
+            case "genre":
+                $entities = $em->getRepository('ThinkBackMediaBundle:Genre')->findAll();
+                foreach ($entities as $entity) {
+                    $slug = strtolower($entity->getGenreName());
+                    $slug = str_replace(',', '', $slug);
+                    $slug = str_replace(' ', '-', $slug);
+                    $entity->setSlug($slug);
+                    $em->persist($entity);
+                    $em->flush();
+                }
+                
+                break;
+            case "mediaType":
+                $entities = $em->getRepository('ThinkBackMediaBundle:MediaType')->findAll();
+                foreach ($entities as $entity) {
+                    $slug = strtolower($entity->getMediaName());
+                    $slug = str_replace(',', '', $slug);
+                    $slug = str_replace(' ', '-', $slug);
+                    $entity->setSlug($slug);
+                    $em->persist($entity);
+                    $em->flush();
+                }
+                break;
+            case "decade":
+                $entities = $em->getRepository('ThinkBackMediaBundle:Decade')->findAll();
+                foreach ($entities as $entity) {
+                    $slug = strtolower($entity->getDecadeName());
+                    $slug = str_replace(',', '', $slug);
+                    $slug = str_replace(' ', '-', $slug);
+                    $entity->setSlug($slug);
+                    $em->persist($entity);
+                    $em->flush();
+                }
+                break;
+        }
         
-        /*return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
-            'decade'    => $mediaSelection->getDecades()->getDecadeName(),
-            'media'     => $mediaSelection->getMediaTypes()->getMediaName(),
-            'genre'     => $mediaSelection->getSelectedMediaGenres(),
-            //also pass data to be displayed
-        ));*/
-        //return new Response('decade =' . $mediaSelection->getDecades()->getDecadeName());
+        return new Response('success');
+        
     }
     
 }

@@ -10,12 +10,21 @@ ThinkBack\MediaBundle\Entity\Decade:
         strategy: AUTO
     decadeName:
       type: integer
+      gedmo:
+        - sluggable
     amazonBrowseNodeId:
       type: string
       length: 10
     sevenDigitalTag:
       type: string
       length: 10
+    slug:
+      type: string
+      length: 128
+      gedmo:
+        slug:
+          fields:
+            - decadeName
   lifecycleCallbacks: {  }
 #  manyToOne:
 #    mediaType:

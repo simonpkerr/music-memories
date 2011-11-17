@@ -4,7 +4,7 @@ namespace ThinkBack\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * ThinkBack\MediaBundle\Entity\MediaType
  */
@@ -21,17 +21,17 @@ class MediaType
     protected $mediaName;
 
     /**
-     * @var string $mediaNameSlug
-     */
-    protected $mediaNameSlug;
-
-    /**
      * @var string $amazonBrowseNodeId
      */
     protected $amazonBrowseNodeId;
     
     protected $genres;
     //protected $decades;
+    
+    /**
+     * @var string $slug
+     */
+    private $slug;
     
     public function __construct(){
         $this->genres = new ArrayCollection();
@@ -77,26 +77,6 @@ class MediaType
     }
 
     /**
-     * Set mediaNameSlug
-     *
-     * @param string $mediaNameSlug
-     */
-    public function setMediaNameSlug($mediaNameSlug)
-    {
-        $this->mediaNameSlug = $mediaNameSlug;
-    }
-
-    /**
-     * Get mediaNameSlug
-     *
-     * @return string 
-     */
-    public function getMediaNameSlug()
-    {
-        return $this->mediaNameSlug;
-    }
-
-    /**
      * Set amazonBrowseNodeId
      *
      * @param string $amazonBrowseNodeId
@@ -124,5 +104,27 @@ class MediaType
     public function addGenre(\ThinkBack\MediaBundle\Entity\Genre $genres)
     {
         $this->genres[] = $genres;
+    }
+    
+
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

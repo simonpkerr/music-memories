@@ -20,3 +20,8 @@ mediaSearchResults:
   pattern: /mediaSearchResults/{decade}/{media}/{genre}
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearchResults }
   
+#setSlugs:
+#  pattern: /setSlugs/{table}
+#  defaults: { _controller: ThinkBackMediaBundle:Media:setSlugs }
+#  requirements:
+#    _method: GET

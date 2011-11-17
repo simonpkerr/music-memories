@@ -1,7 +1,7 @@
 <?php
 
 namespace ThinkBack\MediaBundle\Entity;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +34,12 @@ class Decade
     private $sevenDigitalTag;
 
 
+    /**
+     * @var string $slug
+     */
+    private $slug;
+
+    
     /**
      * Get id
      *
@@ -102,5 +108,25 @@ class Decade
     public function getSevenDigitalTag()
     {
         return $this->sevenDigitalTag;
+    }
+    
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

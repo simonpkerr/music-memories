@@ -1,7 +1,6 @@
 <?php
 
 namespace ThinkBack\MediaBundle\Entity;
-
 /**
  * ThinkBack\MediaBundle\Entity\MediaSelection
  */

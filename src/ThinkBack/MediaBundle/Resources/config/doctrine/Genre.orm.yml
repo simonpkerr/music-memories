@@ -11,6 +11,8 @@ ThinkBack\MediaBundle\Entity\Genre:
     genreName:
       type: string
       length: 100
+      gedmo:
+        - sluggable
     mediaType_id:
       type: integer
     amazonBrowseNodeId:
@@ -19,6 +21,13 @@ ThinkBack\MediaBundle\Entity\Genre:
     sevenDigitalTag:
       type: string
       length: 50
+    slug:
+      type: string
+      length: 128
+      gedmo:
+        slug:
+          fields:
+            - genreName
   lifecycleCallbacks: {  }
   manyToOne:
     mediaType:

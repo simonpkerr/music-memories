@@ -11,9 +11,15 @@ ThinkBack\MediaBundle\Entity\MediaType:
     mediaName:
       type: string
       length: 75
-    mediaNameSlug:
+      gedmo:
+        - sluggable
+    slug:
       type: string
-      length: 100
+      length: 128
+      gedmo:
+        slug:
+          fields:
+            - mediaName
     amazonBrowseNodeId:
       type: string
       length: 10
@@ -22,3 +28,6 @@ ThinkBack\MediaBundle\Entity\MediaType:
       targetEntity: Genre
       mappedBy: mediaType
   lifecycleCallbacks: {  }
+#  indexes:
+#    search_idx:
+#      columns: slug
