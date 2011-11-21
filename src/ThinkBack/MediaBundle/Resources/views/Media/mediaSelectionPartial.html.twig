@@ -1,8 +1,12 @@
 <form action="{{ path('mediaSelection') }}" method="post" {{ form_enctype(form) }}>
 
-{{ form_widget(form) }}
+{{ form_errors(form) }}
     
-        <input type="submit" value="Find Stuff" />
+{{ form_row(form.decades) }}
+{{ form_row(form.genres) }}
+{{ form_rest(form) }}
+    
+<input type="submit" value="Find Stuff" />
     
 </form>
 

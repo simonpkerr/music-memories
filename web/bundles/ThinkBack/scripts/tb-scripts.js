@@ -1,5 +1,5 @@
 $(document).ready(function(){
-var $allGenres = eval($("#mediaSelection_genres").val());
+/*var $allGenres = eval($("#mediaSelection_genres").val());
 var $selectedMediaGenres = $("select#mediaSelection_selectedMediaGenres");
 var $selectedGenre = $selectedMediaGenres.val();
 
@@ -21,7 +21,7 @@ function populateGenres(selectedMedia){
     });
     $selectedMediaGenres.val($selectedGenre);
 }
-
+*/
 });
 
 

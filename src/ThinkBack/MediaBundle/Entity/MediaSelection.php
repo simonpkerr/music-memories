@@ -12,15 +12,15 @@ class MediaSelection
 
     private $genres;
     
-    private $selectedMediaGenres;
+   // private $selectedMediaGenres;
 
     
-    public function setSelectedMediaGenres($genres){
+   /* public function setSelectedMediaGenres($genres){
         $this->selectedMediaGenres = $genres;
     }
     public function getSelectedMediaGenres(){
         return $this->selectedMediaGenres;
-    }
+    }*/
 
     public function setDecades($decades)
     {
