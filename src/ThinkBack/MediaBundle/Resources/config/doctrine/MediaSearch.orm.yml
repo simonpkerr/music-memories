@@ -1,0 +1,13 @@
+ThinkBack\MediaBundle\Entity\MediaSearch:
+  type: entity
+  table: null
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    searchKeywords:
+      type: string
+      length: 255
+  lifecycleCallbacks: {  }

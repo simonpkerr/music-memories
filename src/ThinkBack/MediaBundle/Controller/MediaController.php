@@ -39,6 +39,32 @@ class MediaController extends Controller
         
     }
     
+    /*
+     * the overall search functionality available on all pages
+     */
+    public function mediaSearchAction(Request $request = null){
+        $em = $this->getEntityManager();
+        $mediaSearch = new MediaSearch();
+        $form = $this->createForm(new MediaSearchType(), $mediaSearch);
+        
+        if($request->getMethod() == 'POST'){
+            $form->bindRequest($request);
+            if($form->isValid()){
+                
+                return $this->redirect($this->generateUrl('mediaSearchResults', array(
+                    //'searchString'    => $mediaSearch->getSearchString(),
+                    //the data
+                    )));
+            }
+        }
+       
+        
+        //just returns a partial segment of code to show the form for selecting media
+        return $this->render('ThinkBackMediaBundle:Media:mediaSearchPartial.html.twig', array(
+           'form' => $form->createView(), 
+        ));
+    }
+    
     public function mediaSelectionAction(Request $request = null){
         $em = $this->getEntityManager();
         $mediaSelection = new MediaSelection();
@@ -51,11 +77,7 @@ class MediaController extends Controller
          */
         $sessionFormData = $this->getSessionData();
         if($sessionFormData != null){
-            /*
-            $mediaTypes = $sessionFormData->getMediaTypes();
-            $mediaTypes = $this->getEntityManager()->merge($mediaTypes);
-            $mediaSelection->setMediaTypes($mediaTypes);
-            */
+            
             $decades = $sessionFormData->getDecades();
             $decades = $this->getEntityManager()->merge($decades);
             $mediaSelection->setDecades($decades);
@@ -66,10 +88,7 @@ class MediaController extends Controller
             
             $mediaSelection->setGenres($sessionFormData->getGenres());
         }
-        /*else{
-            $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
-            $mediaSelection->setGenres($genres);
-        }*/
+        
         
         $form = $this->createForm(new MediaSelectionType(), $mediaSelection);
         
@@ -107,13 +126,17 @@ class MediaController extends Controller
         
        return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
            'decade' => $decade,
-           //'media'  => $media,
            'genre'  => $genre,
            //pass data to display
        ));
-
-       
     }
+    
+    /*
+     * called when a generic search is performed
+     */
+    /*public function mediaSearchResultsAction($searchString) {
+        
+    }*/
     
     public function setSlugsAction($table){
         $em = $this->getEntityManager();

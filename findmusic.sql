@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 21, 2011 at 11:16 PM
+-- Generation Time: Nov 22, 2011 at 05:45 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `thinkback_test2`
+-- Database: `ThinkBack_test2`
 --
 
 -- --------------------------------------------------------
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `genre` (
   `slug` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_42911CFC4FBBC852` (`mediaType_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=50 ;
 
 --
 -- Dumping data for table `genre`
@@ -195,7 +195,8 @@ INSERT INTO `genre` (`id`, `mediaType_id`, `amazonBrowseNodeId`, `sevenDigitalTa
 (45, 3, '', 'rock-and-roll', 'Rock and Roll', 'rock-and-roll'),
 (46, 3, '', 'indie-rock', 'Indie', 'indie'),
 (47, 3, '231249', 'soundtrack', 'Soundtracks', 'soundtracks'),
-(48, 3, '231254', 'world', 'World Music', 'world-music');
+(48, 3, '231254', 'world', 'World Music', 'world-music'),
+(49, 3, '', '', 'All Music', 'all-music');
 
 -- --------------------------------------------------------
 
