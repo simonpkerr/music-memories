@@ -3,9 +3,22 @@
 {% block stylesheets %}
 {{ parent() }}
 {% endblock %}
+{% block pageTitle %}
+Hi there&hellip;
+{% endblock %}
 {% block body %}
-{# include the search partial and the age partial #}
-
+<p>FindMyMusic lets you rediscover music from your past</p>
+{# media selection partial #}
+<div id="mediaSelection"></div>
+    {% render "ThinkBackMediaBundle:Media:mediaSelection" %}
+</div>
+<div id="ageSearch"></div>
+    {# age based search partial #}
+</div>
+<div id="what-is-this">
+    <h2>What is this?</h2>
+    <p>Description of what the service is.</p>
+</div>
 {% endblock %}
 {% block javascripts %} 
 {{ parent() }}

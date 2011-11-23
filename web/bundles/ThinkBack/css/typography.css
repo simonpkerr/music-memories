@@ -1,0 +1,16 @@
+/*----- all typography related styles ----------*/
+h1,h2,h3,h4 {
+    
+}
+
+p, a{
+    font-size: 1em;
+}
+
+h1 {
+    font-size: 1.6em;
+}
+
+h2 {
+    font-size: 1.5em;
+}

@@ -10,7 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 use ThinkBack\MediaBundle\Entity\MediaTypes;
 use ThinkBack\MediaBundle\Entity\MediaSelection;
+use ThinkBack\MediaBundle\Entity\MediaSearch;
 use ThinkBack\MediaBundle\Form\Type\MediaSelectionType;
+use ThinkBack\MediaBundle\Form\Type\MediaSearchType;
 
 class MediaController extends Controller
 {
@@ -23,17 +25,17 @@ class MediaController extends Controller
      * sets the decade and genre in a session that can be used
      * to set the values of the select options
      */
-    private function setSessionData($data){
+    private function setSessionData($data, $key){
         $session = $this->getRequest()->getSession();
-        $session->set('mediaSelection', $data);
+        $session->set($key, $data);
         
     }
     
-    private function getSessionData(){
+    private function getSessionData($key){
         $session = $this->getRequest()->getSession();
         
-        if($session->has('mediaSelection')){
-            return $session->get('mediaSelection');
+        if($session->has($key)){
+            return $session->get($key);
         } else
             return null;
         
@@ -43,6 +45,8 @@ class MediaController extends Controller
      * the overall search functionality available on all pages
      */
     public function mediaSearchAction(Request $request = null){
+        $key = 'mediaSearch';
+        
         $em = $this->getEntityManager();
         $mediaSearch = new MediaSearch();
         $form = $this->createForm(new MediaSearchType(), $mediaSearch);
@@ -50,10 +54,10 @@ class MediaController extends Controller
         if($request->getMethod() == 'POST'){
             $form->bindRequest($request);
             if($form->isValid()){
-                
+                $this->setSessionData($form->getData(), $key);
+                //need to redirect to search results page showing the search title and listings
                 return $this->redirect($this->generateUrl('mediaSearchResults', array(
-                    //'searchString'    => $mediaSearch->getSearchString(),
-                    //the data
+                    'searchSlug'    => $mediaSearch->getSearchSlug(),
                     )));
             }
         }
@@ -66,6 +70,7 @@ class MediaController extends Controller
     }
     
     public function mediaSelectionAction(Request $request = null){
+        $key = 'mediaSelection';
         $em = $this->getEntityManager();
         $mediaSelection = new MediaSelection();
         
@@ -75,7 +80,7 @@ class MediaController extends Controller
          * throws the error 'entities must be managed' and use it to populate
          * the form, otherwise just use the empty media selection object
          */
-        $sessionFormData = $this->getSessionData();
+        $sessionFormData = $this->getSessionData($key);
         if($sessionFormData != null){
             
             $decades = $sessionFormData->getDecades();
@@ -96,7 +101,7 @@ class MediaController extends Controller
             $form->bindRequest($request);
             if($form->isValid()){
                 
-                $this->setSessionData($form->getData());
+                $this->setSessionData($form->getData(), $key);
                                 
                 return $this->redirect($this->generateUrl('mediaSearchResults', array(
                     'decade'    => $mediaSelection->getDecades()->getSlug(),
@@ -120,11 +125,11 @@ class MediaController extends Controller
     }
     
     /*
-     * perform the search, then redirect to the search action to show the results
+     * perform the search, then redirect to the listings action to show the results
      */
-    public function mediaSearchResultsAction($decade, $genre){
+    public function mediaListingsAction($decade, $genre){
         
-       return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
+       return $this->render('ThinkBackMediaBundle:Media:mediaListings.html.twig', array(
            'decade' => $decade,
            'genre'  => $genre,
            //pass data to display
@@ -134,9 +139,14 @@ class MediaController extends Controller
     /*
      * called when a generic search is performed
      */
-    /*public function mediaSearchResultsAction($searchString) {
-        
-    }*/
+    public function mediaSearchResultsAction($searchSlug) {
+        $data = $this->getSessionData('mediaSearch');
+        return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
+           'searchKeywords' => $data->getSearchKeywords(),
+            
+           //pass data to display
+       ));
+    }
     
     public function setSlugsAction($table){
         $em = $this->getEntityManager();
@@ -180,6 +190,17 @@ class MediaController extends Controller
         return new Response('success');
         
     }
+    
+      static public function slugify($text)
+      {
+        // replace all non letters or digits by -
+        $text = preg_replace('/\W+/', '-', $text);
+
+        // trim and lowercase
+        $text = strtolower(trim($text, '-'));
+
+        return $text;
+      }
     
 }
 

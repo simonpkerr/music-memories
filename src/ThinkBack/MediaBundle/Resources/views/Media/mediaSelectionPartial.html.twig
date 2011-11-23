@@ -1,12 +1,19 @@
 <form action="{{ path('mediaSelection') }}" method="post" {{ form_enctype(form) }}>
 
-{{ form_errors(form) }}
+    <div class="errors">
+        {{ form_errors(form) }}
+    </div>
     
-{{ form_row(form.decades) }}
-{{ form_row(form.genres) }}
-{{ form_rest(form) }}
+    <div id="mediaSelectionDecades">
+        {{ form_row(form.decades) }}
+    </div>
+    <div id="mediaSelectionGenres">
+        {{ form_row(form.genres) }}
+    </div>
+
+    {{ form_rest(form) }}
     
-<input type="submit" value="Find Stuff" />
+<input type="submit" value="Search for Music" />
     
 </form>
 

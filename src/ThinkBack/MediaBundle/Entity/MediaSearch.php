@@ -3,6 +3,7 @@
 namespace ThinkBack\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ThinkBack\MediaBundle\Controller\MediaController;
 
 /**
  * ThinkBack\MediaBundle\Entity\MediaSearch
@@ -18,6 +19,8 @@ class MediaSearch
      * @var string $searchKeywords
      */
     private $searchKeywords;
+    
+    private $searchSlug;
 
 
     /**
@@ -38,6 +41,7 @@ class MediaSearch
     public function setSearchKeywords($searchKeywords)
     {
         $this->searchKeywords = $searchKeywords;
+        $this->searchSlug = MediaController::slugify($searchKeywords);
     }
 
     /**
@@ -48,5 +52,9 @@ class MediaSearch
     public function getSearchKeywords()
     {
         return $this->searchKeywords;
+    }
+    
+    public function getSearchSlug(){
+        return $this->searchSlug;
     }
 }

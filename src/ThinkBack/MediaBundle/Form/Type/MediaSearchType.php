@@ -7,10 +7,10 @@ use Symfony\Component\Form\FormBuilder;
 use Doctrine\ORM\EntityRepository;
 
 /*
- * Class is used to make the media selection widget generic for
- * re-use purposes
+ * Class is used to make the generic media search
+ * based on keywords
  */
-class MediaSelectionType extends AbstractType{
+class MediaSearchType extends AbstractType{
     
     public function buildForm(FormBuilder $builder, array $options = null){
         

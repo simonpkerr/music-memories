@@ -1,78 +1,11 @@
-/*------ featured art works ----*/
-ul#featuredArtList li{
-    width: 60em;
-    margin: 1em 0;
-    
+/*---------- generic search ------------*/
+.search-form-label {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
 }
 
-ul#featuredArtList li div.artWorkDescription {
-    float: left;
-    width: 35%;
-}
-
-ul#featuredArtList img{
-    width: 55%;
-    padding: 0 2em 2em 2em;
-    float: left;
-}
-
-ul#featuredArtList li h3 {
-    text-align: left;
-    margin-bottom: 2em;
-}
-
-ul#featuredArtList li dl
-{
+div.errors {
+    color: #CC514F;
     font-size: 0.9em;
-    
-}
-
-a#allArt {
-    clear: both;
-    display: block;
-}
-
-/*------ art page art works ----*/
-ul#artList li {
-    list-style-type: none;
-    /*float: left;*/
-    display: inline-table;
-    width: 24em;
-    margin: 1em;
-    background-color: #fff;
-    
-}
-
-ul#artList li img {
-    padding: 5em;
-    border: 1px solid #ddd;
-    margin-bottom: 2em;
-  
-}
-
-ul#artList li h3 {
-    text-align: center;
-    margin-bottom: 1em;
-}
-
-ul#artList li dl
-{
-    padding: 0 2em;
-    font-size: 0.9em;
-    
-}
-
-
-ul#artList li dt,
-ul#featuredArtList li dt {
-    float: left;
-    
-}
-
-ul#artList li dd,
-ul#featuredArtList li dd
-{
-    display: block;
-    margin-left: 7em;
-    margin-bottom: 0.5em;
 }

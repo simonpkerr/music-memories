@@ -1,12 +1,8 @@
 {% extends 'ThinkBackMediaBundle::layout.html.twig' %}
-{% block pageTitle %}Listings{% endblock %}
+{% block pageTitle %}Results for &quot;{{ searchKeywords }}&quot;{% endblock %}
 
 {% block body %}
-<div id="mediaResultsListings">
-    <ul>
-        <li>{{ decade }}</li>
-        <li>{{ genre }}</li>
-    </ul>
-</div>
+{{ parent() }}
+<p>The results were for {{ searchKeywords }} </p>
 
 {% endblock %}
