@@ -12,14 +12,14 @@ class MediaControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/mediaSelection');
+        $crawler = $client->request('GET', '/index');
                 
         $this->assertTrue($crawler->filter('select#mediaSelection_mediaTypes')->count() > 0);
     }
     
     public function testMediaSelectionPost(){
         $client = static::createClient();
-        $crawler = $client->request('GET', '/mediaSelection');
+        $crawler = $client->request('GET', '/index');
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $values);        
         $this->assertTrue($crawler->filter('select#mediaSelection_mediaTypes')->count() > 0);

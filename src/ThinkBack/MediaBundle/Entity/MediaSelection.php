@@ -8,7 +8,7 @@ class MediaSelection
 {
     private $decades;
 
-    private $mediaTypes;
+    //private $mediaTypes;
 
     private $genres;
     
@@ -34,7 +34,7 @@ class MediaSelection
     }
 
     
-    public function setMediaTypes($mediaTypes)
+    /*public function setMediaTypes($mediaTypes)
     {
         $this->mediaTypes = $mediaTypes;
     }
@@ -43,7 +43,7 @@ class MediaSelection
     public function getMediaTypes()
     {
         return $this->mediaTypes;
-    }
+    }*/
 
     
     public function setGenres($genres)

@@ -157,10 +157,10 @@ class Genre
      *
      * @param string $slug
      */
-    public function setSlug($slug)
+    /*public function setSlug($slug)
     {
         $this->slug = $slug;
-    }
+    }*/
 
     /**
      * Get slug

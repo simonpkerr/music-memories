@@ -1,14 +1,16 @@
 {% extends '::base.html.twig' %}
 
-{% block pageTitle %}
-    {{parent()}}
-{% endblock %}
+{% block body %}
 {% block mediaSelect %}
     <div id="headerMediaSelection">
         {% render "ThinkBackMediaBundle:Media:mediaSelection" %}
     </div>
 {% endblock %}
-{% block body %}
+<h1>{% block pageTitle %}{% endblock %}</h1>
+
+{% block content %}
+{% endblock %}
+
     
 {% endblock %}
 {% block javascripts %}

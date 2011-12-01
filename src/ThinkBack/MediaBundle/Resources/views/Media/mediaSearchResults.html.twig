@@ -1,8 +1,6 @@
 {% extends 'ThinkBackMediaBundle::layout.html.twig' %}
+{% block content %}
 {% block pageTitle %}Results for &quot;{{ searchKeywords }}&quot;{% endblock %}
-
-{% block body %}
-{{ parent() }}
 <p>The results were for {{ searchKeywords }} </p>
 
 {% endblock %}

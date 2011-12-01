@@ -61,12 +61,22 @@ class MediaController extends Controller
                     )));
             }
         }
-       
-        
         //just returns a partial segment of code to show the form for selecting media
         return $this->render('ThinkBackMediaBundle:Media:mediaSearchPartial.html.twig', array(
            'form' => $form->createView(), 
         ));
+    }
+    
+    /*
+     * called when a generic search is performed
+     */
+    public function mediaSearchResultsAction($searchSlug) {
+        $data = $this->getSessionData('mediaSearch');
+        return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
+           'searchKeywords' => $data->getSearchKeywords(),
+            
+           //pass data to display
+       ));
     }
     
     public function mediaSelectionAction(Request $request = null){
@@ -84,17 +94,15 @@ class MediaController extends Controller
         if($sessionFormData != null){
             
             $decades = $sessionFormData->getDecades();
-            $decades = $this->getEntityManager()->merge($decades);
+            $decades = $em->merge($decades);
             $mediaSelection->setDecades($decades);
             
             $genres = $sessionFormData->getGenres();
-            $genres = $this->getEntityManager()->merge($genres);
+            $genres = $em->merge($genres);
             $mediaSelection->setGenres($genres);
-            
-            $mediaSelection->setGenres($sessionFormData->getGenres());
+        
         }
-        
-        
+
         $form = $this->createForm(new MediaSelectionType(), $mediaSelection);
         
         if($request->getMethod() == 'POST'){
@@ -103,11 +111,11 @@ class MediaController extends Controller
                 
                 $this->setSessionData($form->getData(), $key);
                                 
-                return $this->redirect($this->generateUrl('mediaSearchResults', array(
+                return $this->redirect($this->generateUrl('mediaListings', array(
                     'decade'    => $mediaSelection->getDecades()->getSlug(),
-                    //'media'     => $mediaSelection->getMediaTypes()->getSlug(),
                     'genre'     => $mediaSelection->getGenres()->getSlug(),
                     )));
+                //'media'     => $mediaSelection->getMediaTypes()->getSlug(),
             }else{
                 return $this->render('ThinkBackMediaBundle:Default:error.html.twig', array(
                     'form' => $form->createView(),
@@ -136,17 +144,7 @@ class MediaController extends Controller
        ));
     }
     
-    /*
-     * called when a generic search is performed
-     */
-    public function mediaSearchResultsAction($searchSlug) {
-        $data = $this->getSessionData('mediaSearch');
-        return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
-           'searchKeywords' => $data->getSearchKeywords(),
-            
-           //pass data to display
-       ));
-    }
+    
     
     public function setSlugsAction($table){
         $em = $this->getEntityManager();

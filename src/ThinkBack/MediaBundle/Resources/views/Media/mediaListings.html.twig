@@ -1,5 +1,9 @@
 {% extends 'ThinkBackMediaBundle::layout.html.twig' %}
-{% block body %}
+{% block pageTitle %}
+    Listings for {{ decade }} {{ genre }}
+{% endblock %}
+{% block content %}
+
 <div id="mediaResultsListings">
     <ul>
         <li>{{ decade }}</li>
