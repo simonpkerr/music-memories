@@ -32,12 +32,12 @@ class Genre
     /**
      * @var string $genreName
      */
-    private $genreName;
+    protected $genreName;
     
     /**
      * @var string $slug
      */
-    private $slug;
+    protected $slug;
     
     /**
      * Get id

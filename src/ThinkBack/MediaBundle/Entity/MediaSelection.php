@@ -6,11 +6,11 @@ namespace ThinkBack\MediaBundle\Entity;
  */
 class MediaSelection
 {
-    private $decades;
+    protected $decades;
 
     //private $mediaTypes;
 
-    private $genres;
+    protected $genres;
     
    // private $selectedMediaGenres;
 
