@@ -13,14 +13,14 @@ class MediaSearch
     /**
      * @var integer $id
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $searchKeywords
      */
-    private $searchKeywords;
+    protected $searchKeywords;
     
-    private $searchSlug;
+    protected $searchSlug;
 
 
     /**

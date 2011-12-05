@@ -14,6 +14,8 @@ use ThinkBack\MediaBundle\Entity\MediaSearch;
 use ThinkBack\MediaBundle\Form\Type\MediaSelectionType;
 use ThinkBack\MediaBundle\Form\Type\MediaSearchType;
 
+use ThinkBack\MediaBundle\Resources\MediaAPI\SevenDigitalAPI;
+
 class MediaController extends Controller
 {
     private function getEntityManager(){
@@ -47,7 +49,7 @@ class MediaController extends Controller
     public function mediaSearchAction(Request $request = null){
         $key = 'mediaSearch';
         
-        $em = $this->getEntityManager();
+       // $em = $this->getEntityManager();
         $mediaSearch = new MediaSearch();
         $form = $this->createForm(new MediaSearchType(), $mediaSearch);
         
@@ -136,7 +138,15 @@ class MediaController extends Controller
      * perform the search, then redirect to the listings action to show the results
      */
     public function mediaListingsAction($decade, $genre){
-        
+       //get the 7digital tags for genre and decade and get the xml
+       $em = $this->getEntityManager();
+       $tags = array(
+           'decade' =>  $em->getRepository('ThinkBackMediaBundle:Decade')->getSevenDigitalTagBySlug($decade),
+           'genre'  =>  $em->getRepository('ThinkBackMediaBundle:Genre')->getSevenDigitalTagBySlug($genre),
+       );
+       $sevenDigitalAPI = new SevenDigitalAPI();
+       $response = $sevenDigitalAPI->getRequest($tags);
+       
        return $this->render('ThinkBackMediaBundle:Media:mediaListings.html.twig', array(
            'decade' => $decade,
            'genre'  => $genre,

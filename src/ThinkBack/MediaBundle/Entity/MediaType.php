@@ -13,7 +13,7 @@ class MediaType
     /**
      * @var integer $id
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $mediaName
@@ -31,7 +31,7 @@ class MediaType
     /**
      * @var string $slug
      */
-    private $slug;
+    protected $slug;
     
     public function __construct(){
         $this->genres = new ArrayCollection();

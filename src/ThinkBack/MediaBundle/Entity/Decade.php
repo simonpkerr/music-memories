@@ -12,7 +12,7 @@ class Decade
     /**
      * @var integer $id
      */
-    private $id;
+    protected $id;
 
     //associatied media type
     //protected $mediaType;
@@ -21,23 +21,23 @@ class Decade
     /**
      * @var integer $decadeName
      */
-    private $decadeName;
+    protected $decadeName;
 
     /**
      * @var string $amazonBrowseNodeId
      */
-    private $amazonBrowseNodeId;
+    protected $amazonBrowseNodeId;
 
     /**
      * @var string $sevenDigitalTag
      */
-    private $sevenDigitalTag;
+    protected $sevenDigitalTag;
 
 
     /**
      * @var string $slug
      */
-    private $slug;
+    protected $slug;
 
     
     /**
