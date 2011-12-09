@@ -9,7 +9,12 @@ index:
 error:
   pattern: /error
   defaults: { _controller: ThinkBackMediaBundle:Default:error }
-  
+
+
+setMedia:
+  pattern: /setMedia/{mediaType}
+  defaults: { _controller: ThinkBackMediaBundle:Media:setMedia }
+
 mediaSelection:
   pattern: /mediaSelection
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaSelection }
@@ -17,7 +22,7 @@ mediaSelection:
     _method: GET|POST
 
 mediaListings:
-  pattern: /mediaListings/{decade}/{genre}
+  pattern: /mediaListings/{media}/{decade}/{genre}/
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaListings }
 
 mediaSearch:

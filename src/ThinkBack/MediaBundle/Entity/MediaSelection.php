@@ -8,19 +8,19 @@ class MediaSelection
 {
     protected $decades;
 
-    //protected $mediaTypes;
+    protected $mediaTypes;
 
     protected $genres;
     
-   // protected $selectedMediaGenres;
+    protected $selectedMediaGenres;
 
     
-   /* public function setSelectedMediaGenres($genres){
+    public function setSelectedMediaGenres($genres){
         $this->selectedMediaGenres = $genres;
     }
     public function getSelectedMediaGenres(){
         return $this->selectedMediaGenres;
-    }*/
+    }
 
     public function setDecades($decades)
     {
@@ -34,7 +34,7 @@ class MediaSelection
     }
 
     
-    /*public function setMediaTypes($mediaTypes)
+    public function setMediaTypes($mediaTypes)
     {
         $this->mediaTypes = $mediaTypes;
     }
@@ -43,7 +43,7 @@ class MediaSelection
     public function getMediaTypes()
     {
         return $this->mediaTypes;
-    }*/
+    }
 
     
     public function setGenres($genres)

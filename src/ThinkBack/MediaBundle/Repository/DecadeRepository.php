@@ -13,4 +13,8 @@ class DecadeRepository extends EntityRepository
         $decades = $this->findAll();
         return $decades;
     }
+    
+    public function getSevenDigitalTagBySlug($slug){
+        return $this->findOneBy(array('slug' => $slug));
+    }
 }

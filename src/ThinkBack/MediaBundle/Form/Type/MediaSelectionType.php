@@ -24,13 +24,13 @@ class MediaSelectionType extends AbstractType{
         ));
         
         //entity field mapped to the mediatype class displaying the id and mediaName properties
-        /*$builder->add('mediaTypes', 'entity', array(
+        $builder->add('mediaTypes', 'entity', array(
             'property'      => 'mediaName',
             'label'         => 'Media',
             'class'         => 'ThinkBackMediaBundle:MediaType',       
-        ));*/
+        ));
         
-        $builder->add('genres','entity', array(
+        $builder->add('selectedMediaGenres','entity', array(
             'label'             =>  'Genre',
             'property'          =>  'genreName',
             'class'             =>  'ThinkBackMediaBundle:Genre',
@@ -39,6 +39,19 @@ class MediaSelectionType extends AbstractType{
                         ->orderBy('g.genreName', 'ASC');
             },                    
         ));
+        
+        /*$builder->add('genres','entity', array(
+            'label'             =>  'Genre',
+            'property'          =>  'genreName',
+            'class'             =>  'ThinkBackMediaBundle:Genre',
+            'query_builder'     =>  function(EntityRepository $er){
+                return $er->createQueryBuilder('g')
+                        ->orderBy('g.genreName', 'ASC');
+            },                    
+        ));*/
+        
+        //hidden field to hold all genres 
+        $builder->add('genres', 'hidden');
  
                 
     }

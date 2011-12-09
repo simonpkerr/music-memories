@@ -44,6 +44,20 @@ class MediaController extends Controller
     }
     
     /*
+     * set the media to be searched on
+     */
+    public function setMediaAction($mediaType){
+        if($mediaType == 'film' || $mediaType == 'tv'){
+            $this->setSessionData($mediaType, 'mediaType');
+        }
+        
+        //return to index whatever happens
+        return $this->redirect($this->generateUrl('index')); 
+        
+        
+    }
+    
+    /*
      * the overall search functionality available on all pages
      */
     public function mediaSearchAction(Request $request = null){
@@ -94,15 +108,23 @@ class MediaController extends Controller
          */
         $sessionFormData = $this->getSessionData($key);
         if($sessionFormData != null){
+            $mediaTypes = $sessionFormData->getMediaTypes();
+            $mediaTypes = $this->getEntityManager()->merge($mediaTypes);
+            $mediaSelection->setMediaTypes($mediaTypes);
             
             $decades = $sessionFormData->getDecades();
             $decades = $em->merge($decades);
             $mediaSelection->setDecades($decades);
             
-            $genres = $sessionFormData->getGenres();
-            $genres = $em->merge($genres);
-            $mediaSelection->setGenres($genres);
+            $selectedMediaGenres = $sessionFormData->getSelectedMediaGenres();
+            $selectedMediaGenres = $this->getEntityManager()->merge($selectedMediaGenres);
+            $mediaSelection->setSelectedMediaGenres($selectedMediaGenres);
+            
+            $mediaSelection->setGenres($sessionFormData->getGenres());
         
+        }else{
+            $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
+            $mediaSelection->setGenres($genres);
         }
 
         $form = $this->createForm(new MediaSelectionType(), $mediaSelection);
@@ -115,7 +137,8 @@ class MediaController extends Controller
                                 
                 return $this->redirect($this->generateUrl('mediaListings', array(
                     'decade'    => $mediaSelection->getDecades()->getSlug(),
-                    'genre'     => $mediaSelection->getGenres()->getSlug(),
+                    'media'     => $mediaSelection->getMediaTypes()->getSlug(),
+                    'genre'     => $mediaSelection->getSelectedMediaGenres()->getSlug(),
                     )));
                 //'media'     => $mediaSelection->getMediaTypes()->getSlug(),
             }else{
@@ -137,12 +160,12 @@ class MediaController extends Controller
     /*
      * perform the search, then redirect to the listings action to show the results
      */
-    public function mediaListingsAction($decade, $genre){
-       //get the 7digital tags for genre and decade and get the xml
+    public function mediaListingsAction($decade, $media, $genre){
+       
        $em = $this->getEntityManager();
        $tags = array(
-           'decade' =>  $em->getRepository('ThinkBackMediaBundle:Decade')->getSevenDigitalTagBySlug($decade),
-           'genre'  =>  $em->getRepository('ThinkBackMediaBundle:Genre')->getSevenDigitalTagBySlug($genre),
+           $em->getRepository('ThinkBackMediaBundle:Decade')->getSevenDigitalTagBySlug($decade)->getSevenDigitalTag(),
+           $em->getRepository('ThinkBackMediaBundle:Genre')->getSevenDigitalTagBySlug($genre)->getSevenDigitalTag(),
        );
        $sevenDigitalAPI = new SevenDigitalAPI();
        $response = $sevenDigitalAPI->getRequest($tags);
@@ -156,7 +179,7 @@ class MediaController extends Controller
     
     
     
-    public function setSlugsAction($table){
+    /*public function setSlugsAction($table){
         $em = $this->getEntityManager();
         switch($table){
             case "genre":
@@ -197,7 +220,7 @@ class MediaController extends Controller
         
         return new Response('success');
         
-    }
+    }*/
     
       static public function slugify($text)
       {

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>FindMusic - {% block title %}Home{% endblock %}</title>
+        <title>MyDay - {% block title %}Home{% endblock %}</title>
         {#<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />#}
         {% block stylesheets %}
         <link href="{{asset('bundles/ThinkBack/css/reset.css') }}" type="text/css" rel="stylesheet" />
@@ -13,8 +13,11 @@
     </head>
     <body>
         <div id="header">
+            {{ mediaType }}
             {# the 'path' function can be used to target any particular route defined in the routing config file #}
-            <a href="{{path('index')}}" title="Go back to FindMusic home page">FindMyMusic</a>
+            <a href="{{path('index')}}" title="Go back to MyDay home page">MyDay</a>
+            <a href="{{path('setMedia', {'mediaType' : 'film'})}}" title="Go to MyDay Films">Films</a>
+            <a href="{{path('setMedia', {'mediaType' : 'tv'})}}" title="Go to MyDay TV">TV</a>
             {% render "ThinkBackMediaBundle:Media:mediaSearch" %}
         </div>
         {% block body %}{% endblock %}

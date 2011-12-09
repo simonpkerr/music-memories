@@ -28,5 +28,8 @@ class GenreRepository extends EntityRepository
         return $genres;
     }
     
+    public function getSevenDigitalTagBySlug($slug){
+        return $this->findOneBy(array('slug' => $slug));
+    }
     
 }

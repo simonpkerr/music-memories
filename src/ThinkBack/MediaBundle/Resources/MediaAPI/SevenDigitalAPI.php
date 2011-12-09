@@ -19,17 +19,18 @@ class SevenDigitalAPI implements IMediaAPI{
     public function getRequest(array $params){
         //$this->tags = $params['tags'];
         ksort($params);
-        $canonicalized_query = array();
+        //$canonicalized_query = array();
 
-        foreach ($params as $param=>$value)
+        /*foreach ($params as $param=>$value)
         {
             $param = str_replace("%7E", "~", rawurlencode($param));
             $value = str_replace("%7E", "~", rawurlencode($value));
             $canonicalized_query[] = $param."=".$value;
-        }
-        $canonicalized_query = implode(",", $canonicalized_query);
+        }*/
+        //$canonicalized_query = implode(",", $canonicalized_query);
+        $params = implode(",", $params);
 
-        $request = $this->host . $this->method . "?tags=" . $canonicalized_query . "&page=". $this->page . "&pageSize=" . $this->pageSize . "&oauth_consumer_key=" . $this->apiKey;
+        $request = $this->host . $this->method . "?tags=" . $params . "&page=". $this->page . "&pageSize=" . $this->pageSize . "&oauth_consumer_key=" . $this->apiKey;
         return getSimpleXmlResponse($request);    
     }
     
