@@ -163,17 +163,27 @@ class MediaController extends Controller
     public function mediaListingsAction($decade, $media, $genre){
        
        $em = $this->getEntityManager();
-       $tags = array(
-           $em->getRepository('ThinkBackMediaBundle:Decade')->getSevenDigitalTagBySlug($decade)->getSevenDigitalTag(),
-           $em->getRepository('ThinkBackMediaBundle:Genre')->getSevenDigitalTagBySlug($genre)->getSevenDigitalTag(),
-       );
-       $sevenDigitalAPI = new SevenDigitalAPI();
-       $response = $sevenDigitalAPI->getRequest($tags);
+       switch($media){
+           case "music":
+               $tags = array(
+                    $em->getRepository('ThinkBackMediaBundle:Decade')->getSevenDigitalTagBySlug($decade)->getSevenDigitalTag(),
+                    $genre != 'all-music' ? $em->getRepository('ThinkBackMediaBundle:Genre')->getSevenDigitalTagBySlug($genre)->getSevenDigitalTag(): '',
+                );
+                $sevenDigitalAPI = new SevenDigitalAPI();
+                $response = $sevenDigitalAPI->getRequest($tags);
+               break;
+           case "film":
+               break;
+           case "tv":
+               break;
+       }
+       
        
        return $this->render('ThinkBackMediaBundle:Media:mediaListings.html.twig', array(
            'decade' => $decade,
            'genre'  => $genre,
-           //pass data to display
+           'media'  => $media,
+           'data'   => $response,
        ));
     }
     

@@ -1,14 +1,13 @@
 {% extends 'ThinkBackMediaBundle::layout.html.twig' %}
 {% block pageTitle %}
-    Listings for {{ decade }} {{ genre }}
+    Listings for {{ decade }} {{media}} ({{ genre }})
 {% endblock %}
 {% block content %}
 
 <div id="mediaResultsListings">
-    <ul>
-        <li>{{ decade }}</li>
-        <li>{{ genre }}</li>
-    </ul>
+    {% if media == 'music' %}
+        {% include 'ThinkBackMediaBundle:Media:musicListingsPartial.html.twig' with {'data' : data }%}
+    {% endif %}
 </div>
 
 {% endblock %}

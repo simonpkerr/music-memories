@@ -9,3 +9,9 @@ div.errors {
     color: #CC514F;
     font-size: 0.9em;
 }
+
+li.listing {
+    margin: 0.5em;
+    border-bottom: 1px solid #ddd;
+    padding: 0.5em;
+}
