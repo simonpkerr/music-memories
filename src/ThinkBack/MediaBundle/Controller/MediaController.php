@@ -1,4 +1,10 @@
 <?php
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * MediaController controls all aspects of connecting to and displaying media
+ * @author Simon Kerr
+ * @version 1.0
+ */
 
 namespace ThinkBack\MediaBundle\Controller;
 
@@ -14,7 +20,7 @@ use ThinkBack\MediaBundle\Entity\MediaSearch;
 use ThinkBack\MediaBundle\Form\Type\MediaSelectionType;
 use ThinkBack\MediaBundle\Form\Type\MediaSearchType;
 
-use ThinkBack\MediaBundle\Resources\MediaAPI\SevenDigitalAPI;
+use ThinkBack\MediaBundle\Resources\MediaAPI;
 
 class MediaController extends Controller
 {
@@ -116,9 +122,11 @@ class MediaController extends Controller
             $decades = $em->merge($decades);
             $mediaSelection->setDecades($decades);
             
-            $selectedMediaGenres = $sessionFormData->getSelectedMediaGenres();
-            $selectedMediaGenres = $this->getEntityManager()->merge($selectedMediaGenres);
-            $mediaSelection->setSelectedMediaGenres($selectedMediaGenres);
+            if($sessionFormData->getSelectedMediaGenres() != null){
+                $selectedMediaGenres = $sessionFormData->getSelectedMediaGenres();
+                $selectedMediaGenres = $this->getEntityManager()->merge($selectedMediaGenres);
+                $mediaSelection->setSelectedMediaGenres($selectedMediaGenres);
+            }
             
             $mediaSelection->setGenres($sessionFormData->getGenres());
         
@@ -134,11 +142,11 @@ class MediaController extends Controller
             if($form->isValid()){
                 
                 $this->setSessionData($form->getData(), $key);
-                                
+                
                 return $this->redirect($this->generateUrl('mediaListings', array(
                     'decade'    => $mediaSelection->getDecades()->getSlug(),
                     'media'     => $mediaSelection->getMediaTypes()->getSlug(),
-                    'genre'     => $mediaSelection->getSelectedMediaGenres()->getSlug(),
+                    'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : 'all',
                     )));
                 //'media'     => $mediaSelection->getMediaTypes()->getSlug(),
             }else{
@@ -163,18 +171,28 @@ class MediaController extends Controller
     public function mediaListingsAction($decade, $media, $genre){
        
        $em = $this->getEntityManager();
+       
        switch($media){
            case "music":
-               $tags = array(
-                    $em->getRepository('ThinkBackMediaBundle:Decade')->getSevenDigitalTagBySlug($decade)->getSevenDigitalTag(),
-                    $genre != 'all-music' ? $em->getRepository('ThinkBackMediaBundle:Genre')->getSevenDigitalTagBySlug($genre)->getSevenDigitalTag(): '',
+                $params = array(
+                    $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getSevenDigitalTag(),
+                    $genre != 'all' ? $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlug($genre)->getSevenDigitalTag(): '',
                 );
-                $sevenDigitalAPI = new SevenDigitalAPI();
-                $response = $sevenDigitalAPI->getRequest($tags);
+               
+                $api = new MediaAPI\SevenDigitalAPI();
+                $response = $sevenDigitalAPI->getRequest($params);
                break;
            case "film":
+               $params = array(
+                    $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId(),
+                    $genre != 'all' ? $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media)->getAmazonBrowseNodeId(): '',
+               );
+               $api = new MediaAPI\AmazonAPI($this->container);
+               $response = $api->getRequest($params);
+               
                break;
            case "tv":
+               
                break;
        }
        

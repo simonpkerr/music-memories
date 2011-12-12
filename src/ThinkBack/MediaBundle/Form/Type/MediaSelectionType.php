@@ -1,15 +1,20 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * @author Simon Kerr
+ * @version 1.0
+ * MediaSelectionType used to make the media selection widget generic for
+ * re-use purposes
+ * 
+ */
+
 namespace ThinkBack\MediaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Doctrine\ORM\EntityRepository;
 
-/*
- * Class is used to make the media selection widget generic for
- * re-use purposes
- */
 class MediaSelectionType extends AbstractType{
     
     public function buildForm(FormBuilder $builder, array $options = null){
@@ -34,6 +39,8 @@ class MediaSelectionType extends AbstractType{
             'label'             =>  'Genre',
             'property'          =>  'genreName',
             'class'             =>  'ThinkBackMediaBundle:Genre',
+            'empty_value'       =>  'All',
+            'required'          =>  false,
             'query_builder'     =>  function(EntityRepository $er){
                 return $er->createQueryBuilder('g')
                         ->orderBy('g.genreName', 'ASC');

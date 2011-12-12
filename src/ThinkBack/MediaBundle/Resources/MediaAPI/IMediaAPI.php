@@ -12,6 +12,7 @@ namespace ThinkBack\MediaBundle\Resources\MediaAPI;
  */
 interface IMediaAPI {
     public function getRequest(array $params);
+    public function __construct($container = null);
     //public function formatData();
     //public function showData();
     //public function getHost();

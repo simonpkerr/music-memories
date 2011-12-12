@@ -11,7 +11,7 @@ $("select#mediaSelection_mediaTypes").change(function(){
 //when a media is selected, populate the genres
 function populateGenres(selectedMedia){
     $selectedMediaGenres.empty();
-    //$selectedMediaGenres.append("<option value=\"0\">All</option>");
+    $selectedMediaGenres.append("<option value=\"\">All</option>");
     
     $.each($allGenres, function(i,genre){
         if(genre.mediaType_id == selectedMedia){
