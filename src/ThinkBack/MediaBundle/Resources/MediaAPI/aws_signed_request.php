@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
 
 namespace ThinkBack\MediaBundle\Resources\MediaAPI;
 
-function  aws_signed_request($region,$params,$public_key,$private_key,$associate_tag)
+function  aws_signed_request($region, $params, $public_key, $private_key, $associate_tag)
 {
 
     $method = "GET";

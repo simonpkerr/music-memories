@@ -1,0 +1,18 @@
+{% if exception is null) %}
+<p>Number of results: {{data.Items.}} </p>
+<ul>
+{% for dataItem in data.taggedResults.taggedItem %}
+<li class="listing">
+    <dl>
+        <dt><a href="{{dataItem.release.url}}">{{dataItem.release.title}}</a></dt>
+        <dd>
+            <img src="{{dataItem.release.image}}" alt="{{dataItem.release.title}}" />
+            <span>artist: {{dataItem.release.artist.name}}</span>
+        </dd>
+    </dl>
+</li>
+{% else %}
+<p>Sorry, there were no results returned. Please try again.</p>
+{% endif %}
+{% endfor %}
+</ul>

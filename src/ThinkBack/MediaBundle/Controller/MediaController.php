@@ -180,15 +180,25 @@ class MediaController extends Controller
                 );
                
                 $api = new MediaAPI\SevenDigitalAPI();
-                $response = $sevenDigitalAPI->getRequest($params);
+                try{
+                    $response = $sevenDigitalAPI->getRequest($params);
+                }catch(Exception $ex){
+                    $exception = $ex;
+                }
                break;
            case "film":
+               $browseNode = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId();
+               $browseNode .= $genre != 'all' ? ',' . $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media)->getAmazonBrowseNodeId(): '';
                $params = array(
-                    $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId(),
-                    $genre != 'all' ? $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media)->getAmazonBrowseNodeId(): '',
+                   'BrowseNode'     =>      $browseNode,
+                   'SearchIndex'    =>      'Video',
                );
                $api = new MediaAPI\AmazonAPI($this->container);
-               $response = $api->getRequest($params);
+               try{
+                   $response = $api->getRequest($params);
+               }catch(Exception $ex){
+                   $exception = $ex;
+               }
                
                break;
            case "tv":
@@ -198,10 +208,11 @@ class MediaController extends Controller
        
        
        return $this->render('ThinkBackMediaBundle:Media:mediaListings.html.twig', array(
-           'decade' => $decade,
-           'genre'  => $genre,
-           'media'  => $media,
-           'data'   => $response,
+           'decade'     => $decade,
+           'genre'      => $genre,
+           'media'      => $media,
+           'data'       => $response,
+           'exception'  => $exception,
        ));
     }
     
