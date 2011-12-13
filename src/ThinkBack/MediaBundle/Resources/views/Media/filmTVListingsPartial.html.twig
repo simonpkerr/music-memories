@@ -1,18 +1,21 @@
-{% if exception is null) %}
-<p>Number of results: {{data.Items.}} </p>
+{% if exception is null %}
+<p>Number of results: {{data.Items.TotalResults}} </p>
+<p>Page {{ data.Items.Request.ItemSearchRequest.ItemPage }} of {{data.Items.TotalPages}}</p>
+
 <ul>
-{% for dataItem in data.taggedResults.taggedItem %}
+{% for dataItem in data.Items.Item %}
 <li class="listing">
     <dl>
-        <dt><a href="{{dataItem.release.url}}">{{dataItem.release.title}}</a></dt>
+        <dt><a href="{{dataItem.DetailPageURL}}">{{dataItem.ItemAttributes.Title}}</a></dt>
         <dd>
-            <img src="{{dataItem.release.image}}" alt="{{dataItem.release.title}}" />
-            <span>artist: {{dataItem.release.artist.name}}</span>
+            <img src="{{dataItem.MediumImage.URL}}" alt="{{dataItem.ItemAttributes.Title}}" width="{{dataItem.MediumImage.Width}}" height="{{dataItem.MediumImage.Height}}" />
+            <span>Release Date: {{dataItem.ItemAttributes.ReleaseDate}}</span>
         </dd>
     </dl>
 </li>
-{% else %}
-<p>Sorry, there were no results returned. Please try again.</p>
-{% endif %}
 {% endfor %}
 </ul>
+{% else %}
+<h2>Sorry...</h2>
+<p>{{exception}}</p>
+{% endif %}

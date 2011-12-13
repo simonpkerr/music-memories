@@ -171,7 +171,7 @@ class MediaController extends Controller
     public function mediaListingsAction($decade, $media, $genre){
        
        $em = $this->getEntityManager();
-       
+       $exception = null;      
        switch($media){
            case "music":
                 $params = array(

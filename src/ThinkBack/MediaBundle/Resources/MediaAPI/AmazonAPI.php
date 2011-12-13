@@ -26,7 +26,8 @@ class AmazonAPI extends MediaAPI {
         $this->associate_tag = $this->parameters['amazon_associate_tag'];
         $this->amazonParameters = array(
             "Operation"     => "ItemSearch",
-            "ResponseGroup" => "ItemAttributes,SalesRank,Similarities,Request",
+            //"ResponseGroup" => "ItemAttributes,SalesRank,Similarities,Request",
+            "ResponseGroup" => "Images,ItemAttributes,SalesRank,Request",
             "Condition"     => "All",
             //"ProductGroup"  => "Music",
             "MerchantId"    => "All",
