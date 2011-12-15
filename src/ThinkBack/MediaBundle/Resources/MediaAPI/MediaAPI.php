@@ -10,7 +10,7 @@
 namespace ThinkBack\MediaBundle\Resources\MediaAPI;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
-use \Exception;
+
 
 class MediaAPI implements IMediaAPI{
     protected $parameters;
@@ -18,7 +18,7 @@ class MediaAPI implements IMediaAPI{
     public function getRequest(array $params = null){}
     
     public function __construct($container = null){
-        if($container !=null){
+        if($container != null){
             $this->parameters = $container->parameters;
         }
             

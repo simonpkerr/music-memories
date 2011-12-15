@@ -12,7 +12,7 @@ class DefaultControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/index');
 
-        $this->assertTrue($crawler->filter('html:contains("ThinkBack")')->count() > 0);
+        $this->assertTrue($crawler->filter('html:contains("MyDay")')->count() > 0);
     }
     
     public function testError(){
@@ -20,6 +20,6 @@ class DefaultControllerTest extends WebTestCase
         
         $crawler = $client->request('GET', '/error');
         
-        $this->assertTrue($crawler->filter('html:contains("Oops!")')->count() > 0);
+        $this->assertTrue($crawler->filter('html:contains("Oops")')->count() > 0);
     }
 }
