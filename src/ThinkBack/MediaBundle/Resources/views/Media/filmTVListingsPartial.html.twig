@@ -1,15 +1,28 @@
 {% if exception is null %}
-<p>Number of results: {{data.Items.TotalResults}} </p>
-<p>Page {{ data.Items.Request.ItemSearchRequest.ItemPage }} of {{data.Items.TotalPages}}</p>
+<div class="pagingControls">
+{% include "ThinkBackMediaBundle:Media:pageListings.html.twig" 
+with 
+{
+'currentPage':data.Items.Request.ItemSearchRequest.ItemPage,
+'totalPages':data.Items.TotalPages,
+'totalResults':data.Items.TotalResults,
+'pagerParams':pagerParams
+} 
+%}
+</div>    
 
 <ul>
 {% for dataItem in data.Items.Item %}
 <li class="listing">
     <dl>
-        <dt><a href="{{dataItem.DetailPageURL}}">{{dataItem.ItemAttributes.Title}}</a></dt>
+        <dt><a title="see more details for {{dataItem.ItemAttributes.Title}}" href="{#{path('mediaDetails', {'api':'amazon','ASIN':dataItem.ASIN, 'title':dataItem.ItemAttributes.Title})}#}">{{dataItem.ItemAttributes.Title}}</a></dt>
         <dd>
             <img src="{{dataItem.MediumImage.URL}}" alt="{{dataItem.ItemAttributes.Title}}" width="{{dataItem.MediumImage.Width}}" height="{{dataItem.MediumImage.Height}}" />
-            <span>Release Date: {{dataItem.ItemAttributes.ReleaseDate}}</span>
+            <ul>
+                <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon</a></li>
+                <li><span>Release Date: {{dataItem.ItemAttributes.ReleaseDate}}</span></li>
+                <li><a href="#" title="add this to your memory wall">Add to your memory wall</a></li>
+            </ul>
         </dd>
     </dl>
 </li>

@@ -20,10 +20,17 @@ class AmazonAPI extends MediaAPI {
     
     private $associate_tag;
     
-    public function __construct($container = null){
+    protected $asr;
+    
+    public function __construct($container = null, $asr = null){
         
         if($container != null){
             parent::__construct($container);
+            
+            //use AmazonSignedRequest as a strategy for the execution of the request
+            //so can be injected with a mock for testing
+            $this->asr = $asr == null ? new AmazonSignedRequest() : $asr;
+            
             $this->public_key = $this->parameters['amazon_public_key'];
             $this->private_key = $this->parameters['amazon_uk_private_key'];
             $this->associate_tag = $this->parameters['amazon_associate_tag'];
@@ -65,7 +72,7 @@ class AmazonAPI extends MediaAPI {
      */
     protected function verifyXmlResponse($response)
     {
-        if ($response == False)
+        if ($response === False)
         {
             throw new \RuntimeException("Could not connect to Amazon");
         }
@@ -90,10 +97,9 @@ class AmazonAPI extends MediaAPI {
      * @param array $parameters parameters to query around
      * @return simpleXmlObject xml query response
      */
-    protected function queryAmazon($parameters, $region = "com")
+    public function queryAmazon($parameters, $region = "com")
     {
-        $asr = new AmazonSignedRequest();
-        return $asr->aws_signed_request($region, $parameters, $this->public_key, $this->private_key, $this->associate_tag);
+        return $this->asr->aws_signed_request($region, $parameters, $this->public_key, $this->private_key, $this->associate_tag);
     }
     
 }

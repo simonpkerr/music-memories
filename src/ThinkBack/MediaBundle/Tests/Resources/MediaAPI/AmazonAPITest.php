@@ -2,21 +2,26 @@
 
 namespace ThinkBack\MediaBundle\Tests\Resources\MediaAPI;
 use ThinkBack\MediaBundle\Resources\MediaAPI\AmazonAPI;
-require_once 'src\ThinkBack\MediaBundle\Resources\MediaAPI\AmazonAPI.php';
+require_once 'src\ThinkBack\MediaBundle\Resources\MediaAPI\AmazonSignedRequest.php';
 
 class AmazonAPITest extends \PHPUnit_Framework_TestCase {
 
     private $testContainer;
+    private $params;
     
     protected function setUp(){
         $this->testContainer = new TestContainer();
+        $this->params = array(
+           'BrowseNode'     =>      '1',
+           'SearchIndex'    =>      'Video',
+        );
     }
     
     /**
      * @expectedException BadFunctionCallException 
      * @expectedExceptionMessage Required reference to container 
      */
-    public function testConstructorWithNoReferencedContainer(){
+    public function testConstructorNoReferencedContainerThrowsException(){
         //the above statement can be used by phpunit to test
         //exceptions that are expected
         $api = new AmazonAPI();
@@ -27,38 +32,20 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
      * @expectedException RuntimeException 
      * @expectedExceptionMessage Could not connect to Amazon 
      */
-    public function testGetRequestNoConnection(){
-        $params = array(
-           'BrowseNode'     =>      '1',
-           'SearchIndex'    =>      'Video',
-        );
-        $testASR = $this->getMockBuilder('AmazonAPI')
-                //->setMockClassName('AmazonAPI')
+    public function testGetRequestNoConnectionThrowsException(){
+        
+        $testASR = $this->getMockBuilder('AmazonSignedRequest')
                 ->setMethods(array(
-                    'queryAmazon',
-                    '__construct',
-                    'getRequest',
-                    'verifyXmlResponse',
-                    ))
-                ->setConstructorArgs(array($this->testContainer))
+                    'aws_signed_request',
+                ))
                 ->getMock();
         
         $testASR->expects($this->any())
-                ->method('queryAmazon')
+                ->method('aws_signed_request')
                 ->will($this->returnValue(False));
-        /*$testASR->expects($this->any())
-                ->method('__construct')
-                ->with($this->equalTo($this->testContainer));
-        $testASR->expects($this->any())
-                ->method('getRequest')
-                ->with($this->any($params));
-        $testASR->expects($this->any())
-                ->method('verifyXmlResponse')
-                ->will($this->returnValue(False)); */                       
-                        
         
-        //$api = new AmazonAPI($this->testContainer);
-        $response = $testASR->getRequest($params);
+        $api = new AmazonAPI($this->testContainer, $testASR);
+        $response = $api->getRequest($this->params);
         
     }
     
@@ -66,22 +53,41 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
      * @expectedException LengthException
      * @expectedExceptionMessage No results were returned
      */
-    /*public function testGetRequestReturnsEmptyDataSet(){
+    public function testGetRequestEmptyDataSetThrowsException(){
         $empty_xml_data_set = simplexml_load_file('src\ThinkBack\MediaBundle\Tests\Resources\MediaAPI\empty_xml_response.xml');
         
-        $params = array(
-           'BrowseNode'     =>      '1',//not a known browse node
-           'SearchIndex'    =>      'Video',
-        );
-        $testASR = $this->getMock('AmazonSignedRequest', array('execCurl'));
+        $testASR = $this->getMockBuilder('AmazonSignedRequest')
+                ->setMethods(array(
+                    'aws_signed_request',
+                ))
+                ->getMock();
+        
         $testASR->expects($this->any())
-                ->method('execCurl')
+                ->method('aws_signed_request')
                 ->will($this->returnValue($empty_xml_data_set));
         
-        $api = new AmazonAPI($this->testContainer);
-        $response = $api->getRequest($params);
-    }*/
-   
+        $api = new AmazonAPI($this->testContainer, $testASR);
+        //$api->asr = $testASR;
+        $response = $api->getRequest($this->params);
+    }   
+    
+    public function testGetRequestValidDataSetReturnsResponse(){
+        $valid_xml_data_set = simplexml_load_file('src\ThinkBack\MediaBundle\Tests\Resources\MediaAPI\valid_xml_response.xml');
+        
+        $testASR = $this->getMockBuilder('AmazonSignedRequest')
+                ->setMethods(array(
+                    'aws_signed_request',
+                ))
+                ->getMock();
+        
+        $testASR->expects($this->any())
+                ->method('aws_signed_request')
+                ->will($this->returnValue($valid_xml_data_set));
+        
+        $api = new AmazonAPI($this->testContainer, $testASR);
+        $response = $api->getRequest($this->params);
+        $this->assertTrue($response->Items->TotalResults > 0);
+    }   
   
 }
 

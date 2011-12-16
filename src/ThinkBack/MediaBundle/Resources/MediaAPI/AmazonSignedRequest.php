@@ -77,7 +77,6 @@ class AmazonSignedRequest{
         /* create request */
         $request = "http://".$host.$uri."?".$canonicalized_query."&Signature=".$signature;
 
-        //$xml_response = $this->execCurl($request); 
         $xml_response = $this->execCurl($request); 
 
         /* If cURL doesn't work for you, then use the 'file_get_contents'
