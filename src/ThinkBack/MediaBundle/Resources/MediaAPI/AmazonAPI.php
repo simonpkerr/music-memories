@@ -8,8 +8,6 @@
 
 namespace ThinkBack\MediaBundle\Resources\MediaAPI;
 use ThinkBack\MediaBundle\Resources\MediaAPI\AmazonSignedRequest;
-//require_once 'aws_signed_request.php';
-
 
 class AmazonAPI extends MediaAPI {
     private $amazonParameters;

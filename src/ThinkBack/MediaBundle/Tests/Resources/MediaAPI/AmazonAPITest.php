@@ -23,10 +23,10 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
     }
     
     
-    /**
-     * @expectedException RuntimeException 
-     * @expectedExceptionMessage Could not connect to Amazon 
-     */
+//    /**
+//     * @expectedException RuntimeException 
+//     * @expectedExceptionMessage Could not connect to Amazon 
+//     */
     public function testGetRequestNoConnection(){
         $params = array(
            'BrowseNode'     =>      '1',
@@ -59,6 +59,7 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
         
         //$api = new AmazonAPI($this->testContainer);
         $response = $testASR->getRequest($params);
+        //$this->assert
         
     }
     
