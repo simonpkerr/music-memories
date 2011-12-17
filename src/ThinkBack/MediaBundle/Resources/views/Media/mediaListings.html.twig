@@ -5,6 +5,7 @@
 {% block content %}
 
 <div id="mediaResultsListings">
+    
     {% if media == 'music' %}
         {% include 'ThinkBackMediaBundle:Media:musicListingsPartial.html.twig' with {'data' : data }%}
     {% else %}

@@ -22,8 +22,8 @@ mediaSelection:
     _method: GET|POST
 
 mediaListings:
-  pattern: /mediaListings/{media}/{decade}/{genre}/
-  defaults: { _controller: ThinkBackMediaBundle:Media:mediaListings }
+  pattern: /mediaListings/{media}/{decade}/{genre}/{page}
+  defaults: { _controller: ThinkBackMediaBundle:Media:mediaListings, page: 1 }
 
 mediaSearch:
   pattern: /mediaSearch

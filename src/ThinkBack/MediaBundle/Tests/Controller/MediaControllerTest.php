@@ -18,11 +18,6 @@ class MediaControllerTest extends WebTestCase
     }
     
     public function testMediaSelectionPostGoesToListings(){
-        $testASR = $this->getMock('AmazonSignedRequest', array('execCurl'));
-        $testASR->expects($this->any())
-                ->method('execCurl')
-                ->will($this->returnValue(False));
-        
         
         $client = static::createClient();
         
@@ -34,6 +29,17 @@ class MediaControllerTest extends WebTestCase
         
         $crawler = $client->submit($form);        
         $this->assertTrue($crawler->filter('html:contains("Listings")')->count() > 0);
+    }
+    
+    public function testMediaSearchGoesToSearchPage(){
+        $client = static::createClient();
+        
+        $crawler = $client->request('GET', '/index');
+        $form = $crawler->selectButton('Explore')->form();
+        $form['mediaSearch[searchKeywords]'] = 'bach fugues';
+        
+        $crawler = $client->submit($form);        
+        $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
     }
     
     

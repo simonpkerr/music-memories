@@ -59,8 +59,6 @@ class MediaController extends Controller
         
         //return to index whatever happens
         return $this->redirect($this->generateUrl('index')); 
-        
-        
     }
     
     /*
@@ -142,13 +140,11 @@ class MediaController extends Controller
             if($form->isValid()){
                 
                 $this->setSessionData($form->getData(), $key);
-                
                 return $this->redirect($this->generateUrl('mediaListings', array(
                     'decade'    => $mediaSelection->getDecades()->getSlug(),
                     'media'     => $mediaSelection->getMediaTypes()->getSlug(),
                     'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : 'all',
                     )));
-                //'media'     => $mediaSelection->getMediaTypes()->getSlug(),
             }else{
                 return $this->render('ThinkBackMediaBundle:Default:error.html.twig', array(
                     'form' => $form->createView(),
@@ -168,51 +164,58 @@ class MediaController extends Controller
     /*
      * perform the search, then redirect to the listings action to show the results
      */
-    public function mediaListingsAction($decade, $media, $genre){
+    public function mediaListingsAction($decade, $media, $genre, $page = 1){
+       $pagerCount = 5;
+       $pagerParams = array(
+           'pagerCount' => $pagerCount,
+       );
        
        $em = $this->getEntityManager();
        $exception = null;      
-       switch($media){
-           case "music":
-                $params = array(
-                    $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getSevenDigitalTag(),
-                    $genre != 'all' ? $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlug($genre)->getSevenDigitalTag(): '',
-                );
+       if($media == "music"){
+            $params = array(
+                $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getSevenDigitalTag(),
+                $genre != 'all' ? $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlug($genre)->getSevenDigitalTag(): '',
+            );
+
+            $api = new MediaAPI\SevenDigitalAPI();
+            try{
+                $response = $sevenDigitalAPI->getRequest($params);
+            }catch(Exception $ex){
+                $exception = $ex;
+            }
+       }else{
+            $browseNode = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId();
+            $browseNode .= $genre != 'all' ? ',' . $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media)->getAmazonBrowseNodeId(): '';
+            $params = array(
+               'BrowseNode'     =>      $browseNode,
+               'SearchIndex'    =>      'Video',
+               'ItemPage'       =>      $page,
+            );
+            $api = new MediaAPI\AmazonAPI($this->container);
+            try{
+                $response = $api->getRequest($params);
+                
+                $pagerUpperBound = $pagerCount * (floor($page / $pagerCount)+1);
+                $pagerLowerBound = $pagerUpperBound - ($pagerCount-1);
+                $pagerParams = array_merge($pagerParams, array(
+                    'pagerUpperBound'   => $pagerUpperBound,
+                    'pagerLowerBound'   => $pagerLowerBound,
+                ));
+                
+            }catch(Exception $ex){
+                $exception = $ex;
+            }
                
-                $api = new MediaAPI\SevenDigitalAPI();
-                try{
-                    $response = $sevenDigitalAPI->getRequest($params);
-                }catch(Exception $ex){
-                    $exception = $ex;
-                }
-               break;
-           case "film":
-               $browseNode = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId();
-               $browseNode .= $genre != 'all' ? ',' . $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media)->getAmazonBrowseNodeId(): '';
-               $params = array(
-                   'BrowseNode'     =>      $browseNode,
-                   'SearchIndex'    =>      'Video',
-               );
-               $api = new MediaAPI\AmazonAPI($this->container);
-               try{
-                   $response = $api->getRequest($params);
-               }catch(Exception $ex){
-                   $exception = $ex;
-               }
-               
-               break;
-           case "tv":
-               
-               break;
        }
-       
-       
+            
        return $this->render('ThinkBackMediaBundle:Media:mediaListings.html.twig', array(
            'decade'     => $decade,
            'genre'      => $genre,
            'media'      => $media,
            'data'       => $response,
            'exception'  => $exception,
+           'pagerParams'=> $pagerParams,
        ));
     }
     
