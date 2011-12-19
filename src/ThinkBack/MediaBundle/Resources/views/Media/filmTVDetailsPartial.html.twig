@@ -1,17 +1,33 @@
 {% if exception is null %}
 {% set dataItem = data.Items.Item %}
 
-<a href="{{returnRoute}}">back to listings</a>
-<dl>
-    <dd>
-        <img src="{{dataItem.MediumImage.URL}}" alt="{{dataItem.ItemAttributes.Title}}" width="{{dataItem.MediumImage.Width}}" height="{{dataItem.MediumImage.Height}}" />
-        <ul>
-            <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon</a></li>
-            <li><a href="#" title="add this to your memory wall">Add to your memory wall</a></li>
-        </ul>
-    </dd>
-</dl>
+<div class="itemOverview">
+    {#<dt><h2>{{title}}</h2></dt>#}
+    <img src="{{dataItem.MediumImage.URL}}" alt="{{dataItem.ItemAttributes.Title}}" width="{{dataItem.MediumImage.Width}}" height="{{dataItem.MediumImage.Height}}" />
+    <ul class="links">
+        <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon for {{ dataItem.ItemAttributes.ListPrice.FormattedPrice }}</a></li>
+        <li><a href="#" title="add this to your memory wall">Add to your memory wall</a></li>
+    </ul>
 
+    <div>
+        <h3>Similar Items</h3>
+        <ul>
+        {% for similarItem in dataItem.SimilarProducts.SimilarProduct %}
+                <li><a title="see more details for {{similarItem.Title}}" href="{{path('mediaDetails', {'id':similarItem.ASIN, 'title':similarItem.Title|url_encode, 'media':media})}}">{{similarItem.Title}}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    
+    {#<div>
+        <h3>Related Items</h3>
+        <ul>
+        {% for relatedItem in dataItem.RelatedItems.RelatedItem %}
+                <li><a title="see more details for {{relatedItem.Item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':relatedItem.Item.ASIN, 'title':relatedItem.Item.ItemAttributes.Title|url_encode, 'media':media})}}">{{similarItem.Title}}</a></li>
+        {% endfor %}
+        </ul>
+    </div>#}
+
+</div>
 
 {% else %}
 <h2>Sorry&hellip;</h2>

@@ -190,6 +190,7 @@ class MediaController extends Controller
                'BrowseNode'     =>      $browseNode,
                'SearchIndex'    =>      'Video',
                'ItemPage'       =>      $page,
+               'Sort'          =>       'salesrank',
             );
             $api = new MediaAPI\AmazonAPI($this->container);
             try{
@@ -239,10 +240,11 @@ class MediaController extends Controller
         //look up product
         if($media != 'music'){
             $params = array(
-               'Operation'      =>      'ItemLookUp',
-               'ItemId'         =>      $id,
-               'SearchIndex'    =>      'Video',
-               'ResponseGroup'  =>      'Images,ItemAttributes,SalesRank,Request,Similarities',
+               'Operation'          =>      'ItemLookup',
+               'ItemId'             =>      $id,
+               'ResponseGroup'      =>      'Images,ItemAttributes,SalesRank,Request,Similarities',
+                   //,RelatedItems',
+               //'RelationshipType'   =>      'Season',  
             );
             $api = new MediaAPI\AmazonAPI($this->container);
             try{

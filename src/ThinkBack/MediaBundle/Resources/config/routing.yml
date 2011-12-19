@@ -35,7 +35,7 @@ mediaSearchResults:
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearchResults }  
 
 mediaDetails:
-  pattern: /mediaDetails/{id}/{title}/{media}
+  pattern: /mediaDetails/{title}/{media}/{id}
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaDetails }
 
   

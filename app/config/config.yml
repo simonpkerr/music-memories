@@ -55,7 +55,7 @@ swiftmailer:
     password:  %mailer_password%
 
 jms_security_extra:
-    secure_controllers:  true
+    #secure_controllers:  true
     secure_all_services: false
 
 fos_user:
@@ -70,4 +70,6 @@ stof_doctrine_extensions:
   orm:
     default:
       sluggable: true
-  
+
+#jms_aop:
+#    cache_dir: %kernel.cache_dir%/jms_aop

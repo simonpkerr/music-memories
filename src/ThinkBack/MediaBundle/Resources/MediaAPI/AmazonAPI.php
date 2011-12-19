@@ -41,7 +41,7 @@ class AmazonAPI extends MediaAPI {
                 "MerchantId"    => "All",
                 //"Format"        => "VHS",
                 "ItemPage"      => "1",
-                "Sort"          => "salesrank",
+                //"Sort"          => "salesrank",
                 //"Sort"          => "-releasedate", // release date oldest to newest
                 "Validate"      => "True",
             );
@@ -88,7 +88,7 @@ class AmazonAPI extends MediaAPI {
             if (isset($response->Items->Item->ItemAttributes->Title))
             */
 
-            if($response->Items->TotalResults > 0)
+            if($response->Items->TotalResults > 0 || $this->amazonParameters['Operation'] == 'ItemLookup')
                 return ($response);
             else
                 throw new \LengthException("No results were returned");
