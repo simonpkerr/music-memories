@@ -42,6 +42,12 @@ class MediaControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
     }
     
+    public function testMediaSelectionOutOfBoundsReturnsError(){
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/mediaListings/tv/1980/childrens-tv/12');
+        
+        $this->assertTrue($crawler->filter('html:contains("Sorry")')->count() > 0);
+    }
     
 }
 

@@ -4,8 +4,6 @@
 with 
 {
 'currentPage':data.Items.Request.ItemSearchRequest.ItemPage,
-'totalPages':data.Items.TotalPages,
-'totalResults':data.Items.TotalResults,
 'pagerParams':pagerParams
 } 
 %}
@@ -13,14 +11,14 @@ with
 
 <ul>
 {% for dataItem in data.Items.Item %}
+{% set urlTitle = (dataItem.ItemAttributes.Title)|urlencode %}       
 <li class="listing">
     <dl>
-        <dt><a title="see more details for {{dataItem.ItemAttributes.Title}}" href="{#{path('mediaDetails', {'api':'amazon','ASIN':dataItem.ASIN, 'title':dataItem.ItemAttributes.Title})}#}">{{dataItem.ItemAttributes.Title}}</a></dt>
+        <dt><a title="see more details for {{dataItem.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':dataItem.ASIN, 'title':urlTitle, 'media':media})}}">{{dataItem.ItemAttributes.Title}}</a></dt>
         <dd>
             <img src="{{dataItem.MediumImage.URL}}" alt="{{dataItem.ItemAttributes.Title}}" width="{{dataItem.MediumImage.Width}}" height="{{dataItem.MediumImage.Height}}" />
             <ul>
                 <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon</a></li>
-                <li><span>Release Date: {{dataItem.ItemAttributes.ReleaseDate}}</span></li>
                 <li><a href="#" title="add this to your memory wall">Add to your memory wall</a></li>
             </ul>
         </dd>
@@ -29,6 +27,6 @@ with
 {% endfor %}
 </ul>
 {% else %}
-<h2>Sorry...</h2>
+<h2>Sorry&hellip;</h2>
 <p>{{exception}}</p>
 {% endif %}

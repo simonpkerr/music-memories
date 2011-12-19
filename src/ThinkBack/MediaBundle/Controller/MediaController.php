@@ -140,11 +140,7 @@ class MediaController extends Controller
             if($form->isValid()){
                 
                 $this->setSessionData($form->getData(), $key);
-                return $this->redirect($this->generateUrl('mediaListings', array(
-                    'decade'    => $mediaSelection->getDecades()->getSlug(),
-                    'media'     => $mediaSelection->getMediaTypes()->getSlug(),
-                    'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : 'all',
-                    )));
+                return $this->redirect($this->generateUrl('mediaListings', $this->getMediaSelection()));
             }else{
                 return $this->render('ThinkBackMediaBundle:Default:error.html.twig', array(
                     'form' => $form->createView(),
@@ -171,7 +167,8 @@ class MediaController extends Controller
        );
        
        $em = $this->getEntityManager();
-       $exception = null;      
+       $exception = null; 
+       
        if($media == "music"){
             $params = array(
                 $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getSevenDigitalTag(),
@@ -186,7 +183,9 @@ class MediaController extends Controller
             }
        }else{
             $browseNode = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId();
-            $browseNode .= $genre != 'all' ? ',' . $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media)->getAmazonBrowseNodeId(): '';
+            $selectedGenre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media);
+            $browseNode .= $genre != 'all' ? ',' . $selectedGenre->getAmazonBrowseNodeId() : '';
+            $browseNode .= ',' . $selectedGenre->getMediaType()->getAmazonBrowseNodeId();
             $params = array(
                'BrowseNode'     =>      $browseNode,
                'SearchIndex'    =>      'Video',
@@ -195,31 +194,90 @@ class MediaController extends Controller
             $api = new MediaAPI\AmazonAPI($this->container);
             try{
                 $response = $api->getRequest($params);
-                
-                $pagerUpperBound = $pagerCount * (floor($page / $pagerCount)+1);
-                $pagerLowerBound = $pagerUpperBound - ($pagerCount-1);
-                $pagerParams = array_merge($pagerParams, array(
-                    'pagerUpperBound'   => $pagerUpperBound,
-                    'pagerLowerBound'   => $pagerLowerBound,
-                ));
-                
-            }catch(Exception $ex){
-                $exception = $ex;
+                $pagerParams['pagerUpperBound'] = $response->Items->TotalPages > 10 ? 10 : $response->Items->TotalPages;
+                $pagerParams['pagerLowerBound'] = 1;
+                $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
+                //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
+            }catch(\RunTimeException $re){
+                $exception = $re->getMessage();
+            }catch(\LengthException $le){
+                $exception = $le->getMessage();
             }
-               
        }
+       
+       $this->setSessionData($page, 'currentPage');
             
        return $this->render('ThinkBackMediaBundle:Media:mediaListings.html.twig', array(
            'decade'     => $decade,
            'genre'      => $genre,
            'media'      => $media,
-           'data'       => $response,
+           'data'       => $exception == null ? $response : null,
            'exception'  => $exception,
            'pagerParams'=> $pagerParams,
        ));
     }
     
+    private function calculatePagingBounds($pagerCount, $currentPage){
+        $pagerUpperBound = $pagerCount * (floor($currentPage / $pagerCount)+1);
+        $pagerLowerBound = $pagerUpperBound - ($pagerCount*2) <= 0 ? 1 : $pagerUpperBound - ($pagerCount*2);
+        
+        return array(
+            'pagerUpperBound'   => $pagerUpperBound,
+            'pagerLowerBound'   => $pagerLowerBound,
+        );
+  
+    }
     
+    public function mediaDetailsAction($id, $title, $media){
+        $exception = null;
+
+        //create the return route back to the correct page of listings
+        $mediaSelection = $this->getSessionData('mediaSelection');
+        $page = $this->getSessionData('currentPage');
+        $returnRoute = $this->generateUrl('mediaListings', array_merge($this->getMediaSelection(), array('page' => $page)));
+        
+        //look up product
+        if($media != 'music'){
+            $params = array(
+               'Operation'      =>      'ItemLookUp',
+               'ItemId'         =>      $id,
+               'SearchIndex'    =>      'Video',
+               'ResponseGroup'  =>      'Images,ItemAttributes,SalesRank,Request,Similarities',
+            );
+            $api = new MediaAPI\AmazonAPI($this->container);
+            try{
+                $response = $api->getRequest($params);
+            }catch(\RunTimeException $re){
+                $exception = $re->getMessage();
+            }catch(\LengthException $le){
+                $exception = $le->getMessage();
+            }
+        }
+        
+        //look up YouTube
+        
+        
+        //look up Flickr
+        
+        return $this->render('ThinkBackMediaBundle:Media:mediaDetails.html.twig', array(
+            'data'           => $exception == null ? $response : null,
+            'exception'      => $exception,
+            'returnRoute'    => $returnRoute,
+            'media'          => $media,
+            'title'          => $title,
+       ));
+        
+    }
+    
+    
+    private function getMediaSelection(){
+        $mediaSelection = $this->getSessionData('mediaSelection');
+        return array(
+                    'decade'    => $mediaSelection->getDecades()->getSlug(),
+                    'media'     => $mediaSelection->getMediaTypes()->getSlug(),
+                    'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : 'all',
+                    );
+    }
     
     /*public function setSlugsAction($table){
         $em = $this->getEntityManager();

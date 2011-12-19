@@ -1,0 +1,19 @@
+{% if exception is null %}
+{% set dataItem = data.Items.Item %}
+
+<a href="{{returnRoute}}">back to listings</a>
+<dl>
+    <dd>
+        <img src="{{dataItem.MediumImage.URL}}" alt="{{dataItem.ItemAttributes.Title}}" width="{{dataItem.MediumImage.Width}}" height="{{dataItem.MediumImage.Height}}" />
+        <ul>
+            <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon</a></li>
+            <li><a href="#" title="add this to your memory wall">Add to your memory wall</a></li>
+        </ul>
+    </dd>
+</dl>
+
+
+{% else %}
+<h2>Sorry&hellip;</h2>
+<p>{{exception}}</p>
+{% endif %}

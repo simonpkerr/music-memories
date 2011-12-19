@@ -8,8 +8,6 @@
 
 namespace ThinkBack\MediaBundle\Resources\MediaAPI;
 use ThinkBack\MediaBundle\Resources\MediaAPI\AmazonSignedRequest;
-//require_once 'aws_signed_request.php';
-
 
 class AmazonAPI extends MediaAPI {
     private $amazonParameters;
@@ -58,7 +56,15 @@ class AmazonAPI extends MediaAPI {
         
         $xml_response = $this->queryAmazon($this->amazonParameters, "co.uk");
         
-        return $this->verifyXmlResponse($xml_response);
+        try{
+            return $this->verifyXmlResponse($xml_response);
+        }catch(\RunTimeException $re){
+            throw $re;
+        }catch(\LengthException $le){
+            throw $le;
+        }
+        
+        
         
     }
     

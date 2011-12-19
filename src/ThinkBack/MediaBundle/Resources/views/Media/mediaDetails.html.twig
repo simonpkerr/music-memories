@@ -1,0 +1,12 @@
+{% extends 'ThinkBackMediaBundle::layout.html.twig' %}
+{% block pageTitle %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+
+{% if media != 'music' %}
+    {% include 'ThinkBackMediaBundle:Media:filmTVDetailsPartial.html.twig' with {'data':data} %}
+{% endif %}
+
+{% endblock %}
