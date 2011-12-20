@@ -1,4 +1,9 @@
 {% extends 'ThinkBackMediaBundle::layout.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>    
+{% endblock %}
+    
 {% block title %}Details for {{title}}{% endblock %}
 {% block pageTitle %}
     {{title}}
@@ -6,41 +11,9 @@
 
 {% block content %}
 <a href="{{returnRoute}}">back to listings</a>
+
 {% if media != 'music' %}
     {% include 'ThinkBackMediaBundle:Media:filmTVDetailsPartial.html.twig' with {'data':data} %}
 {% endif %}
-
-<div id="ytapiplayer">
-    <p>You need Flash player 8+ and JavaScript enabled to view this video.</p>
-</div>
-
-<script type="text/javascript">
-function onYouTubePlayerReady(playerId) {
-    ytplayer = document.getElementById("myytplayer");
-}
-function play(videoId) {
-    if (ytplayer) {
-
-        ytplayer.loadVideoById(videoId);
-        /*url = "http://www.youtube.com/e/";
-        suffix = "?enablejsapi=1&playerapiid=ytplayer";
-        mediaContentUrl = url + videoId + suffix;
-        console.log(mediaContentUrl);
-        ytplayer.loadVideoByUrl(mediaContentUrl);*/
-    }
-}
-
-var params = { allowScriptAccess: "always" };
-var atts = { id: "myytplayer" };
-swfobject.embedSWF("http://www.youtube.com/e/_OBlgSz8sSM?enablejsapi=1&playerapiid=ytplayer",
-                   "ytapiplayer", "425", "356", "8", null, null, params, atts);
-</script>
-
-
-{% endblock %}
-{% block javascripts %}
-    {{parent()}}
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>    
-
 
 {% endblock %}

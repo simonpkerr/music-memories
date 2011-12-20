@@ -257,6 +257,16 @@ class MediaController extends Controller
         }
         
         //look up YouTube
+        $ytapi = new MediaAPI\YouTubeAPI($this->container);
+        $ytparams = array(
+            'keywords'  =>  $title,
+            'category'  =>  $media,
+        );
+        try{
+            $ytresponse = $ytapi->getRequest($ytparams);
+        }catch(\RuntimeException $re){
+            
+        }
         
         
         //look up Flickr
@@ -267,6 +277,7 @@ class MediaController extends Controller
             'returnRoute'    => $returnRoute,
             'media'          => $media,
             'title'          => $title,
+            'youTubeResponse'=> $ytresponse,
        ));
         
     }
