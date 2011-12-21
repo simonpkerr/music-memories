@@ -1,4 +1,9 @@
 {% extends '::base.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}
+
+{% block title %}{% endblock %}
 
 {% block body %}
 {% block mediaSelect %}
@@ -13,8 +18,6 @@
 
     
 {% endblock %}
-{% block javascripts %}
-    {{parent()}}
-{% endblock %}
+
 
 

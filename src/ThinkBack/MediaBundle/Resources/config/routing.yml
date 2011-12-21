@@ -10,7 +10,6 @@ error:
   pattern: /error
   defaults: { _controller: ThinkBackMediaBundle:Default:error }
 
-
 setMedia:
   pattern: /setMedia/{mediaType}
   defaults: { _controller: ThinkBackMediaBundle:Media:setMedia }
@@ -35,6 +34,9 @@ mediaSearchResults:
   pattern: /mediaSearchResults/{searchSlug}
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearchResults }  
 
+mediaDetails:
+  pattern: /mediaDetails/{title}/{media}/{id}
+  defaults: { _controller: ThinkBackMediaBundle:Media:mediaDetails }
 
   
 #setSlugs:
