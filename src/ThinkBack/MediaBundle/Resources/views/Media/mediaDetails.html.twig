@@ -4,16 +4,16 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>    
 {% endblock %}
     
-{% block title %}Details for {{title}}{% endblock %}
+{% block title %}Details for {% endblock %}
 {% block pageTitle %}
-    {{title}}
+    
 {% endblock %}
 
 {% block content %}
 <a href="{{returnRoute}}">back to listings</a>
 
 {% if media != 'music' %}
-    {% include 'ThinkBackMediaBundle:Media:filmTVDetailsPartial.html.twig' with {'data':data} %}
+    {% include 'ThinkBackMediaBundle:Media:filmTVDetailsPartial.html.twig' %}
 {% endif %}
 
 {% endblock %}

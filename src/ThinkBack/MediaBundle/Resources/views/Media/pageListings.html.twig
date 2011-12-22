@@ -9,7 +9,7 @@
 {% for pagerLink in pagerParams['pagerLowerBound']..pagerParams['pagerUpperBound']  %}
         <li {% if pagerLink == currentPage %} class="selected" {%endif%}><a href="{{path('mediaListings', {'decade':decade,'media':media,'genre':genre,'page':pagerLink})}}">{{pagerLink}}</a></li></li>
 {% endfor %}
-{% if currentPage != pagerParams['totalPages'] %}
+{% if not(currentPage == pagerParams['totalPages']) %}
         <li><a href="{{path('mediaListings', {'decade':decade,'media':media,'genre':genre,'page':currentPage+1})}}">Next Page</a></li>
 {% endif %}  
         

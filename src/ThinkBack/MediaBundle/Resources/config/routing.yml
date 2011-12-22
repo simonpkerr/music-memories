@@ -35,8 +35,12 @@ mediaSearchResults:
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearchResults }  
 
 mediaDetails:
-  pattern: /mediaDetails/{title}/{media}/{id}
+  pattern: /mediaDetails/{media}/{decade}/{genre}/{id}
   defaults: { _controller: ThinkBackMediaBundle:Media:mediaDetails }
+
+youTubeRequest:
+  pattern: /youTubeRequest/{title}/{media}/{decade}/{genre}
+  defaults: { _controller: ThinkBackMediaBundle:Media:youTubeRequest }
 
   
 #setSlugs:

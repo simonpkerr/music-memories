@@ -1,14 +1,16 @@
-{% if exception is null %}
-{% set dataItem = data.Items.Item %}
+{% if mainResponse is defined %}
+{% set dataItem = mainResponse.Items.Item %}
 
+{#% debug dataItem %#}
 <div class="itemOverview">
     {#<dt><h2>{{title}}</h2></dt>#}
     <img src="{{dataItem.MediumImage.URL}}" alt="{{dataItem.ItemAttributes.Title}}" width="{{dataItem.MediumImage.Width}}" height="{{dataItem.MediumImage.Height}}" />
     <ul class="links">
-        <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon for {{ dataItem.ItemAttributes.ListPrice.FormattedPrice }}</a></li>
+        <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon {% if dataItem.ItemAttributes.ListPrice is defined %}for {{ dataItem.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a></li>
         <li><a href="#" title="add this to your memory wall">Add to your memory wall</a></li>
     </ul>
 
+    {% if dataItem.SimilarProducts is defined %}
     <div>
         <h2>Similar Items</h2>
         <ul>
@@ -17,6 +19,7 @@
         {% endfor %}
         </ul>
     </div>
+    {% endif %}
     
     {#<div>
         <h3>Related Items</h3>
@@ -31,45 +34,7 @@
 
 <div id="youtube-topresults">
     <h2>Top YouTube Videos</h2>
-{% if youTubeResponse is defined %}
-    <div id="ytapiplayerContainer">
-        <div id="ytapiplayer">
-            <p>You need Flash player 8+ and JavaScript enabled to view this video.</p>
-        </div>
-        <script type="text/javascript">
-        function onYouTubePlayerReady(playerId) {
-            ytplayer = document.getElementById("myytplayer");
-        }
-        function play(videoId) {
-            if (ytplayer) 
-                ytplayer.loadVideoById(videoId);
-        }
-
-        var params = { allowScriptAccess: "always" };
-        var atts = { id: "myytplayer" };
-    </script>
-    </div>
-    
-    <script type="text/javascript">
-        swfobject.embedSWF("http://www.youtube.com/e/{{youTubeResponse.feed.entry.id}}?enablejsapi=1&playerapiid=ytplayer",
-                       "ytapiplayer", "425", "356", "8", null, null, params, atts);
-    </script>
-    <strong>{{ youTubeResponse.url }}</strong>
-    <dl>
-    {% for ytResult in youTubeResponse.feed.entry %}
-        <dt><a href="javascript:void(0)" onclick="play({{ytResult.id}})">{{ ytResult.title|escape }}</a></dt>
-        <dd>    
-            <a href="javascript:void(0)" onclick="play({{ytResult.id}})"><img src="{{ ytResult.thumbnail }}" alt="{{ ytResult.title|escape }}" /></a>
-            {#used for debugging a variable#}
-            {#%  debug ytResult %#}              
-        </dd>
-    {% endfor %}
-    </dl>
-    
-       
-{% else %} 
-    <p>Sorry, there were no results found by YouTube</p>
-{% endif %}        
+    {% render "ThinkBackMediaBundle:Media:youTubeRequest" with {'title':dataItem.ItemAttributes.Title, 'media':media, 'decade':decade, 'genre':genre} %}
 </div>
 
 {% else %}

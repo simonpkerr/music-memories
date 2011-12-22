@@ -1,4 +1,4 @@
-{% if exception is null %}
+{% if exception is null and data.Items.Item is defined %}
 <div class="pagingControls">
 {% include "ThinkBackMediaBundle:Media:pageListings.html.twig" 
 with 
@@ -14,11 +14,13 @@ with
 <li class="listing">
     <dl>
         
-        <dt><a title="see more details for {{dataItem.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':dataItem.ASIN, 'title':dataItem.ItemAttributes.Title|url_encode, 'media':media})}}">{{dataItem.ItemAttributes.Title}}</a></dt>
+        {#<dt><a title="see more details for {{dataItem.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':dataItem.ASIN, 'title':dataItem.ItemAttributes.Title|url_encode, 'media':media})}}">{{dataItem.ItemAttributes.Title}}</a></dt>#}
+        <dt><a title="see more details for {{dataItem.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':dataItem.ASIN })}}">{{dataItem.ItemAttributes.Title}}</a></dt>
         <dd>
-            <img src="{{dataItem.MediumImage.URL}}" alt="{{dataItem.ItemAttributes.Title}}" width="{{dataItem.MediumImage.Width}}" height="{{dataItem.MediumImage.Height}}" />
+            
+            <img src="{{dataItem.MediumImage is defined ? dataItem.MediumImage.URL : asset('bundles/ThinkBack/images/image-placeholder.jpg') }}" alt="{{dataItem.ItemAttributes.Title}}" />
             <ul>
-                <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon for {{ dataItem.ItemAttributes.ListPrice.FormattedPrice }}</a></li>
+                <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon {% if dataItem.ItemAttributes.ListPrice is defined %}for {{ dataItem.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a></li>
                 <li><a href="#" title="add this to your memory wall">Add to your memory wall</a></li>
             </ul>
         </dd>
@@ -28,5 +30,5 @@ with
 </ul>
 {% else %}
 <h2>Sorry&hellip;</h2>
-<p>{{exception}}</p>
+<p>{{exception is defined ? exception : 'No results were found'}}</p>
 {% endif %}

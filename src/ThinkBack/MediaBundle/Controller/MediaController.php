@@ -229,13 +229,11 @@ class MediaController extends Controller
   
     }
     
-    public function mediaDetailsAction($id, $title, $media){
-        $exception = null;
-
+    public function mediaDetailsAction($media, $decade, $genre, $id){
         //create the return route back to the correct page of listings
-        $mediaSelection = $this->getSessionData('mediaSelection');
+        $mediaSelection = $this->getMediaSelection();
         $page = $this->getSessionData('currentPage');
-        $returnRoute = $this->generateUrl('mediaListings', array_merge($this->getMediaSelection(), array('page' => $page)));
+        $returnRoute = $this->generateUrl('mediaListings', array_merge($mediaSelection, array('page' => $page)));
         
         //look up product
         if($media != 'music'){
@@ -256,29 +254,25 @@ class MediaController extends Controller
             }
         }
         
-        //look up YouTube
-        $ytapi = new MediaAPI\YouTubeAPI($this->container);
-        $ytparams = array(
-            'keywords'  =>  $title,
-            'category'  =>  $media,
-        );
-        try{
-            $ytresponse = $ytapi->getRequest($ytparams);
-        }catch(\RuntimeException $re){
-            
-        }
-        
-        
+                
         //look up Flickr
         
-        return $this->render('ThinkBackMediaBundle:Media:mediaDetails.html.twig', array(
-            'data'           => $exception == null ? $response : null,
-            'exception'      => $exception,
-            'returnRoute'    => $returnRoute,
-            'media'          => $media,
-            'title'          => $title,
-            'youTubeResponse'=> $ytresponse,
-       ));
+        $params = array(
+            'returnRoute'       => $returnRoute,
+            'media'             => $media,
+            'decade'            => $decade,
+            'genre'             => $genre,
+        );
+        
+        //set the amazon response to either data or exception
+        if(!isset($exception))
+            $params['mainResponse'] = $response;
+        else
+            $params['exception'] = $exception;
+        
+       
+        
+        return $this->render('ThinkBackMediaBundle:Media:mediaDetails.html.twig', $params);
         
     }
     
@@ -290,6 +284,31 @@ class MediaController extends Controller
                     'media'     => $mediaSelection->getMediaTypes()->getSlug(),
                     'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : 'all',
                     );
+    }
+    
+    public function youTubeRequestAction($title, $media, $decade, $genre){
+        //look up YouTube
+        $ytapi = new MediaAPI\YouTubeAPI($this->container);
+        $ytparams = array(
+            'keywords'  =>  $title,
+            'decade'    =>  $decade,
+            'media'     =>  $media,
+            'genre'     =>  $genre,
+        );
+        try{
+            $ytResponse = $ytapi->getRequest($ytparams);
+        }catch(\RuntimeException $re){
+            $ytException = $re->getMessage();
+        }catch(\LengthException $le){
+            $ytException = $le->getMessage();
+        }
+        //set the youtube response to either data or exception
+        if(!isset($ytException))
+            $params['youTubeResponse'] = $ytResponse;
+        else
+            $params['youTubeException'] = $ytException;
+        
+        return $this->render('ThinkBackMediaBundle:Media:youTubePartial.html.twig', $params);        
     }
     
     /*public function setSlugsAction($table){
