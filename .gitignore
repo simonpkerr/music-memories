@@ -12,3 +12,6 @@ web/bundles/webprofiler
 
 # Configuration files
 app/config/parameters.ini
+
+# nbproject files
+nbproject/*
