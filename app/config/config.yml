@@ -1,7 +1,7 @@
 imports:
     - { resource: parameters.ini }
     - { resource: security.yml }
-
+    
 framework:
     #esi:             ~
     translator:      { fallback: en }
@@ -70,6 +70,10 @@ stof_doctrine_extensions:
   orm:
     default:
       sluggable: true
+
+thinkback_media:
+  resource: ThinkBackMediaBundle/Resources/config/services.yml
+
 
 #jms_aop:
 #    cache_dir: %kernel.cache_dir%/jms_aop

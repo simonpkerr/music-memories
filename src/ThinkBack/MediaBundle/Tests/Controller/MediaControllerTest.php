@@ -10,8 +10,8 @@ class MediaControllerTest extends WebTestCase
     */
     public function testMediaSelectionGet()
     {
-        $client = static::createClient();
-
+        $client = static::createClient('test', true);
+        $client->getContainer()->
         $crawler = $client->request('GET', '/index');
                 
         $this->assertTrue($crawler->filter('select#mediaSelection_mediaTypes')->count() > 0);

@@ -67,7 +67,6 @@ class MediaController extends Controller
     public function mediaSearchAction(Request $request = null){
         $key = 'mediaSearch';
         
-       // $em = $this->getEntityManager();
         $mediaSearch = new MediaSearch();
         $form = $this->createForm(new MediaSearchType(), $mediaSearch);
         
@@ -198,6 +197,7 @@ class MediaController extends Controller
                'ItemPage'       =>      $page,
                'Sort'          =>       'salesrank',
             );
+            
             $api = new MediaAPI\AmazonAPI($this->container);
             try{
                 $response = $api->getRequest($params);
