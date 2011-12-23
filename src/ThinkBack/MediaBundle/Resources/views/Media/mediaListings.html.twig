@@ -1,16 +1,14 @@
 {% extends 'ThinkBackMediaBundle::layout.html.twig' %}
 {% block title %}Listings for {{ decade }} {{media}} ({{ genre }}){% endblock %}
-{% block pageTitle %}
-    Listings for {{ decade }} {{media}} ({{ genre }})
-{% endblock %}
-{% block content %}
 
+{% block content %}
+<h1>Listings for {{ decade|capitalize }} {{media == 'tv' ? media|upper : media|capitalize}} ({{ genre|replace({'-':' '})|capitalize }})</h1>
 <div id="mediaResultsListings">
     
     {% if media == 'music' %}
-        {% include 'ThinkBackMediaBundle:Media:musicListingsPartial.html.twig' with {'data' : data }%}
+        {% include 'ThinkBackMediaBundle:Media:musicListingsPartial.html.twig' with {'mainResponse' : mainResponse }%}
     {% else %}
-        {% include 'ThinkBackMediaBundle:Media:filmTVListingsPartial.html.twig' with {'data' : data }%}
+        {% include 'ThinkBackMediaBundle:Media:filmTVListingsPartial.html.twig' with {'mainResponse' : mainResponse }%}
     {% endif %}
         
 </div>

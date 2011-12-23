@@ -142,9 +142,10 @@ class MediaController extends Controller
                 $this->setSessionData($form->getData(), $key);
                 return $this->redirect($this->generateUrl('mediaListings', $this->getMediaSelection()));
             }else{
-                return $this->render('ThinkBackMediaBundle:Default:error.html.twig', array(
+                /*return $this->render('ThinkBackMediaBundle:Default:error.html.twig', array(
                     'form' => $form->createView(),
-                ));
+                ));*/
+                return $this->redirect($this->generateUrl('error'));
             }
         }
        
@@ -161,13 +162,13 @@ class MediaController extends Controller
      * perform the search, then redirect to the listings action to show the results
      */
     public function mediaListingsAction($decade, $media, $genre, $page = 1){
+       
        $pagerCount = 5;
        $pagerParams = array(
            'pagerCount' => $pagerCount,
        );
        
        $em = $this->getEntityManager();
-       $exception = null; 
        
        if($media == "music"){
             $params = array(
@@ -183,9 +184,14 @@ class MediaController extends Controller
             }
        }else{
             $browseNode = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId();
-            $selectedGenre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media);
-            $browseNode .= $genre != 'all' ? ',' . $selectedGenre->getAmazonBrowseNodeId() : '';
-            $browseNode .= ',' . $selectedGenre->getMediaType()->getAmazonBrowseNodeId();
+            if($genre != 'all'){
+                $selectedGenre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media);
+                $browseNode .= ',' . $selectedGenre->getAmazonBrowseNodeId();
+                $browseNode .= ',' . $selectedGenre->getMediaType()->getAmazonBrowseNodeId();
+            }else{
+                $browseNode .= ',' . $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($media)->getAmazonBrowseNodeId();
+            }
+            
             $params = array(
                'BrowseNode'     =>      $browseNode,
                'SearchIndex'    =>      'Video',
@@ -207,15 +213,20 @@ class MediaController extends Controller
        }
        
        $this->setSessionData($page, 'currentPage');
+       
+       $responseParams = array(
+           'decade'         => $decade,
+           'genre'          => $genre,
+           'media'          => $media,
+           'pagerParams'    => $pagerParams,
+       );
+       
+       if(!isset($exception))
+           $responseParams['mainResponse'] = $response;
+       else
+           $responseParams['exception'] = $exception;
             
-       return $this->render('ThinkBackMediaBundle:Media:mediaListings.html.twig', array(
-           'decade'     => $decade,
-           'genre'      => $genre,
-           'media'      => $media,
-           'data'       => $exception == null ? $response : null,
-           'exception'  => $exception,
-           'pagerParams'=> $pagerParams,
-       ));
+       return $this->render('ThinkBackMediaBundle:Media:mediaListings.html.twig', $responseParams);
     }
     
     private function calculatePagingBounds($pagerCount, $currentPage){
@@ -257,7 +268,7 @@ class MediaController extends Controller
                 
         //look up Flickr
         
-        $params = array(
+        $responseParams = array(
             'returnRoute'       => $returnRoute,
             'media'             => $media,
             'decade'            => $decade,
@@ -265,14 +276,17 @@ class MediaController extends Controller
         );
         
         //set the amazon response to either data or exception
-        if(!isset($exception))
-            $params['mainResponse'] = $response;
+        if(!isset($exception)){
+            $responseParams['mainResponse'] = $response;
+            if($media != 'music')
+                $responseParams['title'] = $response->Items->Item->ItemAttributes->Title;
+        }
         else
-            $params['exception'] = $exception;
+            $responseParams['exception'] = $exception;
         
        
         
-        return $this->render('ThinkBackMediaBundle:Media:mediaDetails.html.twig', $params);
+        return $this->render('ThinkBackMediaBundle:Media:mediaDetails.html.twig', $responseParams);
         
     }
     
@@ -288,9 +302,10 @@ class MediaController extends Controller
     
     public function youTubeRequestAction($title, $media, $decade, $genre){
         //look up YouTube
+      
         $ytapi = new MediaAPI\YouTubeAPI($this->container);
         $ytparams = array(
-            'keywords'  =>  $title,
+            'keywords'  =>  urldecode($title),
             'decade'    =>  $decade,
             'media'     =>  $media,
             'genre'     =>  $genre,

@@ -1,13 +1,13 @@
-<p>Number of results: {{data.taggedResults.totalItems}} </p>
+<p>Number of results: {{mainResponse.taggedResults.totalItems}} </p>
 
 <ul>
-{% for dataItem in data.taggedResults.taggedItem %}
+{% for item in mainResponse.taggedResults.taggedItem %}
 <li class="listing">
     <dl>
-        <dt><a href="{{dataItem.release.url}}">{{dataItem.release.title}}</a></dt>
+        <dt><a href="{{item.release.url}}">{{item.release.title}}</a></dt>
         <dd>
-            <img src="{{dataItem.release.image}}" alt="{{dataItem.release.title}}" />
-            <span>artist: {{dataItem.release.artist.name}}</span>
+            <img src="{{item.release.image}}" alt="{{item.release.title}}" />
+            <span>artist: {{item.release.artist.name}}</span>
         </dd>
     </dl>
 </li>

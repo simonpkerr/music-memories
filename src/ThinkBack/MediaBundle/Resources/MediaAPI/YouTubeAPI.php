@@ -9,11 +9,13 @@ namespace ThinkBack\MediaBundle\Resources\MediaAPI;
 require_once 'Zend/Loader.php';
 
 class YouTubeAPI extends MediaAPI {
-    //private $host = 'http://gdata.youtube.com';
+    protected $youTube;
     
-    public function __construct($container = null){
+    public function __construct($container = null, $yt = null){
         if($container != null)
             parent::__construct($container);
+        
+        $this->youTube = $yt == null ? new \Zend_Gdata_YouTube() : $yt;
         
         //get access to the youtube methods
         \Zend_Loader::loadClass('Zend_Gdata_YouTube');
@@ -21,9 +23,8 @@ class YouTubeAPI extends MediaAPI {
     }
     
     public function getRequest(array $params){
-        $yt = new \Zend_Gdata_YouTube();
-        $yt->setMajorProtocolVersion(2);
-        $query = $yt->newVideoQuery();
+        $this->youTube->setMajorProtocolVersion(2);
+        $query = $this->youTube->newVideoQuery();
         
         //$query->setOrderBy('viewCount');
         //default ordering is relevance
@@ -53,7 +54,8 @@ class YouTubeAPI extends MediaAPI {
         
         //$keywordQuery = str_replace(' ', '/', $keywordQuery) . $categories;
         //$query->setCategory($keywordQuery);
-        $keywordQuery = urlencode($keywordQuery);
+        
+        //$keywordQuery = urlencode($keywordQuery);
         $query->setVideoQuery($keywordQuery);
         $query->setCategory(urlencode($categories));
         
@@ -64,7 +66,7 @@ class YouTubeAPI extends MediaAPI {
         }*/
         //$query->setCategory($keywordQuery);
         
-        $videoFeed = $yt->getVideoFeed($query->getQueryUrl(2));    
+        $videoFeed = $this->youTube->getVideoFeed($query->getQueryUrl(2));    
 
         if($videoFeed === false)
             throw new \RuntimeException("Could not connect to YouTube");

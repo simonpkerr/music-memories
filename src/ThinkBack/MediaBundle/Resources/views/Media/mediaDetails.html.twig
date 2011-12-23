@@ -3,17 +3,24 @@
     {{parent()}}
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>    
 {% endblock %}
-    
-{% block title %}Details for {% endblock %}
-{% block pageTitle %}
-    
-{% endblock %}
+
+{% block title %}Details for {{title}}{% endblock %}
 
 {% block content %}
 <a href="{{returnRoute}}">back to listings</a>
+<h1>{{title}}</h1>
 
 {% if media != 'music' %}
-    {% include 'ThinkBackMediaBundle:Media:filmTVDetailsPartial.html.twig' %}
+    {% 
+    include 'ThinkBackMediaBundle:Media:filmTVDetailsPartial.html.twig' with
+    {
+        'media'         : media,
+        'decade'        : decade,
+        'genre'         : genre,
+        'mainResponse'  : mainResponse
+    }
+
+    %}
 {% endif %}
 
 {% endblock %}

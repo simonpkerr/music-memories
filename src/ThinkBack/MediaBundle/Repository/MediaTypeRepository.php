@@ -16,5 +16,8 @@ class MediaTypeRepository extends EntityRepository
         return $mediaTypes;                
     }
     
+    public function getMediaTypeBySlug($slug){
+        return $this->findOneBy(array('slug' => $slug));
+    }
     
 }

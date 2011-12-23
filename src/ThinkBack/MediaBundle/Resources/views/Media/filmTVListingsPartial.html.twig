@@ -1,26 +1,26 @@
-{% if exception is null and data.Items.Item is defined %}
+{% if mainResponse is defined %}
 <div class="pagingControls">
 {% include "ThinkBackMediaBundle:Media:pageListings.html.twig" 
 with 
 {
-'currentPage':data.Items.Request.ItemSearchRequest.ItemPage,
+'currentPage':mainResponse.Items.Request.ItemSearchRequest.ItemPage,
 'pagerParams':pagerParams
 } 
 %}
 </div>    
 
 <ul>
-{% for dataItem in data.Items.Item %}
+{% for item in mainResponse.Items.Item %}
 <li class="listing">
     <dl>
         
-        {#<dt><a title="see more details for {{dataItem.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':dataItem.ASIN, 'title':dataItem.ItemAttributes.Title|url_encode, 'media':media})}}">{{dataItem.ItemAttributes.Title}}</a></dt>#}
-        <dt><a title="see more details for {{dataItem.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':dataItem.ASIN })}}">{{dataItem.ItemAttributes.Title}}</a></dt>
+        {#<dt><a title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':item.ASIN, 'title':item.ItemAttributes.Title|url_encode, 'media':media})}}">{{item.ItemAttributes.Title}}</a></dt>#}
+        <dt><a title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">{{item.ItemAttributes.Title}}</a></dt>
         <dd>
             
-            <img src="{{dataItem.MediumImage is defined ? dataItem.MediumImage.URL : asset('bundles/ThinkBack/images/image-placeholder.jpg') }}" alt="{{dataItem.ItemAttributes.Title}}" />
+            <img src="{{item.MediumImage is defined ? item.MediumImage.URL : asset('bundles/ThinkBack/images/image-placeholder.jpg') }}" alt="{{item.ItemAttributes.Title}}" />
             <ul>
-                <li><a target="_blank" href="{{dataItem.DetailPageURL}}">Buy from Amazon {% if dataItem.ItemAttributes.ListPrice is defined %}for {{ dataItem.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a></li>
+                <li><a target="_blank" href="{{item.DetailPageURL}}">Buy from Amazon {% if item.ItemAttributes.ListPrice is defined %}for {{ item.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a></li>
                 <li><a href="#" title="add this to your memory wall">Add to your memory wall</a></li>
             </ul>
         </dd>
@@ -28,6 +28,12 @@ with
 </li>
 {% endfor %}
 </ul>
+{#disclaimer for all film results including tv#}
+{% if genre == 'all' %}
+<p class="note">Please note that the &lsquo;all&rsquo; Films genre also includes TV listings</p>
+
+{% endif %}
+
 {% else %}
 <h2>Sorry&hellip;</h2>
 <p>{{exception is defined ? exception : 'No results were found'}}</p>

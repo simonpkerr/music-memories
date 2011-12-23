@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * AmazonAPI tests
+ * @author Simon Kerr
+ * @version 1.0
+ */
+
+
 namespace ThinkBack\MediaBundle\Tests\Resources\MediaAPI;
 use ThinkBack\MediaBundle\Resources\MediaAPI\AmazonAPI;
 require_once 'src\ThinkBack\MediaBundle\Resources\MediaAPI\AmazonSignedRequest.php';
