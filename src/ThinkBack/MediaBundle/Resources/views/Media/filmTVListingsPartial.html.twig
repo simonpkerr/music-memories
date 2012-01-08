@@ -1,6 +1,6 @@
 {% if mainResponse is defined %}
 <div class="pagingControls">
-{% include "ThinkBackMediaBundle:Media:pageListings.html.twig" 
+{% include "ThinkBackMediaBundle:Media:pagerPartial.html.twig" 
 with 
 {
 'currentPage':mainResponse.Items.Request.ItemSearchRequest.ItemPage,
@@ -29,7 +29,7 @@ with
 {% endfor %}
 </ul>
 {#disclaimer for all film results including tv#}
-{% if genre == 'all' %}
+{% if genre == 'all-genres' %}
 <p class="note">Please note that the &lsquo;all&rsquo; Films genre also includes TV listings</p>
 
 {% endif %}

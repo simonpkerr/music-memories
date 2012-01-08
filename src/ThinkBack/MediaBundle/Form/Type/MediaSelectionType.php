@@ -21,9 +21,11 @@ class MediaSelectionType extends AbstractType{
         
         //entity field mapped to the decade class displaying the id and decadeName properties
         $builder->add('decades', 'entity', array(
-            'label'     => 'Decade',
-            'property'  => 'decadeName',
-            'class'     => 'ThinkBackMediaBundle:Decade',
+            'label'         => 'Decade',
+            'property'      => 'decadeName',
+            'class'         => 'ThinkBackMediaBundle:Decade',
+            'empty_value'   => 'All Decades',
+            'required'      => false,
             //'multiple'  =>  true,
             
         ));
@@ -32,14 +34,14 @@ class MediaSelectionType extends AbstractType{
         $builder->add('mediaTypes', 'entity', array(
             'property'      => 'mediaName',
             'label'         => 'Media',
-            'class'         => 'ThinkBackMediaBundle:MediaType',       
+            'class'         => 'ThinkBackMediaBundle:MediaType',
         ));
         
         $builder->add('selectedMediaGenres','entity', array(
             'label'             =>  'Genre',
             'property'          =>  'genreName',
             'class'             =>  'ThinkBackMediaBundle:Genre',
-            'empty_value'       =>  'All',
+            'empty_value'       =>  'All Genres',
             'required'          =>  false,
             'query_builder'     =>  function(EntityRepository $er){
                 return $er->createQueryBuilder('g')
@@ -47,6 +49,12 @@ class MediaSelectionType extends AbstractType{
             },                    
         ));
         
+        $builder->add('keywords', 'text', array(
+            'label'     => 'Keywords (optional)',
+            'required'  => false,
+            'trim'      => true,
+   
+        ));
         /*$builder->add('genres','entity', array(
             'label'             =>  'Genre',
             'property'          =>  'genreName',

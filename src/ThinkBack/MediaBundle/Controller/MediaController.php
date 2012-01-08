@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use ThinkBack\MediaBundle\Entity\MediaTypes;
 use ThinkBack\MediaBundle\Entity\MediaSelection;
 use ThinkBack\MediaBundle\Entity\MediaSearch;
+use ThinkBack\MediaBundle\Entity\Decade;
+use ThinkBack\MediaBundle\Entity\Genre;
 use ThinkBack\MediaBundle\Form\Type\MediaSelectionType;
 use ThinkBack\MediaBundle\Form\Type\MediaSearchType;
 
@@ -52,51 +54,55 @@ class MediaController extends Controller
     /*
      * set the media to be searched on
      */
-    public function setMediaAction($mediaType){
-        if($mediaType == 'film' || $mediaType == 'tv'){
-            $this->setSessionData($mediaType, 'mediaType');
-        }
-        
-        //return to index whatever happens
-        return $this->redirect($this->generateUrl('index')); 
-    }
-    
+//    public function setMediaAction($mediaType){
+//        if($mediaType == 'film' || $mediaType == 'tv'){
+//            $this->setSessionData($mediaType, 'mediaType');
+//        }
+//        
+//        //return to index whatever happens
+//        return $this->redirect($this->generateUrl('index')); 
+//    }
+//    
     /*
      * the overall search functionality available on all pages
      */
-    public function mediaSearchAction(Request $request = null){
-        $key = 'mediaSearch';
-        
-        $mediaSearch = new MediaSearch();
-        $form = $this->createForm(new MediaSearchType(), $mediaSearch);
-        
-        if($request->getMethod() == 'POST'){
-            $form->bindRequest($request);
-            if($form->isValid()){
-                $this->setSessionData($form->getData(), $key);
-                //need to redirect to search results page showing the search title and listings
-                return $this->redirect($this->generateUrl('mediaSearchResults', array(
-                    'searchSlug'    => $mediaSearch->getSearchSlug(),
-                    )));
-            }
-        }
-        //just returns a partial segment of code to show the form for selecting media
-        return $this->render('ThinkBackMediaBundle:Media:mediaSearchPartial.html.twig', array(
-           'form' => $form->createView(), 
-        ));
-    }
+//    public function mediaSearchAction(Request $request = null){
+//        $key = 'mediaSearch';
+//        
+//        $mediaSearch = new MediaSearch();
+//        $form = $this->createForm(new MediaSearchType(), $mediaSearch);
+//        
+//        if($request->getMethod() == 'POST'){
+//            $form->bindRequest($request);
+//            if($form->isValid()){
+//                $this->setSessionData($form->getData(), $key);
+//                //need to redirect to search results page showing the search title and listings
+//                return $this->redirect($this->generateUrl('mediaSearchResults', array(
+//                    'searchSlug'    => $mediaSearch->getSearchSlug(),
+//                    )));
+//            }
+//        }
+//        //just returns a partial segment of code to show the form for selecting media
+//        return $this->render('ThinkBackMediaBundle:Media:mediaSearchPartial.html.twig', array(
+//           'form' => $form->createView(), 
+//        ));
+//    }
     
     /*
      * called when a generic search is performed
      */
-    public function mediaSearchResultsAction($searchSlug) {
-        $data = $this->getSessionData('mediaSearch');
-        return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
-           'searchKeywords' => $data->getSearchKeywords(),
-            
-           //pass data to display
-       ));
-    }
+//    public function mediaSearchResultsAction($searchSlug) {
+//        //get the search string stored in the session
+//        $data = $this->getSessionData('mediaSearch');
+//        
+//        //perform the search of amazon
+//        
+//        return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
+//           'searchKeywords' => $data->getSearchKeywords(),
+//            
+//           //pass data to display
+//       ));
+//    }
     
     public function mediaSelectionAction(Request $request = null){
         $key = 'mediaSelection';
@@ -111,13 +117,16 @@ class MediaController extends Controller
          */
         $sessionFormData = $this->getSessionData($key);
         if($sessionFormData != null){
+            
             $mediaTypes = $sessionFormData->getMediaTypes();
             $mediaTypes = $this->getEntityManager()->merge($mediaTypes);
             $mediaSelection->setMediaTypes($mediaTypes);
-            
-            $decades = $sessionFormData->getDecades();
-            $decades = $em->merge($decades);
-            $mediaSelection->setDecades($decades);
+
+            if($sessionFormData->getDecades() != null){
+                $decades = $sessionFormData->getDecades();
+                $decades = $em->merge($decades);
+                $mediaSelection->setDecades($decades);
+            }
             
             if($sessionFormData->getSelectedMediaGenres() != null){
                 $selectedMediaGenres = $sessionFormData->getSelectedMediaGenres();
@@ -125,8 +134,12 @@ class MediaController extends Controller
                 $mediaSelection->setSelectedMediaGenres($selectedMediaGenres);
             }
             
-            $mediaSelection->setGenres($sessionFormData->getGenres());
+            if($sessionFormData->getKeywords() != null)
+                $mediaSelection->setKeywords($sessionFormData->getKeywords());
         
+            $mediaSelection->setGenres($sessionFormData->getGenres());
+            
+            
         }else{
             $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
             $mediaSelection->setGenres($genres);
@@ -139,7 +152,7 @@ class MediaController extends Controller
             if($form->isValid()){
                 
                 $this->setSessionData($form->getData(), $key);
-                return $this->redirect($this->generateUrl('mediaListings', $this->getMediaSelection()));
+                return $this->redirect($this->generateUrl('search', $this->getMediaSelection()));
             }else{
                 /*return $this->render('ThinkBackMediaBundle:Default:error.html.twig', array(
                     'form' => $form->createView(),
@@ -160,14 +173,13 @@ class MediaController extends Controller
     /*
      * perform the search, then redirect to the listings action to show the results
      */
-    public function mediaListingsAction($decade, $media, $genre, $page = 1){
-       
+    public function searchAction($media, $decade = "all-decades", $genre = "all-genres", $keywords = null, $page = 1){
+       $em = $this->getEntityManager();
+        
        $pagerCount = 5;
        $pagerParams = array(
            'pagerCount' => $pagerCount,
        );
-       
-       $em = $this->getEntityManager();
        
        if($media == "music"){
             $params = array(
@@ -182,21 +194,30 @@ class MediaController extends Controller
                 $exception = $ex;
             }
        }else{
-            $browseNode = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId();
-            if($genre != 'all'){
+            $browseNodeArray = array(); 
+            
+            if($decade != Decade::$default){
+                array_push($browseNodeArray, $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId());
+            }
+           
+            if($genre != Genre::$default){
                 $selectedGenre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media);
-                $browseNode .= ',' . $selectedGenre->getAmazonBrowseNodeId();
-                $browseNode .= ',' . $selectedGenre->getMediaType()->getAmazonBrowseNodeId();
+                $browseNodeArray = array_merge($browseNodeArray, array(
+                    $selectedGenre->getAmazonBrowseNodeId(),
+                    $selectedGenre->getMediaType()->getAmazonBrowseNodeId()));
             }else{
-                $browseNode .= ',' . $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($media)->getAmazonBrowseNodeId();
+                array_push($browseNodeArray, $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($media)->getAmazonBrowseNodeId());
             }
             
-            $params = array(
-               'BrowseNode'     =>      $browseNode,
+            $canonicalBrowseNodes = implode(',', $browseNodeArray);
+            
+            $params = array_filter(array(
+               'Keywords'       =>      $keywords,
+               'BrowseNode'     =>      $canonicalBrowseNodes,
                'SearchIndex'    =>      'Video',
                'ItemPage'       =>      $page,
-               'Sort'          =>       'salesrank',
-            );
+               'Sort'           =>      'salesrank',
+            ), array($this, "is_NotNull"));
             
             $api = new MediaAPI\AmazonAPI($this->container);
             try{
@@ -212,21 +233,25 @@ class MediaController extends Controller
             }
        }
        
-       $this->setSessionData($page, 'currentPage');
+       //if the page was set, set the page on the mediaSelection object
+       $mediaSelection = $this->getSessionData('mediaSelection');
+       $mediaSelection->setPage($page);
+       $this->setSessionData($mediaSelection, 'mediaSelection');
        
-       $responseParams = array(
+       $responseParams = array_filter(array(
            'decade'         => $decade,
            'genre'          => $genre,
            'media'          => $media,
+           'keywords'       => $keywords,
            'pagerParams'    => $pagerParams,
-       );
+       ), array($this, "is_NotNull"));
        
        if(!isset($exception))
            $responseParams['mainResponse'] = $response;
        else
            $responseParams['exception'] = $exception;
             
-       return $this->render('ThinkBackMediaBundle:Media:mediaListings.html.twig', $responseParams);
+       return $this->render('ThinkBackMediaBundle:Media:searchResults.html.twig', $responseParams);
     }
     
     private function calculatePagingBounds($pagerCount, $currentPage){
@@ -242,9 +267,17 @@ class MediaController extends Controller
     
     public function mediaDetailsAction($media, $decade, $genre, $id){
         //create the return route back to the correct page of listings
-        $mediaSelection = $this->getMediaSelection();
-        $page = $this->getSessionData('currentPage');
-        $returnRoute = $this->generateUrl('mediaListings', array_merge($mediaSelection, array('page' => $page)));
+        $mediaSelection = $this->getSessionData('mediaSelection');
+                       
+        $returnRoute = $this->generateUrl('search', array_filter(
+                array(
+                    'decade'    =>  $decade,
+                    'media'     =>  $media,
+                    'genre'     =>  $genre,
+                    'keywords'  =>  $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : null,
+                    'page'      =>  $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
+                ), array($this, "is_NotNull"))
+        );
         
         //look up product
         if($media != 'music'){
@@ -290,19 +323,44 @@ class MediaController extends Controller
         
     }
     
-    
+    /*
+     * if no media, decade or genre is selected, defaults should be returned
+     * so that the media selection form can be correctly set.
+     */
     private function getMediaSelection(){
         $mediaSelection = $this->getSessionData('mediaSelection');
-        return array(
-                    'decade'    => $mediaSelection->getDecades()->getSlug(),
+        $params = array();
+        if($mediaSelection != null){
+            $params = array(
+                    'decade'    => $mediaSelection->getDecades() != null ? $mediaSelection->getDecades()->getSlug() : Decade::$default,
                     'media'     => $mediaSelection->getMediaTypes()->getSlug(),
-                    'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : 'all',
-                    );
+                    'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : Genre::$default,
+                    'keywords'  => $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : null,
+                    'page'      => $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
+            );
+        }else {
+            $params = array(
+                'decade'    => Decade::$default,
+                'media'     => MediaType::$default,
+                'genre'     => Genre::$default,
+                //$em->getEntityRepository('ThinkBackMediaBundle:Media:Genre')->getDefaultGenre()->getSlug(),
+            );
+        }
+        
+        //array_filter removes elements from an array based on the function defined as the second argument
+        
+        $params = array_filter($params, array($this,'is_NotNull')); 
+        return $params;
+        
+    }
+    
+    private function is_NotNull($v){
+        return !is_null($v);
     }
     
     public function youTubeRequestAction($title, $media, $decade, $genre){
         //look up YouTube
-      
+        $responseParams = array();
         $ytapi = new MediaAPI\YouTubeAPI($this->container);
         $ytparams = array(
             'keywords'  =>  urldecode($title),
@@ -319,11 +377,11 @@ class MediaController extends Controller
         }
         //set the youtube response to either data or exception
         if(!isset($ytException))
-            $params['youTubeResponse'] = $ytResponse;
+            $responseParams['youTubeResponse'] = $ytResponse;
         else
-            $params['youTubeException'] = $ytException;
+            $responseParams['youTubeException'] = $ytException;
         
-        return $this->render('ThinkBackMediaBundle:Media:youTubePartial.html.twig', $params);        
+        return $this->render('ThinkBackMediaBundle:Media:youTubePartial.html.twig', $responseParams);        
     }
     
     /*public function setSlugsAction($table){

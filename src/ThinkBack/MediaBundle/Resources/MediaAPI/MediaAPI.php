@@ -53,10 +53,18 @@ class MediaAPI implements IMediaAPI{
         //add the decade and media tags as keywords if the doing a tv search
         //only add decade to search if the searched for item is older than 20 years
         //will have to experiment and see if decade with 's' on end is better than just decade
-        $year = date('Y');
-        if($media == 'tv'){
-            $decade < $year - 20 ? $keywordQuery .= ' ' . $decade . 's ' . $media : $keywordQuery .= ' '. $media;
-        }
+        
+        /*--------------------------
+         * this doesn't appear to help for most certain results
+         * as videos aren't tagged with all the tags (title decade, media)
+         */
+        //$year = date('Y');
+        //if($media == 'tv' && !isset($params['secondarySearch'])){
+        //    $decade < $year - 20 ? $keywordQuery .= ' ' . $decade . 's ' . $media : $keywordQuery .= ' '. $media;
+            
+            //this still doesn't bring relevant results for moomins (the moomins 1970s tv)
+            //need a way to decide relevant results (maybe successive calls to youtube if no results found?)
+        //}
         
         //$keywordQuery = urlencode($keywordQuery);
         

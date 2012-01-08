@@ -10,6 +10,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class MediaType
 {
+    public static $default = "film-and-tv";
+    
     /**
      * @var integer $id
      */

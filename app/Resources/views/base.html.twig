@@ -19,10 +19,10 @@
         <div id="header">
             {# the 'path' function can be used to target any particular route defined in the routing config file #}
             <a href="{{path('index')}}" title="Go back to MyDay home page">MyDay</a>
-            <a href="{{path('setMedia', {'mediaType' : 'film'})}}" title="Go to MyDay Films">Films</a>
+            {#<a href="{{path('setMedia', {'mediaType' : 'film'})}}" title="Go to MyDay Films">Films</a>
             <a href="{{path('setMedia', {'mediaType' : 'tv'})}}" title="Go to MyDay TV">TV</a>
-            <a href="{{path('setMedia', {'mediaType' : 'music'})}}" title="Go to MyDay Music">Music</a>
-            {% render "ThinkBackMediaBundle:Media:mediaSearch" %}
+            <a href="{{path('setMedia', {'mediaType' : 'music'})}}" title="Go to MyDay Music">Music</a>#}
+            {#% render "ThinkBackMediaBundle:Media:mediaSearch" %#}
         </div>
         {% block body %}{% endblock %}
         

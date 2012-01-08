@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Decade
 {
+    public static $default = 'all-decades';
     /**
      * @var integer $id
      */

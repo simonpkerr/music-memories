@@ -71,8 +71,8 @@ stof_doctrine_extensions:
     default:
       sluggable: true
 
-thinkback_media:
-  resource: ThinkBackMediaBundle/Resources/config/services.yml
+#thinkback_media:
+#  resource: ThinkBackMediaBundle/Resources/config/services.yml
 
 
 #jms_aop:

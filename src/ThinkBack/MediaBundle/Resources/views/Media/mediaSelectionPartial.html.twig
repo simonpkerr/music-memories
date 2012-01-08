@@ -4,16 +4,23 @@
         {{ form_errors(form) }}
     </div>
     
+    <div id="mediaSelectionMediaTypes">
+        {{ form_row(form.mediaTypes) }}
+    </div>
     <div id="mediaSelectionDecades">
         {{ form_row(form.decades) }}
     </div>
     <div id="mediaSelectionGenres">
-        {{ form_row(form.genres) }}
+        {{ form_row(form.selectedMediaGenres) }}
+    </div>
+    <div id="mediaSelectionKeywords">
+        {{ form_row(form.keywords) }}
+            <span class="note">(leave blank to search without keywords)</span>
     </div>
 
     {{ form_rest(form) }}
     
-<input type="submit" value="Find" />
+<input type="submit" value="Search MyDay" />
     
 </form>
 

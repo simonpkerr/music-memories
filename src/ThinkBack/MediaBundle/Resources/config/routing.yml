@@ -10,9 +10,9 @@ error:
   pattern: /error
   defaults: { _controller: ThinkBackMediaBundle:Default:error }
 
-setMedia:
-  pattern: /setMedia/{mediaType}
-  defaults: { _controller: ThinkBackMediaBundle:Media:setMedia }
+#setMedia:
+#  pattern: /setMedia/{mediaType}
+#  defaults: { _controller: ThinkBackMediaBundle:Media:setMedia }
 
 mediaSelection:
   pattern: /mediaSelection
@@ -20,19 +20,25 @@ mediaSelection:
   requirements:
     _method: GET|POST
 
-mediaListings:
-  pattern: /mediaListings/{media}/{decade}/{genre}/{page}
-  defaults: { _controller: ThinkBackMediaBundle:Media:mediaListings, page: 1 }
+search:
+  pattern: /search/{media}/{decade}/{genre}/{keywords}/{page}
+  defaults:
+    _controller: ThinkBackMediaBundle:Media:search
+    decade: all-decades
+    genre: all-genres
+    page: 1
+    keywords: null
+    
 
-mediaSearch:
-  pattern: /mediaSearch
-  defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearch }
-  requirements:
-    _method: GET|POST
-
-mediaSearchResults:
-  pattern: /mediaSearchResults/{searchSlug}
-  defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearchResults }  
+#mediaSearch:
+#  pattern: /mediaSearch
+#  defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearch }
+#  requirements:
+#    _method: GET|POST
+#
+#mediaSearchResults:
+#  pattern: /mediaSearchResults/{searchSlug}
+#  defaults: { _controller: ThinkBackMediaBundle:Media:mediaSearchResults }  
 
 mediaDetails:
   pattern: /mediaDetails/{media}/{decade}/{genre}/{id}

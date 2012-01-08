@@ -1,8 +1,8 @@
-parameters:
-  amazonapi.class: ThinkBack\MediaBundle\Resources\MediaAPI\AmazonAPI
-  amazonapi.args: container  
-
-services:
-  amazonapi:
-    class: %amazonapi.class%
-    arguments: %amazonapi.args%
+#parameters:
+#  amazonapi.class: ThinkBack\MediaBundle\Resources\MediaAPI\AmazonAPI
+#  amazonapi.args: container  
+#
+#services:
+#  amazonapi:
+#    class: %amazonapi.class%
+#    arguments: %amazonapi.args%

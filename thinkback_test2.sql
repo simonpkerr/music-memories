@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.4.5
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 09, 2011 at 06:10 PM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
+-- Generation Time: Jan 08, 2012 at 08:39 PM
+-- Server version: 5.5.16
+-- PHP Version: 5.3.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -32,11 +33,6 @@ CREATE TABLE IF NOT EXISTS `apitype` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `apitype`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -50,21 +46,22 @@ CREATE TABLE IF NOT EXISTS `decade` (
   `sevenDigitalTag` varchar(10) NOT NULL,
   `slug` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `decade`
 --
 
 INSERT INTO `decade` (`id`, `decadeName`, `amazonBrowseNodeId`, `sevenDigitalTag`, `slug`) VALUES
-(1, 1930, '562085011', '', '1930'),
-(2, 1940, '562086011', '', '1940'),
-(3, 1950, '562087011', '1950s', '1950'),
-(4, 1960, '562088011', '1960s', '1960'),
-(5, 1970, '562089011', '1970s', '1970'),
-(6, 1980, '562090011', '1980s', '1980'),
-(7, 1990, '562091011', '1990s', '1990'),
-(8, 2000, '562092011', '2000s', '2000');
+(1, 1930, '542166011', '', '1930'),
+(2, 1940, '542165011', '', '1940'),
+(3, 1950, '542164011', '1950s', '1950'),
+(4, 1960, '542163011', '1960s', '1960'),
+(5, 1970, '542162011', '1970s', '1970'),
+(6, 1980, '542161011', '1980s', '1980'),
+(7, 1990, '542160011', '1990s', '1990'),
+(8, 2000, '542159011', '2000s', '2000'),
+(9, 2010, '535457031', '', '2010');
 
 -- --------------------------------------------------------
 
@@ -87,11 +84,6 @@ CREATE TABLE IF NOT EXISTS `ext_log_entries` (
   KEY `log_user_lookup_idx` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `ext_log_entries`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -109,11 +101,6 @@ CREATE TABLE IF NOT EXISTS `ext_translations` (
   UNIQUE KEY `lookup_unique_idx` (`locale`,`object_class`,`foreign_key`,`field`),
   KEY `translations_lookup_idx` (`locale`,`object_class`,`foreign_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `ext_translations`
---
-
 
 -- --------------------------------------------------------
 
@@ -148,11 +135,6 @@ CREATE TABLE IF NOT EXISTS `fos_user` (
   UNIQUE KEY `UNIQ_957A6479A0D96FBF` (`email_canonical`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `fos_user`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -168,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `genre` (
   `slug` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_42911CFC4FBBC852` (`mediaType_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
 
 --
 -- Dumping data for table `genre`
@@ -188,7 +170,7 @@ INSERT INTO `genre` (`id`, `mediaType_id`, `amazonBrowseNodeId`, `sevenDigitalTa
 (11, 1, '162440011', '', 'Interactive', 'interactive'),
 (12, 1, '501888', '', 'Music', 'music'),
 (13, 1, '1108824', '', 'Musicals and Classical', 'musicals-and-classical'),
-(14, 1, '501912', '', 'Science fiction and Fantasy', 'science-fiction-and-fantasy'),
+(14, 1, '501916', '', 'Science fiction', 'science-fiction'),
 (15, 1, '295573011', '', 'Sports', 'sports'),
 (16, 2, '546262031', '', 'Action', 'action'),
 (17, 2, '285270', '', 'All television', 'all-television'),
@@ -222,7 +204,8 @@ INSERT INTO `genre` (`id`, `mediaType_id`, `amazonBrowseNodeId`, `sevenDigitalTa
 (45, 3, '', 'rock-and-roll', 'Rock and Roll', 'rock-and-roll'),
 (46, 3, '', 'indie-rock', 'Indie', 'indie'),
 (47, 3, '', 'soundtrack', 'Soundtracks', 'soundtracks'),
-(48, 3, '', 'world', 'World Music', 'world-music');
+(48, 3, '', 'world', 'World Music', 'world-music'),
+(51, 1, '501914', '', 'Fantasy', 'fantasy');
 
 -- --------------------------------------------------------
 
@@ -236,16 +219,17 @@ CREATE TABLE IF NOT EXISTS `mediatype` (
   `amazonBrowseNodeId` varchar(10) NOT NULL,
   `slug` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `mediatype`
 --
 
 INSERT INTO `mediatype` (`id`, `mediaName`, `amazonBrowseNodeId`, `slug`) VALUES
-(1, 'Film', '283926', 'film'),
+(1, 'Film', '573406', 'film'),
 (2, 'TV', '342350011', 'tv'),
-(3, 'Music', '', 'music');
+(3, 'Music', '', 'music'),
+(4, 'Film & TV', '283926', 'film-and-tv');
 
 -- --------------------------------------------------------
 
@@ -265,11 +249,6 @@ CREATE TABLE IF NOT EXISTS `recommendeditem` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `recommendeditem`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -285,11 +264,6 @@ CREATE TABLE IF NOT EXISTS `yearofbirthlinktable` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `yearofbirthlinktable`
---
-
-
---
 -- Constraints for dumped tables
 --
 
@@ -298,3 +272,7 @@ CREATE TABLE IF NOT EXISTS `yearofbirthlinktable` (
 --
 ALTER TABLE `genre`
   ADD CONSTRAINT `FK_42911CFC4FBBC852` FOREIGN KEY (`mediaType_id`) REFERENCES `mediatype` (`id`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

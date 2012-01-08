@@ -14,6 +14,17 @@ class MediaSelection
     
     protected $selectedMediaGenres;
 
+    protected $keywords;
+    
+    protected $page;
+    
+    public function setPage($page){
+        $this->page = $page;
+    }
+    
+    public function getPage(){
+        return $this->page;
+    }
     
     public function setSelectedMediaGenres($genres){
         $this->selectedMediaGenres = $genres;
@@ -56,4 +67,26 @@ class MediaSelection
     {
         return $this->genres;
     }
+    
+    /**
+     * Set keywords
+     *
+     * @param string $keywords
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = urlencode($keywords);
+        //$this->searchSlug = MediaController::slugify($searchKeywords);
+    }
+
+    /**
+     * Get keywords
+     *
+     * @return string 
+     */
+    public function getKeywords()
+    {
+        return urldecode($this->keywords);
+    }
+    
 }

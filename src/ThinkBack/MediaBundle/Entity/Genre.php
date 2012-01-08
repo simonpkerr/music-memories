@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Genre
 {
+    static public $default = 'all-genres';
     /**
      * @var integer $id
      */

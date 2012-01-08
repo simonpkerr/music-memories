@@ -10,41 +10,28 @@ require_once 'Zend/Loader.php';
 
 class YouTubeAPI extends MediaAPI {
     protected $youTube;
+    private $query;
     
     public function __construct($container = null, $yt = null){
+        //get access to the youtube methods
+        \Zend_Loader::loadClass('Zend_Gdata_YouTube');
+        
         if($container != null)
             parent::__construct($container);
         
         $this->youTube = $yt == null ? new \Zend_Gdata_YouTube() : $yt;
         
-        //get access to the youtube methods
-        \Zend_Loader::loadClass('Zend_Gdata_YouTube');
-        
     }
     
     public function getRequest(array $params){
         $this->youTube->setMajorProtocolVersion(2);
-        $query = $this->youTube->newVideoQuery();
         
-        //$query->setOrderBy('viewCount');
-        //default ordering is relevance
-        //$query->setSafeSearch('none'); //not supported when using setCategory
-        $query->setMaxResults('25');
-        $keywordQuery = parent::formatSearchString($params);
-        
+                
         //------to send a simple query to youtube       
         //$query->setVideoQuery($keywordQuery);
         
         //------to set up a category and keyword search
-        switch($params['media']){
-            case 'film':
-            case 'tv':
-                $categories = 'Film|Entertainment';
-                break;
-            /*case 'tv':
-                $categories = 'Entertainment';
-            break;*/
-        }
+        
         /*$categories = '/Music|';
         if($params['media'] == 'film')
             $categories .= 'Film|Entertainment';
@@ -55,10 +42,6 @@ class YouTubeAPI extends MediaAPI {
         //$keywordQuery = str_replace(' ', '/', $keywordQuery) . $categories;
         //$query->setCategory($keywordQuery);
         
-        //$keywordQuery = urlencode($keywordQuery);
-        $query->setVideoQuery($keywordQuery);
-        $query->setCategory(urlencode($categories));
-        
         //$query->setCategory("Film/Entertainment/" . $keywordQuery);
         /*$searchTermsArray =  $params['keywords']
         foreach ($searchTermsArray as $searchTerm) {
@@ -66,19 +49,68 @@ class YouTubeAPI extends MediaAPI {
         }*/
         //$query->setCategory($keywordQuery);
         
-        $videoFeed = $this->youTube->getVideoFeed($query->getQueryUrl(2));    
+        
+        /*
+         * what happens if the search still returns no videos. 
+         * for example, the moomins 1970s tv returns no results 
+         * but the moomins does.However, certain searches need more specific
+         * keywords to specify the decade and media type
+         */
+        
+        //$this->getVideoFeed($query->getQueryUrl(2));
+                
+        $videoFeed = $this->getVideoFeed($params);
 
         if($videoFeed === false)
             throw new \RuntimeException("Could not connect to YouTube");
         
+        //try a secondary search only if this is the first time only a few results were returned
+        
+        //the inclusion from MediaAPI of decade and genre in the youtube search string seems to be irrelevant in many cases
+        //so this part has been removed
+        /*if(count($videoFeed) < 3){
+            //setting the secondarySearch param causes a different keyword search to be used
+            $params['secondarySearch'] = true;
+            $videoFeed = $this->getVideoFeed($params);
+            if($videoFeed === false)
+                throw new \RuntimeException("Could not connect to YouTube");
+        }*/
+        
         if(count($videoFeed) < 1){
             throw new \LengthException("No results were returned");
         }
+
+        return $this->getSimpleXml($videoFeed);
         
-        return $this->getSimpleXml($videoFeed, $query);
+                
     }
     
-    private function getSimpleXml($videoFeed, $query){
+    private function getVideoFeed($params){
+        $query = $this->youTube->newVideoQuery();
+        
+        //$query->setOrderBy('viewCount');
+        //default ordering is relevance
+        //$query->setSafeSearch('none'); //not supported when using setCategory
+        $query->setMaxResults('25');
+        
+        switch($params['media']){
+            case 'film':
+            case 'tv':
+                $categories = 'Film|Entertainment';
+                break;
+            
+        }
+        $keywordQuery = parent::formatSearchString($params);
+        
+        //$keywordQuery = urlencode($keywordQuery);
+        $query->setVideoQuery($keywordQuery);
+        $query->setCategory(urlencode($categories));
+        $this->query = $query->getQueryUrl(2);
+        return $this->youTube->getVideoFeed($query->getQueryUrl(2));    
+                
+    }
+    
+    private function getSimpleXml($videoFeed){
         $sxml = new \SimpleXMLElement('<xml></xml>');
         $feed = $sxml->addChild('feed');
         foreach($videoFeed as $videoEntry){
@@ -99,7 +131,7 @@ class YouTubeAPI extends MediaAPI {
         
         //debug - output the search url
         $url = $sxml->addChild('url');
-        $url[0] = $query->getQueryUrl(2);
+        $url[0] = $this->query;
         return $sxml;
     }
     
