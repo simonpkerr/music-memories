@@ -47,6 +47,18 @@
 %}
 </div>
 
+<div id="flickr-topresults">
+    <h2>Top Flickr Pictures</h2>
+{#%
+    render "ThinkBackMediaBundle:Media:flickrRequest" with {
+        'title'     :   item.ItemAttributes.Title|url_encode, 
+        'media'     :   media,
+        'decade'    :   decade,
+        'genre'     :   genre,
+    }
+%#}
+</div>
+
 {% else %}
 <h2>Sorry&hellip;</h2>
 <p>{{exception}}</p>

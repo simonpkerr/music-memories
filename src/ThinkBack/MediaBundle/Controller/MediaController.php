@@ -297,10 +297,7 @@ class MediaController extends Controller
                 $exception = $le->getMessage();
             }
         }
-        
-                
-        //look up Flickr
-        
+             
         $responseParams = array(
             'returnRoute'       => $returnRoute,
             'media'             => $media,

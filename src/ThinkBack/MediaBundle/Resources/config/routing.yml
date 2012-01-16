@@ -48,6 +48,10 @@ youTubeRequest:
   pattern: /youTubeRequest/{title}/{media}/{decade}/{genre}
   defaults: { _controller: ThinkBackMediaBundle:Media:youTubeRequest }
 
+#flickrRequest:
+#  pattern: /flickrRequest/{title}/{media}/{decade}/{genre}
+#  defaults: { _controller: ThinkBackMediaBundle:Media:flickrRequest }
+
   
 #setSlugs:
 #  pattern: /setSlugs/{table}
