@@ -20,7 +20,7 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
     protected function setUp(){
         \Zend_Loader::loadClass('Zend_Gdata_YouTube');
         
-        $this->testContainer = new TestContainer();
+        $this->testContainer = new TestContainer2();
         $this->params = array(
             'keywords'  =>  'sample title',
             'decade'    =>  '1980',
@@ -73,7 +73,7 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
  * test container for mimicking the parameters in the 
  * actual container object for the controller
  */
-class TestContainer {
+class TestContainer2 {
     public $parameters = array(
         'amazon_public_key'     => 'apk',
         'amazon_uk_private_key' => 'aupk',

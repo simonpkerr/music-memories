@@ -22,29 +22,19 @@ class MediaControllerTest extends WebTestCase
         $client = static::createClient();
         
         $crawler = $client->request('GET', '/index');
-        $form = $crawler->selectButton('Find')->form();
-        $form['mediaSelection[decades]']->select('1');//1930
+        $form = $crawler->selectButton('Search MyDay')->form();
+        $form['mediaSelection[decades]']->select('1');//all decades
         $form['mediaSelection[mediaTypes]']->select('1');//Film
-        $form['mediaSelection[selectedMediaGenres]']->select('1');//All
-        
-        $crawler = $client->submit($form);        
-        $this->assertTrue($crawler->filter('html:contains("Listings")')->count() > 0);
-    }
-    
-    public function testMediaSearchGoesToSearchPage(){
-        $client = static::createClient();
-        
-        $crawler = $client->request('GET', '/index');
-        $form = $crawler->selectButton('Explore')->form();
-        $form['mediaSearch[searchKeywords]'] = 'bach fugues';
+        $form['mediaSelection[selectedMediaGenres]']->select('1');//All Genres
         
         $crawler = $client->submit($form);        
         $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
     }
+       
     
     public function testMediaSelectionOutOfBoundsReturnsError(){
         $client = static::createClient();
-        $crawler = $client->request('GET', '/mediaListings/tv/1980/childrens-tv/12');
+        $crawler = $client->request('GET', '/search/film/all-decades/classics/12');
         
         $this->assertTrue($crawler->filter('html:contains("Sorry")')->count() > 0);
     }
