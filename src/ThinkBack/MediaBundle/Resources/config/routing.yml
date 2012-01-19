@@ -20,13 +20,13 @@ mediaSelection:
   requirements:
     _method: GET|POST
 
-search:
-  pattern: /search/{media}/{decade}/{genre}/{page}
-  defaults:
-    _controller: ThinkBackMediaBundle:Media:search
-    decade: all-decades
-    genre: all-genres
-    page: 1    
+#search:
+#  pattern: /search/{media}/{decade}/{genre}/{page}
+#  defaults:
+#    _controller: ThinkBackMediaBundle:Media:search
+#    decade: all-decades
+#    genre: all-genres
+#    page: 1    
 
 search:
   pattern: /search/{media}/{decade}/{genre}/{keywords}/{page}
@@ -34,7 +34,7 @@ search:
     _controller: ThinkBackMediaBundle:Media:search
     decade: all-decades
     genre: all-genres
-    keywords: null
+    keywords: '-'
     page: 1    
     
 

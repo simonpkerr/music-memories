@@ -173,8 +173,9 @@ class MediaController extends Controller
     /*
      * perform the search, then redirect to the listings action to show the results
      */
-    public function searchAction($media, $decade = "all-decades", $genre = "all-genres", $keywords = null, $page = 1){
-       $em = $this->getEntityManager();
+    public function searchAction($media, $decade = "all-decades", $genre = "all-genres", $keywords = '-', $page = 1){
+       $keywords = $keywords == '-' ? null : $keywords;
+        $em = $this->getEntityManager();
         
        $pagerCount = 5;
        $pagerParams = array(
@@ -225,6 +226,7 @@ class MediaController extends Controller
                 $pagerParams['pagerUpperBound'] = $response->Items->TotalPages > 10 ? 10 : $response->Items->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
                 $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
+                $pagerParams['pagerRouteParams'] = $this->getMediaSelection();
                 //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
             }catch(\RunTimeException $re){
                 $exception = $re->getMessage();
@@ -267,9 +269,9 @@ class MediaController extends Controller
     
     public function mediaDetailsAction($media, $decade, $genre, $id){
         //create the return route back to the correct page of listings
-        $mediaSelection = $this->getSessionData('mediaSelection');
+        //$mediaSelection = $this->getSessionData('mediaSelection');
                        
-        $returnRoute = $this->generateUrl('search', array_filter(
+        /*$returnRoute = $this->generateUrl('search', array_filter(
                 array(
                     'decade'    =>  $decade,
                     'media'     =>  $media,
@@ -277,7 +279,9 @@ class MediaController extends Controller
                     'keywords'  =>  $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : null,
                     'page'      =>  $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
                 ), array($this, "is_NotNull"))
-        );
+        );*/
+        
+        //$returnRoute = $this->getSearchRoute();
         
         //look up product
         if($media != 'music'){
@@ -299,7 +303,7 @@ class MediaController extends Controller
         }
              
         $responseParams = array(
-            'returnRoute'       => $returnRoute,
+            'returnRouteParams' => $this->getMediaSelection(),
             'media'             => $media,
             'decade'            => $decade,
             'genre'             => $genre,
@@ -332,7 +336,7 @@ class MediaController extends Controller
                     'decade'    => $mediaSelection->getDecades() != null ? $mediaSelection->getDecades()->getSlug() : Decade::$default,
                     'media'     => $mediaSelection->getMediaTypes()->getSlug(),
                     'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : Genre::$default,
-                    'keywords'  => $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : null,
+                    'keywords'  => $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : '-',
                     'page'      => $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
             );
         }else {
@@ -349,6 +353,16 @@ class MediaController extends Controller
         $params = array_filter($params, array($this,'is_NotNull')); 
         return $params;
         
+    }
+    
+    /*
+     * gets the route for searching by
+     */
+    private function getSearchRoute(){
+        
+        $returnRoute = $this->generateUrl('search', array_filter(
+                $this->getMediaSelection(), array($this, "is_NotNull"))
+        );
     }
     
     private function is_NotNull($v){

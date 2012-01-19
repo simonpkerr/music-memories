@@ -7,7 +7,7 @@
 {% block title %}Details for {{title}}{% endblock %}
 
 {% block content %}
-<a href="{{returnRoute}}">back to listings</a>
+<a href="{{path('search', returnRouteParams)}}">back to listings</a>
 <h1>{{title}}</h1>
 
 {% if media != 'music' %}

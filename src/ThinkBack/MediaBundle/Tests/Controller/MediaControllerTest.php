@@ -31,10 +31,17 @@ class MediaControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
     }
        
+    public function testMediaSelectionWithKeywordsGoesToListings(){
+        //todo
+    }
+    
+    public function testMediaSelectionWithPageAndNoKeywordsGoesToListings(){
+        //todo
+    }    
     
     public function testMediaSelectionOutOfBoundsReturnsError(){
         $client = static::createClient();
-        $crawler = $client->request('GET', '/search/film/all-decades/classics/12');
+        $crawler = $client->request('GET', '/search/film/all-decades/classics/-/12');
         
         $this->assertTrue($crawler->filter('html:contains("Sorry")')->count() > 0);
     }
