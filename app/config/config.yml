@@ -71,8 +71,16 @@ stof_doctrine_extensions:
     default:
       sluggable: true
 
-#thinkback_media:
-#  resource: ThinkBackMediaBundle/Resources/config/services.yml
+think_back_media:
+  amazonapi:
+    access_params:
+      amazon_public_key: %amazon_public_key%
+      amazon_private_key: %amazon_uk_private_key%
+      amazon_associate_tag: %amazon_associate_tag%
+    #this can be set in the config but has a default value defined in the Configuration.php of the bundle
+    #amazon_signed_request:
+    #  class: ThinkBack\MediaBundle\MediaAPI\DummyAmazonSignedRequest
+  youtubeapi: ~
 
 
 #jms_aop:

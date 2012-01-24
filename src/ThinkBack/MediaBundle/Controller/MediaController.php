@@ -220,9 +220,10 @@ class MediaController extends Controller
                'Sort'           =>      'salesrank',
             ), array($this, "is_NotNull"));
             
-            $api = new MediaAPI\AmazonAPI($this->container);
+            $amazonapi = $this->get('think_back_media.amazonapi');
             try{
-                $response = $api->getRequest($params);
+                //$response = $api->getRequest($params);
+                $response = $amazonapi->getRequest($params);
                 $pagerParams['pagerUpperBound'] = $response->Items->TotalPages > 10 ? 10 : $response->Items->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
                 $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
@@ -292,9 +293,10 @@ class MediaController extends Controller
                    //,RelatedItems',
                //'RelationshipType'   =>      'Season',  
             );
-            $api = new MediaAPI\AmazonAPI($this->container);
+            $amazonapi = $this->get('think_back_media.amazonapi');
+            
             try{
-                $response = $api->getRequest($params);
+                $response = $amazonapi->getRequest($params);
             }catch(\RunTimeException $re){
                 $exception = $re->getMessage();
             }catch(\LengthException $le){
@@ -317,9 +319,7 @@ class MediaController extends Controller
         }
         else
             $responseParams['exception'] = $exception;
-        
-       
-        
+     
         return $this->render('ThinkBackMediaBundle:Media:mediaDetails.html.twig', $responseParams);
         
     }
@@ -372,7 +372,9 @@ class MediaController extends Controller
     public function youTubeRequestAction($title, $media, $decade, $genre){
         //look up YouTube
         $responseParams = array();
-        $ytapi = new MediaAPI\YouTubeAPI($this->container);
+        
+        //$ytapi = new MediaAPI\YouTubeAPI($this->container);
+        $ytapi = $this->get('think_back_media.youtubeapi');
         $ytparams = array(
             'keywords'  =>  urldecode($title),
             'decade'    =>  $decade,

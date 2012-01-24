@@ -1,8 +1,12 @@
-#parameters:
-#  amazonapi.class: ThinkBack\MediaBundle\Resources\MediaAPI\AmazonAPI
-#  amazonapi.container: container  
-#
-#services:
-#  amazonapi:
-#    class: %amazonapi.class%
-#    arguments: [%?amazonapi.container%]
+parameters:
+  think_back_media.amazonapi.class: ThinkBack\MediaBundle\MediaAPI\AmazonAPI
+  think_back_media.amazonapi.amazon_public_key: ~
+  
+#  amazonapi.accessparams:
+#    - %amazon_public_key%
+#    - %amazon_uk_private_key%
+
+services:
+  think_back_media.amazonapi:
+    class: %think_back_media.amazonapi.class%
+    arguments: [%think_back_media.amazonapi.amazon_public_key%]

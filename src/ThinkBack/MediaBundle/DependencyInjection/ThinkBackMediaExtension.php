@@ -16,13 +16,25 @@ class ThinkBackMediaExtension extends Extension
 {
     /**
      * {@inheritDoc}
+     * any configs that come to the load method come as multi-dimensional arrays
+     * so that the different environment config files can all be parsed. a method needs 
+     * to be used to handle duplicate config parameters
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.xml');
+        
+        //amazon params
+        $container->setParameter('amazonapi.access_params', $config['amazonapi']['access_params']);
+        $container->setParameter ('amazonapi.amazon_signed_request.class', $config['amazonapi']['amazon_signed_request']['class']);
+        
+        
+        //youtube params
+        if(isset($config['youtubeapi']['youtube_request_object']))
+            $container->setParameter('youtubeapi.youtube_request_object.class', $config['youtubeapi']['youtube_request_object']['class']);
     }
 }

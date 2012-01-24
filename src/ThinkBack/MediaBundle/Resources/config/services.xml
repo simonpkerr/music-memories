@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="mediaapi.class">ThinkBack\MediaBundle\MediaAPI\MediaAPI</parameter>
+        
+        <!--amazon params-->
+        <parameter key="amazonapi.class">ThinkBack\MediaBundle\MediaAPI\AmazonAPI</parameter>
+        <parameter key="amazonapi.access_params" type="collection" >
+            <parameter key="amazon_public_key" />
+            <parameter key="amazon_uk_private_key" />
+            <parameter key="amazon_associate_tag" />
+        </parameter>
+        <parameter key="amazonapi.amazon_signed_request.class" />
+            
+        <!--youtube params-->
+        <parameter key="youtubeapi.class">ThinkBack\MediaBundle\MediaAPI\YouTubeAPI</parameter>
+        <parameter key="youtubeapi.youtube_request_object.class" />
+        
+    </parameters>
+    
+    <services>
+        <service id="think_back_media.mediaapi" class="%mediaapi.class%" abstract="true" />
+        
+        <!--amazon services-->
+        <service id="amazon_signed_request" class="%amazonapi.amazon_signed_request.class%" />
+        <service id="think_back_media.amazonapi" class="%amazonapi.class%" parent="think_back_media.mediaapi">
+            <argument>%amazonapi.access_params%</argument>
+            <argument id="amazon_signed_request" type="service" />
+        </service>
+        
+        <!--youtube services-->
+        <service id="youtube_request_object" class="%youtubeapi.youtube_request_object.class%" />
+        <service id="think_back_media.youtubeapi" class="%youtubeapi.class%" parent="think_back_media.mediaapi">
+            <argument id="youtube_request_object" type="service" on-invalid="ignore" />
+        </service>
+    </services>
+</container>
+
