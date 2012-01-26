@@ -373,7 +373,7 @@ class MediaController extends Controller
         //look up YouTube
         $responseParams = array();
         
-        //$ytapi = new MediaAPI\YouTubeAPI($this->container);
+        //get the youtube service
         $ytapi = $this->get('think_back_media.youtubeapi');
         $ytparams = array(
             'keywords'  =>  urldecode($title),

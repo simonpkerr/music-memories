@@ -43,9 +43,6 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('youtube_request_object')
                             ->defaultNull()
-                            /*->children()
-                                ->scalarNode('class')->defaultNull()->end()
-                            ->end()*/
                         ->end()
                     ->end()
                 ->end()
