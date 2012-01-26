@@ -18,7 +18,7 @@
             
         <!--youtube params-->
         <parameter key="youtubeapi.class">ThinkBack\MediaBundle\MediaAPI\YouTubeAPI</parameter>
-        <parameter key="youtubeapi.youtube_request_object.class" />
+        <parameter key="youtubeapi.youtube_request_object" />
         
     </parameters>
     
@@ -33,9 +33,10 @@
         </service>
         
         <!--youtube services-->
-        <service id="youtube_request_object" class="%youtubeapi.youtube_request_object.class%" />
+        <!--service id="youtube_request_object" class="%youtubeapi.youtube_request_object.class%" /-->
         <service id="think_back_media.youtubeapi" class="%youtubeapi.class%" parent="think_back_media.mediaapi">
-            <argument id="youtube_request_object" type="service" on-invalid="ignore" />
+            <!--argument id="youtube_request_object" type="service" on-invalid="ignore" /-->
+            <argument on-invalid="ignore">%youtubeapi.youtube_request_object%</argument>
         </service>
     </services>
 </container>

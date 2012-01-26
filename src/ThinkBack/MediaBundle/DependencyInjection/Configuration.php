@@ -41,17 +41,22 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('youtubeapi')
                     ->children()
-                        ->arrayNode('youtube_request_object')
+                        ->scalarNode('youtube_request_object')
                             ->defaultNull()
-                            ->children()
+                            /*->children()
                                 ->scalarNode('class')->defaultNull()->end()
-                            ->end()
+                            ->end()*/
                         ->end()
                     ->end()
                 ->end()
         ->end()
         ;
-                 
+        
+        /*$rootNode->children()
+                ->arrayNode('youtubeapi')->
+                    
+                ->end;
+        */
         return $treeBuilder;
     }
 }

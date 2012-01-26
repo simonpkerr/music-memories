@@ -81,6 +81,9 @@ think_back_media:
     #amazon_signed_request:
     #  class: ThinkBack\MediaBundle\MediaAPI\DummyAmazonSignedRequest
   youtubeapi: ~
+    #youtube_request_object: ThinkBack\MediaBundle\MediaAPI\AmazonSignedRequest
+     
+    
 
 
 #jms_aop:
