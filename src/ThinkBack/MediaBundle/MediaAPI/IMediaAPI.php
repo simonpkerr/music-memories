@@ -8,7 +8,7 @@
  * @version 1.0
  */
 
-namespace ThinkBack\MediaBundle\Resources\MediaAPI;
+namespace ThinkBack\MediaBundle\MediaAPI;
 
 interface IMediaAPI {
     public function getRequest(array $params);

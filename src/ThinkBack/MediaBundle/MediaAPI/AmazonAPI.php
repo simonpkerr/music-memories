@@ -28,7 +28,7 @@ class AmazonAPI extends MediaAPI {
                 //"Sort"          => "salesrank",
                 //"Sort"          => "-releasedate", // release date oldest to newest
                 "Validate"      => "True",
-            );
+         );
     }
     
     /*

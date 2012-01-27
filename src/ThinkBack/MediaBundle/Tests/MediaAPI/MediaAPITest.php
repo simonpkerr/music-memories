@@ -7,7 +7,7 @@
  * @version 1.0
  */
 
-namespace ThinkBack\MediaBundle\Tests\Resources\MediaAPI;
+namespace ThinkBack\MediaBundle\Tests\MediaAPI;
 use ThinkBack\MediaBundle\Resources\MediaAPI\MediaAPI;
 
 class MediaAPITests extends \PHPUnit_Framework_TestCase {

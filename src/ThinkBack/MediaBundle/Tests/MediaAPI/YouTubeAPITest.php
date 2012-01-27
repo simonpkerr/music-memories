@@ -9,18 +9,16 @@
 
 
 namespace ThinkBack\MediaBundle\Tests\Resources\MediaAPI;
-use ThinkBack\MediaBundle\Resources\MediaAPI\YouTubeAPI;
+use ThinkBack\MediaBundle\Resources\YouTubeAPI;
 require_once 'Zend/Loader.php';
 
 class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
 
-    private $testContainer;
     private $params;
     
     protected function setUp(){
         \Zend_Loader::loadClass('Zend_Gdata_YouTube');
         
-        $this->testContainer = new TestContainer2();
         $this->params = array(
             'keywords'  =>  'sample title',
             'decade'    =>  '1980',
@@ -43,7 +41,7 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
                 ->method('getVideoFeed')
                 ->will($this->returnValue(false));
         
-        $yt = new YouTubeAPI($this->testContainer, $ytObj);
+        $yt = new YouTubeAPI($ytObj);
         $yt->getRequest($this->params);
     }
     
@@ -61,7 +59,7 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
                 ->method('getVideoFeed')
                 ->will($this->returnValue(array()));
         
-        $yt = new YouTubeAPI($this->testContainer, $ytObj);
+        $yt = new YouTubeAPI($ytObj);
         $yt->getRequest($this->params);
     }
     
@@ -69,16 +67,5 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
 
 }
 
-/**
- * test container for mimicking the parameters in the 
- * actual container object for the controller
- */
-class TestContainer2 {
-    public $parameters = array(
-        'amazon_public_key'     => 'apk',
-        'amazon_uk_private_key' => 'aupk',
-        'amazon_associate_tag'  => 'aat',
-    );
-}
 
 ?>
