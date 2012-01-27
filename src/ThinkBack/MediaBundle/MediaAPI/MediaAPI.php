@@ -1,9 +1,10 @@
 <?php
 namespace ThinkBack\MediaBundle\MediaAPI;
 
-abstract class MediaAPI {
+abstract class MediaAPI implements IMediaAPI {
     
-    /*public function getRequest(array $params = null){}*/
+    //public function __construct(array $params){}
+    public function getRequest(array $params){}
     
     /**
      *

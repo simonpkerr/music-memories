@@ -22,10 +22,13 @@ use ThinkBack\MediaBundle\Entity\Genre;
 use ThinkBack\MediaBundle\Form\Type\MediaSelectionType;
 use ThinkBack\MediaBundle\Form\Type\MediaSearchType;
 
-use ThinkBack\MediaBundle\Resources\MediaAPI;
+use ThinkBack\MediaBundle\MediaAPI;
 
 class MediaController extends Controller
 {
+    private $amazonapi;
+    private $youtubeapi;
+        
     private function getEntityManager(){
         return $this->getDoctrine()->getEntityManager();
     }
@@ -175,7 +178,7 @@ class MediaController extends Controller
      */
     public function searchAction($media, $decade = "all-decades", $genre = "all-genres", $keywords = '-', $page = 1){
        $keywords = $keywords == '-' ? null : $keywords;
-        $em = $this->getEntityManager();
+       $em = $this->getEntityManager();
         
        $pagerCount = 5;
        $pagerParams = array(
@@ -220,10 +223,10 @@ class MediaController extends Controller
                'Sort'           =>      'salesrank',
             ), array($this, "is_NotNull"));
             
-            $amazonapi = $this->get('think_back_media.amazonapi');
+            $this->amazonapi = $this->get('think_back_media.amazonapi');
             try{
                 //$response = $api->getRequest($params);
-                $response = $amazonapi->getRequest($params);
+                $response = $this->amazonapi->getRequest($params);
                 $pagerParams['pagerUpperBound'] = $response->Items->TotalPages > 10 ? 10 : $response->Items->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
                 $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
@@ -293,10 +296,10 @@ class MediaController extends Controller
                    //,RelatedItems',
                //'RelationshipType'   =>      'Season',  
             );
-            $amazonapi = $this->get('think_back_media.amazonapi');
+            $this->amazonapi = $this->get('think_back_media.amazonapi');
             
             try{
-                $response = $amazonapi->getRequest($params);
+                $response = $this->amazonapi->getRequest($params);
             }catch(\RunTimeException $re){
                 $exception = $re->getMessage();
             }catch(\LengthException $le){
@@ -374,7 +377,7 @@ class MediaController extends Controller
         $responseParams = array();
         
         //get the youtube service
-        $ytapi = $this->get('think_back_media.youtubeapi');
+        $this->youtubeapi = $this->get('think_back_media.youtubeapi');
         $ytparams = array(
             'keywords'  =>  urldecode($title),
             'decade'    =>  $decade,
@@ -382,7 +385,7 @@ class MediaController extends Controller
             'genre'     =>  $genre,
         );
         try{
-            $ytResponse = $ytapi->getRequest($ytparams);
+            $ytResponse = $this->youtubeapi->getRequest($ytparams);
         }catch(\RuntimeException $re){
             $ytException = $re->getMessage();
         }catch(\LengthException $le){

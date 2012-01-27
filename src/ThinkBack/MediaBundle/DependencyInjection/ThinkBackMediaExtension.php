@@ -31,11 +31,13 @@ class ThinkBackMediaExtension extends Extension
         //amazon params
         $container->setParameter('amazonapi.access_params', $config['amazonapi']['access_params']);
         $container->setParameter ('amazonapi.amazon_signed_request.class', $config['amazonapi']['amazon_signed_request']['class']);
+        //$container->setParameter('amazonapi.params', $config['amazonapi']['params']);
         
         
         //youtube params
         if(isset($config['youtubeapi']['youtube_request_object']))
-        //$container->setParameter('youtubeapi.youtube_request_object.class', $config['youtubeapi']['youtube_request_object']['class']);
-        $container->setParameter('youtubeapi.youtube_request_object', $config['youtubeapi']['youtube_request_object']);
+        //if(isset($config['youtubeapi']['params']))
+            $container->setParameter('youtubeapi.youtube_request_object', $config['youtubeapi']['youtube_request_object']);
+            //$container->setParameter('youtubeapi.params', $config['youtubeapi']['params']);
     }
 }

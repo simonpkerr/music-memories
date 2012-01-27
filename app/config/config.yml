@@ -78,8 +78,8 @@ think_back_media:
       amazon_private_key: %amazon_uk_private_key%
       amazon_associate_tag: %amazon_associate_tag%
     #this can be set in the config but has a default value defined in the Configuration.php of the bundle
-    #amazon_signed_request:
-    #  class: ThinkBack\MediaBundle\MediaAPI\DummyAmazonSignedRequest
+     #amazon_signed_request:
+     #  class: ThinkBack\MediaBundle\MediaAPI\DummyAmazonSignedRequest
   youtubeapi: ~
     #use the below parameter to inject a dummy class for testing
     #youtube_request_object: ThinkBack\MediaBundle\MediaAPI\DummyYouTubeRequestObject

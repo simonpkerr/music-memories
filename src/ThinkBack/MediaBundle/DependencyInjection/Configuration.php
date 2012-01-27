@@ -24,6 +24,47 @@ class Configuration implements ConfigurationInterface
         ->children()
                 ->arrayNode('amazonapi')
                     ->children()
+                            //->arrayNode('params')
+                            //    ->children()
+                                    ->arrayNode('access_params')
+                                        ->children()
+                                                ->scalarNode('amazon_public_key')->isRequired()->cannotBeEmpty()->end()
+                                                ->scalarNode('amazon_private_key')->isRequired()->cannotBeEmpty()->end()
+                                                ->scalarNode('amazon_associate_tag')->isRequired()->cannotBeEmpty()->end()
+                                        ->end()
+                                    ->end()//end of access params
+                                    ->arrayNode('amazon_signed_request')
+                                    ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode('class')->defaultValue('ThinkBack\MediaBundle\MediaAPI\AmazonSignedRequest')->end()
+                                        ->end()
+                                    ->end()//end of amazon_signed_request
+                            //    ->end()
+                            //->end()//end of params
+                    ->end()
+                ->end()//end of amazonapi
+                ->arrayNode('youtubeapi')
+                    ->defaultNull()
+                    ->children()
+                            //->arrayNode('params')
+                                //->children()
+                                    ->arrayNode('youtube_request_object')
+                                    ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode('class')->defaultValue('\\Zend\\Gdata\\YouTube')->end()
+                                        ->end()
+                                    ->end()
+                                //->end()
+                            //->end()//end of params
+                    ->end()
+                ->end()//end of youtubeapi
+        ->end()
+        ;
+        
+        /*$rootNode
+        ->children()
+                ->arrayNode('amazonapi')
+                    ->children()
                         ->arrayNode('access_params')
                             ->children()
                                 ->scalarNode('amazon_public_key')->isRequired()->cannotBeEmpty()->end()
@@ -47,7 +88,8 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
         ->end()
-        ;
+        ;*/
+        
         
         /*$rootNode->children()
                 ->arrayNode('youtubeapi')->

@@ -9,6 +9,7 @@
         
         <!--amazon params-->
         <parameter key="amazonapi.class">ThinkBack\MediaBundle\MediaAPI\AmazonAPI</parameter>
+        
         <parameter key="amazonapi.access_params" type="collection" >
             <parameter key="amazon_public_key" />
             <parameter key="amazon_uk_private_key" />
@@ -17,9 +18,10 @@
         <parameter key="amazonapi.amazon_signed_request.class" />
             
         <!--youtube params-->
+        <!--parameter key="youtubeapi.youtube_request_object" /-->
         <parameter key="youtubeapi.class">ThinkBack\MediaBundle\MediaAPI\YouTubeAPI</parameter>
-        <parameter key="youtubeapi.youtube_request_object" />
-        
+        <parameter key="youtubeapi.youtube_request_object.class" />
+   
     </parameters>
     
     <services>
@@ -33,9 +35,10 @@
         </service>
         
         <!--youtube services-->
-        <!--service id="youtube_request_object" class="%youtubeapi.youtube_request_object.class%" /-->
+        <service id="youtube_request_object" class="%youtubeapi.youtube_request_object.class%" />
         <service id="think_back_media.youtubeapi" class="%youtubeapi.class%" parent="think_back_media.mediaapi">
-            <argument on-invalid="ignore">%youtubeapi.youtube_request_object%</argument>
+            <!--argument on-invalid="ignore">%youtubeapi.youtube_request_object%</argument-->
+            <argument type="service" id="youtube_request_object" on-invalid="ignore" />
         </service>
     </services>
 </container>

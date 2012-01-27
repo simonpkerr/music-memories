@@ -16,7 +16,8 @@ class YouTubeAPI extends MediaAPI {
         //get access to the youtube methods
         \Zend_Loader::loadClass('Zend_Gdata_YouTube');
         
-        $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : new $youtube_request_object;
+        //$this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : new $youtube_request_object;
+        $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
        
     }
     
