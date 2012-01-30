@@ -44,16 +44,15 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()//end of amazonapi
                 ->arrayNode('youtubeapi')
-                    ->defaultNull()
                     ->children()
                             //->arrayNode('params')
                                 //->children()
-                                    ->arrayNode('youtube_request_object')
-                                    ->addDefaultsIfNotSet()
+                                    /*->arrayNode('youtube_request_object')
+                                    ->defaultNull()
                                         ->children()
-                                            ->scalarNode('class')->defaultValue('\\Zend\\Gdata\\YouTube')->end()
+                                            ->scalarNode('class')->defaultNull()->end()
                                         ->end()
-                                    ->end()
+                                    ->end()*/
                                 //->end()
                             //->end()//end of params
                     ->end()

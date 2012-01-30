@@ -14,11 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
-use ThinkBack\MediaBundle\Entity\MediaTypes;
 use ThinkBack\MediaBundle\Entity\MediaSelection;
 use ThinkBack\MediaBundle\Entity\MediaSearch;
 use ThinkBack\MediaBundle\Entity\Decade;
 use ThinkBack\MediaBundle\Entity\Genre;
+use ThinkBack\MediaBundle\Entity\MediaType;
 use ThinkBack\MediaBundle\Form\Type\MediaSelectionType;
 use ThinkBack\MediaBundle\Form\Type\MediaSearchType;
 

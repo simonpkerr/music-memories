@@ -35,9 +35,9 @@ class ThinkBackMediaExtension extends Extension
         
         
         //youtube params
-        if(isset($config['youtubeapi']['youtube_request_object']))
-        //if(isset($config['youtubeapi']['params']))
-            $container->setParameter('youtubeapi.youtube_request_object', $config['youtubeapi']['youtube_request_object']);
-            //$container->setParameter('youtubeapi.params', $config['youtubeapi']['params']);
+        /*if(isset($config['youtubeapi']['youtube_request_object'])){
+            $container->setParameter('youtubeapi.youtube_request_object.class', $config['youtubeapi']['youtube_request_object']['class']);
+            //$container->setParameter('youtubeapi.youtube_request_object', $config['youtubeapi']['youtube_request_object']);
+        }*/
     }
 }

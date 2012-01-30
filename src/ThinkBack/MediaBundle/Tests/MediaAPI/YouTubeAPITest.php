@@ -8,8 +8,9 @@
  */
 
 
-namespace ThinkBack\MediaBundle\Tests\Resources\MediaAPI;
-use ThinkBack\MediaBundle\Resources\YouTubeAPI;
+namespace ThinkBack\MediaBundle\Tests\MediaAPI;
+use ThinkBack\MediaBundle\MediaAPI\YouTubeAPI;
+
 require_once 'Zend/Loader.php';
 
 class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
@@ -41,7 +42,8 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
                 ->method('getVideoFeed')
                 ->will($this->returnValue(false));
         
-        $yt = new YouTubeAPI($ytObj);
+        $yt = new YouTubeAPI();
+        $yt->setRequestObject($ytObj);
         $yt->getRequest($this->params);
     }
     
@@ -59,11 +61,28 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
                 ->method('getVideoFeed')
                 ->will($this->returnValue(array()));
         
-        $yt = new YouTubeAPI($ytObj);
+        $yt = new YouTubeAPI();
+        $yt->setRequestObject($ytObj);
         $yt->getRequest($this->params);
     }
     
-    
+    public function testSimpleParametersReturnsURL(){
+        $ytObj = $this->getMock('\Zend_Gdata_YouTube',
+                array(
+                    'getVideoFeed'
+                ));
+
+        $ytObj->expects($this->any())
+                ->method('getVideoFeed')
+                ->will($this->returnValue(array()));
+        
+        $this->params['keywords'] = "sherlock";
+        
+        $yt = new YouTubeAPI();
+        $yt->setRequestObject($ytObj);
+        $yt->getRequest($this->params);
+        $this->assertEquals("http://gdata.youtube.com/feeds/api/videos/-/Film%7CEntertainment?max-results=25&q=sherlock", $yt->)
+    }
 
 }
 

@@ -10,6 +10,14 @@ class MediaControllerTest extends WebTestCase
         $this->client = static::createClient();
         //use the below line to inject mock services into a controller, to avoid calling live apis
         //$this->client->getContainer()->set('think_back_media.amazonapi', new \ThinkBack\MediaBundle\MediaAPI\MockAmazonAPI());
+        
+        //use the below to inject a dummy Zend_Gdata_YouTube into the YouTubeAPI class
+        /*
+        $yt = $this->client->getContainer()->get('think_back_media.youtubeapi');
+        $req_obj = DummyReqObj();
+        $yt->setRequestObject($req_obj);
+        $this->client->getContainer()->set('think_back_media.youtubeapi', $yt);
+        */
     }
     
     /*

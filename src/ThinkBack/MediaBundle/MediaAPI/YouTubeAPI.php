@@ -15,10 +15,13 @@ class YouTubeAPI extends MediaAPI {
     public function __construct($youtube_request_object = null){
         //get access to the youtube methods
         \Zend_Loader::loadClass('Zend_Gdata_YouTube');
-        
         //$this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : new $youtube_request_object;
         $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
-       
+        //$f = new \Zend_Gdata_YouTZend_Gdata_YouTube();
+    }
+    
+    public function setRequestObject($obj){
+        $this->youTube = $obj;
     }
     
     public function getRequest(array $params){
@@ -104,6 +107,7 @@ class YouTubeAPI extends MediaAPI {
         $query->setVideoQuery($keywordQuery);
         $query->setCategory(urlencode($categories));
         $this->query = $query->getQueryUrl(2);
+        
         return $this->youTube->getVideoFeed($query->getQueryUrl(2));    
                 
     }

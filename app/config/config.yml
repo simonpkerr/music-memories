@@ -82,7 +82,9 @@ think_back_media:
      #  class: ThinkBack\MediaBundle\MediaAPI\DummyAmazonSignedRequest
   youtubeapi: ~
     #use the below parameter to inject a dummy class for testing
-    #youtube_request_object: ThinkBack\MediaBundle\MediaAPI\DummyYouTubeRequestObject
+    #youtube_request_object: 
+    #  class: ThinkBack\MediaBundle\MediaAPI\AmazonSignedRequest
+    #DummyYouTubeRequestObject
      
     
 
