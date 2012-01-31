@@ -1,23 +1,49 @@
 <?php
 namespace ThinkBack\MediaBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+require_once 'src\ThinkBack\MediaBundle\MediaAPI\AmazonSignedRequest.php';
+require_once 'Zend/Loader.php';
 
 class MediaControllerTest extends WebTestCase
 {
     private $client;
     
     public function setup(){
+        //load the youtube api
+        \Zend_Loader::loadClass('Zend_Gdata_YouTube');
+        
         $this->client = static::createClient();
         //use the below line to inject mock services into a controller, to avoid calling live apis
-        //$this->client->getContainer()->set('think_back_media.amazonapi', new \ThinkBack\MediaBundle\MediaAPI\MockAmazonAPI());
         
-        //use the below to inject a dummy Zend_Gdata_YouTube into the YouTubeAPI class
+        $amazonapi = $this->client->getContainer()->get('think_back_media.amazonapi');
+        $valid_xml_data_set = simplexml_load_file('src\ThinkBack\MediaBundle\Tests\MediaAPI\valid_xml_response.xml');
+        $testASR = $this->getMockBuilder('AmazonSignedRequest')
+                ->setMethods(array(
+                    'aws_signed_request',
+                ))
+                ->getMock();
+        
+        $testASR->expects($this->any())
+                ->method('aws_signed_request')
+                ->will($this->returnValue($valid_xml_data_set));
+        $amazonapi->setAmazonSignedRequest($testASR);
+        $this->client->getContainer()->set('think_back_media.amazonapi', $amazonapi);
+        
+        
         /*
+         * use the below to inject a dummy Zend_Gdata_YouTube into the YouTubeAPI class
+         */
         $yt = $this->client->getContainer()->get('think_back_media.youtubeapi');
-        $req_obj = DummyReqObj();
-        $yt->setRequestObject($req_obj);
-        $this->client->getContainer()->set('think_back_media.youtubeapi', $yt);
-        */
+        $ytReqObj = $this->getMock('\Zend_Gdata_YouTube',
+                array(
+                    'getVideoFeed'
+                ));
+
+        $ytReqObj->expects($this->any())
+                ->method('getVideoFeed')
+                ->will($this->returnValue(array()));
+        $this->client->getContainer()->set('think_back_media.youtubeapi', $ytReqObj);
+        
     }
     
     /*
@@ -49,8 +75,14 @@ class MediaControllerTest extends WebTestCase
         //todo
     }
     
-    public function testMediaSelectionWithPageAndNoKeywordsGoesToListings(){
+    public function testSearchWithInvalidParametersThrowsException(){
         //todo
+    }
+    
+    public function testMediaSelectionWithPageAndNoKeywordsGoesToListings(){
+        $crawler = $this->client->request('GET', '/search/film/all-decades/classics/-/2');
+        
+        $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
     }    
     
     public function testMediaSelectionOutOfBoundsReturnsError(){
@@ -59,6 +91,18 @@ class MediaControllerTest extends WebTestCase
         
         $this->assertTrue($crawler->filter('html:contains("Sorry")')->count() > 0);
     }
+    
+    public function testMediaDetailsWithValidRouteGoesToDetailsPage(){
+        //todo
+    }
+    
+    public function testMediaDetailsWithInvalidParametersThrowsException(){
+       //todo 
+    }
+    
+    
+    
+    
     
 }
 

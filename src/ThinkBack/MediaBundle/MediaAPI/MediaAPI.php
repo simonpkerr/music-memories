@@ -49,6 +49,8 @@ abstract class MediaAPI implements IMediaAPI {
             //need a way to decide relevant results (maybe successive calls to youtube if no results found?)
         //}
         
+        //---- MAYBE look at the bracketed part of a title and check to see if a year is supplied and use that in the search.
+        
         //$keywordQuery = urlencode($keywordQuery);
         
         return $keywordQuery;

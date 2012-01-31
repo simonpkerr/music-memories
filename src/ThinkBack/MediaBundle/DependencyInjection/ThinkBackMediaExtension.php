@@ -3,6 +3,7 @@
 namespace ThinkBack\MediaBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
@@ -35,6 +36,11 @@ class ThinkBackMediaExtension extends Extension
         
         
         //youtube params
+        /*if(isset($config['youtubeapi']['youtube_request_object'])){
+            $yro = $config['youtubeapi']['youtube_request_object'];
+            $container->getDefinition('think_back_media.youtubeapi')->replaceArgument(0, new Reference($yro));
+        }*/
+        
         /*if(isset($config['youtubeapi']['youtube_request_object'])){
             $container->setParameter('youtubeapi.youtube_request_object.class', $config['youtubeapi']['youtube_request_object']['class']);
             //$container->setParameter('youtubeapi.youtube_request_object', $config['youtubeapi']['youtube_request_object']);

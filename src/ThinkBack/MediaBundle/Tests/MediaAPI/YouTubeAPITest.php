@@ -66,7 +66,8 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
         $yt->getRequest($this->params);
     }
     
-    public function testSimpleParametersReturnsURL(){
+    //can't test this as the youtube variable is protected and no point creating a getter just for testing
+    /*public function testSimpleParametersReturnsURL(){
         $ytObj = $this->getMock('\Zend_Gdata_YouTube',
                 array(
                     'getVideoFeed'
@@ -81,8 +82,8 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
         $yt = new YouTubeAPI();
         $yt->setRequestObject($ytObj);
         $yt->getRequest($this->params);
-        $this->assertEquals("http://gdata.youtube.com/feeds/api/videos/-/Film%7CEntertainment?max-results=25&q=sherlock", $yt->)
-    }
+        //$this->assertEquals("http://gdata.youtube.com/feeds/api/videos/-/Film%7CEntertainment?max-results=25&q=sherlock", $yt->)
+    }*/
 
 }
 

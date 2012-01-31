@@ -55,6 +55,121 @@ class MediaController extends Controller
     }
     
     /*
+     * check session, return mediaSelection if not null
+     * else create new media selection and return
+     * $params - contains optional media, decade, genre, keywords, page
+     * if params exist, they should override the session values
+     */
+    private function getMediaSelection(array $params = null){
+        $em = $this->getEntityManager();
+        $mediaSelection = $this->getSessionData('mediaSelection');
+        $mediaTypeSlug = null;
+        $decadeSlug = null;
+        $genreSlug = null;
+        $keywords = null;
+        $page = 1;
+        
+        if($params != null){
+            $mediaTypeSlug = isset($params['media']) ? $params['media'] : MediaType::$default;
+            $decadeSlug = isset($params['decade']) ? $params['decade'] : Decade::$default;
+            $genreSlug = isset($params['genre']) ? $params['genre'] : Genre::$default;
+            $keywords = isset($params['keywords']) ? $params['keywords'] != '-' ? $params['keywords'] : null : null;
+            $page = isset($params['page']) ? $params['page'] : 1;
+        }
+        
+        if($mediaSelection == null)
+            $mediaSelection = new MediaSelection();
+        
+        
+            /*
+            $mediaTypeSlug = $params != null ? isset($params['media']) ? $params['media'] : MediaType::$default : MediaType::$default;
+            $decadeSlug = $params != null ? isset($params['decade']) ? $params['decade'] : Decade::$default : Decade::$default;
+            $genreSlug = $params != null ? isset($params['genre']) ? $params['genre'] : Genre::$default : Genre::$default;
+            */
+        if($mediaSelection->getMediaTypes() == null){
+            $mediaType = $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
+            $mediaType = $this->getEntityManager()->merge($mediaType);
+            $mediaSelection->setMediaTypes($mediaType);
+        }
+
+        if($mediaSelection->getDecades() == null && $decadeSlug != Decade::$default){
+            $decade = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
+            $decade = $this->getEntityManager()->merge($decade);
+            $mediaSelection->setDecades($decade);
+        }
+
+        if($mediaSelection->getSelectedMediaGenres() == null && $genreSlug != Genre::$default){ 
+            $genre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
+            $genre = $this->getEntityManager()->merge($genre);
+            $mediaSelection->setSelectedMediaGenres($genre);
+        }
+
+        if($keywords != null && $mediaSelection->getKeywords() == null){
+            $mediaSelection->setKeywords($keywords);
+        }
+
+        if($mediaSelection->getPage() == null)
+            $mediaSelection->setPage($page);
+            
+        $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
+        $mediaSelection->setGenres($genres);
+            
+        //save the data so this process is only done once
+        $this->setSessionData($mediaSelection, 'mediaSelection');
+        
+        
+        return $mediaSelection;
+    }
+    
+    
+    /*
+     * if no media, decade or genre is selected, defaults should be returned
+     * so that the media selection form can be correctly set.
+     */
+    private function getMediaSelectionParams(){
+        $mediaSelection = $this->getSessionData('mediaSelection');
+        $params = array();
+        if($mediaSelection != null){
+            $params = array(
+                    'decade'    => $mediaSelection->getDecades() != null ? $mediaSelection->getDecades()->getSlug() : Decade::$default,
+                    'media'     => $mediaSelection->getMediaTypes()->getSlug(),
+                    'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : Genre::$default,
+                    'keywords'  => $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : '-',
+                    'page'      => $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
+            );
+        }else {
+            $params = array(
+                'decade'    => Decade::$default,
+                'media'     => MediaType::$default,
+                'genre'     => Genre::$default,
+                'page'      => 1,
+                //$em->getEntityRepository('ThinkBackMediaBundle:Media:Genre')->getDefaultGenre()->getSlug(),
+            );
+        }
+        
+        //array_filter removes elements from an array based on the function defined as the second argument
+        
+        $params = array_filter($params, array($this,'is_NotNull')); 
+        return $params;
+        
+    }
+    
+    /*
+     * gets the route for searching by
+     */
+    private function getSearchRoute(){
+        
+        $returnRoute = $this->generateUrl('search', array_filter(
+                $this->getMediaSelectionParams(), array($this, "is_NotNull"))
+        );
+    }
+    
+    private function is_NotNull($v){
+        return !is_null($v);
+    }
+    
+    
+    /*
      * set the media to be searched on
      */
 //    public function setMediaAction($mediaType){
@@ -66,51 +181,11 @@ class MediaController extends Controller
 //        return $this->redirect($this->generateUrl('index')); 
 //    }
 //    
-    /*
-     * the overall search functionality available on all pages
-     */
-//    public function mediaSearchAction(Request $request = null){
-//        $key = 'mediaSearch';
-//        
-//        $mediaSearch = new MediaSearch();
-//        $form = $this->createForm(new MediaSearchType(), $mediaSearch);
-//        
-//        if($request->getMethod() == 'POST'){
-//            $form->bindRequest($request);
-//            if($form->isValid()){
-//                $this->setSessionData($form->getData(), $key);
-//                //need to redirect to search results page showing the search title and listings
-//                return $this->redirect($this->generateUrl('mediaSearchResults', array(
-//                    'searchSlug'    => $mediaSearch->getSearchSlug(),
-//                    )));
-//            }
-//        }
-//        //just returns a partial segment of code to show the form for selecting media
-//        return $this->render('ThinkBackMediaBundle:Media:mediaSearchPartial.html.twig', array(
-//           'form' => $form->createView(), 
-//        ));
-//    }
-    
-    /*
-     * called when a generic search is performed
-     */
-//    public function mediaSearchResultsAction($searchSlug) {
-//        //get the search string stored in the session
-//        $data = $this->getSessionData('mediaSearch');
-//        
-//        //perform the search of amazon
-//        
-//        return $this->render('ThinkBackMediaBundle:Media:mediaSearchResults.html.twig', array(
-//           'searchKeywords' => $data->getSearchKeywords(),
-//            
-//           //pass data to display
-//       ));
-//    }
-    
+      
     public function mediaSelectionAction(Request $request = null){
         $key = 'mediaSelection';
         $em = $this->getEntityManager();
-        $mediaSelection = new MediaSelection();
+        
         
         /*
          * if the data was posted before and is now saved in the session
@@ -118,6 +193,7 @@ class MediaController extends Controller
          * throws the error 'entities must be managed' and use it to populate
          * the form, otherwise just use the empty media selection object
          */
+        $mediaSelection = new MediaSelection();
         $sessionFormData = $this->getSessionData($key);
         if($sessionFormData != null){
             
@@ -147,7 +223,6 @@ class MediaController extends Controller
             $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
             $mediaSelection->setGenres($genres);
         }
-
         $form = $this->createForm(new MediaSelectionType(), $mediaSelection);
         
         if($request->getMethod() == 'POST'){
@@ -155,7 +230,7 @@ class MediaController extends Controller
             if($form->isValid()){
                 
                 $this->setSessionData($form->getData(), $key);
-                return $this->redirect($this->generateUrl('search', $this->getMediaSelection()));
+                return $this->redirect($this->generateUrl('search', $this->getMediaSelectionParams()));
             }else{
                 /*return $this->render('ThinkBackMediaBundle:Default:error.html.twig', array(
                     'form' => $form->createView(),
@@ -177,6 +252,14 @@ class MediaController extends Controller
      * perform the search, then redirect to the listings action to show the results
      */
     public function searchAction($media, $decade = "all-decades", $genre = "all-genres", $keywords = '-', $page = 1){
+       $mediaSelection = $this->getMediaSelection(array(
+            'media'     => $media,
+            'decade'    => $decade,
+            'genre'     => $genre,
+            'keywords'  => $keywords,
+            'page'      => $page,
+        ));
+        
        $keywords = $keywords == '-' ? null : $keywords;
        $em = $this->getEntityManager();
         
@@ -230,7 +313,7 @@ class MediaController extends Controller
                 $pagerParams['pagerUpperBound'] = $response->Items->TotalPages > 10 ? 10 : $response->Items->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
                 $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
-                $pagerParams['pagerRouteParams'] = $this->getMediaSelection();
+                $pagerParams['pagerRouteParams'] = $this->getMediaSelectionParams();
                 //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
             }catch(\RunTimeException $re){
                 $exception = $re->getMessage();
@@ -272,21 +355,16 @@ class MediaController extends Controller
     }
     
     public function mediaDetailsAction($media, $decade, $genre, $id){
-        //create the return route back to the correct page of listings
-        //$mediaSelection = $this->getSessionData('mediaSelection');
+        /*
+         * set the mediaSelection object if it doesn't exist - user may have gone straight to the page
+         * without going through the selection process
+         */
+        $mediaSelection = $this->getMediaSelection(array(
+            'media'     => $media,
+            'decade'    => $decade,
+            'genre'     => $genre,
+        ));
                        
-        /*$returnRoute = $this->generateUrl('search', array_filter(
-                array(
-                    'decade'    =>  $decade,
-                    'media'     =>  $media,
-                    'genre'     =>  $genre,
-                    'keywords'  =>  $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : null,
-                    'page'      =>  $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
-                ), array($this, "is_NotNull"))
-        );*/
-        
-        //$returnRoute = $this->getSearchRoute();
-        
         //look up product
         if($media != 'music'){
             $params = array(
@@ -308,7 +386,7 @@ class MediaController extends Controller
         }
              
         $responseParams = array(
-            'returnRouteParams' => $this->getMediaSelection(),
+            'returnRouteParams' => $this->getMediaSelectionParams(),
             'media'             => $media,
             'decade'            => $decade,
             'genre'             => $genre,
@@ -327,51 +405,7 @@ class MediaController extends Controller
         
     }
     
-    /*
-     * if no media, decade or genre is selected, defaults should be returned
-     * so that the media selection form can be correctly set.
-     */
-    private function getMediaSelection(){
-        $mediaSelection = $this->getSessionData('mediaSelection');
-        $params = array();
-        if($mediaSelection != null){
-            $params = array(
-                    'decade'    => $mediaSelection->getDecades() != null ? $mediaSelection->getDecades()->getSlug() : Decade::$default,
-                    'media'     => $mediaSelection->getMediaTypes()->getSlug(),
-                    'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : Genre::$default,
-                    'keywords'  => $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : '-',
-                    'page'      => $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
-            );
-        }else {
-            $params = array(
-                'decade'    => Decade::$default,
-                'media'     => MediaType::$default,
-                'genre'     => Genre::$default,
-                //$em->getEntityRepository('ThinkBackMediaBundle:Media:Genre')->getDefaultGenre()->getSlug(),
-            );
-        }
-        
-        //array_filter removes elements from an array based on the function defined as the second argument
-        
-        $params = array_filter($params, array($this,'is_NotNull')); 
-        return $params;
-        
-    }
-    
-    /*
-     * gets the route for searching by
-     */
-    private function getSearchRoute(){
-        
-        $returnRoute = $this->generateUrl('search', array_filter(
-                $this->getMediaSelection(), array($this, "is_NotNull"))
-        );
-    }
-    
-    private function is_NotNull($v){
-        return !is_null($v);
-    }
-    
+      
     public function youTubeRequestAction($title, $media, $decade, $genre){
         //look up YouTube
         $responseParams = array();

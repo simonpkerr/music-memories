@@ -80,10 +80,9 @@ think_back_media:
     #this can be set in the config but has a default value defined in the Configuration.php of the bundle
      #amazon_signed_request:
      #  class: ThinkBack\MediaBundle\MediaAPI\DummyAmazonSignedRequest
-  youtubeapi: ~
+  youtubeapi: 
     #use the below parameter to inject a dummy class for testing
-    #youtube_request_object: 
-    #  class: ThinkBack\MediaBundle\MediaAPI\AmazonSignedRequest
+    #youtube_request_object: ThinkBack\MediaBundle\MediaAPI\AmazonSignedRequest
     #DummyYouTubeRequestObject
      
     

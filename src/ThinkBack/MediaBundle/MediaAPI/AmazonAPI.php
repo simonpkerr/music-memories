@@ -41,6 +41,10 @@ class AmazonAPI extends MediaAPI {
          );
     }
     
+    public function setAmazonSignedRequest($asr){
+        $this->asr = $asr;
+    }
+    
     /*
      * the params array contains details of what kind of 
      * request will be performed on the amazon api
