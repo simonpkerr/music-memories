@@ -6,6 +6,19 @@ require_once 'Zend/Loader.php';
  */
 class Zend_Gdata_YouTube  {
     
+    
+    public function setMajorProtocolVersion($version){
+        return 0;
+    }
+    
+    public function newVideoQuery(){
+        return array();
+    }
+    
+    public function getVideoFeed($queryUrl){
+        return array();
+    }
+    
 }
 
 ?>

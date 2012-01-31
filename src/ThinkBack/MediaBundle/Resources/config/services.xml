@@ -37,8 +37,7 @@
         <!--youtube services-->
         <!--service id="youtube_request_object" class="%youtubeapi.youtube_request_object.class%" /-->
         <service id="think_back_media.youtubeapi" class="%think_back_media.youtubeapi.class%" parent="think_back_media.mediaapi">
-            <!--argument on-invalid="ignore">%youtubeapi.youtube_request_object%</argument-->
-            <!--argument type="service" on-invalid="ignore" id="youtube_request_object" /-->
+            <argument type="service" on-invalid="ignore" id="youtube_request_object" />
         </service>
          
     </services>

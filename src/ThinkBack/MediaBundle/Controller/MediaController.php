@@ -11,6 +11,7 @@ namespace ThinkBack\MediaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -80,26 +81,31 @@ class MediaController extends Controller
         if($mediaSelection == null)
             $mediaSelection = new MediaSelection();
         
-        
-            /*
-            $mediaTypeSlug = $params != null ? isset($params['media']) ? $params['media'] : MediaType::$default : MediaType::$default;
-            $decadeSlug = $params != null ? isset($params['decade']) ? $params['decade'] : Decade::$default : Decade::$default;
-            $genreSlug = $params != null ? isset($params['genre']) ? $params['genre'] : Genre::$default : Genre::$default;
-            */
         if($mediaSelection->getMediaTypes() == null){
             $mediaType = $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
+            if($mediaType == null){
+                throw new NotFoundHttpException("The address you entered does not exist");
+                //return $this->redirect($this->generateUrl('error'));
+            }
+            
             $mediaType = $this->getEntityManager()->merge($mediaType);
             $mediaSelection->setMediaTypes($mediaType);
         }
 
         if($mediaSelection->getDecades() == null && $decadeSlug != Decade::$default){
             $decade = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
+            if($decade == null)
+                throw new NotFoundHttpException ("The address you entered does not exist");
+                
             $decade = $this->getEntityManager()->merge($decade);
             $mediaSelection->setDecades($decade);
         }
 
         if($mediaSelection->getSelectedMediaGenres() == null && $genreSlug != Genre::$default){ 
             $genre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
+            if($genre == null)
+                throw new NotFoundHttpException ("The address you entered does not exist");
+            
             $genre = $this->getEntityManager()->merge($genre);
             $mediaSelection->setSelectedMediaGenres($genre);
         }

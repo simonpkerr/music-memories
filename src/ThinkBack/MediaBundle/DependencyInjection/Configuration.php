@@ -40,14 +40,14 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()//end of amazonapi
                 ->arrayNode('youtubeapi')
-                    /*->children()
+                    ->children()
                         ->scalarNode('youtube_request_object')
-                        ->defaultNull()
+                        /*->defaultNull()
                             ->children()
                                 ->scalarNode('class')->defaultNull()->end()
                             ->end()
-                        ->end()
-                    ->end()*/
+                        ->end()*/
+                    ->end()
                 ->end()//end of youtubeapi
         ->end()
         ;
