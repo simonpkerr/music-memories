@@ -11,14 +11,14 @@
 namespace ThinkBack\MediaBundle\Tests\MediaAPI;
 use ThinkBack\MediaBundle\MediaAPI\YouTubeAPI;
 
-require_once 'Zend/Loader.php';
+//require_once 'Zend/Loader.php';
 
 class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
 
     private $params;
     
     protected function setUp(){
-        \Zend_Loader::loadClass('Zend_Gdata_YouTube');
+        //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
         
         $this->params = array(
             'keywords'  =>  'sample title',

@@ -6,7 +6,7 @@
  * @version 1.0
  */
 namespace ThinkBack\MediaBundle\MediaAPI;
-require_once 'Zend/Loader.php';
+//require_once 'Zend/Loader.php';
 
 class YouTubeAPI extends MediaAPI {
     protected $youTube;
@@ -14,9 +14,10 @@ class YouTubeAPI extends MediaAPI {
     
     public function __construct($youtube_request_object = null){
         //get access to the youtube methods
-        \Zend_Loader::loadClass('Zend_Gdata_YouTube');
+        //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
+        
         //$this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : new $youtube_request_object;
-        $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : new $youtube_request_object;
+        $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
         //$f = new \Zend_Gdata_YouTZend_Gdata_YouTube();
     }
     
