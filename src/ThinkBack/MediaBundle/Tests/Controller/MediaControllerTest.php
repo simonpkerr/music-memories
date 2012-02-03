@@ -13,7 +13,7 @@ class MediaControllerTest extends WebTestCase
         //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
         
         $this->client = static::createClient();
-        $this->client->insulate();
+        //$this->client->insulate();
         //use the below line to inject mock services into a controller, to avoid calling live apis
         
         $amazonapi = $this->client->getContainer()->get('think_back_media.amazonapi');
@@ -43,7 +43,9 @@ class MediaControllerTest extends WebTestCase
         $ytReqObj->expects($this->any())
                 ->method('getVideoFeed')
                 ->will($this->returnValue(array()));
-        $this->client->getContainer()->set('think_back_media.youtubeapi', $ytReqObj);
+        
+        $yt->setRequestObject($ytReqObj);
+        $this->client->getContainer()->set('think_back_media.youtubeapi', $yt);
         
     }
     
@@ -53,15 +55,15 @@ class MediaControllerTest extends WebTestCase
      */
     public function testMediaSelectionGet()
     {
-        $crawler = $this->client->followRedirect()->request('GET', '/index');
+        $crawler = $this->client->request('GET', '/index');
                 
         $this->assertTrue($crawler->filter('select#mediaSelection_mediaTypes')->count() > 0);
     }
     
     public function testMediaSelectionPostGoesToListings(){
-        
+        $this->client->followRedirects(true);
         $crawler = $this->client->request('GET', '/index');
-        $this->client->
+        
         
         $form = $crawler->selectButton('Search MyDay')->form();
         $form['mediaSelection[decades]']->select('1');//all decades
@@ -91,7 +93,7 @@ class MediaControllerTest extends WebTestCase
      * place based on querystring values, which are then used to set the session
      */
     public function testSearchWithInvalidMediaTypeAndNoSessionThrowsException(){
-        $crawler = $this->client->request('GET', '/search/funk/all-decades/classics');
+        $crawler = $this->client->request('GET', '/search/funk/1990/classics');
         
         $this->assertTrue($crawler->filter('html:contains("Error")')->count() > 0);
     }
@@ -100,12 +102,25 @@ class MediaControllerTest extends WebTestCase
      * querystring params will always override session values but if invalid
      * will throw an exception
      */
-    public function testSearchWithInvalidMediaTypeAndValidSessionThrowsException(){
+    public function testSearchWithInvalidDecadeAndNoSessionThrowsException(){
         //todo
     }
     
+    public function testSearchWithInvalidGenreNoSessionThrowsException(){
+        //todo
+    }
+    
+    //a default decade of all-decades should still override a session decade
+    public function testSearchWithDefaultDecadeAndNonDefaultSessionDecadeOverridesSessionDecade(){
+        //todo
+    }
+    
+    public function testSearchWithDefaultGenreAndNonDefaultSessionGenreOverridesSessionGenre(){
+        //todo
+    }
+       
     public function testMediaSelectionWithPageAndNoKeywordsGoesToListings(){
-        $crawler = $this->client->request('GET', '/search/film/all-decades/classics');
+        $crawler = $this->client->request('GET', '/search/film/all-decades/classics/-/2');
         
         $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
     }    
