@@ -74,6 +74,9 @@ class MediaController extends Controller
             $mediaTypeSlug = isset($params['media']) ? $params['media'] : MediaType::$default;
             $decadeSlug = isset($params['decade']) ? $params['decade'] : Decade::$default;
             $genreSlug = isset($params['genre']) ? $params['genre'] : Genre::$default;
+            /*$mediaTypeSlug = isset($params['media']) ? $params['media'] : null;
+            $decadeSlug = isset($params['decade']) ? $params['decade'] : null;
+            $genreSlug = isset($params['genre']) ? $params['genre'] : null;*/
             $keywords = isset($params['keywords']) ? $params['keywords'] != '-' ? $params['keywords'] : null : null;
             $page = isset($params['page']) ? $params['page'] : 1;
         }
@@ -81,33 +84,40 @@ class MediaController extends Controller
         if($mediaSelection == null)
             $mediaSelection = new MediaSelection();
         
-        if($mediaSelection->getMediaTypes() == null){
+                
+        if($params != null){
             $mediaType = $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
-            if($mediaType == null){
-                throw new NotFoundHttpException("The address you entered does not exist");
-                //return $this->redirect($this->generateUrl('error'));
-            }
+            if($mediaType == null)
+                throw new NotFoundHttpException("There was a problem with that address");
+           
             
             $mediaType = $this->getEntityManager()->merge($mediaType);
             $mediaSelection->setMediaTypes($mediaType);
-        }
 
-        if($mediaSelection->getDecades() == null && $decadeSlug != Decade::$default){
-            $decade = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
-            if($decade == null)
-                throw new NotFoundHttpException ("The address you entered does not exist");
+            if($decadeSlug != Decade::$default){//if decade is not default decade
+                $decade = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
+                if($decade == null)
+                    throw new NotFoundHttpException ("There was a problem with that address");
                 
-            $decade = $this->getEntityManager()->merge($decade);
-            $mediaSelection->setDecades($decade);
-        }
+                $decade = $this->getEntityManager()->merge($decade);
+                $mediaSelection->setDecades($decade);
+            }else{
+                //if the entity exists already, set to null so defaults to all-decades
+                $mediaSelection->setDecades(null);
+            }
 
-        if($mediaSelection->getSelectedMediaGenres() == null && $genreSlug != Genre::$default){ 
-            $genre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
-            if($genre == null)
-                throw new NotFoundHttpException ("The address you entered does not exist");
-            
-            $genre = $this->getEntityManager()->merge($genre);
-            $mediaSelection->setSelectedMediaGenres($genre);
+            if($genreSlug != Genre::$default){
+                try{
+                    $genre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
+                }catch(\Exception $ex){
+                    throw new NotFoundHttpException ("There was a problem with that address");
+                }
+
+                $genre = $this->getEntityManager()->merge($genre);
+                $mediaSelection->setSelectedMediaGenres($genre);
+            }else{
+                $mediaSelection->setSelectedMediaGenres(null);
+            }
         }
 
         if($keywords != null && $mediaSelection->getKeywords() == null){

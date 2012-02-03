@@ -2,7 +2,7 @@
 namespace ThinkBack\MediaBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 require_once 'src\ThinkBack\MediaBundle\MediaAPI\AmazonSignedRequest.php';
-require_once 'Zend/Loader.php';
+//require_once 'Zend/Loader.php';
 
 class MediaControllerTest extends WebTestCase
 {
@@ -10,9 +10,10 @@ class MediaControllerTest extends WebTestCase
     
     public function setup(){
         //load the youtube api
-        \Zend_Loader::loadClass('Zend_Gdata_YouTube');
+        //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
         
         $this->client = static::createClient();
+        $this->client->insulate();
         //use the below line to inject mock services into a controller, to avoid calling live apis
         
         $amazonapi = $this->client->getContainer()->get('think_back_media.amazonapi');
@@ -52,7 +53,7 @@ class MediaControllerTest extends WebTestCase
      */
     public function testMediaSelectionGet()
     {
-        $crawler = $this->client->request('GET', '/index');
+        $crawler = $this->client->followRedirect()->request('GET', '/index');
                 
         $this->assertTrue($crawler->filter('select#mediaSelection_mediaTypes')->count() > 0);
     }
@@ -60,6 +61,7 @@ class MediaControllerTest extends WebTestCase
     public function testMediaSelectionPostGoesToListings(){
         
         $crawler = $this->client->request('GET', '/index');
+        $this->client->
         
         $form = $crawler->selectButton('Search MyDay')->form();
         $form['mediaSelection[decades]']->select('1');//all decades
@@ -71,16 +73,39 @@ class MediaControllerTest extends WebTestCase
     }
        
     public function testMediaSelectionWithKeywordsGoesToListings(){
+        $crawler = $this->client->request('GET', '/index');
         
-        //todo
+        $form = $crawler->selectButton('Search MyDay')->form();
+        $form['mediaSelection[decades]']->select('1');//all decades
+        $form['mediaSelection[mediaTypes]']->select('1');//Film
+        $form['mediaSelection[selectedMediaGenres]']->select('1');//All Genres
+        $form['mediaSelection[keywords]'] = 'sherlock';
+        
+        $crawler = $this->client->submit($form);       
+        
+        $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
     }
     
-    public function testSearchWithInvalidParametersThrowsException(){
+    /*
+     * if no session data exists for the media selection form, the search should take 
+     * place based on querystring values, which are then used to set the session
+     */
+    public function testSearchWithInvalidMediaTypeAndNoSessionThrowsException(){
+        $crawler = $this->client->request('GET', '/search/funk/all-decades/classics');
+        
+        $this->assertTrue($crawler->filter('html:contains("Error")')->count() > 0);
+    }
+    
+    /*
+     * querystring params will always override session values but if invalid
+     * will throw an exception
+     */
+    public function testSearchWithInvalidMediaTypeAndValidSessionThrowsException(){
         //todo
     }
     
     public function testMediaSelectionWithPageAndNoKeywordsGoesToListings(){
-        $crawler = $this->client->request('GET', '/search/film/all-decades/classics/-/2');
+        $crawler = $this->client->request('GET', '/search/film/all-decades/classics');
         
         $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
     }    

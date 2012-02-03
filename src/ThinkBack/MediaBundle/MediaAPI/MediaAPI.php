@@ -38,7 +38,7 @@ abstract class MediaAPI implements IMediaAPI {
         //will have to experiment and see if decade with 's' on end is better than just decade
         
         /*--------------------------
-         * this doesn't appear to help for most certain results
+         * this doesn't appear to help for certain results
          * as videos aren't tagged with all the tags (title decade, media)
          */
         //$year = date('Y');
@@ -48,6 +48,7 @@ abstract class MediaAPI implements IMediaAPI {
             //this still doesn't bring relevant results for moomins (the moomins 1970s tv)
             //need a way to decide relevant results (maybe successive calls to youtube if no results found?)
         //}
+        $keywordQuery .= ' '. $media; 
         
         //---- MAYBE look at the bracketed part of a title and check to see if a year is supplied and use that in the search.
         
