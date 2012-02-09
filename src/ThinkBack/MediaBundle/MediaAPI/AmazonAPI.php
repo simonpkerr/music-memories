@@ -50,6 +50,10 @@ class AmazonAPI extends MediaAPI {
      * request will be performed on the amazon api
      */
     public function getRequest(array $params){
+        if(isset($params['ItemPage']) && $params['ItemPage'] > 10){
+            throw new \RunTimeException("Requested page was out of bounds");
+        }
+        
         $this->amazonParameters = array_merge($this->amazonParameters, $params);
         //need to account for page number, sort type, number of results
         

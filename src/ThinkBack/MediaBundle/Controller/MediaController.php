@@ -159,12 +159,10 @@ class MediaController extends Controller
                 'media'     => MediaType::$default,
                 'genre'     => Genre::$default,
                 'page'      => 1,
-                //$em->getEntityRepository('ThinkBackMediaBundle:Media:Genre')->getDefaultGenre()->getSlug(),
             );
         }
         
         //array_filter removes elements from an array based on the function defined as the second argument
-        
         $params = array_filter($params, array($this,'is_NotNull')); 
         return $params;
         
@@ -197,12 +195,20 @@ class MediaController extends Controller
 //        return $this->redirect($this->generateUrl('index')); 
 //    }
 //    
-      
+    /*
+     * look up the recommendations table and use the params
+     * to find similar items that were either viewed in detail
+     * or added to walls
+     */
+    private function getRecommendations($media, $decade, $genre){
+        
+    }
+    
+    
     public function mediaSelectionAction(Request $request = null){
         $key = 'mediaSelection';
         $em = $this->getEntityManager();
-        
-        
+ 
         /*
          * if the data was posted before and is now saved in the session
          * retrieve it, merge it back into the entity manager (otherwise it 
@@ -262,6 +268,17 @@ class MediaController extends Controller
         ));
             
         
+    }
+    
+    private function calculatePagingBounds($pagerCount, $currentPage){
+        $pagerUpperBound = $pagerCount * (floor($currentPage / $pagerCount)+1);
+        $pagerLowerBound = $pagerUpperBound - ($pagerCount*2) <= 0 ? 1 : $pagerUpperBound - ($pagerCount*2);
+        
+        return array(
+            'pagerUpperBound'   => $pagerUpperBound,
+            'pagerLowerBound'   => $pagerLowerBound,
+        );
+  
     }
     
     /*
@@ -324,7 +341,6 @@ class MediaController extends Controller
             
             $this->amazonapi = $this->get('think_back_media.amazonapi');
             try{
-                //$response = $api->getRequest($params);
                 $response = $this->amazonapi->getRequest($params);
                 $pagerParams['pagerUpperBound'] = $response->Items->TotalPages > 10 ? 10 : $response->Items->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
@@ -358,17 +374,7 @@ class MediaController extends Controller
             
        return $this->render('ThinkBackMediaBundle:Media:searchResults.html.twig', $responseParams);
     }
-    
-    private function calculatePagingBounds($pagerCount, $currentPage){
-        $pagerUpperBound = $pagerCount * (floor($currentPage / $pagerCount)+1);
-        $pagerLowerBound = $pagerUpperBound - ($pagerCount*2) <= 0 ? 1 : $pagerUpperBound - ($pagerCount*2);
-        
-        return array(
-            'pagerUpperBound'   => $pagerUpperBound,
-            'pagerLowerBound'   => $pagerLowerBound,
-        );
-  
-    }
+     
     
     public function mediaDetailsAction($media, $decade, $genre, $id){
         /*
@@ -420,8 +426,7 @@ class MediaController extends Controller
         return $this->render('ThinkBackMediaBundle:Media:mediaDetails.html.twig', $responseParams);
         
     }
-    
-      
+          
     public function youTubeRequestAction($title, $media, $decade, $genre){
         //look up YouTube
         $responseParams = array();

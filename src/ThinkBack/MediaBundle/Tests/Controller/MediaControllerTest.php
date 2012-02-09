@@ -13,6 +13,7 @@ class MediaControllerTest extends WebTestCase
         //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
         
         $this->client = static::createClient();
+        $this->client->followRedirects(true);
         //$this->client->insulate();
         //use the below line to inject mock services into a controller, to avoid calling live apis
         
@@ -61,7 +62,7 @@ class MediaControllerTest extends WebTestCase
     }
     
     public function testMediaSelectionPostGoesToListings(){
-        $this->client->followRedirects(true);
+        
         $crawler = $this->client->request('GET', '/index');
         
         
@@ -103,11 +104,16 @@ class MediaControllerTest extends WebTestCase
      * will throw an exception
      */
     public function testSearchWithInvalidDecadeAndNoSessionThrowsException(){
-        //todo
+        $crawler = $this->client->request('GET', '/search/film/invalid-decade/classics');
+        
+        $this->assertTrue($crawler->filter('html:contains("Error")')->count() > 0);
     }
     
     public function testSearchWithInvalidGenreNoSessionThrowsException(){
-        //todo
+        $crawler = $this->client->request('GET', '/search/film/1990/invalid-genre');
+        
+        $this->assertTrue($crawler->filter('html:contains("Error")')->count() > 0);
+        
     }
     
     //a default decade of all-decades should still override a session decade
@@ -133,11 +139,15 @@ class MediaControllerTest extends WebTestCase
     }
     
     public function testMediaDetailsWithValidRouteGoesToDetailsPage(){
-        //todo
+        $crawler = $this->client->request('GET', '/mediaDetails/film/1990/all-genres/B003TO5414');
+        
+       $this->assertTrue($crawler->filter('html:contains("Details")')->count() > 0);
     }
     
     public function testMediaDetailsWithInvalidParametersThrowsException(){
-       //todo 
+       $crawler = $this->client->request('GET', '/mediaDetails/film/invalid-decade/all-genres/B003TO5414');
+        
+       $this->assertTrue($crawler->filter('html:contains("Error")')->count() > 0);
     }
     
     
