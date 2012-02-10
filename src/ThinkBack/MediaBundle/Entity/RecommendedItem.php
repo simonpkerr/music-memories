@@ -3,6 +3,7 @@
 namespace ThinkBack\MediaBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * ThinkBack\MediaBundle\Entity\RecommendedItem
@@ -12,44 +13,52 @@ class RecommendedItem
     /**
      * @var integer $id
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $itemId
      */
-    private $itemId;
+    protected $itemId;
 
     /**
      * @var string $title
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string $thumbnailUrl
      */
-    private $thumbnailUrl;
+    protected $thumbnailUrl;
 
     /**
      * @var string $userTitle
      */
-    private $userTitle;
+    protected $userTitle;
 
     /**
      * @var string $userDescription
      */
-    private $userDescription;
+    protected $userDescription;
 
     /**
      * @var integer $viewCount
      */
-    private $viewCount;
+    protected $viewCount;
 
     /**
      * @var datetime $lastUpdated
      */
-    private $lastUpdated;
-
-
+    protected $lastUpdated;
+    
+    protected $mediaType;
+    protected $mediaType_id;
+    
+    /*protected $genre;
+    protected $genre_id;
+    
+    protected $decade;
+    protected $decade_id;*/
+    
     /**
      * Get id
      *
@@ -199,4 +208,24 @@ class RecommendedItem
     {
         return $this->lastUpdated;
     }
+    
+    
+    public function getMediaType(){
+        return $this->mediaType;
+    }
+    
+    public function setMediaType(\ThinkBack\MediaBundle\Entity\MediaType $mediaType){
+        return $this->mediaType = $mediaType;
+    }
+    
+    public function getMediaTypeId(){
+        return $this->mediaType_id;
+    }
+    
+    public function setMediaTypeId($mediaTypeId){
+        return $this->mediaType_id = $mediaTypeId;
+    }
+    
+    
+    
 }

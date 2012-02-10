@@ -34,9 +34,12 @@ class GenreRepository extends EntityRepository
     
     public function getGenreBySlugAndMedia($slug, $media){
         $query = $this->_em->createQuery('SELECT g FROM ThinkBack\MediaBundle\Entity\Genre g JOIN g.mediaType m WHERE g.slug = :slug AND m.slug = :media');
-        $query->setParameters(array(
+        $query->setParameters(
+                array(
                     'slug' => $slug,
-                    'media' => $media,));
+                    'media' => $media,
+                    )
+                );
         
         /*$query = $this->createQueryBuilder('g')
                 ->select('g.amazonBrowseNodeId')
