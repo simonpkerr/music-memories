@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * ThinkBack\MediaBundle\Entity\RecommendedItem
  */
-class RecommendedItem
+class MediaResource
 {
     /**
      * @var integer $id
@@ -31,20 +31,15 @@ class RecommendedItem
     protected $thumbnailUrl;
 
     /**
-     * @var string $userTitle
-     */
-    protected $userTitle;
-
-    /**
-     * @var string $userDescription
-     */
-    protected $userDescription;
-
-    /**
      * @var integer $viewCount
      */
     protected $viewCount;
 
+    /**
+     * @var integer $selectedCount
+     */
+    protected $selectedCount;
+    
     /**
      * @var datetime $lastUpdated
      */
@@ -89,24 +84,26 @@ class RecommendedItem
         return $this->itemId;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
-    public function setTitle($title)
+    
+    public function setName($name)
     {
-        $this->title = $title;
+        $this->name = $name;
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
-    public function getTitle()
+   
+    public function getName()
     {
-        return $this->title;
+        return $this->name;
+    }
+    
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+   
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -130,46 +127,6 @@ class RecommendedItem
     }
 
     /**
-     * Set userTitle
-     *
-     * @param string $userTitle
-     */
-    public function setUserTitle($userTitle)
-    {
-        $this->userTitle = $userTitle;
-    }
-
-    /**
-     * Get userTitle
-     *
-     * @return string 
-     */
-    public function getUserTitle()
-    {
-        return $this->userTitle;
-    }
-
-    /**
-     * Set userDescription
-     *
-     * @param string $userDescription
-     */
-    public function setUserDescription($userDescription)
-    {
-        $this->userDescription = $userDescription;
-    }
-
-    /**
-     * Get userDescription
-     *
-     * @return string 
-     */
-    public function getUserDescription()
-    {
-        return $this->userDescription;
-    }
-
-    /**
      * Set viewCount
      *
      * @param integer $viewCount
@@ -187,6 +144,26 @@ class RecommendedItem
     public function getViewCount()
     {
         return $this->viewCount;
+    }
+    
+    /**
+     * Set selectedCount
+     *
+     * @param integer $selectedCount
+     */
+    public function setSelectedCount($selectedCount)
+    {
+        $this->selectedCount = $selectedCount;
+    }
+
+    /**
+     * Get selectedCount
+     *
+     * @return integer 
+     */
+    public function getSelectedCount()
+    {
+        return $this->selectedCount;
     }
 
     /**

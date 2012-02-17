@@ -35,9 +35,11 @@ class MediaType
      */
     protected $slug;
     
+    //protected $mediaResources;
+    
     public function __construct(){
         $this->genres = new ArrayCollection();
-        //$this->decades = new ArrayCollection();
+        //$this->mediaResources = new ArrayCollection();
     }
     
     public function getGenres(){
