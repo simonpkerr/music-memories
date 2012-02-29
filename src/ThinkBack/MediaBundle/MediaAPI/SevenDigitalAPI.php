@@ -9,7 +9,7 @@
 namespace ThinkBack\MediaBundle\MediaAPI;
 require_once 'SimpleXmlRequest.php';
 
-class SevenDigitalAPI extends MediaAPI{
+class SevenDigitalAPI implements IAPIStrategy{
     protected $method = "release/bytag/top";
     protected $host = "http://api.7digital.com/1.2/";
     protected $page = 1;

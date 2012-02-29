@@ -72,20 +72,26 @@ stof_doctrine_extensions:
       sluggable: true
 
 think_back_media:
-  amazonapi:
-    access_params:
-      amazon_public_key: %amazon_public_key%
-      amazon_private_key: %amazon_uk_private_key%
-      amazon_associate_tag: %amazon_associate_tag%
-    #this can be set in the config but has a default value defined in the Configuration.php of the bundle
-     #amazon_signed_request:
-     #  class: ThinkBack\MediaBundle\MediaAPI\DummyAmazonSignedRequest
-  youtubeapi: ~
-    #use the below parameter to inject a dummy class for testing
-    #youtube_request_object: 
-    #  class: ThinkBack\MediaBundle\MediaAPI\Zend_Gdata_YouTube
-    #DummyYouTubeRequestObject
-     
+  mediaapi:
+    debug_mode: false
+    apis: 
+      amazonapi:
+        access_params:
+          amazon_public_key: %amazon_public_key%
+          amazon_private_key: %amazon_uk_private_key%
+          amazon_associate_tag: %amazon_associate_tag%
+        #this can be set in the config but has a default value defined in the Configuration.php of the bundle
+        #amazon_signed_request:
+        #  class: ThinkBack\MediaBundle\MediaAPI\DummyAmazonSignedRequest
+      youtubeapi: ~
+        #use the below parameter to inject a dummy class for testing
+        #youtube_request_object: 
+        #  class: ThinkBack\MediaBundle\MediaAPI\Zend_Gdata_YouTube
+        #DummyYouTubeRequestObject
+
+      
+      
+
     
 
 

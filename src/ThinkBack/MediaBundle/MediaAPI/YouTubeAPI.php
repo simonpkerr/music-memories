@@ -8,7 +8,7 @@
 namespace ThinkBack\MediaBundle\MediaAPI;
 //require_once 'Zend/Loader.php';
 
-class YouTubeAPI extends MediaAPI {
+class YouTubeAPI implements IAPIStrategy {
     protected $youTube;
     private $query;
     

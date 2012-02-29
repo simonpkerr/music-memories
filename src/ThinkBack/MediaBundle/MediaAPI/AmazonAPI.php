@@ -2,7 +2,7 @@
 namespace ThinkBack\MediaBundle\MediaAPI;
 use ThinkBack\MediaBundle\MediaAPI\AmazonSignedRequest;
 
-class AmazonAPI extends MediaAPI {
+class AmazonAPI implements IAPIStrategy {
     private $amazonParameters;
     private $public_key;                           
     private $private_key;
@@ -11,20 +11,11 @@ class AmazonAPI extends MediaAPI {
     
     public function __construct(array $access_params, $amazon_signed_request){
             
-        //array $access_params, $amazon_signed_request){
-        /*$this->public_key = $params['access_params']['amazon_public_key'];
-        $this->private_key = $params['access_params']['amazon_private_key'];
-        $this->associate_tag = $params['access_params']['amazon_associate_tag'];
-        
-        $this->asr = $params['amazon_signed_request'];// == null ? new AmazonSignedRequest() : $amazon_signed_request;
-        */
-        
         $this->public_key = $access_params['amazon_public_key'];
         $this->private_key = $access_params['amazon_private_key'];
         $this->associate_tag = $access_params['amazon_associate_tag'];
         
-        $this->asr = $amazon_signed_request;
-        
+        $this->asr = $amazon_signed_request; 
         
         $this->amazonParameters = array(
                 "Operation"     => "ItemSearch",

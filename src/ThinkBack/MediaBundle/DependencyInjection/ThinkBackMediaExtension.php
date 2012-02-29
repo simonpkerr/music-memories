@@ -29,9 +29,14 @@ class ThinkBackMediaExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         
+        //mediaapi params
+        $container->setParameter('mediaapi.debug_mode', $config['mediaapi']['debug_mode']);
+        $container->setParameter('mediaapi.apis', $config['mediaapi']['apis']);
+        
+        $apis = $config['mediaapi']['apis'];
         //amazon params
-        $container->setParameter('amazonapi.access_params', $config['amazonapi']['access_params']);
-        $container->setParameter ('amazonapi.amazon_signed_request.class', $config['amazonapi']['amazon_signed_request']['class']);
+        $container->setParameter('amazonapi.access_params', $apis['amazonapi']['access_params']);
+        $container->setParameter ('amazonapi.amazon_signed_request.class', $apis['amazonapi']['amazon_signed_request']['class']);
         //$container->setParameter('amazonapi.params', $config['amazonapi']['params']);
         
         
@@ -40,12 +45,13 @@ class ThinkBackMediaExtension extends Extension
             $yro = $config['youtubeapi']['youtube_request_object'];
             $container->getDefinition('think_back_media.youtubeapi')->replaceArgument(0, $yro);
         }*/
-        $container->setParameter('youtubeapi.youtube_request_object.class', $config['youtubeapi']['youtube_request_object']['class']);
-        
-        
+        $container->setParameter('youtubeapi.youtube_request_object.class', $apis['youtubeapi']['youtube_request_object']['class']);
+
         /*if(isset($config['youtubeapi']['youtube_request_object'])){
             $container->setParameter('youtubeapi.youtube_request_object.class', $config['youtubeapi']['youtube_request_object']['class']);
             //$container->setParameter('youtubeapi.youtube_request_object', $config['youtubeapi']['youtube_request_object']);
         }*/
+        
+        
     }
 }
