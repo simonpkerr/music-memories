@@ -7,10 +7,12 @@
  */
 namespace ThinkBack\MediaBundle\MediaAPI;
 //require_once 'Zend/Loader.php';
+use ThinkBack\MediaBundle\MediaAPI\SearchStringFormatter;
 
 class YouTubeAPI implements IAPIStrategy {
     protected $youTube;
     private $query;
+    private $searchStringFormatter;
     
     public function __construct($youtube_request_object = null){
         //get access to the youtube methods
@@ -19,6 +21,7 @@ class YouTubeAPI implements IAPIStrategy {
         //$this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : new $youtube_request_object;
         $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
         //$f = new \Zend_Gdata_YouTZend_Gdata_YouTube();
+        $this->searchStringFormatter = new SearchStringFormatter();
     }
     
     public function setRequestObject($obj){
@@ -102,7 +105,7 @@ class YouTubeAPI implements IAPIStrategy {
                 break;
             
         }
-        $keywordQuery = parent::formatSearchString($params);
+        $keywordQuery = $this->searchStringFormatter->formatSearchString($params);
         
         //$keywordQuery = urlencode($keywordQuery);
         $query->setVideoQuery($keywordQuery);
@@ -137,6 +140,7 @@ class YouTubeAPI implements IAPIStrategy {
         $url[0] = $this->query;
         return $sxml;
     }
+    
     
    
 }
