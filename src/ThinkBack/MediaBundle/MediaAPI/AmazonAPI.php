@@ -76,7 +76,7 @@ class AmazonAPI implements IAPIStrategy {
         $canonicalBrowseNodes = implode(',', $browseNodeArray);
 
         $params = Utilities::removeNullEntries(array(
-            'Keywords'       =>      $params['keywords'],
+            'Keywords'       =>      $params['keywords'] == '-' ? null : $params['keywords'],
             'BrowseNode'     =>      $canonicalBrowseNodes,
             'SearchIndex'    =>      'Video',
             'ItemPage'       =>      $params['page'],
