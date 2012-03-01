@@ -10,7 +10,7 @@
  */
 namespace ThinkBack\MediaBundle\MediaAPI;
 
-class SearchStringFormatter {
+class Utilities {
     
     /**
      * this function is needed to optimize titles from amazon products
@@ -26,7 +26,7 @@ class SearchStringFormatter {
      * 'The Chronicles Of Narnia 4 DVD Box Set' returns 'The Chronicles Of Narnia'
      * 'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' returns 'Matrix Trilogy'
      */
-    public function formatSearchString(array $params){
+    public static function formatSearchString(array $params){
         $keywords = $params['keywords'];
         $decade = $params['decade'];
         $media = $params['media'];
@@ -63,6 +63,16 @@ class SearchStringFormatter {
         //$keywordQuery = urlencode($keywordQuery);
         
         return $keywordQuery;
+    }
+    
+    public static function is_NotNull($v){
+        return !is_null($v);
+    }
+    
+    public static function removeNullEntries($params){
+         return array_filter($params, function($params){
+             return !is_null($params);
+         }); 
     }
 }
 

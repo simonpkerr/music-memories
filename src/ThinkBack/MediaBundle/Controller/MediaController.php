@@ -22,6 +22,7 @@ use ThinkBack\MediaBundle\Entity\Genre;
 use ThinkBack\MediaBundle\Entity\MediaType;
 use ThinkBack\MediaBundle\Form\Type\MediaSelectionType;
 use ThinkBack\MediaBundle\Form\Type\MediaSearchType;
+use ThinkBack\MediaBundle\MediaAPI\Utilities;
 
 use ThinkBack\MediaBundle\MediaAPI;
 
@@ -151,8 +152,9 @@ class MediaController extends Controller
                     'decade'    => $mediaSelection->getDecades() != null ? $mediaSelection->getDecades()->getSlug() : Decade::$default,
                     'media'     => $mediaSelection->getMediaTypes()->getSlug(),
                     'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : Genre::$default,
-                    'keywords'  => $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : '-',
-                    'page'      => $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
+                    'keywords'  => $mediaSelection->getKeywords() != null ?: '-',
+                    //'keywords'  => $mediaSelection->getKeywords() != null ?: null,
+                    'page'      => $mediaSelection->getPage() != null ?: null,
             );
         }else {
             $params = array(
@@ -160,13 +162,19 @@ class MediaController extends Controller
                 'media'     => MediaType::$default,
                 'genre'     => Genre::$default,
                 'page'      => 1,
+                'keywords'  => '-',
             );
         }
         
         //array_filter removes elements from an array based on the function defined as the second argument
-        $params = array_filter($params, array($this,'is_NotNull')); 
+        $params = $this->removeNullEntries($params);
         return $params;
         
+    }
+    
+    private function removeNullEntries($params){
+         //return array_filter($params, array(Utilities,'is_NotNull')); 
+        return Utilities::removeNullEntries($params);
     }
     
     /*
@@ -174,14 +182,12 @@ class MediaController extends Controller
      */
     private function getSearchRoute(){
         
-        $returnRoute = $this->generateUrl('search', array_filter(
-                $this->getMediaSelectionParams(), array($this, "is_NotNull"))
-        );
+        $returnRoute = $this->generateUrl('search', $this->removeNullEntries($this->getMediaSelectionParams()));
     }
     
-    private function is_NotNull($v){
+    /*private function is_NotNull($v){
         return !is_null($v);
-    }
+    }*/
     
     
     /*
@@ -308,7 +314,8 @@ class MediaController extends Controller
                 $exception = $ex;
             }
        }else{
-            $browseNodeArray = array(); 
+            /*
+             * $browseNodeArray = array(); 
             
             if($decade != Decade::$default){
                 array_push($browseNodeArray, $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId());
@@ -332,12 +339,11 @@ class MediaController extends Controller
                'ItemPage'       =>      $page,
                'Sort'           =>      'salesrank',
             ), array($this, "is_NotNull"));
-            
-            //$this->amazonapi = $this->get('think_back_media.amazonapi');
+            */
             $this->mediaapi = $this->get('think_back_media.mediaapi');
             $this->mediaapi->setAPIStrategy('amazonapi');
             try{
-                $response = $this->mediaapi->getRequest($params);
+                $response = $this->mediaapi->getListings($this->getMediaSelectionParams());
                 $pagerParams['pagerUpperBound'] = $response->Items->TotalPages > 10 ? 10 : $response->Items->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
                 $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
@@ -355,13 +361,13 @@ class MediaController extends Controller
        $mediaSelection->setPage($page);
        $this->setSessionData($mediaSelection, 'mediaSelection');
        
-       $responseParams = array_filter(array(
+       $responseParams = $this->removeNullEntries(array(
            'decade'         => $decade,
            'genre'          => $genre,
            'media'          => $media,
            'keywords'       => $keywords,
            'pagerParams'    => $pagerParams,
-       ), array($this, "is_NotNull"));
+       ));
        
        if(!isset($exception))
            $responseParams['mainResponse'] = $response;
@@ -386,18 +392,13 @@ class MediaController extends Controller
         //look up product
         if($media != 'music'){
             $params = array(
-               'Operation'          =>      'ItemLookup',
                'ItemId'             =>      $id,
-               'ResponseGroup'      =>      'Images,ItemAttributes,SalesRank,Request,Similarities',
-                   //,RelatedItems',
-               //'RelationshipType'   =>      'Season',  
             );
-            //$this->amazonapi = $this->get('think_back_media.amazonapi');
             $this->mediaapi = $this->get('think_back_media.mediaapi');
             $this->mediaapi->setAPIStrategy('amazonapi');
             
             try{
-                $response = $this->mediaapi->getRequest($params);
+                $response = $this->mediaapi->getDetails($params);
             }catch(\RunTimeException $re){
                 $exception = $re->getMessage();
             }catch(\LengthException $le){

@@ -32,6 +32,7 @@ class ThinkBackMediaExtension extends Extension
         //mediaapi params
         $container->setParameter('mediaapi.debug_mode', $config['mediaapi']['debug_mode']);
         $container->setParameter('mediaapi.apis', $config['mediaapi']['apis']);
+        //$container->setParameter('mediaapi.doctrine', $config['mediaapi']['doctrine']);
         
         $apis = $config['mediaapi']['apis'];
         //amazon params

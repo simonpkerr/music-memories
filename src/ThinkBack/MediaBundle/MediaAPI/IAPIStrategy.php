@@ -12,7 +12,8 @@ namespace ThinkBack\MediaBundle\MediaAPI;
 
 interface IAPIStrategy {
     
-    public function getRequest(array $params);
+    public function getListings(array $params);
+    public function getDetails(array $params);
     
 }
 

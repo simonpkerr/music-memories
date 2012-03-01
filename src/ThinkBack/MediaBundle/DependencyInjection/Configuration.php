@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('mediaapi')
                     ->children()
                         ->booleanNode('debug_mode')->defaultValue(false)->end()
+                        //->variableNode('doctrine')->isRequired()->cannotBeEmpty()->end()
                         ->arrayNode('apis')
                             ->children()
                                 ->arrayNode('amazonapi')

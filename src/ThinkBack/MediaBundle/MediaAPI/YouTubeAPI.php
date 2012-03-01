@@ -7,12 +7,12 @@
  */
 namespace ThinkBack\MediaBundle\MediaAPI;
 //require_once 'Zend/Loader.php';
-use ThinkBack\MediaBundle\MediaAPI\SearchStringFormatter;
+use ThinkBack\MediaBundle\MediaAPI\Utilities;
 
 class YouTubeAPI implements IAPIStrategy {
+    public static $API_NAME = 'youtubeapi';
     protected $youTube;
     private $query;
-    private $searchStringFormatter;
     
     public function __construct($youtube_request_object = null){
         //get access to the youtube methods
@@ -21,14 +21,22 @@ class YouTubeAPI implements IAPIStrategy {
         //$this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : new $youtube_request_object;
         $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
         //$f = new \Zend_Gdata_YouTZend_Gdata_YouTube();
-        $this->searchStringFormatter = new SearchStringFormatter();
+       
     }
     
     public function setRequestObject($obj){
         $this->youTube = $obj;
     }
     
-    public function getRequest(array $params){
+    /*
+     * for youtube, details are retrieved on the client,
+     * but still need to be stored as recommendations
+     */
+    public function getDetails(array $params){
+        
+    }
+    
+    public function getListings(array $params){
         $this->youTube->setMajorProtocolVersion(2);
         
                 
@@ -105,7 +113,7 @@ class YouTubeAPI implements IAPIStrategy {
                 break;
             
         }
-        $keywordQuery = $this->searchStringFormatter->formatSearchString($params);
+        $keywordQuery = Utilities::formatSearchString($params);
         
         //$keywordQuery = urlencode($keywordQuery);
         $query->setVideoQuery($keywordQuery);
