@@ -106,9 +106,14 @@ class AmazonAPI implements IAPIStrategy {
      * getDetails handles calls to the live api, calls to the db to get recommendations
      * and then save a details product back to the db as a MediaResource to drive recommendations
      * @param searchParams - all the media search parameters 
-     * @param params - params to carry out the query
+     * @param params - params to carry out the query - only contains the id of the amazon product
      */
-    public function getDetails(array $params){
+    public function getDetails(array $params, array $searchParams){
+        //look up the detail in the db to see if its cached
+        
+        //get the recommendations
+        
+        //look up the details from the api if not cached
         $this->amazonParameters = array_merge($params, array(
                'Operation'          =>      'ItemLookup',
                'ResponseGroup'      =>      'Images,ItemAttributes,SalesRank,Request,Similarities',
@@ -116,7 +121,6 @@ class AmazonAPI implements IAPIStrategy {
         ));
 
         $this->amazonParameters = array_merge($this->amazonParameters, $params);
-        
         $xml_response = $this->queryAmazon($this->amazonParameters, "co.uk");
         
         try{
@@ -126,6 +130,10 @@ class AmazonAPI implements IAPIStrategy {
         }catch(\LengthException $le){
             throw $le;
         }
+        
+        //store the recommendation in cache
+        
+        
     }
     
     /**

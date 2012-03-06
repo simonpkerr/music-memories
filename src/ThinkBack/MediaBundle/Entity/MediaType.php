@@ -28,15 +28,14 @@ class MediaType
     protected $amazonBrowseNodeId;
     
     protected $genres;
-    //protected $decades;
+
     
     /**
      * @var string $slug
      */
     protected $slug;
     
-    //protected $mediaResources;
-    
+        
     public function __construct(){
         $this->genres = new ArrayCollection();
         //$this->mediaResources = new ArrayCollection();
@@ -131,4 +130,6 @@ class MediaType
     {
         return $this->slug;
     }
+    
+
 }

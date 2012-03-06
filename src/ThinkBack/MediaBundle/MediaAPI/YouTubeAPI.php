@@ -32,9 +32,7 @@ class YouTubeAPI implements IAPIStrategy {
      * for youtube, details are retrieved on the client,
      * but still need to be stored as recommendations
      */
-    public function getDetails(array $params){
-        
-    }
+    public function getDetails(array $params, array $searchParams){}
     
     public function getListings(array $params){
         $this->youTube->setMajorProtocolVersion(2);

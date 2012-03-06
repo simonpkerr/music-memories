@@ -4,6 +4,10 @@ namespace ThinkBack\MediaBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use ThinkBack\MediaBundle\Entity\Genre;
+use ThinkBack\MediaBundle\Entity\Decade;
+use ThinkBack\MediaBundle\Entity\MediaType;
+use ThinkBack\MediaBundle\Entity\API;
 
 /**
  * ThinkBack\MediaBundle\Entity\RecommendedItem
@@ -21,16 +25,6 @@ class MediaResource
     protected $itemId;
 
     /**
-     * @var string $title
-     */
-    protected $title;
-
-    /**
-     * @var string $thumbnailUrl
-     */
-    protected $thumbnailUrl;
-
-    /**
      * @var integer $viewCount
      */
     protected $viewCount;
@@ -45,14 +39,16 @@ class MediaResource
      */
     protected $lastUpdated;
     
-    protected $mediaType;
-    protected $mediaType_id;
+    protected $dateCreated;
     
-    /*protected $genre;
-    protected $genre_id;
+    protected $mediaType;
     
     protected $decade;
-    protected $decade_id;*/
+    
+    protected $genre;
+    
+    protected $api;
+
     
     /**
      * Get id
@@ -62,6 +58,48 @@ class MediaResource
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function setMediaType(MediaType $mediaType)
+    {
+        $this->mediaType = $mediaType;
+    }
+
+    public function getMediaType()
+    {
+        return $this->mediaType;
+    }
+
+
+    public function setDecade(Decade $decade)
+    {
+        $this->decade = $decade;
+    }
+
+
+    public function getDecade()
+    {
+        return $this->decade;
+    }
+
+    public function setGenre(Genre $genre)
+    {
+        $this->genre = $genre;
+    }
+
+    public function getGenre()
+    {
+        return $this->genre;
+    }
+    
+    public function setAPI(API $api)
+    {
+        $this->api = $api;
+    }
+
+    public function getAPI()
+    {
+        return $this->api;
     }
 
     /**
@@ -82,48 +120,6 @@ class MediaResource
     public function getItemId()
     {
         return $this->itemId;
-    }
-
-    
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-   
-    public function getName()
-    {
-        return $this->name;
-    }
-    
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    }
-   
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set thumbnailUrl
-     *
-     * @param string $thumbnailUrl
-     */
-    public function setThumbnailUrl($thumbnailUrl)
-    {
-        $this->thumbnailUrl = $thumbnailUrl;
-    }
-
-    /**
-     * Get thumbnailUrl
-     *
-     * @return string 
-     */
-    public function getThumbnailUrl()
-    {
-        return $this->thumbnailUrl;
     }
 
     /**
@@ -185,24 +181,6 @@ class MediaResource
     {
         return $this->lastUpdated;
     }
-    
-    
-    public function getMediaType(){
-        return $this->mediaType;
-    }
-    
-    public function setMediaType(\ThinkBack\MediaBundle\Entity\MediaType $mediaType){
-        return $this->mediaType = $mediaType;
-    }
-    
-    public function getMediaTypeId(){
-        return $this->mediaType_id;
-    }
-    
-    public function setMediaTypeId($mediaTypeId){
-        return $this->mediaType_id = $mediaTypeId;
-    }
-    
-    
+        
     
 }

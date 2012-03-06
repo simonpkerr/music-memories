@@ -65,22 +65,20 @@ class MediaController extends Controller
      */
     private function getMediaSelection(array $params = null){
         $em = $this->getEntityManager();
-        $mediaSelection = $this->getSessionData('mediaSelection');
         $mediaTypeSlug = null;
         $decadeSlug = null;
         $genreSlug = null;
         $keywords = null;
         $page = 1;
+        //try getting the media selection from the session
+        $mediaSelection = $this->getSessionData('mediaSelection');        
         
         if($params != null){
             $mediaTypeSlug = isset($params['media']) ? $params['media'] : MediaType::$default;
             $decadeSlug = isset($params['decade']) ? $params['decade'] : Decade::$default;
             $genreSlug = isset($params['genre']) ? $params['genre'] : Genre::$default;
-            /*$mediaTypeSlug = isset($params['media']) ? $params['media'] : null;
-            $decadeSlug = isset($params['decade']) ? $params['decade'] : null;
-            $genreSlug = isset($params['genre']) ? $params['genre'] : null;*/
             $keywords = isset($params['keywords']) ? $params['keywords'] != '-' ? $params['keywords'] : null : null;
-            $page = isset($params['page']) ? $params['page'] : 1;
+            $page = isset($params['page']) ? $params['page'] : $page;
         }
         
         if($mediaSelection == null)
@@ -92,7 +90,6 @@ class MediaController extends Controller
             if($mediaType == null)
                 throw new NotFoundHttpException("There was a problem with that address");
            
-            
             $mediaType = $this->getEntityManager()->merge($mediaType);
             $mediaSelection->setMediaTypes($mediaType);
 
@@ -125,8 +122,14 @@ class MediaController extends Controller
         if($keywords != null && $mediaSelection->getKeywords() == null){
             $mediaSelection->setKeywords($keywords);
         }
-
-        if($mediaSelection->getPage() == null)
+        
+        /*
+         * if navigating from a listings page to a details page, the return route needs calculating
+         * from a details page, the page number is not passed
+         */
+        
+        //$mediaSelection->getPage() != null && 
+        if(isset($params['page']))
             $mediaSelection->setPage($page);
             
         $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
@@ -152,9 +155,8 @@ class MediaController extends Controller
                     'decade'    => $mediaSelection->getDecades() != null ? $mediaSelection->getDecades()->getSlug() : Decade::$default,
                     'media'     => $mediaSelection->getMediaTypes()->getSlug(),
                     'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : Genre::$default,
-                    'keywords'  => $mediaSelection->getKeywords() != null ?: '-',
-                    //'keywords'  => $mediaSelection->getKeywords() != null ?: null,
-                    'page'      => $mediaSelection->getPage() != null ?: null,
+                    'keywords'  => $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : '-',
+                    'page'      => $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
             );
         }else {
             $params = array(
@@ -173,7 +175,6 @@ class MediaController extends Controller
     }
     
     private function removeNullEntries($params){
-         //return array_filter($params, array(Utilities,'is_NotNull')); 
         return Utilities::removeNullEntries($params);
     }
     
@@ -185,9 +186,6 @@ class MediaController extends Controller
         $returnRoute = $this->generateUrl('search', $this->removeNullEntries($this->getMediaSelectionParams()));
     }
     
-    /*private function is_NotNull($v){
-        return !is_null($v);
-    }*/
     
     
     /*
@@ -292,8 +290,7 @@ class MediaController extends Controller
             'keywords'  => $keywords,
             'page'      => $page,
         ));
-        
-       $keywords = $keywords == '-' ? null : $keywords;
+       
        $em = $this->getEntityManager();
         
        $pagerCount = 5;
@@ -314,32 +311,6 @@ class MediaController extends Controller
                 $exception = $ex;
             }
        }else{
-            /*
-             * $browseNodeArray = array(); 
-            
-            if($decade != Decade::$default){
-                array_push($browseNodeArray, $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getAmazonBrowseNodeId());
-            }
-           
-            if($genre != Genre::$default){
-                $selectedGenre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre,$media);
-                $browseNodeArray = array_merge($browseNodeArray, array(
-                    $selectedGenre->getAmazonBrowseNodeId(),
-                    $selectedGenre->getMediaType()->getAmazonBrowseNodeId()));
-            }else{
-                array_push($browseNodeArray, $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($media)->getAmazonBrowseNodeId());
-            }
-            
-            $canonicalBrowseNodes = implode(',', $browseNodeArray);
-            
-            $params = array_filter(array(
-               'Keywords'       =>      $keywords,
-               'BrowseNode'     =>      $canonicalBrowseNodes,
-               'SearchIndex'    =>      'Video',
-               'ItemPage'       =>      $page,
-               'Sort'           =>      'salesrank',
-            ), array($this, "is_NotNull"));
-            */
             $this->mediaapi = $this->get('think_back_media.mediaapi');
             $this->mediaapi->setAPIStrategy('amazonapi');
             try{
@@ -365,7 +336,7 @@ class MediaController extends Controller
            'decade'         => $decade,
            'genre'          => $genre,
            'media'          => $media,
-           'keywords'       => $keywords,
+           'keywords'       => $keywords != '-' ? $keywords : null,
            'pagerParams'    => $pagerParams,
        ));
        
@@ -398,7 +369,7 @@ class MediaController extends Controller
             $this->mediaapi->setAPIStrategy('amazonapi');
             
             try{
-                $response = $this->mediaapi->getDetails($params);
+                $response = $this->mediaapi->getDetails($params, $this->getMediaSelectionParams());
             }catch(\RunTimeException $re){
                 $exception = $re->getMessage();
             }catch(\LengthException $le){
@@ -441,7 +412,7 @@ class MediaController extends Controller
             'genre'     =>  $genre,
         );
         try{
-            $ytResponse = $this->mediaapi->getRequest($ytparams);
+            $ytResponse = $this->mediaapi->getListings($ytparams);
         }catch(\RuntimeException $re){
             $ytException = $re->getMessage();
         }catch(\LengthException $le){

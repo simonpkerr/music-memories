@@ -8,44 +8,25 @@ ThinkBack\MediaBundle\Entity\MediaResource:
       id: true
       generator:
         strategy: AUTO
-    name:
-      type: string
-      length: '150'
-      gedmo:
-        - sluggable
-    slug:
-      type: string
-      length: 255
-      gedmo:
-        slug:
-          fields:
-            - name
     itemId:
       type: string
       length: '50'
-    thumbnailUrl:
-      type: string
-      length: 255
     viewCount:
       type: integer
     selectedCount:
       type: integer
     lastUpdated:
       type: datetime
-    mediaType_id:
-      type: integer
-#    genre_id:
-#      type: integer
-#    decade_id:
-#      type: integer
   lifecycleCallbacks: {  }
   #there are many MediaResources to 1 mediatype so MediaResource is the owning side
   #http://docs.doctrine-project.org/projects/doctrine-orm/en/2.0.x/reference/association-mapping.html
   manyToOne:
     mediaType:
       targetEntity: MediaType
-#    decade:
-#      targetEntity: Decade
-#    genre:
-#      targetEntity: Genre
+    decade:
+      targetEntity: Decade
+    genre:
+      targetEntity: Genre
+    api:
+      targetEntity: API
       
