@@ -2,18 +2,20 @@
 namespace ThinkBack\MediaBundle\MediaAPI;
 use Symfony\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
+use ThinkBack\MediaBundle\MediaAPI\IAPIStrategy;
 
 class MediaAPI {
     public static $EXACT_RECOMMENDATION = 1;
     public static $AGE_RECOMMENDATION = 2;
     public static $GENERAL_RECOMMENDATION = 3;
     
-    private $apiStrategy;
-    private $apis;
-    private $debugMode = false;
-    private $doctrine;
-    private $em;
+    protected $apiStrategy;
+    protected $apis;
+    protected $debugMode = false;
+    protected $doctrine;
+    protected $em;
     
+    protected $response = null;
     
     /*
      * not sure how to implement debug_mode yet
@@ -32,6 +34,12 @@ class MediaAPI {
         return $this->apis;
     }
     
+    public function setAPIStrategy($apiStrategyKey){
+        if(array_key_exists($apiStrategyKey, $this->apis))
+            $this->apiStrategy = $this->apis[$apiStrategyKey];
+        else
+            throw new \RuntimeException("api key not found");
+    }
     /*
      * getDetails calls the api of the current strategy
      * but first gets recommendations from the db about that api
@@ -40,6 +48,7 @@ class MediaAPI {
      * like Operation, Id. For youtube it contains things like keywords, decade, media etc
      */
     public function getDetails(array $params, array $searchParams){
+        $this->response = null;
         //look up the detail in the db to see if its cached
         
         //get the recommendations
@@ -48,10 +57,10 @@ class MediaAPI {
         
         //store the recommendation in cache
         
-        $response = $this->apiStrategy->getDetails($params, $searchParams);
+        $this->response = $this->apiStrategy->getDetails($params, $searchParams);
 
         
-        return $response;
+        return $this->response;
     }
     
     /*
@@ -61,42 +70,44 @@ class MediaAPI {
      * 
      */
     public function getListings(array $params){
-        $response = null;
-        //checking and handling caching handled by MediaAPI
-        
-        if($this->cachedListingsExist($params)){
+        $this->response = null;
+           
+        $this->response = $this->getCachedListings();
         //look up the query from the db and return cached listings if available
+        if($this->cachedListingsExist()){
+            return $this->response;
             
         }else{
-            $response = $this->apiStrategy->getListings($params);
+            $this->response = $this->apiStrategy->getListings($params);
         }
         
         //get recommendations that exist only in the db
         
         
         //once results are retrieved update or insert into cache
-        $this->cacheListings($response, $params);
+        $this->cacheListings($this->response, $params);
         
-        return $response;
+        return $this->response;
     }
     
-    public function setAPIStrategy($apiStrategyKey){
-        if(isset($this->apis[$apiStrategyKey]))
-            $this->apiStrategy = $this->apis[$apiStrategyKey];
-        else
-            throw new \RuntimeException("api key not found");
-    }
+    
     
     /*
      * for the current apistrategy, look up listings that
      * have been retrieved within the last 24 hours
      */
     public function cachedListingsExist($searchParams){
-        return false;
+        return $this->response != null;
     }
     
     public function cacheListings($response, $searchParams){
         //todo
+    }
+    
+    public function getCachedListings($params){
+        //look up the MediaResourceListingsCache with the params and the current apistrategy name
+        return $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($params, $this->apiStrategy->$API_NAME);
+        
     }
     
     /*

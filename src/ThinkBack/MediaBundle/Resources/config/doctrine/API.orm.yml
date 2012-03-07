@@ -1,5 +1,6 @@
-ThinkBack\MediaBundle\Entity\MediaSearch:
+ThinkBack\MediaBundle\Entity\API:
   type: entity
+  repositoryClass: ThinkBack\MediaBundle\Repository\APIRepository
   table: null
   fields:
     id:
@@ -7,7 +8,11 @@ ThinkBack\MediaBundle\Entity\MediaSearch:
       id: true
       generator:
         strategy: AUTO
-    searchKeywords:
+    apiName:
+      type: string
+      length: '100'
+    host:
       type: string
       length: 255
+      nullable: true
   lifecycleCallbacks: {  }

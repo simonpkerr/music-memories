@@ -93,8 +93,61 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
         $api = new AmazonAPI($this->access_params, $testASR);
         $response = $api->getRequest($this->params);
         $this->assertTrue($response->Items->TotalResults > 0);
-    }   
+    }
+    
+    public function testGetListingsWithValidDatSetReturnsResponse(){
+        
+    }
+    public function testGetListingsWithInvalidDatSetReturnsResponse(){
+        
+    }
+    public function testGetDetailsWithValidDataSetReturnsResponse(){
+        
+    }
+    public function testGetDetailsWithInvalidDataSetReturnsResponse(){
+        
+    }
+    
+    public function testCacheListingsWithNonExistentListingsCachesData(){
+        
+    }
+    
+    public function testCacheListingsWithValidExistingListingsDoesNotCacheData(){
+        
+    }
   
+    public function testCacheListingsWithTimestampExpiredListingsCachesData(){
+        
+    }
+    
+    public function testGetRecommendationsOnExactParamsReturnsData(){
+        
+    }
+    
+    public function testGetRecommendationsOnGenericParamsReturnsData(){
+        
+    }
+    
+    public function testGetRecommendationsOnAgeReturnsData(){
+        
+    }
+    
+    public function testGetRecommendationsOnValidAmazonRecordsReturnsData(){
+        
+    }
+    
+    public function testGetRecommendationsOnTimestampExpiredAmazonRecordsLooksUpAmazonData(){
+        
+    }
+    
+    public function testSetRecommendationsForNewAmazonProductStoresMediaResourceAndCachedResource(){
+        
+    }
+    
+    public function testSetRecommendationsForExistingAmazonProductUpdatesMediaResourceViewCountAndUpdatesCachedResource(){
+        
+    }
+    
 }
 
 

@@ -10,7 +10,7 @@ namespace ThinkBack\MediaBundle\MediaAPI;
 use ThinkBack\MediaBundle\MediaAPI\Utilities;
 
 class YouTubeAPI implements IAPIStrategy {
-    public static $API_NAME = 'youtubeapi';
+    public $API_NAME = 'youtubeapi';
     protected $youTube;
     private $query;
     

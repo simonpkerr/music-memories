@@ -10,14 +10,16 @@ ThinkBack\MediaBundle\Entity\MediaResourceListingsCache:
         strategy: AUTO
     page:
       type: integer
+      nullable: true
     keywords:
       type: string
       length: 255
+      nullable: true
     xmlData:
       type: object
     dateCreated:
       type: datetime
-  oneToOne:
+  manyToOne:
     mediaType:
       targetEntity: MediaType
     decade:

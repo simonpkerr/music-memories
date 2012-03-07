@@ -12,4 +12,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class MediaResourceListingsCacheRepository extends EntityRepository
 {
+    /*
+     * gets cached listings based on search parameters and api type as well as timeStamp on record
+     * records older than 24 hours must be removed
+     * @params includes mediatype, optional decade, optional genre, optional keywords,
+     * optional page
+     */
+    public function getCachedListings(array $params, $apiName){
+        $xmlData = $this->createQueryBuilder('cl')
+                ->select(array('cl.xmlData'))
+                ->where('cl.mediaType.slug == :mediaSlug')
+                ->andWhere('cl.api.name == :apiName')
+                ->setParameters(array(
+                    'mediaSlug'     => $params['media'],
+                    'apiName'       => $apiName,
+                    ))
+                ->getQuery()
+                ->getSingleResult();
+        
+        return $xmlData;
+    }
 }

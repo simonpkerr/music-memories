@@ -152,16 +152,16 @@ class MediaController extends Controller
         $params = array();
         if($mediaSelection != null){
             $params = array(
+                    'media'     => $mediaSelection->getMediaTypes()->getSlug(),    
                     'decade'    => $mediaSelection->getDecades() != null ? $mediaSelection->getDecades()->getSlug() : Decade::$default,
-                    'media'     => $mediaSelection->getMediaTypes()->getSlug(),
                     'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getSlug() : Genre::$default,
                     'keywords'  => $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : '-',
-                    'page'      => $mediaSelection->getPage() != null ? $mediaSelection->getPage() : null,
+                    'page'      => $mediaSelection->getPage() != null ? $mediaSelection->getPage() : 1,
             );
         }else {
             $params = array(
-                'decade'    => Decade::$default,
                 'media'     => MediaType::$default,
+                'decade'    => Decade::$default,
                 'genre'     => Genre::$default,
                 'page'      => 1,
                 'keywords'  => '-',

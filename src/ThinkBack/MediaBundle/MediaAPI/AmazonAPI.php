@@ -9,7 +9,7 @@ use ThinkBack\MediaBundle\Entity\MediaType;
 use ThinkBack\MediaBundle\MediaAPI\Utilities;
 
 class AmazonAPI implements IAPIStrategy {
-    public static $API_NAME = 'amazonapi';
+    public $API_NAME = 'amazonapi';
     private $amazonParameters;
     private $public_key;                           
     private $private_key;
@@ -83,7 +83,6 @@ class AmazonAPI implements IAPIStrategy {
             'Sort'           =>      'salesrank',
         ));
         
-        //////////////
         if($params['ItemPage'] > 10){
             throw new \RunTimeException("Requested page was out of bounds");
         }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 08, 2012 at 08:39 PM
+-- Generation Time: Mar 07, 2012 at 11:04 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -23,15 +23,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `apitype`
+-- Table structure for table `api`
 --
 
-CREATE TABLE IF NOT EXISTS `apitype` (
+CREATE TABLE IF NOT EXISTS `api` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `apiName` varchar(75) NOT NULL,
-  `apiHost` varchar(150) NOT NULL,
+  `apiName` varchar(100) NOT NULL,
+  `host` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `api`
+--
+
+INSERT INTO `api` (`id`, `apiName`, `host`) VALUES
+(1, 'amazonapi', NULL),
+(2, 'youtubeapi', NULL),
+(3, 'sevendigitalapi', NULL),
+(4, 'gdataimagesapi', NULL);
 
 -- --------------------------------------------------------
 
@@ -115,7 +125,6 @@ CREATE TABLE IF NOT EXISTS `fos_user` (
   `email` varchar(255) NOT NULL,
   `email_canonical` varchar(255) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
-  `algorithm` varchar(255) NOT NULL,
   `salt` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `last_login` datetime DEFAULT NULL,
@@ -147,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `genre` (
   `amazonBrowseNodeId` varchar(10) NOT NULL,
   `sevenDigitalTag` varchar(50) NOT NULL,
   `genreName` varchar(100) NOT NULL,
-  `slug` varchar(250) DEFAULT NULL,
+  `slug` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_42911CFC4FBBC852` (`mediaType_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
@@ -210,6 +219,59 @@ INSERT INTO `genre` (`id`, `mediaType_id`, `amazonBrowseNodeId`, `sevenDigitalTa
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mediaresource`
+--
+
+CREATE TABLE IF NOT EXISTS `mediaresource` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `decade_id` int(11) DEFAULT NULL,
+  `genre_id` int(11) DEFAULT NULL,
+  `api_id` int(11) DEFAULT NULL,
+  `itemId` varchar(50) NOT NULL,
+  `viewCount` int(11) NOT NULL,
+  `selectedCount` int(11) NOT NULL,
+  `lastUpdated` datetime NOT NULL,
+  `mediaType_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_E306BA814FBBC852` (`mediaType_id`),
+  KEY `IDX_E306BA81FF312AC0` (`decade_id`),
+  KEY `IDX_E306BA814296D31F` (`genre_id`),
+  KEY `IDX_E306BA8154963938` (`api_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mediaresourcelistingscache`
+--
+
+CREATE TABLE IF NOT EXISTS `mediaresourcelistingscache` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `decade_id` int(11) DEFAULT NULL,
+  `genre_id` int(11) DEFAULT NULL,
+  `api_id` int(11) DEFAULT NULL,
+  `page` int(11) DEFAULT NULL,
+  `keywords` varchar(255) DEFAULT NULL,
+  `xmlData` longtext NOT NULL COMMENT '(DC2Type:object)',
+  `dateCreated` datetime NOT NULL,
+  `mediaType_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_623D23F14FBBC852` (`mediaType_id`),
+  KEY `IDX_623D23F1FF312AC0` (`decade_id`),
+  KEY `IDX_623D23F14296D31F` (`genre_id`),
+  KEY `IDX_623D23F154963938` (`api_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `mediaresourcelistingscache`
+--
+
+INSERT INTO `mediaresourcelistingscache` (`id`, `decade_id`, `genre_id`, `api_id`, `page`, `keywords`, `xmlData`, `dateCreated`, `mediaType_id`) VALUES
+(1, NULL, NULL, 1, NULL, NULL, '<?xml version="1.0" ?>\r\n<ItemSearchResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2009-03-31">\r\n  <OperationRequest>\r\n    <RequestId>49ce42ef-73e5-4b21-8d86-8511e87fdce2</RequestId>\r\n    <Arguments>\r\n      <Argument Name="Condition" Value="All"></Argument>\r\n      <Argument Name="Operation" Value="ItemSearch"></Argument>\r\n      <Argument Name="Service" Value="AWSECommerceService"></Argument>\r\n      <Argument Name="Signature" Value="n3mgH4Bx6WTlKHCuE0vkVqf7xDZcZn6yYnM7SY4lcn4="></Argument>\r\n      <Argument Name="MerchantId" Value="All"></Argument>\r\n      <Argument Name="ItemPage" Value="1"></Argument>\r\n      <Argument Name="AssociateTag" Value="thinkbackcouk-20"></Argument>\r\n      <Argument Name="BrowseNode" Value="542159011"></Argument>\r\n      <Argument Name="Version" Value="2009-03-31"></Argument>\r\n      <Argument Name="Sort" Value="salesrank"></Argument>\r\n      <Argument Name="Validate" Value="True"></Argument>\r\n      <Argument Name="AWSAccessKeyId" Value="AKIAJH6G4CGNH5FCPVHA"></Argument>\r\n      <Argument Name="Timestamp" Value="2011-12-15T13:21:31Z"></Argument>\r\n      <Argument Name="ResponseGroup" Value="Images,ItemAttributes,SalesRank,Request"></Argument>\r\n      <Argument Name="SearchIndex" Value="Video"></Argument>\r\n    </Arguments>\r\n    <RequestProcessingTime>0.2932520000000000</RequestProcessingTime>\r\n  </OperationRequest>\r\n  <Items>\r\n    <Request>\r\n      <IsValid>True</IsValid>\r\n      <ItemSearchRequest>\r\n        <BrowseNode>542159011</BrowseNode>\r\n        <Condition>All</Condition>\r\n        <ItemPage>1</ItemPage>\r\n        <MerchantId>Deprecated</MerchantId>\r\n        <ResponseGroup>Images</ResponseGroup>\r\n        <ResponseGroup>ItemAttributes</ResponseGroup>\r\n        <ResponseGroup>SalesRank</ResponseGroup>\r\n        <ResponseGroup>Request</ResponseGroup>\r\n        <SearchIndex>Video</SearchIndex>\r\n        <Sort>salesrank</Sort>\r\n      </ItemSearchRequest>\r\n    </Request>\r\n    <TotalResults>1</TotalResults>\r\n    <TotalPages>1</TotalPages>\r\n    <Item>\r\n    <ASIN>B00061S0QE</ASIN>\r\n    <DetailPageURL>http://www.amazon.co.uk/Elf-DVD-Will-Ferrell/dp/B00061S0QE%3FSubscriptionId%3DAKIAJH6G4CGNH5FCPVHA%26tag%3Dthinkbackcouk-20%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB00061S0QE</DetailPageURL>\r\n    <ItemLinks>\r\n      <ItemLink>\r\n        <Description>Add To Wishlist</Description>\r\n        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB00061S0QE%26SubscriptionId%3DAKIAJH6G4CGNH5FCPVHA%26tag%3Dthinkbackcouk-20%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00061S0QE</URL>\r\n      </ItemLink>\r\n      <ItemLink>\r\n        <Description>Tell A Friend</Description>\r\n        <URL>http://www.amazon.co.uk/gp/pdp/taf/B00061S0QE%3FSubscriptionId%3DAKIAJH6G4CGNH5FCPVHA%26tag%3Dthinkbackcouk-20%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00061S0QE</URL>\r\n      </ItemLink>\r\n      <ItemLink>\r\n        <Description>All Customer Reviews</Description>\r\n        <URL>http://www.amazon.co.uk/review/product/B00061S0QE%3FSubscriptionId%3DAKIAJH6G4CGNH5FCPVHA%26tag%3Dthinkbackcouk-20%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00061S0QE</URL>\r\n      </ItemLink>\r\n      <ItemLink>\r\n        <Description>All Offers</Description>\r\n        <URL>http://www.amazon.co.uk/gp/offer-listing/B00061S0QE%3FSubscriptionId%3DAKIAJH6G4CGNH5FCPVHA%26tag%3Dthinkbackcouk-20%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00061S0QE</URL>\r\n      </ItemLink>\r\n    </ItemLinks>\r\n    <SalesRank>50</SalesRank>\r\n    <SmallImage>\r\n      <URL>http://ecx.images-amazon.com/images/I/31RPTC68B7L._SL75_.jpg</URL>\r\n      <Height Units="pixels">75</Height>\r\n      <Width Units="pixels">52</Width>\r\n    </SmallImage>\r\n    <MediumImage>\r\n      <URL>http://ecx.images-amazon.com/images/I/31RPTC68B7L._SL160_.jpg</URL>\r\n      <Height Units="pixels">160</Height>\r\n      <Width Units="pixels">112</Width>\r\n    </MediumImage>\r\n    <LargeImage>\r\n      <URL>http://ecx.images-amazon.com/images/I/31RPTC68B7L.jpg</URL>\r\n      <Height Units="pixels">250</Height>\r\n      <Width Units="pixels">175</Width>\r\n    </LargeImage>\r\n    <ImageSets>\r\n      <ImageSet Category="primary">\r\n        <SwatchImage>\r\n          <URL>http://ecx.images-amazon.com/images/I/31RPTC68B7L._SL30_.jpg</URL>\r\n          <Height Units="pixels">30</Height>\r\n          <Width Units="pixels">21</Width>\r\n        </SwatchImage>\r\n        <SmallImage>\r\n          <URL>http://ecx.images-amazon.com/images/I/31RPTC68B7L._SL75_.jpg</URL>\r\n          <Height Units="pixels">75</Height>\r\n          <Width Units="pixels">52</Width>\r\n        </SmallImage>\r\n        <ThumbnailImage>\r\n          <URL>http://ecx.images-amazon.com/images/I/31RPTC68B7L._SL75_.jpg</URL>\r\n          <Height Units="pixels">75</Height>\r\n          <Width Units="pixels">52</Width>\r\n        </ThumbnailImage>\r\n        <TinyImage>\r\n          <URL>http://ecx.images-amazon.com/images/I/31RPTC68B7L._SL110_.jpg</URL>\r\n          <Height Units="pixels">110</Height>\r\n          <Width Units="pixels">77</Width>\r\n        </TinyImage>\r\n        <MediumImage>\r\n          <URL>http://ecx.images-amazon.com/images/I/31RPTC68B7L._SL160_.jpg</URL>\r\n          <Height Units="pixels">160</Height>\r\n          <Width Units="pixels">112</Width>\r\n        </MediumImage>\r\n        <LargeImage>\r\n          <URL>http://ecx.images-amazon.com/images/I/31RPTC68B7L.jpg</URL>\r\n          <Height Units="pixels">250</Height>\r\n          <Width Units="pixels">175</Width>\r\n        </LargeImage>\r\n      </ImageSet>\r\n    </ImageSets>\r\n    <ItemAttributes>\r\n      <Actor>Will Ferrell</Actor>\r\n      <Actor>Edward Asner</Actor>\r\n      <Actor>Bob Newhart</Actor>\r\n      <Actor>James Caan</Actor>\r\n      <Actor>Mary Steenburgen</Actor>\r\n      <AudienceRating>Parental Guidance</AudienceRating>\r\n      <Binding>DVD</Binding>\r\n      <Creator Role="Primary Contributor">Will Ferrell</Creator>\r\n      <Creator Role="Primary Contributor">Edward Asner</Creator>\r\n      <Creator Role="Producer">Cale Boyter</Creator>\r\n      <Creator Role="Producer">David B. Householter</Creator>\r\n      <Creator Role="Producer">Jimmy Miller</Creator>\r\n      <Creator Role="Producer">Jon Berg</Creator>\r\n      <Creator Role="Producer">Julie Wixson Darmody</Creator>\r\n      <Creator Role="Producer">Kent Alterman</Creator>\r\n      <Creator Role="Writer">David Berenbaum</Creator>\r\n      <Director>Jon Favreau</Director>\r\n      <EAN>5017239192470</EAN>\r\n      <Format>PAL</Format>\r\n      <Label>Eiv</Label>\r\n      <Languages>\r\n        <Language>\r\n          <Name>English</Name>\r\n          <Type>Subtitled</Type>\r\n        </Language>\r\n        <Language>\r\n          <Name>English</Name>\r\n          <Type>Original Language</Type>\r\n        </Language>\r\n      </Languages>\r\n      <ListPrice>\r\n        <Amount>999</Amount>\r\n        <CurrencyCode>GBP</CurrencyCode>\r\n        <FormattedPrice>£9.99</FormattedPrice>\r\n      </ListPrice>\r\n      <Manufacturer>Eiv</Manufacturer>\r\n      <NumberOfDiscs>2</NumberOfDiscs>\r\n      <NumberOfItems>2</NumberOfItems>\r\n      <PackageDimensions>\r\n        <Height Units="hundredths-inches">55</Height>\r\n        <Length Units="hundredths-inches">748</Length>\r\n        <Weight Units="hundredths-pounds">22</Weight>\r\n        <Width Units="hundredths-inches">535</Width>\r\n      </PackageDimensions>\r\n      <PackageQuantity>1</PackageQuantity>\r\n      <ProductGroup>DVD</ProductGroup>\r\n      <ProductTypeName>ABIS_DVD</ProductTypeName>\r\n      <Publisher>Eiv</Publisher>\r\n      <RegionCode>2</RegionCode>\r\n      <ReleaseDate>2004-11-08</ReleaseDate>\r\n      <RunningTime Units="minutes">93</RunningTime>\r\n      <SKU>13933</SKU>\r\n      <Studio>Eiv</Studio>\r\n      <Title>Elf [DVD] [2003]</Title>\r\n      <UPC>501723919247</UPC>\r\n    </ItemAttributes>\r\n    </Item>\r\n	</Items>\r\n</ItemSearchResponse>', '2012-03-07 18:35:00', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mediatype`
 --
 
@@ -217,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `mediatype` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mediaName` varchar(75) NOT NULL,
   `amazonBrowseNodeId` varchar(10) NOT NULL,
-  `slug` varchar(100) NOT NULL,
+  `slug` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
@@ -231,38 +293,6 @@ INSERT INTO `mediatype` (`id`, `mediaName`, `amazonBrowseNodeId`, `slug`) VALUES
 (3, 'Music', '', 'music'),
 (4, 'Film & TV', '283926', 'film-and-tv');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `recommendeditem`
---
-
-CREATE TABLE IF NOT EXISTS `recommendeditem` (
-  `id` int(11) NOT NULL,
-  `itemId` varchar(50) NOT NULL,
-  `mediaTypeId` int(11) NOT NULL,
-  `apiId` int(11) NOT NULL,
-  `decadeId` int(11) NOT NULL,
-  `genreId` int(11) NOT NULL,
-  `selectedCount` int(11) NOT NULL,
-  `lastUpdated` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `yearofbirthlinktable`
---
-
-CREATE TABLE IF NOT EXISTS `yearofbirthlinktable` (
-  `id` int(11) NOT NULL,
-  `yearOfBirth` int(11) NOT NULL,
-  `itemId` varchar(50) NOT NULL,
-  `selectedCount` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --
 -- Constraints for dumped tables
 --
@@ -272,6 +302,24 @@ CREATE TABLE IF NOT EXISTS `yearofbirthlinktable` (
 --
 ALTER TABLE `genre`
   ADD CONSTRAINT `FK_42911CFC4FBBC852` FOREIGN KEY (`mediaType_id`) REFERENCES `mediatype` (`id`);
+
+--
+-- Constraints for table `mediaresource`
+--
+ALTER TABLE `mediaresource`
+  ADD CONSTRAINT `FK_E306BA8154963938` FOREIGN KEY (`api_id`) REFERENCES `api` (`id`),
+  ADD CONSTRAINT `FK_E306BA814296D31F` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`),
+  ADD CONSTRAINT `FK_E306BA814FBBC852` FOREIGN KEY (`mediaType_id`) REFERENCES `mediatype` (`id`),
+  ADD CONSTRAINT `FK_E306BA81FF312AC0` FOREIGN KEY (`decade_id`) REFERENCES `decade` (`id`);
+
+--
+-- Constraints for table `mediaresourcelistingscache`
+--
+ALTER TABLE `mediaresourcelistingscache`
+  ADD CONSTRAINT `FK_623D23F14296D31F` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`),
+  ADD CONSTRAINT `FK_623D23F14FBBC852` FOREIGN KEY (`mediaType_id`) REFERENCES `mediatype` (`id`),
+  ADD CONSTRAINT `FK_623D23F154963938` FOREIGN KEY (`api_id`) REFERENCES `api` (`id`),
+  ADD CONSTRAINT `FK_623D23F1FF312AC0` FOREIGN KEY (`decade_id`) REFERENCES `decade` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
