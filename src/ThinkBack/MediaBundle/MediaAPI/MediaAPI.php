@@ -72,7 +72,7 @@ class MediaAPI {
     public function getListings(array $params){
         $this->response = null;
            
-        $this->response = $this->getCachedListings();
+        $this->response = $this->getCachedListings($params);
         //look up the query from the db and return cached listings if available
         if($this->cachedListingsExist()){
             return $this->response;
@@ -96,8 +96,9 @@ class MediaAPI {
      * for the current apistrategy, look up listings that
      * have been retrieved within the last 24 hours
      */
-    public function cachedListingsExist($searchParams){
-        return $this->response != null;
+    public function cachedListingsExist($searchParams = null){
+        //return $this->response != null;
+        return false;
     }
     
     public function cacheListings($response, $searchParams){
@@ -106,7 +107,8 @@ class MediaAPI {
     
     public function getCachedListings($params){
         //look up the MediaResourceListingsCache with the params and the current apistrategy name
-        return $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($params, $this->apiStrategy->$API_NAME);
+        return null;
+        //return $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($params, $this->apiStrategy->$API_NAME);
         
     }
     
