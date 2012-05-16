@@ -19,17 +19,24 @@ class MediaResourceListingsCacheRepository extends EntityRepository
      * optional page
      */
     public function getCachedListings(array $params, $apiName){
-        $xmlData = $this->createQueryBuilder('cl')
-                ->select(array('cl.xmlData'))
-                ->where('cl.mediaType.slug == :mediaSlug')
-                ->andWhere('cl.api.name == :apiName')
-                ->setParameters(array(
-                    'mediaSlug'     => $params['media'],
-                    'apiName'       => $apiName,
-                    ))
-                ->getQuery()
-                ->getSingleResult();
+  
         
-        return $xmlData;
-    }
+        $q = $this->createQueryBuilder('cl')
+                ->select('cl.xmlData')
+                ->innerJoin('cl.mediaType', 'm')
+                ->innerJoin('cl.api', 'a')
+                ->where('m.slug = :mediaSlug')
+                ->andWhere('a.apiName = :apiName')
+                ->setParameters(array(
+                    'mediaSlug'     =>  $params['media'],
+                    'apiName'       =>  $apiName,
+                   ))
+                ->getQuery();
+        
+        try{
+            return $q->getSingleResult();
+        }catch(\Doctrine\ORM\NoResultException $ex){
+            return null;
+        }
+     }
 }

@@ -27,6 +27,7 @@ class MediaAPI {
         $this->debugMode = $debug_mode;
         $this->doctrine = $doctrine;
         $this->em = $doctrine->getEntityManager();
+        //this needs changing to accomodate different APIs
         $this->setAPIStrategy('amazonapi');
     }
     
@@ -66,10 +67,12 @@ class MediaAPI {
     /*
      * getListings calls the api of the current strategy
      * but first checks to see if the query is in the listings cache table along with results
-     * @param searchParams - contains the media,decade,genre,keywords,page used to find results
+     * @param params - contains the media,decade,genre,keywords,page used to find results
      * 
      */
     public function getListings(array $params){
+        //$params = $this->removeDefaultValues($params);
+                
         $this->response = null;
            
         $this->response = $this->getCachedListings($params);
@@ -97,8 +100,8 @@ class MediaAPI {
      * have been retrieved within the last 24 hours
      */
     public function cachedListingsExist($searchParams = null){
-        //return $this->response != null;
-        return false;
+        return $this->response != null;
+        //return false;
     }
     
     public function cacheListings($response, $searchParams){
@@ -106,9 +109,11 @@ class MediaAPI {
     }
     
     public function getCachedListings($params){
-        //look up the MediaResourceListingsCache with the params and the current apistrategy name
-        return null;
-        //return $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($params, $this->apiStrategy->$API_NAME);
+        //look up the MediaResourceListingsCache with the params and the current apistrategy name   
+        $xmlResponse = $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($params, $this->apiStrategy->API_NAME);
+        
+        return @simplexml_load_string($xmlResponse);
+        
         
     }
     
@@ -132,6 +137,12 @@ class MediaAPI {
         //todo
     }
     
+    //removes default values from the params array so that queries are executed correctly.
+    private function removeDefaultValues(array $params){
+        $params['decade'] = $params['decade'] == Decade::$default ? null : $params['decade'];
+        $params['genre'] = $params['genre'] == Genre::$default ? null : $params['genre'];
+        
+    }
     
     
     

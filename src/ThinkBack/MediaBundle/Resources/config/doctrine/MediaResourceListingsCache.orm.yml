@@ -1,6 +1,6 @@
 ThinkBack\MediaBundle\Entity\MediaResourceListingsCache:
   type: entity
-  repositoryClass: ThinkBack\MediaBundle\Repository\MediaResourceRepository
+  repositoryClass: ThinkBack\MediaBundle\Repository\MediaResourceListingsCacheRepository
   table: null
   fields:
     id:
@@ -19,13 +19,14 @@ ThinkBack\MediaBundle\Entity\MediaResourceListingsCache:
       type: object
     dateCreated:
       type: datetime
-  manyToOne:
-    mediaType:
-      targetEntity: MediaType
-    decade:
-      targetEntity: Decade
-    genre:
-      targetEntity: Genre
+  oneToOne:
     api:
       targetEntity: API
+    mediaType:
+      targetEntity: MediaType  
+    decade:
+      targetEntity: Decade
+      #nullable defaults to true for these columns
+    genre:
+      targetEntity: Genre
   lifecycleCallbacks: {  }

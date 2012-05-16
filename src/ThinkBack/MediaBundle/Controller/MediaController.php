@@ -28,8 +28,7 @@ use ThinkBack\MediaBundle\MediaAPI;
 
 class MediaController extends Controller
 {
-    //private $amazonapi;
-    //private $youtubeapi;
+    //handles all calls to the various APIs
     private $mediaapi;
         
     private function getEntityManager(){
@@ -184,6 +183,7 @@ class MediaController extends Controller
     private function getSearchRoute(){
         
         $returnRoute = $this->generateUrl('search', $this->removeNullEntries($this->getMediaSelectionParams()));
+        return $returnRoute;
     }
     
     
@@ -299,14 +299,18 @@ class MediaController extends Controller
        );
        
        if($media == "music"){
-            $params = array(
+            //the correct parameters for a given API are retrieved through the mediaapi class
+            /*$params = array(
                 $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade)->getSevenDigitalTag(),
                 $genre != 'all' ? $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlug($genre)->getSevenDigitalTag(): '',
-            );
+            );*/
 
-            $api = new MediaAPI\SevenDigitalAPI();
+            //todo
+            $this->mediaapi = $this->get('think_back_media.mediaapi');
+            $this->mediaapi->setAPIStrategy('sevendigitalapi');
             try{
-                $response = $sevenDigitalAPI->getRequest($params);
+                //$response = $sevenDigitalAPI->getRequest($params);
+                $response = $this->mediaapi->getListings($this->getMediaSelectionParams());
             }catch(Exception $ex){
                 $exception = $ex;
             }

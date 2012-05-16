@@ -20,13 +20,14 @@ ThinkBack\MediaBundle\Entity\MediaResource:
   lifecycleCallbacks: {  }
   #there are many MediaResources to 1 mediatype so MediaResource is the owning side
   #http://docs.doctrine-project.org/projects/doctrine-orm/en/2.0.x/reference/association-mapping.html
-  manyToOne:
+  oneToOne:
+    api:
+      targetEntity: API
     mediaType:
       targetEntity: MediaType
     decade:
       targetEntity: Decade
     genre:
       targetEntity: Genre
-    api:
-      targetEntity: API
+    
       
