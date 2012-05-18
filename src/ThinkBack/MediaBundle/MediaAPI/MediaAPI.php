@@ -112,7 +112,10 @@ class MediaAPI {
         //look up the MediaResourceListingsCache with the params and the current apistrategy name   
         $xmlResponse = $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($params, $this->apiStrategy->API_NAME);
         
-        return @simplexml_load_string($xmlResponse);
+        if($xmlResponse != null)
+            return @simplexml_load_string($xmlResponse[0]);
+        else
+            return null;
         
         
     }

@@ -20,7 +20,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
      */
     public function getCachedListings(array $params, $apiName){
   
-        
+        //initial selection parameters
         $q = $this->createQueryBuilder('cl')
                 ->select('cl.xmlData')
                 ->innerJoin('cl.mediaType', 'm')
@@ -30,13 +30,23 @@ class MediaResourceListingsCacheRepository extends EntityRepository
                 ->setParameters(array(
                     'mediaSlug'     =>  $params['media'],
                     'apiName'       =>  $apiName,
-                   ))
-                ->getQuery();
+                   ));
+                //->getQuery();*/
         
+        if($decade != Decade::$default){
+            //$q = $this->addDecadeQueryPart($params['decade'], $q);
+            $q .= innerJoin('cl.decade', 'd')
+                ->where('d.decadeName = :decadeName')
+                ->setParameter('decadeName', $decade);
+        }
+                
         try{
+            $q = $q->getQuery;
             return $q->getSingleResult();
         }catch(\Doctrine\ORM\NoResultException $ex){
             return null;
         }
      }
+     
+     
 }
