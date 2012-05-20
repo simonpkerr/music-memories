@@ -3,6 +3,8 @@
 namespace ThinkBack\MediaBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use ThinkBack\MediaBundle\Entity\Decade;
+use ThinkBack\MediaBundle\Entity\Genre;
 
 /**
  * MediaResourceListingsCacheRepository
@@ -27,25 +29,46 @@ class MediaResourceListingsCacheRepository extends EntityRepository
                 ->innerJoin('cl.api', 'a')
                 ->where('m.slug = :mediaSlug')
                 ->andWhere('a.apiName = :apiName')
+                ->andWhere('cl.dateCreated >= :validCreationTime')
                 ->setParameters(array(
                     'mediaSlug'     =>  $params['media'],
                     'apiName'       =>  $apiName,
+                    'validCreationTime' => $this->getValidCreationTime()
                    ));
-                //->getQuery();*/
-        
-        if($decade != Decade::$default){
-            //$q = $this->addDecadeQueryPart($params['decade'], $q);
-            $q .= innerJoin('cl.decade', 'd')
-                ->where('d.decadeName = :decadeName')
-                ->setParameter('decadeName', $decade);
+
+        if($params['decade'] != Decade::$default){
+            $q = $q->innerJoin('cl.decade', 'd')
+                ->andWhere('d.decadeName = :decadeName')
+                ->setParameter('decadeName', $params['decade']);
         }
+        if($params['genre'] != Genre::$default){
+            $q = $q->innerJoin('cl.genre', 'g')
+                ->andWhere('g.genreName = :genreName')
+                ->setParameter('genreName', $params['genre']);
+        }
+        if($params['keywords'] != '-'){
+            $q = $q->andWhere('cl.keywords = :keywords')
+                ->setParameter('keywords', $params['keywords']);
+        }
+        if($params['page'] != 1){
+            $q = $q->andWhere('cl.page = :page')
+                ->setParameter('page', $params['page']);
+        }
+       
                 
         try{
-            $q = $q->getQuery;
+            $q = $q->getQuery();
             return $q->getSingleResult();
         }catch(\Doctrine\ORM\NoResultException $ex){
             return null;
         }
+     }
+     
+     private function getValidCreationTime(){
+         $date = new \DateTime("now");
+         $date = $date->sub(new \DateInterval('PT24H'))->format("Y-m-d H:i:s");
+
+         return $date;
      }
      
      
