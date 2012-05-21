@@ -46,8 +46,26 @@ class MediaResourceListingsCache
      * @var datetime $dateCreated
      */
     protected $dateCreated;
+    
+    protected $api_id;
+    protected $mediaType_id;
+    protected $genre_id;
+    protected $decade_id;
 
 
+    public function getMediaType_id(){
+        return $this->mediaType_id;
+    }
+    public function getApi_id(){
+        return $this->api_id;
+    }
+    public function getGenre_id(){
+        return $this->genre_id;
+    }
+    public function getDecade_id(){
+        return $this->decade_id;
+    }
+    
     /**
      * Get id
      *

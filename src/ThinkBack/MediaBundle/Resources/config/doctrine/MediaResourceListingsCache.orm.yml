@@ -19,7 +19,17 @@ ThinkBack\MediaBundle\Entity\MediaResourceListingsCache:
       type: object
     dateCreated:
       type: datetime
-  oneToOne:
+    api_id:
+      type: integer
+    mediaType_id:
+      type: integer
+    genre_id:
+      type: integer  
+      nullable: true
+    decade_id:
+      type: integer
+      nullable: true
+  manyToOne:
     api:
       targetEntity: API
     mediaType:

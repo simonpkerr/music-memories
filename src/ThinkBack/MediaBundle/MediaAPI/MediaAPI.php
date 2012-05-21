@@ -3,6 +3,13 @@ namespace ThinkBack\MediaBundle\MediaAPI;
 use Symfony\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use ThinkBack\MediaBundle\MediaAPI\IAPIStrategy;
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * MediaAPI controls access to the various apis and their operations,
+ * checking for cached versions of details or listings
+ * @author Simon Kerr
+ * @version 1.0
+ */
 
 class MediaAPI {
     public static $EXACT_RECOMMENDATION = 1;
