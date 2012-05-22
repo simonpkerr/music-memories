@@ -5,6 +5,7 @@
  * LoadCachedListings loads fixtures to test the cached listings
  * @author Simon Kerr
  * @version 1.0
+ * to execute = php app/console doctrine:fixtures:load --fixtures=/path/to/fixture1 --fixtures=/path/to/fixture2 --append
  */
 namespace ThinkBack\MediaBundle\DataFixtures\ORM;
 
@@ -26,24 +27,32 @@ class LoadCachedListings implements FixtureInterface, \Symfony\Component\Depende
     public function load(ObjectManager $manager){
         //load a cached listing with valid api, mediatype and timestamp
         $cachedListing = new MediaResourceListingsCache();
-        
         $cachedListing->setAPI($this->getAPI());
-        $cachedListing->setMediaType($this->getMediaType());
+        $cachedListing->setMediaType($this->getMediaType('film'));
         $cachedListing->setDateCreated(new \DateTime("now"));
+        $cachedListing->setXmlData($this->getXmlData());
         
         $manager->persist($cachedListing);
         $manager->flush(); 
+        
+        
     }
     
     private function getAPI(){
         //create a new API, or use a reference with the ordered fixture interface. 
         //http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
-        return $this->em->getRepository('ThinkBackMediaBundle:API');
+        return $this->em->getRepository('ThinkBackMediaBundle:API')->find('1');
     }
     
-    private function getMediaType(){
-        
+    private function getMediaType($mediaType){
+        return $this->em->getRepository('ThinkBackMediaBundle:MediaType')->find('1');
     }
+    
+    private function getXmlData(){
+        return '<?xml version="1.0" ?><items><item id="1"></item></items>';
+    }
+    
+    
     
 }
 
