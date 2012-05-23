@@ -25,22 +25,17 @@ class MediaResourceListingsCacheRepository extends EntityRepository
         //initial selection parameters
         
         $q = $this->createQueryBuilder('cl')
-                ->select('cl.xmlData')
+                ->select('cl.xmlData, cl.dateCreated, cl.id')
                 ->innerJoin('cl.mediaType', 'm')
                 ->innerJoin('cl.api', 'a')
-                //->innerJoin('cl.decade', 'd')
                 ->where('m.slug = :mediaSlug')
                 ->andWhere('a.apiName = :apiName')
-                ->andWhere('cl.dateCreated >= :validCreationTime')
-                //->andWhere('d.decadeName = :decadeName')
+                
+                //->andWhere('cl.dateCreated >= :validCreationTime')
                 ->setParameters(array(
                     'mediaSlug'         =>  $params['media'],
                     'apiName'           =>  $apiName,
-                    /*'decadeName'        =>  $params['decade'],
-                    'genreName'         =>  $params['genre'],
-                    'keywords'          =>  $params['keywords'],
-                    'page'              =>  $params['page'],*/
-                    'validCreationTime' =>  $this->getValidCreationTime()
+                    //'validCreationTime' =>  $this->getValidCreationTime()
                     
                    ));
          
@@ -49,21 +44,22 @@ class MediaResourceListingsCacheRepository extends EntityRepository
          * otherwise search for records with a null value for decade
          */
         if($params['decade'] != Decade::$default){
-            $q = $q->andWhere('d.decadeName = :decadeName')
-                ->setParameter('decadeName', $params['decade']);
+            $q = $q->innerJoin('cl.decade', 'd')
+                    ->andWhere('d.slug = :decadeSlug')
+                    ->setParameter('decadeSlug', $params['decade']);
         }else {
             $q = $q->andWhere('cl.decade_id is null');
         }
         
-        /*if($params['genre'] != Genre::$default){
+        if($params['genre'] != Genre::$default){
             $q = $q->innerJoin('cl.genre', 'g')
-                ->andWhere('g.genreName = :genreName')
-                ->setParameter('genreName', $params['genre']);
+                ->andWhere('g.slug = :genreSlug')
+                ->setParameter('genreSlug', $params['genre']);
         }else{
-            $q = $q->andWhere('cl.genre is null');
-        }*/
+            $q = $q->andWhere('cl.genre_id is null');
+        }
         
-        /*if($params['keywords'] != '-'){
+        if($params['keywords'] != '-'){
             $q = $q->andWhere('cl.keywords = :keywords')
                 ->setParameter('keywords', $params['keywords']);
         }else{
@@ -75,16 +71,32 @@ class MediaResourceListingsCacheRepository extends EntityRepository
                 ->setParameter('page', $params['page']);
         }else{
             $q = $q->andWhere('cl.page is null');
-        }*/
-       
-                
-        try{
-            $q = $q->getQuery();
-            return $q->getResult();
-        }catch(\Doctrine\ORM\NoResultException $ex){
+        }
+
+        $q = $q->getQuery()->getOneOrNullResult();
+        
+        if($q == null)
+            return null;
+        else if($q['dateCreated'] < $this->getValidCreationTime()){
+            //delete the entry since the timestamp is out of date
+            $this->createQueryBuilder('cl')
+                    ->delete()
+                    ->where('cl.id = :id')
+                    ->setParameter('id', $q['id'])
+                    ->getQuery()
+                    ->execute();
             return null;
         }
+        else
+            return $q['xmlData'];
+
      }
+     
+     //if listings were retrieved from a live api, cache them with a timestamp
+     /*public function setCachedListings($xmlData, array $params, $apiName){
+         $q = $this->createQueryBuilder('cl')
+                 ->
+     }*/
      
      private function getValidCreationTime(){
          $date = new \DateTime("now");

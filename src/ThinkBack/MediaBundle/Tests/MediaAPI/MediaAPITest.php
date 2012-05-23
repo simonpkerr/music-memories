@@ -21,13 +21,10 @@ class MediaAPITests extends \PHPUnit_Framework_TestCase {
         );
     }
     
-    public function testExistingValidCachedListingsReturnedFromSameQuery(){
+    public function testExistingValidCachedListingsReturnedFromSameQueryReturnsListings(){
         
     }
     public function testNullCachedListingsCallsLiveAPI(){
-        
-    }
-    public function testExistingExpiredTimestampCachedListingsCallsLiveAPI(){
         
     }
     public function testMediaTypeAndAPITypeParamsReturnsValidCachedListings(){

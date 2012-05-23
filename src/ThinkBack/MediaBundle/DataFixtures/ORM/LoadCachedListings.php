@@ -25,17 +25,37 @@ class LoadCachedListings implements FixtureInterface, \Symfony\Component\Depende
     }
     
     public function load(ObjectManager $manager){
-        //load a cached listing with valid api, mediatype and timestamp
+        //delete all records from the cached listings table first 
+        $q = $this->em->createQuery('DELETE from ThinkBack\MediaBundle\Entity\MediaResourceListingsCache');
+        $q->execute();
+        
+        //valid film listing
         $cachedListing = new MediaResourceListingsCache();
         $cachedListing->setAPI($this->getAPI());
-        $cachedListing->setMediaType($this->getMediaType('film'));
+        $cachedListing->setMediaType($this->getMediaType("film"));
         $cachedListing->setDateCreated(new \DateTime("now"));
         $cachedListing->setXmlData($this->getXmlData());
-        
         $manager->persist($cachedListing);
+        
+        //valid film listing with specific decade and genre
+        $cachedListing = new MediaResourceListingsCache();
+        $cachedListing->setAPI($this->getAPI());
+        $cachedListing->setMediaType($this->getMediaType("film"));
+        $cachedListing->setDecade($this->getDecade("1980"));
+        $cachedListing->setGenre($this->getGenre("science-fiction", "film"));
+        $cachedListing->setDateCreated(new \DateTime("now"));
+        $cachedListing->setXmlData($this->getXmlData());
+        $manager->persist($cachedListing);
+        
+        //old tv listing 
+        $cachedListing = new MediaResourceListingsCache();
+        $cachedListing->setAPI($this->getAPI());
+        $cachedListing->setMediaType($this->getMediaType("tv"));
+        $cachedListing->setDateCreated(new \DateTime('2000-01-01'));
+        $cachedListing->setXmlData($this->getXmlData());
+        $manager->persist($cachedListing); 
+        
         $manager->flush(); 
-        
-        
     }
     
     private function getAPI(){
@@ -45,8 +65,17 @@ class LoadCachedListings implements FixtureInterface, \Symfony\Component\Depende
     }
     
     private function getMediaType($mediaType){
-        return $this->em->getRepository('ThinkBackMediaBundle:MediaType')->find('1');
+        return $this->em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($mediaType);
     }
+    
+    private function getDecade($decade){
+        return $this->em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decade);
+    }
+    
+    private function getGenre($genre, $media){
+        return $this->em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genre, $media);
+    }
+    
     
     private function getXmlData(){
         return '<?xml version="1.0" ?><items><item id="1"></item></items>';

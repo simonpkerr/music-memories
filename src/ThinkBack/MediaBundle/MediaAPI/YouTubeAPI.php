@@ -24,6 +24,10 @@ class YouTubeAPI implements IAPIStrategy {
        
     }
     
+    public function getName(){
+        return $this->API_NAME;
+    }
+    
     public function setRequestObject($obj){
         $this->youTube = $obj;
     }

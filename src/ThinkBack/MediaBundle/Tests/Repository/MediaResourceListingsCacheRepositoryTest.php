@@ -5,41 +5,88 @@
  * @author Simon Kerr
  * @version 1.0
  * @description Tests for the media resource listings cache, checking if listings exist in the cache table
+ * Fixtures should be loaded first before running the tests to ensure timestamp dependent tests work
  */
 
 namespace ThinkBack\MediaBundle\Repository;
+use ThinkBack\MediaBundle\DataFixtures\ORM;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class MediaResourceListingsCacheRepositoryTest extends \PHPUnit_Framework_TestCase {
+class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
 
+    /*
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
+    
+    public function setUp(){
+        $kernel = static::createKernel();
+        $kernel->boot();
+        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+          
+    }
+    
     public function testAmazonAPIFilmsCachedListingsExistsReturnsXML(){
-        //todo
+        $results = $this->em
+            ->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')
+            ->getCachedListings(array(
+                'media'     => 'film',
+                'decade'    => 'all-decades',
+                'genre'     =>  'all-genres',
+                'keywords'  => '-',
+                'page'      => 1
+            ), 'amazonapi')
+        ;
+        $this->assertTrue($results != null);
     }
     
-    public function testAmazonAPIFilmsCachedListingsNotExistsReturnsNull(){
-        //todo
+    public function testAmazonAPITVCachedListingsExistsInvalidTimestampReturnsNull(){
+        $results = $this->em
+            ->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')
+            ->getCachedListings(array(
+                'media'     => 'tv',
+                'decade'    => 'all-decades',
+                'genre'     => 'all-genres',
+                'keywords'  => '-',
+                'page'      => 1
+            ), 'amazonapi')
+        ;
+        $this->assertTrue($results == null);
     }
     
-    public function testAmazonAPIFilmsCachedListingsExistsInvalidTimestampReturnsNull(){
-        //todo
-    }
-    
-    public function testAmazonAPIFilmsSpecificDecadeCachedListingsExistsReturnsXML(){
-        //todo
+    public function testAmazonAPITVSpecificDecadeCachedListingsNotExistsReturnsNull(){
+        $results = $this->em
+            ->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')
+            ->getCachedListings(array(
+                'media'     => 'tv',
+                'decade'    => '1990',
+                'genre'     => 'all-genres',
+                'keywords'  => '-',
+                'page'      => 1
+            ), 'amazonapi')
+        ;
+        $this->assertTrue($results == null);
     }
     
     public function testAmazonAPIFilmsSpecificDecadeAndGenreCachedListingsExistsReturnsXML(){
-        //todo
+        $results = $this->em
+            ->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')
+            ->getCachedListings(array(
+                'media'     => 'film',
+                'decade'    => '1980',
+                'genre'     => 'science-fiction',
+                'keywords'  => '-',
+                'page'      => 1
+            ), 'amazonapi')
+        ;
+        $this->assertTrue($results != null);
     }
     
     public function testAmazonAPIFilmsSpecificDecadeGenreKeywordsCachedListingsExistsReturnsXML(){
         //todo
     }
     
-    public function testAmazonAPIFilmsSpecificDecadeGenreKeywordsPageCachedListingsExistsReturnsXML(){
-        //todo
-    }
-    
-    public function testAmazonAPIFilmsSpecificDecadeGenreKeywordsPageCachedListingsExistsInvalidTimestampReturnsNull(){
+    public function testAmazonAPIFilmsSpecificDecadeGenreKeywordsPageCachedListingsInvalidTimestampReturnsNull(){
         //todo
     }
     

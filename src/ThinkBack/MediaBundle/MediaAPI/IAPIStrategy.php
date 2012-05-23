@@ -14,7 +14,7 @@ interface IAPIStrategy {
     
     public function getListings(array $params);
     public function getDetails(array $params, array $searchParams);
-    
+    public function getName();
 }
 
 ?>

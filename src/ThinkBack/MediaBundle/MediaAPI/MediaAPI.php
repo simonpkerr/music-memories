@@ -23,11 +23,15 @@ class MediaAPI {
     protected $em;
     
     protected $response = null;
+    protected $cachedListingsExist = false;
     
     /*
      * not sure how to implement debug_mode yet
      * so that none of the apis in the array call 
      * a live api
+     * 
+     * @description - gets the current run mode, passes the doctrine object 
+     * and an array of api objects
      */
     public function __construct($debug_mode, Registry $doctrine, array $apis){
         $this->apis = $apis;
@@ -66,7 +70,6 @@ class MediaAPI {
         //store the recommendation in cache
         
         $this->response = $this->apiStrategy->getDetails($params, $searchParams);
-
         
         return $this->response;
     }
@@ -84,7 +87,7 @@ class MediaAPI {
            
         $this->response = $this->getCachedListings($params);
         //look up the query from the db and return cached listings if available
-        if($this->cachedListingsExist()){
+        if($this->cachedListingsExist){
             return $this->response;
             
         }else{
@@ -94,35 +97,33 @@ class MediaAPI {
         //get recommendations that exist only in the db
         
         
-        //once results are retrieved update or insert into cache
+        //once results are retrieved insert into cache
         $this->cacheListings($this->response, $params);
         
         return $this->response;
     }
     
-    
-    
-    /*
-     * for the current apistrategy, look up listings that
-     * have been retrieved within the last 24 hours
-     */
-    public function cachedListingsExist($searchParams = null){
-        return $this->response != null;
-        //return false;
-    }
-    
-    public function cacheListings($response, $searchParams){
-        //todo
+    //only results returned from the live api are cached
+    public function cacheListings($response, $params){
+        $cachedListing = new \ThinkBack\MediaBundle\Entity\MediaResourceListingsCache();
+        $cachedListing->setAPI($this->apiStrategy);
+        $cachedListing->setMediaType($mediaType)
+        $this->em->persist($cachedListing);
+        $this->em->flush();
     }
     
     public function getCachedListings($params){
         //look up the MediaResourceListingsCache with the params and the current apistrategy name   
         $xmlResponse = $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($params, $this->apiStrategy->API_NAME);
         
-        if($xmlResponse != null)
+        if($xmlResponse != null){
+            $this->cachedListingsExist = true;
             return @simplexml_load_string($xmlResponse[0]);
-        else
+        }
+        else{
+            $this->cachedListingsExist = false;
             return null;
+        }
         
         
     }

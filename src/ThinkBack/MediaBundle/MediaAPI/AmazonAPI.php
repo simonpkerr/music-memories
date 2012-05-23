@@ -44,6 +44,10 @@ class AmazonAPI implements IAPIStrategy {
          );
     }
     
+    public function getName(){
+        return $this->API_NAME;
+    }
+    
     public function setAmazonSignedRequest($asr){
         $this->asr = $asr;
     }

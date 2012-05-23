@@ -19,6 +19,9 @@ ThinkBack\MediaBundle\Entity\MediaResourceListingsCache:
       type: object
     dateCreated:
       type: datetime
+      gedmo:
+        timestampable:
+          on: create
     api_id:
       type: integer
     mediaType_id:
