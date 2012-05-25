@@ -87,7 +87,7 @@ class MediaResourceListingsCache
     }
 
 
-    public function setDecade(Decade $decade)
+    public function setDecade(Decade $decade = null)
     {
         $this->decade = $decade;
     }
@@ -98,7 +98,7 @@ class MediaResourceListingsCache
         return $this->decade;
     }
 
-    public function setGenre(Genre $genre)
+    public function setGenre(Genre $genre = null)
     {
         $this->genre = $genre;
     }
@@ -123,7 +123,7 @@ class MediaResourceListingsCache
      *
      * @param integer $page
      */
-    public function setPage($page)
+    public function setPage($page = null)
     {
         $this->page = $page;
     }
@@ -143,7 +143,7 @@ class MediaResourceListingsCache
      *
      * @param string $keywords
      */
-    public function setKeywords($keywords)
+    public function setKeywords($keywords = null)
     {
         $this->keywords = $keywords;
     }

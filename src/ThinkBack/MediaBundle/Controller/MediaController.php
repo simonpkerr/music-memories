@@ -85,7 +85,7 @@ class MediaController extends Controller
         
         if($params != null){
             //only update the media type if its different
-            if($mediaTypeSlug != $mediaSelection->getMediaTypes()->getSlug())
+            if($mediaSelection->getMediaTypes() == null || $mediaTypeSlug != $mediaSelection->getMediaTypes()->getSlug())
                 $mediaType = $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
             else
                 $mediaType = $mediaSelection->getMediaTypes();
@@ -100,7 +100,7 @@ class MediaController extends Controller
             
             //if decade is not default decade and is not the same as existing decade
             if($decadeSlug != Decade::$default){
-                if($decadeSlug != $mediaSelection->getDecades()->getSlug())
+                if($mediaSelection->getDecades() == null || $decadeSlug != $mediaSelection->getDecades()->getSlug())
                     $decade = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
                 else
                     $decade = $mediaSelection->getDecades();
@@ -118,7 +118,7 @@ class MediaController extends Controller
 
             if($genreSlug != Genre::$default){
                 //if the genre is different or the media type is different, reset the genre
-                if($genreSlug != $mediaSelection->getSelectedMediaGenres()->getSlug() || $mediaTypeSlug != $mediaSelection->getMediaTypes()->getSlug())
+                if($mediaSelection->getSelectedMediaGenres() == null || $genreSlug != $mediaSelection->getSelectedMediaGenres()->getSlug() || $mediaTypeSlug != $mediaSelection->getMediaTypes()->getSlug())
                     try{
                         $genre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
                     }catch(\Exception $ex){
