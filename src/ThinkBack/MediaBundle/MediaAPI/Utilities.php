@@ -28,9 +28,9 @@ class Utilities {
      */
     public static function formatSearchString(array $params){
         $keywords = $params['keywords'];
-        $decade = $params['decade'];
         $media = $params['media'];
-        $genre = $params['genre'];
+        /*$decade = $params['decade'];
+        $genre = $params['genre'];*/
         
         //$keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD))/i', '$1$2', $keywords)));
         

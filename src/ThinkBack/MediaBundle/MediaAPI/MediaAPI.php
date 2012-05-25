@@ -3,6 +3,8 @@ namespace ThinkBack\MediaBundle\MediaAPI;
 use Symfony\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use ThinkBack\MediaBundle\MediaAPI\IAPIStrategy;
+use ThinkBack\MediaBundle\Entity\MediaSelection;
+
 /*
  * Original code Copyright (c) 2011 Simon Kerr
  * MediaAPI controls access to the various apis and their operations,
@@ -21,6 +23,7 @@ class MediaAPI {
     protected $debugMode = false;
     protected $doctrine;
     protected $em;
+    protected $mediaSelection;
     
     protected $response = null;
     protected $cachedListingsExist = false;
@@ -80,45 +83,50 @@ class MediaAPI {
      * @param params - contains the media,decade,genre,keywords,page used to find results
      * 
      */
-    public function getListings(array $params){
-        //$params = $this->removeDefaultValues($params);
-                
+    public function getListings(MediaSelection $mediaSelection){
+        $this->mediaSelection = $mediaSelection;
         $this->response = null;
            
-        $this->response = $this->getCachedListings($params);
+        $this->response = $this->getCachedListings($mediaSelection);
         //look up the query from the db and return cached listings if available
         if($this->cachedListingsExist){
             return $this->response;
             
         }else{
-            $this->response = $this->apiStrategy->getListings($params);
+            $this->response = $this->apiStrategy->getListings($mediaSelection);
         }
         
         //get recommendations that exist only in the db
         
         
         //once results are retrieved insert into cache
-        $this->cacheListings($this->response, $params);
+        $this->cacheListings($this->response, $mediaSelection);
         
         return $this->response;
     }
     
     //only results returned from the live api are cached
-    public function cacheListings($response, $params){
+    public function cacheListings(\SimpleXMLElement $response, MediaSelection $mediaSelection){
         $cachedListing = new \ThinkBack\MediaBundle\Entity\MediaResourceListingsCache();
-        $cachedListing->setAPI($this->apiStrategy);
-        $cachedListing->setMediaType($mediaType)
+        $cachedListing->setAPI($this->em->getRepository('ThinkBackMediaBundle:API')->getAPIByName($this->apiStrategy->API_NAME));
+        $cachedListing->setMediaType($mediaSelection->getMediaTypes());
+        $cachedListing->setDecade($mediaSelection->getDecades());
+        $cachedListing->setGenre($mediaSelection->getSelectedMediaGenres());
+        $cachedListing->setKeywords($mediaSelection->getKeywords());
+        $cachedListing->setPage($mediaSelection->getPage() != 1 ? $mediaSelection->getPage() : null);
+        $cachedListing->setXmlData($response->asXML());        
+        
         $this->em->persist($cachedListing);
         $this->em->flush();
     }
     
-    public function getCachedListings($params){
+    public function getCachedListings(MediaSelection $mediaSelection){
         //look up the MediaResourceListingsCache with the params and the current apistrategy name   
-        $xmlResponse = $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($params, $this->apiStrategy->API_NAME);
+        $xmlResponse = $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($mediaSelection, $this->apiStrategy->API_NAME);
         
         if($xmlResponse != null){
             $this->cachedListingsExist = true;
-            return @simplexml_load_string($xmlResponse[0]);
+            return @simplexml_load_string($xmlResponse);
         }
         else{
             $this->cachedListingsExist = false;

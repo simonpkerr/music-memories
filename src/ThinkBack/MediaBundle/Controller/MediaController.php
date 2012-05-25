@@ -60,7 +60,7 @@ class MediaController extends Controller
      * check session, return mediaSelection if not null
      * else create new media selection and return
      * $params - contains optional media, decade, genre, keywords, page
-     * if params exist, they should override the session values
+     * if params exist, they should override the session values if different
      */
     private function getMediaSelection(array $params = null){
         $em = $this->getEntityManager();
@@ -83,42 +83,60 @@ class MediaController extends Controller
         if($mediaSelection == null)
             $mediaSelection = new MediaSelection();
         
-                
         if($params != null){
-            $mediaType = $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
+            //only update the media type if its different
+            if($mediaTypeSlug != $mediaSelection->getMediaTypes()->getSlug())
+                $mediaType = $em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
+            else
+                $mediaType = $mediaSelection->getMediaTypes();
+            
+            
             if($mediaType == null)
                 throw new NotFoundHttpException("There was a problem with that address");
-           
+            
             $mediaType = $this->getEntityManager()->merge($mediaType);
             $mediaSelection->setMediaTypes($mediaType);
-
-            if($decadeSlug != Decade::$default){//if decade is not default decade
-                $decade = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
+            
+            
+            //if decade is not default decade and is not the same as existing decade
+            if($decadeSlug != Decade::$default){
+                if($decadeSlug != $mediaSelection->getDecades()->getSlug())
+                    $decade = $em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
+                else
+                    $decade = $mediaSelection->getDecades();
+                
                 if($decade == null)
                     throw new NotFoundHttpException ("There was a problem with that address");
-                
+
                 $decade = $this->getEntityManager()->merge($decade);
                 $mediaSelection->setDecades($decade);
+                //}
             }else{
                 //if the entity exists already, set to null so defaults to all-decades
                 $mediaSelection->setDecades(null);
             }
 
             if($genreSlug != Genre::$default){
-                try{
-                    $genre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
-                }catch(\Exception $ex){
-                    throw new NotFoundHttpException ("There was a problem with that address");
-                }
+                //if the genre is different or the media type is different, reset the genre
+                if($genreSlug != $mediaSelection->getSelectedMediaGenres()->getSlug() || $mediaTypeSlug != $mediaSelection->getMediaTypes()->getSlug())
+                    try{
+                        $genre = $em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
+                    }catch(\Exception $ex){
+                        throw new NotFoundHttpException ("There was a problem with that address");
+                    }
+                else 
+                    $genre = $mediaSelection->getSelectedMediaGenres();
 
                 $genre = $this->getEntityManager()->merge($genre);
                 $mediaSelection->setSelectedMediaGenres($genre);
+                //}
             }else{
                 $mediaSelection->setSelectedMediaGenres(null);
             }
         }
 
-        if($keywords != null && $mediaSelection->getKeywords() == null){
+        //if($keywords != null && $mediaSelection->getKeywords() == null){
+        if($keywords != $mediaSelection->getKeywords()){
             $mediaSelection->setKeywords($keywords);
         }
         
@@ -131,12 +149,13 @@ class MediaController extends Controller
         if(isset($params['page']))
             $mediaSelection->setPage($page);
             
-        $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
-        $mediaSelection->setGenres($genres);
+        if($mediaSelection->getGenres() == null){
+            $genres = $em->getRepository('ThinkBackMediaBundle:Genre')->getAllGenres();
+            $mediaSelection->setGenres($genres);
+        }
             
         //save the data so this process is only done once
         $this->setSessionData($mediaSelection, 'mediaSelection');
-        
         
         return $mediaSelection;
     }
@@ -310,7 +329,7 @@ class MediaController extends Controller
             $this->mediaapi->setAPIStrategy('sevendigitalapi');
             try{
                 //$response = $sevenDigitalAPI->getRequest($params);
-                $response = $this->mediaapi->getListings($this->getMediaSelectionParams());
+                $response = $this->mediaapi->getListings($mediaSelection);
             }catch(Exception $ex){
                 $exception = $ex;
             }
@@ -318,7 +337,7 @@ class MediaController extends Controller
             $this->mediaapi = $this->get('think_back_media.mediaapi');
             $this->mediaapi->setAPIStrategy('amazonapi');
             try{
-                $response = $this->mediaapi->getListings($this->getMediaSelectionParams());
+                $response = $this->mediaapi->getListings($mediaSelection);
                 $pagerParams['pagerUpperBound'] = $response->Items->TotalPages > 10 ? 10 : $response->Items->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
                 $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
@@ -367,7 +386,7 @@ class MediaController extends Controller
         //look up product
         if($media != 'music'){
             $params = array(
-               'ItemId'             =>      $id,
+               'ItemId' =>  $id,
             );
             $this->mediaapi = $this->get('think_back_media.mediaapi');
             $this->mediaapi->setAPIStrategy('amazonapi');
@@ -406,17 +425,17 @@ class MediaController extends Controller
         $responseParams = array();
         
         //get the youtube service
-        //$this->youtubeapi = $this->get('think_back_media.youtubeapi');
         $this->mediaapi = $this->get('think_back_media.mediaapi');
         $this->mediaapi->setAPIStrategy('youtubeapi');
-        $ytparams = array(
-            'keywords'  =>  urldecode($title),
-            'decade'    =>  $decade,
-            'media'     =>  $media,
-            'genre'     =>  $genre,
-        );
+        $mediaSelection = $this->getMediaSelection(array(
+            'media'     => $media,
+            'decade'    => $decade,
+            'genre'     => $genre,
+        ));
+        $mediaSelection->setKeywords(urldecode($title));
+        
         try{
-            $ytResponse = $this->mediaapi->getListings($ytparams);
+            $ytResponse = $this->mediaapi->getListings($mediaSelection);
         }catch(\RuntimeException $re){
             $ytException = $re->getMessage();
         }catch(\LengthException $le){

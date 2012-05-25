@@ -86,7 +86,10 @@ class MediaSelection
      */
     public function getKeywords()
     {
-        return urldecode($this->keywords);
+        if($this->keywords == null)
+            return null;
+        else
+            return urldecode($this->keywords);
     }
     
 }

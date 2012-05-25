@@ -9,10 +9,11 @@
  */
 
 namespace ThinkBack\MediaBundle\MediaAPI;
+use ThinkBack\MediaBundle\Entity\MediaSelection;
 
 interface IAPIStrategy {
     
-    public function getListings(array $params);
+    public function getListings(MediaSelection $mediaSelection);
     public function getDetails(array $params, array $searchParams);
     public function getName();
 }

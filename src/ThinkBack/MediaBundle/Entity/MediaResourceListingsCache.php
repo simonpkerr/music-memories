@@ -38,7 +38,7 @@ class MediaResourceListingsCache
     protected $keywords;
 
     /**
-     * @var object $xmlData
+     * @var text $xmlData
      */
     protected $xmlData;
 
@@ -51,7 +51,6 @@ class MediaResourceListingsCache
     protected $mediaType_id;
     protected $genre_id;
     protected $decade_id;
-
 
     public function getMediaType_id(){
         return $this->mediaType_id;

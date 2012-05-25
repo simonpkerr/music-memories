@@ -16,7 +16,7 @@ ThinkBack\MediaBundle\Entity\MediaResourceListingsCache:
       length: 255
       nullable: true
     xmlData:
-      type: object
+      type: text
     dateCreated:
       type: datetime
       gedmo:
@@ -36,10 +36,13 @@ ThinkBack\MediaBundle\Entity\MediaResourceListingsCache:
     api:
       targetEntity: API
     mediaType:
-      targetEntity: MediaType  
+      targetEntity: MediaType
+      #cascade: ["persist", "merge", "remove"] 
     decade:
       targetEntity: Decade
+      #cascade: ["persist", "merge", "remove"] 
       #nullable defaults to true for these columns
     genre:
       targetEntity: Genre
+      #cascade: ["persist", "merge", "remove"] 
   lifecycleCallbacks: {  }

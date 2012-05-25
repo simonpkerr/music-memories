@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use ThinkBack\MediaBundle\Entity\Decade;
 use ThinkBack\MediaBundle\Entity\Genre;
 use ThinkBack\MediaBundle\Entity\MediaType;
+use ThinkBack\MediaBundle\Entity\MediaSelection;
 use ThinkBack\MediaBundle\MediaAPI\Utilities;
 
 class AmazonAPI implements IAPIStrategy {
@@ -61,10 +62,10 @@ class AmazonAPI implements IAPIStrategy {
                 'keywords'
             );
      */
-    public function getListings(array $params){
+    public function getListings(MediaSelection $mediaSelection){
         $browseNodeArray = array(); 
             
-        if($params['decade'] != Decade::$default){
+        /*if($params['decade'] != Decade::$default){
             array_push($browseNodeArray, $this->em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($params['decade'])->getAmazonBrowseNodeId());
         }
 
@@ -75,15 +76,23 @@ class AmazonAPI implements IAPIStrategy {
                 $selectedGenre->getMediaType()->getAmazonBrowseNodeId()));
         }else{
             array_push($browseNodeArray, $this->em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($params['media'])->getAmazonBrowseNodeId());
-        }
+        }*/
+        
+        array_push($browseNodeArray, $mediaSelection->getMediaTypes()->getAmazonBrowseNodeId());
+        
+        if($mediaSelection->getDecades() != null)
+            array_push($browseNodeArray, $mediaSelection->getDecades()->getAmazonBrowseNodeId());
 
+        if($mediaSelection->getSelectedMediaGenres() != null)
+            array_push($browseNodeArray, $mediaSelection->getSelectedMediaGenres()->getAmazonBrowseNodeId());
+            
         $canonicalBrowseNodes = implode(',', $browseNodeArray);
 
         $params = Utilities::removeNullEntries(array(
-            'Keywords'       =>      $params['keywords'] == '-' ? null : $params['keywords'],
+            'Keywords'       =>      $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : null,
             'BrowseNode'     =>      $canonicalBrowseNodes,
             'SearchIndex'    =>      'Video',
-            'ItemPage'       =>      $params['page'],
+            'ItemPage'       =>      $mediaSelection->getPage(),
             'Sort'           =>      'salesrank',
         ));
         

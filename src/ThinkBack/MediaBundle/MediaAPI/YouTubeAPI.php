@@ -8,6 +8,7 @@
 namespace ThinkBack\MediaBundle\MediaAPI;
 //require_once 'Zend/Loader.php';
 use ThinkBack\MediaBundle\MediaAPI\Utilities;
+use ThinkBack\MediaBundle\Entity\MediaSelection;
 
 class YouTubeAPI implements IAPIStrategy {
     public $API_NAME = 'youtubeapi';
@@ -38,7 +39,7 @@ class YouTubeAPI implements IAPIStrategy {
      */
     public function getDetails(array $params, array $searchParams){}
     
-    public function getListings(array $params){
+    public function getListings(MediaSelection $mediaSelection){
         $this->youTube->setMajorProtocolVersion(2);
         
                 
@@ -74,7 +75,7 @@ class YouTubeAPI implements IAPIStrategy {
         
         //$this->getVideoFeed($query->getQueryUrl(2));
                 
-        $videoFeed = $this->getVideoFeed($params);
+        $videoFeed = $this->getVideoFeed($mediaSelection);
 
         if($videoFeed === false)
             throw new \RuntimeException("Could not connect to YouTube");
@@ -100,7 +101,7 @@ class YouTubeAPI implements IAPIStrategy {
                 
     }
     
-    private function getVideoFeed($params){
+    private function getVideoFeed(MediaSelection $mediaSelection){
         $query = $this->youTube->newVideoQuery();
         
         //$query->setOrderBy('viewCount');
@@ -108,14 +109,17 @@ class YouTubeAPI implements IAPIStrategy {
         //$query->setSafeSearch('none'); //not supported when using setCategory
         $query->setMaxResults('25');
         
-        switch($params['media']){
+        switch($mediaSelection->getMediaTypes()->getSlug()){
             case 'film':
             case 'tv':
                 $categories = 'Film|Entertainment';
                 break;
             
         }
-        $keywordQuery = Utilities::formatSearchString($params);
+        $keywordQuery = Utilities::formatSearchString(array(
+            'keywords'  => $mediaSelection->getKeywords(),
+            'media'     => $mediaSelection->getMediaTypes()->getSlug(),
+        ));
         
         //$keywordQuery = urlencode($keywordQuery);
         $query->setVideoQuery($keywordQuery);

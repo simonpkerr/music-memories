@@ -12,8 +12,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class APIRepository extends EntityRepository
 {
-    public function getAPIByName($name){
-        return $this->findOneBy(array('name' => $name));
+    public function getAPIByName($apiName){
+        return $this->findOneBy(array('apiName' => $apiName));
     }
     
 
