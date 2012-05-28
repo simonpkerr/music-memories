@@ -47,6 +47,29 @@ class LoadCachedListings implements FixtureInterface, \Symfony\Component\Depende
         $cachedListing->setXmlData($this->getXmlData());
         $manager->persist($cachedListing);
         
+        //valid film listing with specific decade, genre and keywords
+        $cachedListing = new MediaResourceListingsCache();
+        $cachedListing->setAPI($this->getAPI());
+        $cachedListing->setMediaType($this->getMediaType("film"));
+        $cachedListing->setDecade($this->getDecade("1980"));
+        $cachedListing->setGenre($this->getGenre("science-fiction", "film"));
+        $cachedListing->setKeywords("aliens");
+        $cachedListing->setDateCreated(new \DateTime("now"));
+        $cachedListing->setXmlData($this->getXmlData());
+        $manager->persist($cachedListing);
+        
+        //valid film listing with specific decade, genre, keywords and page
+        $cachedListing = new MediaResourceListingsCache();
+        $cachedListing->setAPI($this->getAPI());
+        $cachedListing->setMediaType($this->getMediaType("film"));
+        $cachedListing->setDecade($this->getDecade("1980"));
+        $cachedListing->setGenre($this->getGenre("science-fiction", "film"));
+        $cachedListing->setKeywords("aliens");
+        $cachedListing->setPage(2);
+        $cachedListing->setDateCreated(new \DateTime("now"));
+        $cachedListing->setXmlData($this->getXmlData());
+        $manager->persist($cachedListing);
+        
         //old tv listing 
         $cachedListing = new MediaResourceListingsCache();
         $cachedListing->setAPI($this->getAPI());

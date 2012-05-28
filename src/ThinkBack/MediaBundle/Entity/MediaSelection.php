@@ -18,6 +18,11 @@ class MediaSelection
     
     protected $page;
     
+    public function __construct(){
+        $this->page = null;
+        $this->keywords = null;
+    }
+    
     public function setPage($page){
         $this->page = $page;
     }

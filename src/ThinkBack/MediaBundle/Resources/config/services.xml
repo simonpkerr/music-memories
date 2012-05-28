@@ -31,7 +31,7 @@
     <services>
         <service id="think_back_media.mediaapi" class="%mediaapi.class%">
             <argument>%mediaapi.debug_mode%</argument>
-            <argument type="service" id="doctrine" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="collection" id="apis">
                 <argument type="service" id="amazonapi" key="amazonapi" />
                 <argument type="service" id="youtubeapi" key="youtubeapi" />
@@ -43,7 +43,7 @@
         <service id="amazonapi" class="%amazonapi.class%" public="false">
             <argument>%amazonapi.access_params%</argument>
             <argument id="amazon_signed_request" type="service" />
-            <argument id="doctrine" type="service" />
+            <!--argument id="doctrine" type="service" /-->
         </service>
         
         <!--youtube services-->

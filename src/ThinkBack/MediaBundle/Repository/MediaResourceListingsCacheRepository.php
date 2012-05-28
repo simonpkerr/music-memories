@@ -60,7 +60,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
             $q = $q->andWhere('cl.keywords is null');
         }
         
-        if($mediaSelection->getPage() != 1){
+        if($mediaSelection->getPage() != 1 && $mediaSelection->getPage() != null){
             $q = $q->andWhere('cl.page = :page')
                 ->setParameter('page', $mediaSelection->getPage());
         }else{

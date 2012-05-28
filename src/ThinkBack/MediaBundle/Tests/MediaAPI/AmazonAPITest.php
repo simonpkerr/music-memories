@@ -7,15 +7,20 @@
  * @version 1.0
  */
 
-
 namespace ThinkBack\MediaBundle\Tests\MediaAPI;
 use ThinkBack\MediaBundle\MediaAPI\AmazonAPI;
+use ThinkBack\MediaBundle\Entity\MediaSelection;
+use ThinkBack\MediaBundle\Entity\Decade;
+use ThinkBack\MediaBundle\Entity\Genre;
+use ThinkBack\MediaBundle\Entity\MediaType;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 require_once 'src\ThinkBack\MediaBundle\MediaAPI\AmazonSignedRequest.php';
 
-class AmazonAPITest extends \PHPUnit_Framework_TestCase {
+class AmazonAPITest extends WebTestCase {
 
     private $access_params;
-    private $params;
+    private $mediaSelection;
+    private $em;
     
     protected function setUp(){
         $this->access_params = array(
@@ -24,10 +29,14 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
             'amazon_associate_tag'  => 'aat',
         );
         
-        $this->params = array(
-           'BrowseNode'     =>      '1',
-           'SearchIndex'    =>      'Video',
-        );
+        $kernel = static::createKernel();
+        $kernel->boot();
+        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        
+        $mediaType = $this->em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug('film');
+        $this->mediaSelection = new MediaSelection();
+        $this->mediaSelection->setMediaTypes($mediaType);
+               
     }
     
     private function getBasicTestASR(){
@@ -38,7 +47,7 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
      * @expectedException RuntimeException 
      * @expectedExceptionMessage Could not connect to Amazon 
      */
-    public function testGetRequestNoConnectionThrowsException(){
+    public function testGetListingsNoConnectionThrowsException(){
         
         $testASR = $this->getMockBuilder('AmazonSignedRequest')
                 ->setMethods(array(
@@ -51,7 +60,7 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
                 ->will($this->returnValue(False));
         
         $api = new AmazonAPI($this->access_params, $testASR);
-        $response = $api->getRequest($this->params);
+        $response = $api->getListings($this->mediaSelection);
         
     }
     
@@ -59,7 +68,7 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
      * @expectedException LengthException
      * @expectedExceptionMessage No results were returned
      */
-    public function testGetRequestEmptyDataSetThrowsException(){
+    public function testGetListingsEmptyDataSetThrowsException(){
         $empty_xml_data_set = simplexml_load_file('src\ThinkBack\MediaBundle\Tests\MediaAPI\empty_xml_response.xml');
         
         $testASR = $this->getMockBuilder('AmazonSignedRequest')
@@ -73,11 +82,10 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
                 ->will($this->returnValue($empty_xml_data_set));
         
         $api = new AmazonAPI($this->access_params, $testASR);
-        //$api->asr = $testASR;
-        $response = $api->getRequest($this->params);
+        $response = $api->getListings($this->mediaSelection);
     }   
     
-    public function testGetRequestValidDataSetReturnsResponse(){
+    public function testGetListingsValidDataSetReturnsResponse(){
         $valid_xml_data_set = simplexml_load_file('src\ThinkBack\MediaBundle\Tests\MediaAPI\valid_xml_response.xml');
         
         $testASR = $this->getMockBuilder('AmazonSignedRequest')
@@ -91,32 +99,15 @@ class AmazonAPITest extends \PHPUnit_Framework_TestCase {
                 ->will($this->returnValue($valid_xml_data_set));
         
         $api = new AmazonAPI($this->access_params, $testASR);
-        $response = $api->getRequest($this->params);
+        $response = $api->getListings($this->mediaSelection);
         $this->assertTrue($response->Items->TotalResults > 0);
     }
     
-    public function testGetListingsWithValidDatSetReturnsResponse(){
-        
-    }
-    public function testGetListingsWithInvalidDatSetReturnsResponse(){
-        
-    }
     public function testGetDetailsWithValidDataSetReturnsResponse(){
         
     }
+    
     public function testGetDetailsWithInvalidDataSetReturnsResponse(){
-        
-    }
-    
-    public function testCacheListingsWithNonExistentListingsCachesData(){
-        
-    }
-    
-    public function testCacheListingsWithValidExistingListingsDoesNotCacheData(){
-        
-    }
-  
-    public function testCacheListingsWithTimestampExpiredListingsCachesData(){
         
     }
     

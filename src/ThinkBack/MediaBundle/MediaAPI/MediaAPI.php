@@ -36,11 +36,11 @@ class MediaAPI {
      * @description - gets the current run mode, passes the doctrine object 
      * and an array of api objects
      */
-    public function __construct($debug_mode, Registry $doctrine, array $apis){
+    public function __construct($debug_mode, EntityManager $em, array $apis){
         $this->apis = $apis;
         $this->debugMode = $debug_mode;
-        $this->doctrine = $doctrine;
-        $this->em = $doctrine->getEntityManager();
+        $this->em = $em;
+        
         //this needs changing to accomodate different APIs
         $this->setAPIStrategy('amazonapi');
     }
@@ -55,6 +55,7 @@ class MediaAPI {
         else
             throw new \RuntimeException("api key not found");
     }
+    
     /*
      * getDetails calls the api of the current strategy
      * but first gets recommendations from the db about that api
@@ -87,49 +88,49 @@ class MediaAPI {
         $this->mediaSelection = $mediaSelection;
         $this->response = null;
            
-        $this->response = $this->getCachedListings($mediaSelection);
+        $this->response = $this->getCachedListings();
+        $this->cachedListingsExist = $this->response != null ? true : false;
+        
         //look up the query from the db and return cached listings if available
         if($this->cachedListingsExist){
             return $this->response;
             
         }else{
-            $this->response = $this->apiStrategy->getListings($mediaSelection);
+            $this->response = $this->apiStrategy->getListings($this->mediaSelection);
         }
         
         //get recommendations that exist only in the db
         
         
         //once results are retrieved insert into cache
-        $this->cacheListings($this->response, $mediaSelection);
+        $this->cacheListings($this->response);
         
         return $this->response;
     }
     
     //only results returned from the live api are cached
-    public function cacheListings(\SimpleXMLElement $response, MediaSelection $mediaSelection){
+    public function cacheListings(\SimpleXMLElement $response){
         $cachedListing = new \ThinkBack\MediaBundle\Entity\MediaResourceListingsCache();
         $cachedListing->setAPI($this->em->getRepository('ThinkBackMediaBundle:API')->getAPIByName($this->apiStrategy->API_NAME));
-        $cachedListing->setMediaType($mediaSelection->getMediaTypes());
-        $cachedListing->setDecade($mediaSelection->getDecades());
-        $cachedListing->setGenre($mediaSelection->getSelectedMediaGenres());
-        $cachedListing->setKeywords($mediaSelection->getKeywords());
-        $cachedListing->setPage($mediaSelection->getPage() != 1 ? $mediaSelection->getPage() : null);
+        $cachedListing->setMediaType($this->mediaSelection->getMediaTypes());
+        $cachedListing->setDecade($this->mediaSelection->getDecades());
+        $cachedListing->setGenre($this->mediaSelection->getSelectedMediaGenres());
+        $cachedListing->setKeywords($this->mediaSelection->getKeywords());
+        $cachedListing->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
         $cachedListing->setXmlData($response->asXML());        
         
         $this->em->persist($cachedListing);
         $this->em->flush();
     }
     
-    public function getCachedListings(MediaSelection $mediaSelection){
+    public function getCachedListings(){
         //look up the MediaResourceListingsCache with the params and the current apistrategy name   
-        $xmlResponse = $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($mediaSelection, $this->apiStrategy->API_NAME);
+        $xmlResponse = $this->em->getRepository('ThinkBackMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection, $this->apiStrategy->API_NAME);
         
         if($xmlResponse != null){
-            $this->cachedListingsExist = true;
             return @simplexml_load_string($xmlResponse);
         }
         else{
-            $this->cachedListingsExist = false;
             return null;
         }
         

@@ -16,10 +16,10 @@ class AmazonAPI implements IAPIStrategy {
     private $private_key;
     private $associate_tag;
     protected $asr;
-    private $doctrine;
-    private $em;
+    //private $doctrine;
+    //private $em;
     
-    public function __construct(array $access_params, $amazon_signed_request, Registry $doctrine){
+    public function __construct(array $access_params, $amazon_signed_request){//, Registry $doctrine){
             
         $this->public_key = $access_params['amazon_public_key'];
         $this->private_key = $access_params['amazon_private_key'];
@@ -27,8 +27,8 @@ class AmazonAPI implements IAPIStrategy {
         
         $this->asr = $amazon_signed_request; 
         
-        $this->doctrine = $doctrine;
-        $this->em = $doctrine->getEntityManager();
+        //$this->doctrine = $doctrine;
+        //$this->em = $doctrine->getEntityManager();
         
         $this->amazonParameters = array(
                 "Operation"     => "ItemSearch",
@@ -53,31 +53,9 @@ class AmazonAPI implements IAPIStrategy {
         $this->asr = $asr;
     }
     
-    /*
-     * @params array $params = array(
-                'decade'   
-                'media'    
-                'genre'    
-                'page'     
-                'keywords'
-            );
-     */
     public function getListings(MediaSelection $mediaSelection){
         $browseNodeArray = array(); 
             
-        /*if($params['decade'] != Decade::$default){
-            array_push($browseNodeArray, $this->em->getRepository('ThinkBackMediaBundle:Decade')->getDecadeBySlug($params['decade'])->getAmazonBrowseNodeId());
-        }
-
-        if($params['genre'] != Genre::$default){
-            $selectedGenre = $this->em->getRepository('ThinkBackMediaBundle:Genre')->getGenreBySlugAndMedia($params['genre'],$params['media']);
-            $browseNodeArray = array_merge($browseNodeArray, array(
-                $selectedGenre->getAmazonBrowseNodeId(),
-                $selectedGenre->getMediaType()->getAmazonBrowseNodeId()));
-        }else{
-            array_push($browseNodeArray, $this->em->getRepository('ThinkBackMediaBundle:MediaType')->getMediaTypeBySlug($params['media'])->getAmazonBrowseNodeId());
-        }*/
-        
         array_push($browseNodeArray, $mediaSelection->getMediaTypes()->getAmazonBrowseNodeId());
         
         if($mediaSelection->getDecades() != null)
@@ -96,7 +74,7 @@ class AmazonAPI implements IAPIStrategy {
             'Sort'           =>      'salesrank',
         ));
         
-        if($params['ItemPage'] > 10){
+        if(array_key_exists('ItemPage', $params) && $params['ItemPage'] > 10){
             throw new \RunTimeException("Requested page was out of bounds");
         }
         
