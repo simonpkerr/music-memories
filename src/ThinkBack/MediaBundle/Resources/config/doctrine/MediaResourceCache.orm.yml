@@ -1,0 +1,31 @@
+ThinkBack\MediaBundle\Entity\MediaResourceCache:
+  type: entity
+  #repositoryClass: ThinkBack\MediaBundle\Repository\MediaResourceCacheRepository
+  table: null
+  fields:
+    id:
+      type: string
+      id: true
+      unique: true
+      generator:
+        strategy: NONE
+    #mediaResourceId:
+    #  type: string
+    #  length: '80'
+    xmlData:
+      type: text
+    dateCreated:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    slug:
+      type: string
+      length: 255
+    title:
+      type: string
+      length: 255
+    imageUrl:
+      type: string
+      length: 255
+  lifecycleCallbacks: {  }

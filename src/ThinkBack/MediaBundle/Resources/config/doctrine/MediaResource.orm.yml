@@ -4,19 +4,30 @@ ThinkBack\MediaBundle\Entity\MediaResource:
   table: null
   fields:
     id:
-      type: integer
-      id: true
-      generator:
-        strategy: AUTO
-    itemId:
       type: string
-      length: '50'
+      id: true
+      unique: true
+      generator:
+        strategy: NONE
+    #itemId:
+    #  type: string
+    #  length: '50'
     viewCount:
       type: integer
     selectedCount:
       type: integer
+      nullable: true
     lastUpdated:
       type: datetime
+      gedmo:
+        timestampable:
+          on: update
+    dateCreated:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+          
   lifecycleCallbacks: {  }
   #there are many MediaResources to 1 mediatype so MediaResource is the owning side
   #http://docs.doctrine-project.org/projects/doctrine-orm/en/2.0.x/reference/association-mapping.html
@@ -29,5 +40,9 @@ ThinkBack\MediaBundle\Entity\MediaResource:
       targetEntity: Decade
     genre:
       targetEntity: Genre
+  oneToOne:
+    mediaResourceCache:
+      targetEntity: MediaResourceCache
+      cascade: ["persist", "merge", "remove"] 
     
       

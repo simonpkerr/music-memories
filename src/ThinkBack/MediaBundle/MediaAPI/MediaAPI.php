@@ -66,15 +66,15 @@ class MediaAPI {
     public function getDetails(array $params, array $searchParams){
         $this->response = null;
         //look up the detail in the db to see if its cached
+        $this->response = $this->getCachedDetails();
+        
+        //look up the details from the api if not cached
+        $this->response = $this->apiStrategy->getDetails($params, $searchParams);
         
         //get the recommendations
         
-        //look up the details from the api if not cached
-        
         //store the recommendation in cache
-        
-        $this->response = $this->apiStrategy->getDetails($params, $searchParams);
-        
+                
         return $this->response;
     }
     
@@ -92,18 +92,13 @@ class MediaAPI {
         $this->cachedListingsExist = $this->response != null ? true : false;
         
         //look up the query from the db and return cached listings if available
-        if($this->cachedListingsExist){
-            return $this->response;
-            
-        }else{
+        if(!$this->cachedListingsExist){
             $this->response = $this->apiStrategy->getListings($this->mediaSelection);
+            //once results are retrieved insert into cache
+            $this->cacheListings($this->response);
         }
         
-        //get recommendations that exist only in the db
-        
-        
-        //once results are retrieved insert into cache
-        $this->cacheListings($this->response);
+        //get recommendations of media resources for the same parameters that exist only in the db
         
         return $this->response;
     }
@@ -133,8 +128,6 @@ class MediaAPI {
         else{
             return null;
         }
-        
-        
     }
     
     /*

@@ -8,35 +8,28 @@ use ThinkBack\MediaBundle\Entity\Genre;
 use ThinkBack\MediaBundle\Entity\Decade;
 use ThinkBack\MediaBundle\Entity\MediaType;
 use ThinkBack\MediaBundle\Entity\API;
+use ThinkBack\MediaBundle\Entity\MediaResourceCache;
 
-/**
- * ThinkBack\MediaBundle\Entity\RecommendedItem
+
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * MediaResource saves and retrieves items from any api - amazon, youtube, google images, 7digital etc,
+ * checking for cached versions of details 
+ * @author Simon Kerr
+ * @version 1.0
  */
+
 class MediaResource
 {
-    /**
-     * @var integer $id
-     */
+
     protected $id;
 
-    /**
-     * @var string $itemId
-     */
-    protected $itemId;
+    //protected $itemId;
 
-    /**
-     * @var integer $viewCount
-     */
     protected $viewCount;
 
-    /**
-     * @var integer $selectedCount
-     */
     protected $selectedCount;
     
-    /**
-     * @var datetime $lastUpdated
-     */
     protected $lastUpdated;
     
     protected $dateCreated;
@@ -48,16 +41,26 @@ class MediaResource
     protected $genre;
     
     protected $api;
+    
+    protected $mediaResourceCache;
 
     
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    
+    public function setMediaResourceCache(MediaResourceCache $mediaResourceCache){
+        $this->mediaResourceCache = $mediaResourceCache;
+    }
+    
+    public function getMediaResourceCache(){
+        return $this->mediaResourceCache;
     }
     
     public function setMediaType(MediaType $mediaType)
@@ -102,25 +105,17 @@ class MediaResource
         return $this->api;
     }
 
-    /**
-     * Set itemId
-     *
-     * @param string $itemId
-     */
-    public function setItemId($itemId)
+    
+    /*public function setItemId($itemId)
     {
         $this->itemId = $itemId;
     }
 
-    /**
-     * Get itemId
-     *
-     * @return string 
-     */
+    
     public function getItemId()
     {
         return $this->itemId;
-    }
+    }*/
 
     /**
      * Set viewCount
@@ -180,6 +175,17 @@ class MediaResource
     public function getLastUpdated()
     {
         return $this->lastUpdated;
+    }
+
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+    }
+
+
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
     }
         
     
