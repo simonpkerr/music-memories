@@ -3,7 +3,10 @@ namespace ThinkBack\MediaBundle\MediaAPI;
 use Symfony\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use ThinkBack\MediaBundle\MediaAPI\IAPIStrategy;
+use ThinkBack\MediaBundle\MediaAPI\Utilities;
 use ThinkBack\MediaBundle\Entity\MediaSelection;
+use ThinkBack\MediaBundle\Entity\MediaResource;
+use ThinkBack\MediaBundle\Entity\MediaResourceCache;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -26,7 +29,10 @@ class MediaAPI {
     protected $mediaSelection;
     
     protected $response = null;
-    protected $cachedListingsExist = false;
+    protected $cachedDataExist = false;
+    
+    //used when details are being retrieved, gets the mediaResource and cached object if available
+    protected $mediaResource;
     
     /*
      * not sure how to implement debug_mode yet
@@ -63,17 +69,25 @@ class MediaAPI {
      * @param params - contains the relevant parameters to call the api. for amazon this is things
      * like Operation, Id. For youtube it contains things like keywords, decade, media etc
      */
-    public function getDetails(array $params, array $searchParams){
+    public function getDetails(array $params, MediaSelection $mediaSelection){
+        $this->mediaSelection = $mediaSelection;
         $this->response = null;
-        //look up the detail in the db to see if its cached
-        $this->response = $this->getCachedDetails();
         
+        //look up the mediaResource in the db and fetch associated cached object
+        $this->mediaResource = $this->getMediaResource($params['ItemId']);
+        
+        $this->cachedDataExist = ($this->mediaResource != null && $this->mediaResource->getMediaResourceCache() != null) ? true : false;
         //look up the details from the api if not cached
-        $this->response = $this->apiStrategy->getDetails($params, $searchParams);
+        if(!$this->cachedDataExist)
+            $this->response = $this->apiStrategy->getDetails($params);
+        else
+            $this->response = @simplexml_load_string($this->mediaResource->getMediaResourceCache()->getXmlData());
+        
+        //cache the data
+        $this->cacheMediaResource($this->response, $params['ItemId']);
         
         //get the recommendations
-        
-        //store the recommendation in cache
+        //TODO       
                 
         return $this->response;
     }
@@ -89,16 +103,17 @@ class MediaAPI {
         $this->response = null;
            
         $this->response = $this->getCachedListings();
-        $this->cachedListingsExist = $this->response != null ? true : false;
+        $this->cachedDataExist = $this->response != null ? true : false;
         
         //look up the query from the db and return cached listings if available
-        if(!$this->cachedListingsExist){
+        if(!$this->cachedDataExist){
             $this->response = $this->apiStrategy->getListings($this->mediaSelection);
             //once results are retrieved insert into cache
             $this->cacheListings($this->response);
         }
         
         //get recommendations of media resources for the same parameters that exist only in the db
+        //TODO
         
         return $this->response;
     }
@@ -130,6 +145,57 @@ class MediaAPI {
         }
     }
     
+    public function getMediaResource($itemId){
+        $this->mediaResource = $this->em->getRepository('ThinkBackMediaBundle:MediaResource')->getMediaResourceById($itemId);
+        if($this->mediaResource != null && $this->mediaResource->getMediaResourceCache() != null){
+            //if a cached resource exists and is older than 24 hours, delete it
+            $dateCreated = $this->mediaResource->getMediaResourceCache()->getDateCreated();
+            if($dateCreated->format("Y-m-d H:i:s") < Utilities::getValidCreationTime()){
+                $this->mediaResource->deleteMediaResourceCache();
+                $this->em->flush();
+            }
+        }
+        
+        return $this->mediaResource;
+    }
+    
+    /*
+     * deletes the associated cached record
+     * extracted as method for testing purposes
+     */
+    
+    public function deleteCachedResource(){
+        $this->mediaResource->deleteMediaResourceCache();
+        $this->em->flush();
+    }
+    
+    public function cacheMediaResource(\SimpleXMLElement $xmlData, $itemId){
+        if($this->mediaResource == null){
+            //create a mediaresource
+            $this->mediaResource = new MediaResource();
+            $this->mediaResource->setId($itemId);
+            $this->mediaResource->setAPI($this->em->getRepository('ThinkBackMediaBundle:API')->getAPIByName($this->apiStrategy->API_NAME));
+            $this->mediaResource->setDecade($this->mediaSelection->getDecades());
+            $this->mediaResource->setMediaType($this->mediaSelection->getMediaTypes());
+            $this->mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenres());
+        }
+            
+        //if cached listings not exists create a new MediaResourceCache object and update the mediaResource    
+        if($this->mediaResource->getMediaResourceCache() == null){
+            $cachedResource = new MediaResourceCache();
+            $cachedResource->setId($this->mediaResource->getId());
+            $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($xmlData));
+            $cachedResource->setXmlData($xmlData->asXML());
+            $this->mediaResource->setMediaResourceCache($cachedResource);
+        }
+
+        $this->mediaResource->incrementViewCount();
+        
+        $this->em->persist($this->mediaResource);
+        $this->em->flush();
+    }
+    
+    
     /*
      * will receive an array of parameters specifying criteria to query the db
      * along with the type of recommendations to find.
@@ -141,13 +207,13 @@ class MediaAPI {
      * this is based on the current apistrategy
      */
     public function getRecommendations(array $params, $recommendationType = 1){
-        //todo
+        //TODO
         //return $this->apiStrategy->getRecommendations($params, $recommendationType);
         
     }
     
     public function setRecommendation(array $params){
-        //todo
+        //TODO
     }
     
     //removes default values from the params array so that queries are executed correctly.

@@ -43,6 +43,7 @@ ThinkBack\MediaBundle\Entity\MediaResource:
   oneToOne:
     mediaResourceCache:
       targetEntity: MediaResourceCache
-      cascade: ["persist", "merge", "remove"] 
+      cascade: ["persist", "merge", "remove"]
+      orphanRemoval: true
     
       

@@ -12,15 +12,24 @@ use ThinkBack\MediaBundle\MediaAPI\MediaAPI;
 use ThinkBack\MediaBundle\MediaAPI\AmazonAPI;
 use ThinkBack\MediaBundle\MediaAPI\YouTubeAPI;
 use ThinkBack\MediaBundle\Entity\MediaSelection;
+use ThinkBack\MediaBundle\Entity\MediaResource;
+use ThinkBack\MediaBundle\Entity\MediaResourceCache;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 
 class MediaAPITests extends WebTestCase {
     private $em;
     private $mediaAPI;
     private $mediaSelection;
     private $testAmazonAPI;
+    private $cachedXMLResponse;
+    private $liveXMLResponse;
+    private $mediaResource;
     
     protected function setUp(){
+        $this->cachedXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedData"></item></items>');
+        $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="amazonLiveData"></item></items>');
+        
         $kernel = static::createKernel();
         $kernel->boot();
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
@@ -28,13 +37,19 @@ class MediaAPITests extends WebTestCase {
         $this->testAmazonAPI = $this->getMockBuilder('\\ThinkBack\\MediaBundle\\MediaAPI\\AmazonAPI')
                 ->disableOriginalConstructor()
                 ->setMethods(array(
-                    'getListings'
+                    'getListings',
+                    'getDetails',
                 ))
                 ->getMock();
+        //always make the getListings method of amazon api return the sample xml data
         $this->testAmazonAPI->expects($this->any())
                 ->method('getListings')
-                ->will($this->returnValue(new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="amazonLiveListings"></item></items>')));              
+                ->will($this->returnValue($this->liveXMLResponse));              
         
+        //always make the getDetails method of amazon api return the sample xml data
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getDetails')
+                ->will($this->returnValue($this->liveXMLResponse));
         
         $this->mediaAPI = new MediaAPI('true', $this->em, array(
             'amazonapi'     =>  $this->testAmazonAPI,
@@ -45,6 +60,9 @@ class MediaAPITests extends WebTestCase {
         $this->mediaSelection = new MediaSelection();
         $this->mediaSelection->setMediaTypes($mediaType);
         
+        $this->mediaResource = new MediaResource();
+        $this->mediaResource->setAPI($this->em->getRepository('ThinkBackMediaBundle:API')->getAPIByName('amazonapi'));
+        $this->mediaResource->setMediaType($this->mediaSelection->getMediaTypes());
         
     }
     
@@ -81,14 +99,13 @@ class MediaAPITests extends WebTestCase {
                 ->will($this->returnValue('cached live listings'));
         
         $response = $this->mediaAPI->getListings($this->mediaSelection);
-        $this->assertEquals($response->item->attributes()->id, 'amazonLiveListings');
+        $this->assertEquals($response->item->attributes()->id, 'amazonLiveData');
         
     }
     
     
     public function testExistingValidCachedListingsReturnedFromSameQueryReturnsListings(){
-        $cachedXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedListings"></item></items>');
-        
+    
         $this->mediaAPI = $this->getMockBuilder('\\ThinkBack\\MediaBundle\\MediaAPI\\MediaAPI')
                 ->setConstructorArgs(array(
                         'true', 
@@ -102,15 +119,95 @@ class MediaAPITests extends WebTestCase {
         //tell the mocked object which methods to mock and what to return
         $this->mediaAPI->expects($this->once())
                 ->method('getCachedListings')
-                ->will($this->returnValue($cachedXMLResponse));
+                ->will($this->returnValue($this->cachedXMLResponse));
 
         $response = $this->mediaAPI->getListings($this->mediaSelection);
-        $this->assertEquals($response->item->attributes()->id, 'cachedListings');
+        $this->assertEquals($response->item->attributes()->id, 'cachedData');
     }
     
       
+    public function testNonexistentMediaResourceCallsLiveAPI(){
+        $this->mediaAPI = $this->getMockBuilder('\\ThinkBack\\MediaBundle\\MediaAPI\\MediaAPI')
+                ->setConstructorArgs(array(
+                        'true', 
+                        $this->em, 
+                        array(
+                            'amazonapi'     =>  $this->testAmazonAPI,
+                            'youtubeapi'    =>  2,
+                        )))
+                ->setMethods(array(
+                    'getMediaResource',
+                    'cacheMediaResource'))
+                ->getMock();
+        //tell the mocked object which methods to mock and what to return
+        $this->mediaAPI->expects($this->once())
+                ->method('getMediaResource')
+                ->will($this->returnValue(null));
 
+        $response = $this->mediaAPI->getDetails(
+                array('ItemId'  =>  '1'), 
+                $this->mediaSelection);
+        $this->assertEquals($response->item->attributes()->id, 'amazonLiveData');
+    }
     
+    public function testExistingMediaResourceAndNonexistentCachedResourceCallsLiveAPI(){
+     
+        $this->mediaAPI = $this->getMockBuilder('\\ThinkBack\\MediaBundle\\MediaAPI\\MediaAPI')
+                ->setConstructorArgs(array(
+                        'true', 
+                        $this->em, 
+                        array(
+                            'amazonapi'     =>  $this->testAmazonAPI,
+                            'youtubeapi'    =>  2,
+                        )))
+                ->setMethods(array(
+                    'getMediaResource',
+                    'cacheMediaResource'))
+                ->getMock();
+        //tell the mocked object which methods to mock and what to return
+        $this->mediaAPI->expects($this->once())
+                ->method('getMediaResource')
+                ->will($this->returnValue($this->mediaResource));
+
+        $response = $this->mediaAPI->getDetails(
+                array('ItemId'  =>  '1'), 
+                $this->mediaSelection);
+        $this->assertEquals($response->item->attributes()->id, 'amazonLiveData');
+    }
+    
+    public function testExistingMediaResourceAndExistingValidCachedResourceReturnsCache(){
+        $cachedResource = new MediaResourceCache();
+        $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
+        $cachedResource->setId($this->mediaResource->getId());
+        $cachedResource->setDateCreated(new \DateTime("now"));
+        $this->mediaResource->setMediaResourceCache($cachedResource);
+        
+        $this->mediaAPI = $this->getMockBuilder('\\ThinkBack\\MediaBundle\\MediaAPI\\MediaAPI')
+                ->setConstructorArgs(array(
+                        'true', 
+                        $this->em, 
+                        array(
+                            'amazonapi'     =>  $this->testAmazonAPI,
+                            'youtubeapi'    =>  2,
+                        )))
+                ->setMethods(array(
+                    'getMediaResource',
+                    'cacheMediaResource',
+                    'deleteCachedResource'))
+                ->getMock();
+        //tell the mocked object which methods to mock and what to return
+        $this->mediaAPI->expects($this->once())
+                ->method('getMediaResource')
+                ->will($this->returnValue($this->mediaResource));
+
+        $response = $this->mediaAPI->getDetails(
+                array('ItemId'  =>  '1'), 
+                $this->mediaSelection);
+        $this->assertEquals($response->item->attributes()->id, 'cachedData');
+        
+    }
+    
+       
     
 }
 

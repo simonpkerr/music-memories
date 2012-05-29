@@ -14,10 +14,7 @@ class MediaResourceCache
      */
     private $id;
 
-    /**
-     * @var string $mediaResourceId
-     */
-    private $mediaResourceId;
+    //private $mediaResourceId;
 
     /**
      * @var text $xmlData
@@ -112,7 +109,7 @@ class MediaResourceCache
      *
      * @param string $slug
      */
-    public function setSlug($slug)
+    public function setSlug($slug = null)
     {
         $this->slug = $slug;
     }
@@ -132,7 +129,7 @@ class MediaResourceCache
      *
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle($title = null)
     {
         $this->title = $title;
     }
@@ -152,7 +149,7 @@ class MediaResourceCache
      *
      * @param string $imageUrl
      */
-    public function setImageUrl($imageUrl)
+    public function setImageUrl($imageUrl = null)
     {
         $this->imageUrl = $imageUrl;
     }

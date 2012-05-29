@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use ThinkBack\MediaBundle\Entity\Decade;
 use ThinkBack\MediaBundle\Entity\Genre;
 use ThinkBack\MediaBundle\Entity\MediaSelection;
+use ThinkBack\MediaBundle\MediaAPI\Utilities;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -71,7 +72,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
         
         if($q == null)
             return null;
-        else if($q['dateCreated'] < $this->getValidCreationTime()){
+        else if($q['dateCreated'] < Utilities::getValidCreationTime()){
             //delete the entry since the timestamp is out of date
             $this->createQueryBuilder('cl')
                     ->delete()
@@ -87,12 +88,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
      }
      
      
-     private function getValidCreationTime(){
-         $date = new \DateTime("now");
-         $date = $date->sub(new \DateInterval('PT24H'))->format("Y-m-d H:i:s");
-
-         return $date;
-     }
+     
      
      
 }

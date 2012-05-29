@@ -45,6 +45,12 @@ class MediaResource
     protected $mediaResourceCache;
 
     
+    public function __construct(){
+        $this->viewCount = 0;
+        $this->selectedCount = 0;
+    }
+    
+    
     public function getId()
     {
         return $this->id;
@@ -55,12 +61,16 @@ class MediaResource
         $this->id = $id;
     }
     
-    public function setMediaResourceCache(MediaResourceCache $mediaResourceCache){
+    public function setMediaResourceCache(MediaResourceCache $mediaResourceCache = null){
         $this->mediaResourceCache = $mediaResourceCache;
     }
     
     public function getMediaResourceCache(){
         return $this->mediaResourceCache;
+    }
+    
+    public function deleteMediaResourceCache(){
+        $this->mediaResourceCache = null;
     }
     
     public function setMediaType(MediaType $mediaType)
@@ -74,7 +84,7 @@ class MediaResource
     }
 
 
-    public function setDecade(Decade $decade)
+    public function setDecade(Decade $decade = null)
     {
         $this->decade = $decade;
     }
@@ -85,7 +95,7 @@ class MediaResource
         return $this->decade;
     }
 
-    public function setGenre(Genre $genre)
+    public function setGenre(Genre $genre = null)
     {
         $this->genre = $genre;
     }
@@ -117,41 +127,21 @@ class MediaResource
         return $this->itemId;
     }*/
 
-    /**
-     * Set viewCount
-     *
-     * @param integer $viewCount
-     */
-    public function setViewCount($viewCount)
+    public function incrementViewCount()
     {
-        $this->viewCount = $viewCount;
+        $this->viewCount++;
     }
 
-    /**
-     * Get viewCount
-     *
-     * @return integer 
-     */
     public function getViewCount()
     {
         return $this->viewCount;
     }
     
-    /**
-     * Set selectedCount
-     *
-     * @param integer $selectedCount
-     */
-    public function setSelectedCount($selectedCount)
+    public function incrementSelectedCount()
     {
-        $this->selectedCount = $selectedCount;
+        $this->selectedCount++;
     }
 
-    /**
-     * Get selectedCount
-     *
-     * @return integer 
-     */
     public function getSelectedCount()
     {
         return $this->selectedCount;

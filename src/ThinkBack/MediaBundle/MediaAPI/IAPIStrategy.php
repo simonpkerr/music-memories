@@ -14,8 +14,13 @@ use ThinkBack\MediaBundle\Entity\MediaSelection;
 interface IAPIStrategy {
     
     public function getListings(MediaSelection $mediaSelection);
-    public function getDetails(array $params, array $searchParams);
+    public function getDetails(array $params);
     public function getName();
+    //each api implements its own method of getting the id
+    public function getId(\SimpleXMLElement $xmlData);
+    public function getImageUrlFromXML(\SimpleXMLElement $xmlData);
+   
+    
 }
 
 ?>

@@ -392,7 +392,7 @@ class MediaController extends Controller
             $this->mediaapi->setAPIStrategy('amazonapi');
             
             try{
-                $response = $this->mediaapi->getDetails($params, $this->getMediaSelectionParams());
+                $response = $this->mediaapi->getDetails($params, $mediaSelection);
             }catch(\RunTimeException $re){
                 $exception = $re->getMessage();
             }catch(\LengthException $le){

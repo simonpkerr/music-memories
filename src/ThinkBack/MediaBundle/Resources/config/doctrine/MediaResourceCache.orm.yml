@@ -22,10 +22,13 @@ ThinkBack\MediaBundle\Entity\MediaResourceCache:
     slug:
       type: string
       length: 255
+      nullable: true
     title:
       type: string
       length: 255
+      nullable: true
     imageUrl:
       type: string
       length: 255
+      nullable: true
   lifecycleCallbacks: {  }

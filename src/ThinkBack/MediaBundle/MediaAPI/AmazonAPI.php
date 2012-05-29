@@ -98,12 +98,7 @@ class AmazonAPI implements IAPIStrategy {
      * @param searchParams - all the media search parameters 
      * @param params - params to carry out the query - only contains the id of the amazon product
      */
-    public function getDetails(array $params, array $searchParams){
-        //look up the detail in the db to see if its cached
-        
-        //get the recommendations
-        
-        //look up the details from the api if not cached
+    public function getDetails(array $params){
         $this->amazonParameters = array_merge($params, array(
                'Operation'          =>      'ItemLookup',
                'ResponseGroup'      =>      'Images,ItemAttributes,SalesRank,Request,Similarities',
@@ -120,12 +115,22 @@ class AmazonAPI implements IAPIStrategy {
         }catch(\LengthException $le){
             throw $le;
         }
-        
-        //store the recommendation in cache
-        
+    }
+    
+    //each api will have it's own method for returning the id of a mediaresource for caching purposes.
+    public function getId(\SimpleXMLElement $xmlData){
         
     }
     
+    
+    public function getImageUrlFromXML(\SimpleXMLElement $xmlData){
+        try{
+            return $xmlData->Items->Item->MediumImage->URL;
+        } catch(\Exception $ex){
+            return null;
+        }
+    }
+   
     /**
      * Check if the xml received from Amazon is valid
      * 
