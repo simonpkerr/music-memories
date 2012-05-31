@@ -1,0 +1,33 @@
+{% extends 'SkNdMediaBundle::layout.html.twig' %}
+{% block title %}Search results for {{media}} ({{ decade }}, {{ genre }}){% endblock %}
+
+{% block content %}
+<h1>
+    Results for {{media == 'tv' ? media|upper : media|capitalize}} ({{ decade|capitalize }}, {{ genre|replace({'-':' '})|capitalize }})
+    {% if keywords is defined %}
+    and {{keywords}}
+    {% endif %}
+</h1>
+<div id="searchResults">
+    
+    {% if media == 'music' %}
+        {% include 'SkNdMediaBundle:Media:musicListingsPartial.html.twig'%}
+    {% else %}
+        {% 
+            include 'SkNdMediaBundle:Media:filmTVListingsPartial.html.twig'
+            
+        %}
+    {% endif %}
+    
+    {#{
+                'decade'        : decade,
+                'media'         : media,            
+                'genre'         : genre,
+                'keywords'      : is defined(keywords)? keywords : ,
+                'mainResponse'  : mainResponse,
+                'pagerParams'   : pagerParams
+            }#}
+        
+</div>
+
+{% endblock %}

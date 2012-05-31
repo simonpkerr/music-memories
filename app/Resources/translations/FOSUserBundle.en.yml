@@ -24,10 +24,10 @@ change_password.flash.success: The password has been changed
 
 # Registration
 registration.check_email: An email has been sent to %email%. It contains an activation link you must click to activate your account.
-registration.confirmed: Congrats %username%, your account is now confirmed.
-registration.back: Back to the originating page.
+registration.confirmed: Nice one %username%! Your account is now active.
+registration.back: Go back to the original page.
 registration.submit: Register
-registration.flash.user_created: The user has been created successfully
+registration.flash.user_created: You're now an official noodleDigger! Yay.
 
 registration.email: |
     Media %username%!
@@ -36,7 +36,7 @@ registration.email: |
     To finish validating your account - please visit %confirmationUrl%
 
     Regards,
-    the Team.
+    the noodleDig Team.
 
 # Password resetting
 resetting.password_already_requested: The password for this user has already been requested within the last 24 hours.
@@ -57,9 +57,10 @@ resetting.email: |
     the Team.
 
 # Global strings
+layout.edit_profile: Manage your account
 layout.logout: Logout
 layout.login: Login
-layout.register: Register
+layout.register: Sign Up
 layout.logged_in_as: Logged in as %username%
 
 # Form field labels
@@ -72,16 +73,15 @@ fos_user_profile_form_current: "Current Password:"
 fos_user_registration_form_username: "Username:"
 fos_user_registration_form_email: "Email:"
 fos_user_registration_form_plainPassword_first: "Password:"
-fos_user_registration_form_plainPassword_second: "Verification:"
+fos_user_registration_form_plainPassword_second: "Re-type password:"
 
 #my settings
 fos_user_registration_form_firstname: "First Name:"
 fos_user_registration_form_surname: "Surname:"
 
-
 fos_user_resetting_form_new_first: "New password:"
-fos_user_resetting_form_new_second: "Verification:"
+fos_user_resetting_form_new_second: "Re-type password:"
 
 fos_user_change_password_form_new_first: "New password:"
-fos_user_change_password_form_new_second: "Verification:"
+fos_user_change_password_form_new_second: "Re-type password:"
 fos_user_change_password_form_current: "Current password:"

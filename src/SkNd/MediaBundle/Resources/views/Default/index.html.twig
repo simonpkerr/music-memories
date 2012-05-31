@@ -1,0 +1,27 @@
+{% extends '::base.html.twig' %}
+{% block title %}Index{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+{% endblock %}
+{% block pageTitle %}
+Hi there&hellip;
+{% endblock %}
+{% block body %}
+<p>noodleDig lets you rediscover Films and TV from your past</p>
+{# media selection partial #}
+<div id="mediaSelection">
+    {% render "SkNdMediaBundle:Media:mediaSelection" %}
+ 
+</div>
+<div id="ageSearch"></div>
+    {# age based search partial #}
+</div>
+<div id="what-is-this">
+    <h2>What is this?</h2>
+    <p>Description of what the service is.</p>
+</div>
+{% endblock %}
+{% block javascripts %} 
+{{ parent() }}
+{# <script src="{{ asset('bundles/SkNd/scripts/main.js') }}" type="text/javascript"></script>#}
+{% endblock %}

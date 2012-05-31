@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+{% block mediaSelect %}
+    <div id="headerMediaSelection">
+        {% render "SkNdMediaBundle:Media:mediaSelection" %}
+    </div>
+{% endblock %}
+{#<h1>{% block pageTitle %}{% endblock %}</h1>#}
+
+{% block content %}
+{% endblock %}
+
+    
+{% endblock %}
+
+
+

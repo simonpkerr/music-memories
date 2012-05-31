@@ -1,0 +1,3 @@
+SkNdUserBundle_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: SkNdUserBundle:Default:index }

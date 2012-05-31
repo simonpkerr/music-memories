@@ -1,0 +1,32 @@
+/*---------- generics ------------*/
+.fl {
+    float: left;    
+}
+.fr {
+    float: right;
+}
+
+.half-width {
+    width: 49%;
+}
+
+
+
+
+/*---------- generic search ------------*/
+.search-form-label {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+}
+
+div.errors {
+    color: #CC514F;
+    font-size: 0.9em;
+}
+
+li.listing {
+    margin: 0.5em;
+    border-bottom: 1px solid #ddd;
+    padding: 0.5em;
+}

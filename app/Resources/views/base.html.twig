@@ -2,29 +2,38 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>MyDay &ndash; {% block title %}Home{% endblock %}</title>
+        <title>noodleDig &ndash; {% block title %}Home{% endblock %}</title>
         {#<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />#}
         {% block stylesheets %}
-            <link href="{{asset('bundles/ThinkBack/css/reset.css') }}" type="text/css" rel="stylesheet" />
-            <link href="{{asset('bundles/ThinkBack/css/main.css') }}" type="text/css" rel="stylesheet" />
-            <link href="{{asset('bundles/ThinkBack/css/typography.css') }}" type="text/css" rel="stylesheet" />
+            <link href="{{asset('bundles/SkNd/css/reset.css') }}" type="text/css" rel="stylesheet" />
+            <link href="{{asset('bundles/SkNd/css/main.css') }}" type="text/css" rel="stylesheet" />
+            <link href="{{asset('bundles/SkNd/css/typography.css') }}" type="text/css" rel="stylesheet" />
         {% endblock %}
             
         {% block javascripts %}
-            <script src="{{ asset('bundles/ThinkBack/scripts/jquery-1.7.min.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/ThinkBack/scripts/tb-scripts.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/SkNd/scripts/jquery-1.7.min.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/SkNd/scripts/tb-scripts.js') }}" type="text/javascript"></script>
         {% endblock %}
     </head>
     <body>
         <div id="header">
             {# the 'path' function can be used to target any particular route defined in the routing config file #}
-            <a href="{{path('index')}}" title="Go back to MyDay home page">MyDay</a>
-            {#<a href="{{path('setMedia', {'mediaType' : 'film'})}}" title="Go to MyDay Films">Films</a>
-            <a href="{{path('setMedia', {'mediaType' : 'tv'})}}" title="Go to MyDay TV">TV</a>
-            <a href="{{path('setMedia', {'mediaType' : 'music'})}}" title="Go to MyDay Music">Music</a>#}
-            {#% render "ThinkBackMediaBundle:Media:mediaSearch" %#}
+            <a href="{{path('index')}}" title="Go back to noodleDig home page">noodleDig</a>
+            {#<a href="{{path('setMedia', {'mediaType' : 'film'})}}" title="Go to noodleDig Films">Films</a>
+            <a href="{{path('setMedia', {'mediaType' : 'tv'})}}" title="Go to noodleDig TV">TV</a>
+            <a href="{{path('setMedia', {'mediaType' : 'music'})}}" title="Go to noodleDig Music">Music</a>#}
+            {% include 'SkNdUserBundle:Default:loginPanel.html.twig' %}
         </div>
-        {% block body %}{% endblock %}
+        <div id="flashMessages">
+            {% for key, message in app.session.getFlashes() %}
+            <div class="{{ key }}">
+                {{ message|trans({}, 'FOSUserBundle') }}
+            </div>
+            {% endfor %}   
+        </div>
+    {% block body %}
+
+    {% endblock %}
         
     </body>
 </html>

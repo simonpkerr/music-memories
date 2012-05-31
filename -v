@@ -1,7 +1,7 @@
-ThinkBack\MediaBundle\Tests\Controller\DefaultController
+SkNd\MediaBundle\Tests\Controller\DefaultController
  [x] Index
  [x] Error
 
-ThinkBack\MediaBundle\Tests\Controller\MediaController
+SkNd\MediaBundle\Tests\Controller\MediaController
  [x] Media selection
 

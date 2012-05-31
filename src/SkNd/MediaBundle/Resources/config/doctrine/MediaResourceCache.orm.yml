@@ -1,0 +1,34 @@
+SkNd\MediaBundle\Entity\MediaResourceCache:
+  type: entity
+  #repositoryClass: SkNd\MediaBundle\Repository\MediaResourceCacheRepository
+  table: null
+  fields:
+    id:
+      type: string
+      id: true
+      unique: true
+      generator:
+        strategy: NONE
+    #mediaResourceId:
+    #  type: string
+    #  length: '80'
+    xmlData:
+      type: text
+    dateCreated:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    slug:
+      type: string
+      length: 255
+      nullable: true
+    title:
+      type: string
+      length: 255
+      nullable: true
+    imageUrl:
+      type: string
+      length: 255
+      nullable: true
+  lifecycleCallbacks: {  }

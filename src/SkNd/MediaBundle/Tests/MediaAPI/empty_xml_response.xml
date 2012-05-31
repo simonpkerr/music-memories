@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<ItemSearchResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2009-03-31">
+  <OperationRequest>
+    <RequestId>49ce42ef-73e5-4b21-8d86-8511e87fdce2</RequestId>
+    <Arguments>
+      <Argument Name="Condition" Value="All"></Argument>
+      <Argument Name="Operation" Value="ItemSearch"></Argument>
+      <Argument Name="Service" Value="AWSECommerceService"></Argument>
+      <Argument Name="Signature" Value="n3mgH4Bx6WTlKHCuE0vkVqf7xDZcZn6yYnM7SY4lcn4="></Argument>
+      <Argument Name="MerchantId" Value="All"></Argument>
+      <Argument Name="ItemPage" Value="1"></Argument>
+      <Argument Name="AssociateTag" Value="SkNdcouk-20"></Argument>
+      <Argument Name="BrowseNode" Value="542159011"></Argument>
+      <Argument Name="Version" Value="2009-03-31"></Argument>
+      <Argument Name="Sort" Value="salesrank"></Argument>
+      <Argument Name="Validate" Value="True"></Argument>
+      <Argument Name="AWSAccessKeyId" Value="AKIAJH6G4CGNH5FCPVHA"></Argument>
+      <Argument Name="Timestamp" Value="2011-12-15T13:21:31Z"></Argument>
+      <Argument Name="ResponseGroup" Value="Images,ItemAttributes,SalesRank,Request"></Argument>
+      <Argument Name="SearchIndex" Value="Video"></Argument>
+    </Arguments>
+    <RequestProcessingTime>0.2932520000000000</RequestProcessingTime>
+  </OperationRequest>
+  <Items>
+    <Request>
+      <IsValid>True</IsValid>
+      <ItemSearchRequest>
+        <BrowseNode>542159011</BrowseNode>
+        <Condition>All</Condition>
+        <ItemPage>1</ItemPage>
+        <MerchantId>Deprecated</MerchantId>
+        <ResponseGroup>Images</ResponseGroup>
+        <ResponseGroup>ItemAttributes</ResponseGroup>
+        <ResponseGroup>SalesRank</ResponseGroup>
+        <ResponseGroup>Request</ResponseGroup>
+        <SearchIndex>Video</SearchIndex>
+        <Sort>salesrank</Sort>
+      </ItemSearchRequest>
+    </Request>
+    <TotalResults>0</TotalResults>
+    <TotalPages>0</TotalPages>
+    </Items>
+</ItemSearchResponse>

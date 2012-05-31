@@ -1,3 +1,0 @@
-ThinkBackUserBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: ThinkBackUserBundle:Default:index }

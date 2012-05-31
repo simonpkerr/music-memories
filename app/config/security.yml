@@ -1,6 +1,7 @@
 security:
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
+        SkNd\UserBundle\Entity\User: sha512
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
@@ -15,7 +16,7 @@ security:
                 user:  { password: userpass, roles: [ 'ROLE_USER' ] }
                 admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
         #main:
-          #entity: { class: ThinkBack\UserBundle\Entity\User, property: username }    
+          #entity: { class: SkNd\UserBundle\Entity\User, property: username }    
                 
     #this section determines the patterns for which areas are secured
     #and which are open. So in the code below, the login action is open
@@ -27,6 +28,7 @@ security:
           pattern: ^/
           form_login:
             provider: fos_userbundle
+            csrf_provider: form.csrf_provider
           logout: true
           anonymous: true
           

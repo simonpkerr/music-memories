@@ -1,0 +1,4 @@
+SkNd\MediaBundle\Entity\MediaSearch:
+  properties:
+    searchKeywords:
+      - NotBlank: { message: Please enter some keywords }

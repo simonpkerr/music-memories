@@ -61,10 +61,10 @@ jms_security_extra:
 fos_user:
   db_driver: orm
   firewall_name: main
-  user_class: ThinkBack\UserBundle\Entity\User
+  user_class: SkNd\UserBundle\Entity\User
   registration:
     form:
-      type: ThinkBack_user_registration
+      type: sk_nd_user_registration
       
 stof_doctrine_extensions:
   orm:
@@ -72,7 +72,7 @@ stof_doctrine_extensions:
       sluggable: true
       timestampable: true
 
-think_back_media:
+sk_nd_media:
   mediaapi:
     debug_mode: false
     apis: 
@@ -83,11 +83,11 @@ think_back_media:
           amazon_associate_tag: %amazon_associate_tag%
         #this can be set in the config but has a default value defined in the Configuration.php of the bundle
         #amazon_signed_request:
-        #  class: ThinkBack\MediaBundle\MediaAPI\DummyAmazonSignedRequest
+        #  class: SkNd\MediaBundle\MediaAPI\DummyAmazonSignedRequest
       youtubeapi: ~
         #use the below parameter to inject a dummy class for testing
         #youtube_request_object: 
-        #  class: ThinkBack\MediaBundle\MediaAPI\Zend_Gdata_YouTube
+        #  class: SkNd\MediaBundle\MediaAPI\Zend_Gdata_YouTube
         #DummyYouTubeRequestObject
 
       

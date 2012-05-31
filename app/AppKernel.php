@@ -19,9 +19,9 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\AopBundle\JMSAopBundle(),
-            new ThinkBack\MediaBundle\ThinkBackMediaBundle(),
+            new SkNd\MediaBundle\SkNdMediaBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new ThinkBack\UserBundle\ThinkBackUserBundle(),
+            new SkNd\UserBundle\SkNdUserBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             
         );

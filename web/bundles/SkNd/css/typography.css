@@ -1,0 +1,40 @@
+/*----- all typography related styles ----------*/
+/*
+24 is the magic number 
+16px is the base font size
+Ideal line-height for this is 1.5em
+16 * 1.5 = 24
+*/
+
+h1,h2,h3,h4 {
+    
+}
+
+p, a, li{
+    font-size: 1em;
+    line-height: 1.5em;
+}
+
+p {
+    margin-bottom: 24px;
+}
+
+p+p {
+    text-indent: 1em;
+    margin-top: -24px;
+}
+
+h1 {
+    font-size: 1.5em;
+    line-height: 1em;
+}
+
+h2 {
+    font-size: 1.375em;
+    line-height: 1.0909em;
+}
+
+h3 {
+   font-size: 1.25em;
+   line-height: 1.2em;
+}

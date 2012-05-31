@@ -1,0 +1,48 @@
+SkNd\MediaBundle\Entity\MediaResourceListingsCache:
+  type: entity
+  repositoryClass: SkNd\MediaBundle\Repository\MediaResourceListingsCacheRepository
+  table: null
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    page:
+      type: integer
+      nullable: true
+    keywords:
+      type: string
+      length: 255
+      nullable: true
+    xmlData:
+      type: text
+    dateCreated:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    api_id:
+      type: integer
+    mediaType_id:
+      type: integer
+    genre_id:
+      type: integer  
+      nullable: true
+    decade_id:
+      type: integer
+      nullable: true
+  manyToOne:
+    api:
+      targetEntity: API
+    mediaType:
+      targetEntity: MediaType
+      #cascade: ["persist", "merge", "remove"] 
+    decade:
+      targetEntity: Decade
+      #cascade: ["persist", "merge", "remove"] 
+      #nullable defaults to true for these columns
+    genre:
+      targetEntity: Genre
+      #cascade: ["persist", "merge", "remove"] 
+  lifecycleCallbacks: {  }

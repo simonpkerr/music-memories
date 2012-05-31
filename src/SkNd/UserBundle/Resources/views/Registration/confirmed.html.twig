@@ -1,0 +1,17 @@
+{% extends 'SkNdUserBundle::layout.html.twig' %}
+{% block title %}All signed up{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+{% endblock %}
+{% block body %}
+        
+{% block fos_user_content %}
+<h1>You&rsquo;re all signed up</h1>
+    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
+    {% if app.session is not empty %}
+        {% set targetUrl = app.session.get('_security.target_path') %}
+        {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}
+    {% endif %}
+    <a href="{{path('index')}}">Start noodleDigging now</a>
+{% endblock fos_user_content %}
+{% endblock %}        

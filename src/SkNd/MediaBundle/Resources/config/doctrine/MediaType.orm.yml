@@ -1,0 +1,33 @@
+SkNd\MediaBundle\Entity\MediaType:
+  type: entity
+  repositoryClass: SkNd\MediaBundle\Repository\MediaTypeRepository
+  table: null
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    mediaName:
+      type: string
+      length: 75
+      gedmo:
+        - sluggable
+    slug:
+      type: string
+      length: 128
+      gedmo:
+        slug:
+          fields:
+            - mediaName
+    amazonBrowseNodeId:
+      type: string
+      length: 10
+  oneToMany:
+    genres:
+      targetEntity: Genre
+      mappedBy: mediaType
+  lifecycleCallbacks: {  }
+#  indexes:
+#    search_idx:
+#      columns: slug

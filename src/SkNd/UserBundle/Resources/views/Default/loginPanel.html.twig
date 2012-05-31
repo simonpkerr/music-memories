@@ -1,0 +1,23 @@
+<div id="loginPanel">
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
+    <div id="accountOptions">
+        <ul>
+            <li><a href="{{ path('fos_user_profile_edit') }}">
+            {{ 'layout.edit_profile'|trans({}, 'FOSUserBundle') }}
+                        </a>
+            </li>
+            <li><a href="{{ path('fos_user_security_logout') }}">
+            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+            </li>
+        </ul>
+    </div>
+    
+    {% else %}
+        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+        <span>...or <a href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></span>
+    {% endif %}
+
+     
+</div>

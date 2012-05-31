@@ -1,9 +1,9 @@
-ThinkBackUserBundle:
-    resource: "@ThinkBackUserBundle/Resources/config/routing.yml"
+SkNdUserBundle:
+    resource: "@SkNdUserBundle/Resources/config/routing.yml"
     prefix:   /
 
-ThinkBackMediaBundle:
-    resource: "@ThinkBackMediaBundle/Resources/config/routing.yml"
+SkNdMediaBundle:
+    resource: "@SkNdMediaBundle/Resources/config/routing.yml"
     prefix:   /
      
 fos_user_security:
