@@ -145,6 +145,7 @@ class MediaAPI {
         }
     }
     
+    //get an individual media resource based on item id and retrieve or delete associated cached resource
     public function getMediaResource($itemId){
         $this->mediaResource = $this->em->getRepository('ThinkBackMediaBundle:MediaResource')->getMediaResourceById($itemId);
         if($this->mediaResource != null && $this->mediaResource->getMediaResourceCache() != null){
@@ -159,16 +160,7 @@ class MediaAPI {
         return $this->mediaResource;
     }
     
-    /*
-     * deletes the associated cached record
-     * extracted as method for testing purposes
-     */
-    
-    public function deleteCachedResource(){
-        $this->mediaResource->deleteMediaResourceCache();
-        $this->em->flush();
-    }
-    
+    //once retrieved, if applicable, cache the resource
     public function cacheMediaResource(\SimpleXMLElement $xmlData, $itemId){
         if($this->mediaResource == null){
             //create a mediaresource
@@ -185,6 +177,7 @@ class MediaAPI {
             $cachedResource = new MediaResourceCache();
             $cachedResource->setId($this->mediaResource->getId());
             $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($xmlData));
+            $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($xmlData));
             $cachedResource->setXmlData($xmlData->asXML());
             $this->mediaResource->setMediaResourceCache($cachedResource);
         }

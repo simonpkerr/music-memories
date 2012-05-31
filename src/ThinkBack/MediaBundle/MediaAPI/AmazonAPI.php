@@ -130,6 +130,14 @@ class AmazonAPI implements IAPIStrategy {
             return null;
         }
     }
+    
+    public function getItemTitleFromXML(\SimpleXMLElement $xmlData){
+        try{
+            return $xmlData->Items->Item->ItemAttributes->Title;
+        } catch(\Exception $ex){
+            return null;
+        }
+    }
    
     /**
      * Check if the xml received from Amazon is valid

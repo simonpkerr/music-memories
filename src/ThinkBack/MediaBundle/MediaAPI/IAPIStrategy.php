@@ -19,6 +19,7 @@ interface IAPIStrategy {
     //each api implements its own method of getting the id
     public function getId(\SimpleXMLElement $xmlData);
     public function getImageUrlFromXML(\SimpleXMLElement $xmlData);
+    public function getItemTitleFromXML(\SimpleXMLElement $xmlData);
    
     
 }

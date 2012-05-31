@@ -15,8 +15,8 @@ class MediaControllerTest extends WebTestCase
         $this->client = static::createClient();
         $this->client->followRedirects(true);
         //$this->client->insulate();
+       
         //use the below line to inject mock services into a controller, to avoid calling live apis
-        
         $amazonapi = $this->client->getContainer()->get('think_back_media.amazonapi');
         $valid_xml_data_set = simplexml_load_file('src\ThinkBack\MediaBundle\Tests\MediaAPI\valid_xml_response.xml');
         $testASR = $this->getMockBuilder('AmazonSignedRequest')
