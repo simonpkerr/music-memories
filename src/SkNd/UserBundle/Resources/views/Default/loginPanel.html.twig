@@ -1,6 +1,6 @@
 <div id="loginPanel">
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-    {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
+    <span id="logged-in-user">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</span>
     <div id="accountOptions">
         <ul>
             <li><a href="{{ path('fos_user_profile_edit') }}">

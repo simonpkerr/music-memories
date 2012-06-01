@@ -7,6 +7,11 @@ framework:
     session:
         storage_id: session.storage.filesystem
 
+security:
+  firewalls:
+    main:
+      http_basic: ~
+
 web_profiler:
     toolbar: false
     intercept_redirects: false
@@ -14,4 +19,6 @@ web_profiler:
 swiftmailer:
     disable_delivery: true
     
-    
+sk_nd_media:
+  mediaapi:
+    debug_mode: true    
