@@ -65,6 +65,9 @@ fos_user:
   registration:
     form:
       type: sk_nd_user_registration
+#  profile:
+#    form:
+#      type: sk_nd_user_profile
       
 stof_doctrine_extensions:
   orm:

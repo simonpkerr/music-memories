@@ -1,0 +1,42 @@
+{% block field_label %}
+{% spaceless %}
+    {% if required %}
+    <span class="required" title="This field is required">*</span>
+    {% endif %}
+
+    <label for="{{ id }}">{{ id|trans([], 'FOSUserBundle') }}</label>
+{% endspaceless %}
+{% endblock field_label %}
+
+    
+{% block field_rows %}
+{% spaceless %}
+    {{ form_errors(form) }}
+    {% for child in form %}
+        {{ form_row(child) }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock field_rows %}
+    
+    
+{% block field_row %}
+{% spaceless %}
+    <div>
+        {{ form_errors(form) }}    
+        {{ form_label(form, label|default(null)) }}
+        {{ form_widget(form) }}
+    </div>
+{% endspaceless %}
+{% endblock field_row %}
+    
+{% block field_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <ul class="form-errors">
+        {% for error in errors %}
+            <li>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endspaceless %}
+{% endblock field_errors %}

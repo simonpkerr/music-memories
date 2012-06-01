@@ -18,8 +18,10 @@ class RegistrationFormType extends BaseType {
         ));
         $startYear = new \DateTime("now");
         $startYear = $startYear->sub(date_interval_create_from_date_string('90 years'));
+        $yearRange = range($startYear->format('Y'), date('Y'));
+        arsort($yearRange);
         $builder->add('dateofbirth', 'birthday', array(
-            'years' => range($startYear->format('Y'), date('Y')),
+            'years' => $yearRange,
             'label' => 'Date of Birth',
             ));
         

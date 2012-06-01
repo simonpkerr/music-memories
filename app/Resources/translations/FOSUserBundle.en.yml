@@ -15,8 +15,11 @@ security.login.submit: Login
 # Profile
 profile.show.username: Username
 profile.show.email: Email
-profile.edit.submit: Update
-profile.flash.updated: The profile has been updated
+profile.edit.submit: Update your profile
+profile.flash.updated: Your profile has been updated
+#profile.edit: "First Name:"
+#profile.edit: "Surname:"
+
 
 # Password change
 change_password.submit: Change password
@@ -61,7 +64,7 @@ layout.edit_profile: Manage your account
 layout.logout: Logout
 layout.login: Login
 layout.register: Sign Up
-layout.logged_in_as: Logged in as %username%
+layout.logged_in_as: %username%
 
 # Form field labels
 fos_user_group_form_name: "Group name:"
