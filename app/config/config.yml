@@ -65,9 +65,18 @@ fos_user:
   registration:
     form:
       type: sk_nd_user_registration
-#  profile:
-#    form:
-#      type: sk_nd_user_profile
+    confirmation:
+      from_email:
+        address:        registration@noodledig.com
+        sender_name:    noodleDig Registration
+  profile:
+    form:
+      type: sk_nd_user_profile
+  resetting:
+    email:
+      from_email:
+        address:        resetting@noodledig.com
+        sender_name:    noodleDig Password reset
       
 stof_doctrine_extensions:
   orm:

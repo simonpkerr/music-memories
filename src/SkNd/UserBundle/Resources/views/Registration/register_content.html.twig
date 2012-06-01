@@ -1,4 +1,5 @@
 {% form_theme form theme %}
+    
 <h1>Sign up</h1>
 <p class="strapline">Why should I do that? Here&rsquo;s 3 good reasons&hellip;</p>
 <ul>
@@ -12,7 +13,9 @@
     <p>Use the form below to sign up to noodleDig in the usual way.</p>
 
 <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
-    {{ form_widget(form) }}
+
+{{ form_widget(form) }}
+        
     {#{ form_row(form.firstname) }}
     {{ form_row(form.surname) }}
     {{ form_row(form.dateofbirth) }}

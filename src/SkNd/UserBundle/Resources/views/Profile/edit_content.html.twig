@@ -1,15 +1,13 @@
 {% form_theme form theme %}
 <h2>Edit your profile</h2>
 <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
-
-    {{ form_row(form.firstname) }}
-    {{ form_row(form.surname) }}
-    {{ form_row(form.dateofbirth) }}
+    {{ form_errors(form) }}
     {{ form_rest(form) }}
-
     <div>
         <input type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}" />
     </div>
 </form>
 
-<h2>Reset your password</h2>
+<h2>Change your password</h2>
+<a href="{{ path('fos_user_change_password')}}">Change your password.</a>
+

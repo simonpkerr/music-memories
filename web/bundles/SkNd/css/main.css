@@ -10,6 +10,26 @@
     width: 49%;
 }
 
+.third-width {
+    width: 32%;
+}
+
+.left,
+.right,
+.centre{ 
+    margin: 24px;
+}
+
+.left {
+    margin-left: 0;
+}
+.right {
+    margin-right: 0;
+}
+.centre {
+    margin: 24px 0;    
+}
+
 
 
 

@@ -15,11 +15,11 @@ security.login.submit: Login
 # Profile
 profile.show.username: Username
 profile.show.email: Email
+profile.show.firstname: First name
+profile.show.surname: Surname
+profile.show.dateofbirth: Date of birth
 profile.edit.submit: Update your profile
 profile.flash.updated: Your profile has been updated
-#profile.edit: "First Name:"
-#profile.edit: "Surname:"
-
 
 # Password change
 change_password.submit: Change password
@@ -72,6 +72,8 @@ fos_user_group_form_name: "Group name:"
 fos_user_profile_form_user_username: "Username:"
 fos_user_profile_form_user_email: "Email:"
 fos_user_profile_form_current: "Current Password:"
+fos_user_profile_form_user_firstname: "First Name:"
+fos_user_profile_form_user_surname: "Surname:"
 
 fos_user_registration_form_username: "Username:"
 fos_user_registration_form_email: "Email:"

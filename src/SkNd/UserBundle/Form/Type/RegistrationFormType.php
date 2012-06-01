@@ -10,12 +10,6 @@ class RegistrationFormType extends BaseType {
         parent::buildForm($builder, $options);
         
         //any extra properties are added here
-        $builder->add('firstname', 'text', array(
-            'required'  => false,
-        ));
-        $builder->add('surname', 'text', array(
-            'required'  => false,
-        ));
         $startYear = new \DateTime("now");
         $startYear = $startYear->sub(date_interval_create_from_date_string('90 years'));
         $yearRange = range($startYear->format('Y'), date('Y'));
@@ -24,6 +18,14 @@ class RegistrationFormType extends BaseType {
             'years' => $yearRange,
             'label' => 'Date of Birth',
             ));
+        
+        $builder->add('firstname', 'text', array(
+            'required'  => false,
+        ));
+        $builder->add('surname', 'text', array(
+            'required'  => false,
+        ));
+        
         
     }
     

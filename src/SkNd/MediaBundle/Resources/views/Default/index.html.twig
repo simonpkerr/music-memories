@@ -3,22 +3,31 @@
 {% block stylesheets %}
 {{ parent() }}
 {% endblock %}
-{% block pageTitle %}
-Hi there&hellip;
-{% endblock %}
 {% block body %}
-<p>noodleDig lets you rediscover Films and TV from your past</p>
+
+<div id="what-is-this">
+    <h1>What&rsquo;s noodleDig?</h1>
+    <div class="fl third-width left">
+        <h2>Re&ndash;discover it</h2>
+        <p>noodleDig helps you find all those cool old Films and TV Programmes you thought you&rsquo;d forgotten.</p>
+    </div>
+    <div class="fl third-width centre">
+        <h2>Grab it</h2>
+        <p>Once you&rsquo;ve found some cool stuff, bung it down on your own personalised memory wall.</p>
+    </div>
+    <div class="fl third-width right">
+        <h2>Share it</h2>
+        <p>noodleDig makes it easy to share those great memories with all your pals.</p>
+    </div>
+</div>
+
+
 {# media selection partial #}
 <div id="mediaSelection">
     {% render "SkNdMediaBundle:Media:mediaSelection" %}
- 
 </div>
 <div id="ageSearch"></div>
     {# age based search partial #}
-</div>
-<div id="what-is-this">
-    <h2>What is this?</h2>
-    <p>Description of what the service is.</p>
 </div>
 {% endblock %}
 {% block javascripts %} 
