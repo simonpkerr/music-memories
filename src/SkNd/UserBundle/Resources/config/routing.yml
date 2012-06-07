@@ -1,3 +1,11 @@
-SkNdUserBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: SkNdUserBundle:Default:index }
+memoryWallIndexDefault:
+    pattern:  /memorywall/index
+    defaults: { _controller: SkNdUserBundle:MemoryWall:index }
+    
+#shows memory walls for a given user, shows all public\private if user is currently logged in
+#or just public ones for other users
+memoryWallIndex:
+    pattern:  /memorywall/index/{username}
+    defaults: { _controller: SkNdUserBundle:MemoryWall:index }
+    requirements:
+      _method: GET

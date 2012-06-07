@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}
+
+{% block title %}Memory Walls Gallery{% endblock %}
+
+{% block body %}
+{% block mediaSelect %}
+    <div id="headerMediaSelection">
+        {% render "SkNdMediaBundle:Media:mediaSelection" %}
+    </div>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+    
+{% endblock %}
+
+
+

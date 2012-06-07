@@ -1,0 +1,43 @@
+SkNd\UserBundle\Entity\MemoryWall:
+  type: entity
+  repositoryClass: SkNd\UserBundle\Repository\MemoryWallRepository
+  table: null
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      type: string
+      length: 255
+    slug:
+      type: string
+      length: 255
+      gedmo:
+        slug:
+          fields:
+            - name
+    description:
+      type: string
+      length: 255
+    associatedDecade:
+      type: integer
+      nullable: true
+    dateCreated:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    isPublic:
+      type: boolean
+    lastUpdated:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: update
+  lifecycleCallbacks: {  }
+  manyToOne:
+    user:
+      targetEntity: User
+      inversedBy: memoryWalls

@@ -261,6 +261,7 @@ class MediaController extends Controller
             $genres = $em->getRepository('SkNdMediaBundle:Genre')->getAllGenres();
             $mediaSelection->setGenres($genres);
         }
+        
         $form = $this->createForm(new MediaSelectionType(), $mediaSelection);
         
         if($request->getMethod() == 'POST'){
