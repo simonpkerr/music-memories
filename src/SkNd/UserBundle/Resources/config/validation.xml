@@ -9,7 +9,7 @@
         <property name="firstname">
             <constraint name="MinLength">
                 <option name="limit">2</option>
-                <option name="message">fos_user.name.short</option>
+                <option name="message">fos_user.firstname.short</option>
                 <option name="groups">
                     <value>Registration</value>
                     <value>Profile</value>
@@ -17,7 +17,7 @@
             </constraint>
             <constraint name="MaxLength">
                 <option name="limit">80</option>
-                <option name="message">fos_user.name.long</option>
+                <option name="message">fos_user.firstname.long</option>
                 <option name="groups">
                     <value>Registration</value>
                     <value>Profile</value>
@@ -28,7 +28,7 @@
         <property name="surname">
             <constraint name="MinLength">
                 <option name="limit">2</option>
-                <option name="message">fos_user.username.short</option>
+                <option name="message">fos_user.surname.short</option>
                 <option name="groups">
                     <value>Registration</value>
                     <value>Profile</value>
@@ -36,7 +36,7 @@
             </constraint>
             <constraint name="MaxLength">
                 <option name="limit">80</option>
-                <option name="message">fos_user.username.long</option>
+                <option name="message">fos_user.surname.long</option>
                 <option name="groups">
                     <value>Registration</value>
                     <value>Profile</value>

@@ -49,10 +49,13 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
+    transport:  %mailer_transport%
+    #encryption: %mailer_encryption%
+    #auth_mode:  %mailer_auth_mode%
+    #host:       %mailer_host%
+    username:   %mailer_user%
+    password:   %mailer_password%
+    
 
 jms_security_extra:
     #secure_controllers:  true
@@ -67,7 +70,7 @@ fos_user:
       type: sk_nd_user_registration
     confirmation:
       from_email:
-        address:        registration@noodledig.com
+        address:        noodledig@gmail.com
         sender_name:    noodleDig Registration
   profile:
     form:
@@ -75,7 +78,7 @@ fos_user:
   resetting:
     email:
       from_email:
-        address:        resetting@noodledig.com
+        address:        noodledig@gmail.com
         sender_name:    noodleDig Password reset
       
 stof_doctrine_extensions:

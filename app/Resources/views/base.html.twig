@@ -25,11 +25,11 @@
             {% include 'SkNdUserBundle:Default:loginPanel.html.twig' %}
         </div>
         <div id="flashMessages">
+            <ul>
             {% for key, message in app.session.getFlashes() %}
-            <div class="{{ key }}">
-                {{ message|trans({}, 'FOSUserBundle') }}
-            </div>
+            <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle') }}</li>
             {% endfor %}   
+            </ul>
         </div>
     {% block body %}
 
