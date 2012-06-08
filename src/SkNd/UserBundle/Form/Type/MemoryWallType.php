@@ -4,7 +4,7 @@
  * Original code Copyright (c) 2011 Simon Kerr
  * @author Simon Kerr
  * @version 1.0
- * MemoryWallType used for creating memory walls * 
+ * MemoryWallType used for creating memory walls  
  */
 
 namespace SkNd\UserBundle\Form\Type;
@@ -42,11 +42,11 @@ class MemoryWallType extends AbstractType{
         return 'memoryWallCreate';
     }
     
-    /*public function getDefaultOptions(array $options){
+    public function getDefaultOptions(array $options){
         return array(
-          'data_class' => 'SkNd\MediaBundle\Entity\MediaSelection',  
+          'data_class' => 'SkNd\UserBundle\Entity\MemoryWall',  
         );
-    }*/
+    }
     
     
     

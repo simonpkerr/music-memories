@@ -5,13 +5,17 @@
 
 {% block title %}Memory Walls Gallery{% endblock %}
 
-{% block body %}
+{% block topNavLinks %}
 {% block mediaSelect %}
     <div id="headerMediaSelection">
         {% render "SkNdMediaBundle:Media:mediaSelection" %}
     </div>
 {% endblock %}
 
+{{ parent() }}
+{% endblock %}
+
+{% block body %}
 {% block content %}
 {% endblock %}
 

@@ -1,11 +1,36 @@
-memoryWallIndexDefault:
-    pattern:  /memorywall/index
-    defaults: { _controller: SkNdUserBundle:MemoryWall:index }
+#memoryWallIndexDefault:
+#    pattern:  /memorywall/index
+#    defaults: { _controller: SkNdUserBundle:MemoryWall:index }
+
+memoryWallsPersonalIndex:
+    pattern: /memorywalls/personal/index
+    defaults: 
+      _controller: SkNdUserBundle:MemoryWall:personalIndex
+    requirements:
+      _method: GET
     
 #shows memory walls for a given user, shows all public\private if user is currently logged in
 #or just public ones for other users
-memoryWallIndex:
-    pattern:  /memorywall/index/{username}
-    defaults: { _controller: SkNdUserBundle:MemoryWall:index }
+memoryWallsIndex:
+    pattern: /memorywalls/{scope}/index
+    defaults: 
+      _controller: SkNdUserBundle:MemoryWall:index
+      scope: public
     requirements:
       _method: GET
+
+
+
+#memoryWallsIndexAuthenticate:
+#    pattern:  /memorywalls/index
+#    defaults: 
+#      _controller: SkNdUserBundle:MemoryWall:indexAuthenticate
+#    requirements:
+#      _method: GET
+
+memoryWallCreate:
+    pattern: /memorywall/create
+    defaults: { _controller: SkNdUserBundle:MemoryWall:create }
+    requirements:
+      _method: GET|POST
+      

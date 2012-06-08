@@ -22,8 +22,22 @@
             {#<a href="{{path('setMedia', {'mediaType' : 'film'})}}" title="Go to noodleDig Films">Films</a>
             <a href="{{path('setMedia', {'mediaType' : 'tv'})}}" title="Go to noodleDig TV">TV</a>
             <a href="{{path('setMedia', {'mediaType' : 'music'})}}" title="Go to noodleDig Music">Music</a>#}
+            {% block topNavLinks %}
+            <ul id="memoryWalls">
+                <a href="{{path('memoryWallsIndex')}}">Memory Walls</a>
+                {# if logged in #}
+                {#% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <a href="{{path('memoryWallsIndex', {'username':app.user.username}) }}">My Memory Walls</a>
+                {% else %}
+                    <a href="{{path('memoryWallsIndexAuthenticate') }}">My Memory Walls</a>
+                {% endif %#}
+                <a href="{{path('memoryWallsPersonalIndex') }}">My Memory Walls</a>
+                <a href="{{path('memoryWallCreate')}}">Add a new Memory Wall</a>
+            </ul>
             {% include 'SkNdUserBundle:Default:loginPanel.html.twig' %}
+            {% endblock %}
         </div>
+        {% if app.session.getFlashes() %}    
         <div id="flashMessages">
             <ul>
             {% for key, message in app.session.getFlashes() %}
@@ -31,6 +45,7 @@
             {% endfor %}   
             </ul>
         </div>
+        {% endif %}
     {% block body %}
 
     {% endblock %}

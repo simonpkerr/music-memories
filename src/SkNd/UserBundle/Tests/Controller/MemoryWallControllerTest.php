@@ -32,7 +32,11 @@ class MemoryWallControllerTest extends WebTestCase
         
     }
     
-    public function testMemoryWallIndexWithUsernameShowsPublicAndPrivateWallsForGivenUserWhenUserIsAuthenticated(){
+    public function testPersonalMemoryWallIndexWithUsernameShowsPublicAndPrivateWallsWhenUserIsAuthenticated(){
+        
+    }
+    
+    public function testMemoryWallIndexForNonexistentUserThrowsException(){
         
     }
     
@@ -41,6 +45,18 @@ class MemoryWallControllerTest extends WebTestCase
     }
     
     public function testCreateMemoryWallWhenAuthenticatedRedirectsToForm(){
+        
+    }
+    
+    public function testCreateMemoryWallWithMissingParametersShowsErrors(){
+        
+    }
+    
+    public function testCreateMemoryWallWithInvalidParametersShowsErrors(){
+        
+    }
+    
+    public function testCreateMemoryWallSuccessRedirectsToNewMemoryWall(){
         
     }
     

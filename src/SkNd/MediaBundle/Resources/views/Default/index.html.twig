@@ -23,12 +23,15 @@
 
 
 {# media selection partial #}
+<div id="contentSearches">
 <div id="mediaSelection">
     {% render "SkNdMediaBundle:Media:mediaSelection" %}
 </div>
 <div id="ageSearch"></div>
     {# age based search partial #}
 </div>
+</div>
+
 {% endblock %}
 {% block javascripts %} 
 {{ parent() }}

@@ -19,7 +19,9 @@ SkNd\UserBundle\Entity\User:
   oneToMany:
     memoryWalls:
       targetEntity: MemoryWall
-      mapped-by: user
+      mappedBy: user
+      cascade: ["persist", "merge", "remove"]
+      orphanRemoval: true
 
       
       

@@ -5,13 +5,17 @@
 
 {% block title %}{% endblock %}
 
-{% block body %}
+{% block topNavLinks %}
 {% block mediaSelect %}
     <div id="headerMediaSelection">
         {% render "SkNdMediaBundle:Media:mediaSelection" %}
     </div>
 {% endblock %}
-{#<h1>{% block pageTitle %}{% endblock %}</h1>#}
+
+{{ parent() }}
+{% endblock %}
+
+{% block body %}
 
 {% block content %}
 {% endblock %}

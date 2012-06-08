@@ -1,0 +1,11 @@
+create_memory_wall:
+  submit: Create a new Memory Wall
+  flash:
+    success: Cool! A new Memory Wall
+    fail: Oh dear...A bit of a problem. Please fix it and try again
+
+memoryWallCreate:
+  name: Name
+  description: Description
+  associatedDecade: AssociatedDecade
+  isPublic: Is the Wall public?
