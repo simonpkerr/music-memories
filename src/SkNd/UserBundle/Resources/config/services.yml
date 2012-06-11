@@ -1,5 +1,5 @@
 parameters:
-#    i_spy_si_user.example.class: SkNd\UserBundle\Example
+#    SkNd_user.example.class: SkNd\UserBundle\Example
 
 services:
   SkNd_user.registration.form.type:
@@ -14,7 +14,4 @@ services:
       - { name: form.type, alias: sk_nd_user_profile }
 
 
-#    i_spy_si_user.example:
-#        class: %i_spy_si_user.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
 

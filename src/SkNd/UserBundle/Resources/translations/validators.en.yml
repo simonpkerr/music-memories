@@ -28,3 +28,11 @@ fos_user:
         blank: Please enter a name
         short: The name is too short
         long: The name is too long
+memory_wall:
+  name:
+    short: The name is too short. Please enter some kind of name
+    long: The name is too long. Only 50 characters maximum please
+    blank: Please enter a name for the Memory Wall
+  description:
+    short: The description is too short. Please tell us what the wall is about
+    long: The description is too long. Only 255 characters maximum please

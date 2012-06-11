@@ -1,7 +1,3 @@
-#memoryWallIndexDefault:
-#    pattern:  /memorywall/index
-#    defaults: { _controller: SkNdUserBundle:MemoryWall:index }
-
 memoryWallsPersonalIndex:
     pattern: /memorywalls/personal/index
     defaults: 
@@ -19,18 +15,20 @@ memoryWallsIndex:
     requirements:
       _method: GET
 
-
-
-#memoryWallsIndexAuthenticate:
-#    pattern:  /memorywalls/index
-#    defaults: 
-#      _controller: SkNdUserBundle:MemoryWall:indexAuthenticate
-#    requirements:
-#      _method: GET
-
 memoryWallCreate:
     pattern: /memorywall/create
     defaults: { _controller: SkNdUserBundle:MemoryWall:create }
     requirements:
       _method: GET|POST
+
+memoryWallShow:
+    pattern: /memorywall/show/{id}/{slug}
+    defaults: { _controller: SkNdUserBundle:MemoryWall:show }
+    requirements:
+      _method: GET
       
+memoryWallEdit:
+    pattern: /memorywall/edit/{id}/{slug}
+    defaults: { _controller: SkNdUserBundle:MemoryWall:edit }
+    requirements:
+      _method: GET

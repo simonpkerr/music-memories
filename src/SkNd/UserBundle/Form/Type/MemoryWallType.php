@@ -24,7 +24,8 @@ class MemoryWallType extends AbstractType{
         
         //entity field mapped to the mediatype class displaying the id and mediaName properties
         $builder->add('description', 'text', array(
-            'trim'     => true
+            'trim'      => true,
+            'required'  => false,
         ));
         
         $builder->add('associatedDecade', 'entity', array(
@@ -34,7 +35,10 @@ class MemoryWallType extends AbstractType{
             'required'      => false,
         ));
         
-        $builder->add('isPublic', 'checkbox');
+        $builder->add('isPublic', 'checkbox', array(
+            'attr'     => array('checked'   => 'checked'),
+            'required'  => false 
+        ));
                 
     }
     
@@ -44,7 +48,8 @@ class MemoryWallType extends AbstractType{
     
     public function getDefaultOptions(array $options){
         return array(
-          'data_class' => 'SkNd\UserBundle\Entity\MemoryWall',  
+          'data_class'  =>  'SkNd\UserBundle\Entity\MemoryWall',  
+          'intention'   =>  'memory_wall_create'
         );
     }
     

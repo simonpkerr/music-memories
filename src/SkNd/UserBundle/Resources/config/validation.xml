@@ -46,5 +46,31 @@
         
     </class>
     
+    <class name="SkNd\UserBundle\Entity\MemoryWall">
+        <property name="name">
+            <constraint name="MinLength">
+                <option name="limit">5</option>
+                <option name="message">memory_wall.name.short</option>
+            </constraint>
+            <constraint name="MaxLength">
+                <option name="limit">50</option>
+                <option name="message">memory_wall.name.long</option>
+            </constraint>
+            <constraint name="NotBlank">
+                <option name="message">memory_wall.name.blank</option>
+            </constraint>
+        </property>
+        <property name="description">
+            <constraint name="MinLength">
+                <option name="limit">5</option>
+                <option name="message">memory_wall.description.short</option>
+            </constraint>
+            <constraint name="MaxLength">
+                <option name="limit">255</option>
+                <option name="message">memory_wall.description.long</option>
+            </constraint>
+        </property>
+    </class>
+    
     
 </constraint-mapping>

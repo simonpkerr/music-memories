@@ -20,8 +20,10 @@ SkNd\UserBundle\Entity\User:
     memoryWalls:
       targetEntity: MemoryWall
       mappedBy: user
-      cascade: ["persist", "merge", "remove"]
+      cascade: ["persist", "remove"]
       orphanRemoval: true
+      orderBy:
+        dateCreated: asc
 
       
       

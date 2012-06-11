@@ -12,6 +12,7 @@ namespace SkNd\UserBundle\DataFixtures\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use SkNd\UserBundle\Entity\User;
+use SkNd\UserBundle\Entity\MemoryWall;
 
 class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInjection\ContainerAwareInterface {
     
@@ -38,7 +39,13 @@ class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInject
         $user->setEmail('test@test.com');
         $user->setPlainPassword('testuser');
         $user->setEnabled(true);
+        //create a private memory wall 
+        $privateMw = new MemoryWall($user);
+        $privateMw->setIsPublic(false);
+        $privateMw->setName('private wall');                
+        $user->addMemoryWall($privateMw);
         $this->userManager->updateUser($user, true);
+        
         //$manager->persist($user);
         
         $user = $this->userManager->createUser();

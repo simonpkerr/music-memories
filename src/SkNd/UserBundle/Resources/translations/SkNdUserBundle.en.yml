@@ -4,8 +4,11 @@ create_memory_wall:
     success: Cool! A new Memory Wall
     fail: Oh dear...A bit of a problem. Please fix it and try again
 
-memoryWallCreate:
-  name: Name
-  description: Description
-  associatedDecade: AssociatedDecade
-  isPublic: Is the Wall public?
+memoryWallCreate_name: Name
+memoryWallCreate_description: Description
+memoryWallCreate_associatedDecade: Associated Decade
+memoryWallCreate_isPublic: Memory Wall is public
+
+registration:
+  memoryWallReminder: By the way, we've set up a Memory Wall for you just to save you a bit of hassle! You can start adding stuff to it straight away.
+    

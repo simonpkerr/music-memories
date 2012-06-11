@@ -22,5 +22,7 @@
     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
 </form>
     
-    <a href="{{ path('fos_user_resetting_request') }}">Forgotten your password?</a>    
+<ul>
+    <li><a href="{{ path('fos_user_resetting_request') }}">Forgotten your password?</a></li>
+    <li>Not signed up yet?! Come on! What are you waiting for? <a href="{{'fos_user_registration_register'}}">Get Signed Up Today!</a></li>
 {% endblock fos_user_content %}

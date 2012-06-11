@@ -5,6 +5,7 @@ use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use SkNd\UserBundle\Entity\MemoryWall;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class User extends BaseUser {
 
@@ -20,14 +21,26 @@ class User extends BaseUser {
 
     public function __construct(){
         $this->memoryWalls = new ArrayCollection();
-        
+        $mw = new MemoryWall($this);
+        $this->addMemoryWall($mw);
         parent::__construct();
     }
     
-    public function getMemoryWalls(){
-        return $this->memoryWalls;
+    public function getMemoryWalls($includePrivateWalls = true){
+        if($includePrivateWalls)
+            return $this->memoryWalls;
+        else{
+            
+            return $this->memoryWalls->filter(function($mw){
+                return $mw->getIsPublic() === true;
+            });
+        }
     }
 
+    
+    public function addMemoryWall(MemoryWall $mw){
+        $this->memoryWalls->add($mw);
+    }
 
     /**
      * Get id

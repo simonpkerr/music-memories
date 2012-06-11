@@ -4,7 +4,6 @@
     {% if required %}
     <span class="required" title="This field is required">*</span>
     {% endif %}
-
     <label for="{{ id }}">{{ id|trans([], 'FOSUserBundle') }}</label>
 {% endspaceless %}
 {% endblock field_label %}

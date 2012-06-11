@@ -39,28 +39,35 @@ class MemoryWallController extends Controller
     public function indexAction($scope = 'public')
     {
         $this->userManager = $this->getUserManager();
+        $this->em = $this->getEntityManager();
         
-        $viewTitle = "";
+        $pageTitle = "";
+        
         if($scope == 'public'){
-            $viewTitle = "All public";
+            $pageTitle = "All Public";
             //get all the public memory walls
+            $mws = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getPublicMemoryWalls();
         }else{
             $this->currentUser = $this->getCurrentUser();
-            if($this->currentUser->getUsername() == $scope){
-                $viewTitle = 'My';
+            if(is_object($this->currentUser) && ($this->currentUser->getUsername() == $scope)){
+                $pageTitle = 'My';
+                //get all public and private walls for this user
+                $mws = $this->currentUser->getMemoryWalls();
             }else{
-                //if request is for another user get the public walls for that user
+                //get all public walls for the given user
                 $user = $this->userManager->findUserByUsername($scope);
                 if(!is_object($user) || !$user instanceof UserInterface)
                     throw new NotFoundHttpException("User not found");
                 
-                $viewTitle = $scope . '\'s';
+                $pageTitle = $scope . htmlentities("'s");
+                //call to getMemoryWalls with false indicates only get public walls
+                $mws = $user->getMemoryWalls(false);
             }
         }
         
         $viewParams = array(
-            'pageTitle'     => $viewTitle,
-            'pageContent'   => '',
+            'pageTitle'     => $pageTitle,
+            'mws'           => $mws,
         );
         
         return $this->render('SkNdUserBundle:MemoryWall:index.html.twig', $viewParams);
@@ -74,7 +81,7 @@ class MemoryWallController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
-        return $this->indexAction($this->currentUser->getUsername());
+        return $this->indexAction($this->currentUser->getUsernameCanonical());
     }
     
     public function createAction(Request $request = null){
@@ -88,13 +95,27 @@ class MemoryWallController extends Controller
         $form = $this->createForm(new MemoryWallType(), $mw); 
         if($request->getMethod() == 'POST'){
             $form->bindRequest($request);
+            //check form is valid and ensure this user hasn't created an identically named wall
             if($form->isValid()){
+                $mw = $form->getData();
                 //persist data and redirect to new memory wall
-                
+                $this->get('session')->setFlash('notice', 'Success! Now, get started adding loads of cool stuff to your new Memory Wall');
+                $this->em->persist($mw);
+                $this->em->flush();
+                return $this->redirect($this->generateUrl('memoryWallShow', $mw->getSlug()));
             }            
         }
         return $this->render('SkNdUserBundle:MemoryWall:createMemoryWall.html.twig', array(
-                   'form'   => $form->createView() 
+            'form'   => $form->createView() 
+        ));
+    }
+    
+    public function showAction($slug){
+        $this->em = $this->getEntityManager();
+        $mw = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallById($id);
+        
+        return $this->render('SkNdUserBundle:MemoryWall:showMemoryWall.html.twig', array (
+            'memoryWall'    =>  $mw,
         ));
     }
     

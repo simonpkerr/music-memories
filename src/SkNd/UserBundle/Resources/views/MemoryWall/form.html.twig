@@ -1,0 +1,12 @@
+{% extends "SkNdUserBundle::form.html.twig" %}
+
+{% block field_label %}
+{% spaceless %}
+    {% if required %}
+    <span class="required" title="This field is required">*</span>
+    {% endif %}
+    <label for="{{ id }}">{{ id|trans([], 'SkNdUserBundle') }}</label>
+{% endspaceless %}
+{% endblock field_label %}
+
+    

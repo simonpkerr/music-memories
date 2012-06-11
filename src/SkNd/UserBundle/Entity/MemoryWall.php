@@ -10,6 +10,9 @@ use SkNd\UserBundle\Entity\User;
  */
 class MemoryWall
 {
+    public static $PRIVATE_WALLS = '0';
+    public static $PUBLIC_WALLS = '1';
+    public static $ALL_WALLS = '2';
     /**
      * @var integer $id
      */
@@ -49,6 +52,14 @@ class MemoryWall
     
     protected $associatedDecade;
 
+    public function __construct(User $user = null){
+        $this->setName('My Memory Wall');
+        $this->setIsPublic(true);
+        if($user != null)
+            $this->setUser($user);
+    }
+ 
+    
     /**
      * Get id
      *

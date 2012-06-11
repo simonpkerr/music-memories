@@ -3,6 +3,7 @@
 namespace SkNd\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use SkNd\UserBundle\Entity\MemoryWall;
 
 /*
  * Original code Copyright (c) 2012 Simon Kerr
@@ -13,5 +14,14 @@ use Doctrine\ORM\EntityRepository;
 
 class MemoryWallRepository extends EntityRepository
 {
+    public function getPublicMemoryWalls(){
+        return $this->createQueryBuilder('mw')
+                ->where('mw.isPublic = :public')
+                ->orderBy('mw.dateCreated', 'DESC')
+                ->setParameter('public', true)
+                ->getQuery()
+                ->getResult();
+    }
     
+
 }
