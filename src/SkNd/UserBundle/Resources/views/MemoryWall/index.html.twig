@@ -11,11 +11,11 @@
 {% for mw in mws %}
         <li><dl>
                 <dt>Name</dt>
-                <dd>{{mw.name}}</dd>
+                <dd><a href="{{ path('memoryWallShow', {'slug': mw.slug }) }}">{{mw.name}}</a></dd>
                 <dt>Description</dt>
                 <dd>{{mw.description is not null ? mw.description : 'No description available'}}</dd>
-                <dt>Associated Date</dt>
-                <dd>{{mw.associatedDecade is not null ? mw.associatedDecade : 'All decades'}}</dd>
+                <dt>Associated Decade</dt>
+                <dd>{{mw.associatedDecade is not null ? mw.associatedDecade.decadeName : 'All decades'}}</dd>
                 <dt>Date Created</dt>
                 <dd>{{mw.dateCreated|date("d/m/y")}}</dd>
                 {% if pageTitle == 'All Public' %}

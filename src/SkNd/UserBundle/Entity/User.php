@@ -39,6 +39,7 @@ class User extends BaseUser {
 
     
     public function addMemoryWall(MemoryWall $mw){
+        $mw->setUser($this);
         $this->memoryWalls->add($mw);
     }
 

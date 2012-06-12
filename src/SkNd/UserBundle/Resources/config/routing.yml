@@ -22,13 +22,13 @@ memoryWallCreate:
       _method: GET|POST
 
 memoryWallShow:
-    pattern: /memorywall/show/{id}/{slug}
+    pattern: /memorywall/show/{slug}
     defaults: { _controller: SkNdUserBundle:MemoryWall:show }
     requirements:
       _method: GET
       
 memoryWallEdit:
-    pattern: /memorywall/edit/{id}/{slug}
+    pattern: /memorywall/edit/{slug}
     defaults: { _controller: SkNdUserBundle:MemoryWall:edit }
     requirements:
       _method: GET

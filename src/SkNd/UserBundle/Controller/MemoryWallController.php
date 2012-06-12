@@ -56,8 +56,8 @@ class MemoryWallController extends Controller
             }else{
                 //get all public walls for the given user
                 $user = $this->userManager->findUserByUsername($scope);
-                if(!is_object($user) || !$user instanceof UserInterface)
-                    throw new NotFoundHttpException("User not found");
+                if($user == null || !is_object($user) || !$user instanceof UserInterface)
+                    throw $this->createNotFoundException("User not found");
                 
                 $pageTitle = $scope . htmlentities("'s");
                 //call to getMemoryWalls with false indicates only get public walls
@@ -85,9 +85,10 @@ class MemoryWallController extends Controller
     }
     
     public function createAction(Request $request = null){
+        $this->userManager = $this->getUserManager();
         $this->currentUser = $this->getCurrentUser();
         if(!$this->currentUserIsAuthenticated($this->currentUser)){
-            $this->get('session')->setFlash('notice', 'A new Memory Wall eh? Nice. Just log in first and then you\'re away!');
+            $this->get('session')->setFlash('notice', memoryWall.create.flash.accessDenied);
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
@@ -95,14 +96,15 @@ class MemoryWallController extends Controller
         $form = $this->createForm(new MemoryWallType(), $mw); 
         if($request->getMethod() == 'POST'){
             $form->bindRequest($request);
-            //check form is valid and ensure this user hasn't created an identically named wall
+            //check form is valid 
             if($form->isValid()){
                 $mw = $form->getData();
+                $this->currentUser->addMemoryWall($mw);
+                $this->userManager->updateUser($this->currentUser);
+                
                 //persist data and redirect to new memory wall
                 $this->get('session')->setFlash('notice', 'Success! Now, get started adding loads of cool stuff to your new Memory Wall');
-                $this->em->persist($mw);
-                $this->em->flush();
-                return $this->redirect($this->generateUrl('memoryWallShow', $mw->getSlug()));
+                return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
             }            
         }
         return $this->render('SkNdUserBundle:MemoryWall:createMemoryWall.html.twig', array(
@@ -112,16 +114,27 @@ class MemoryWallController extends Controller
     
     public function showAction($slug){
         $this->em = $this->getEntityManager();
-        $mw = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallById($id);
+        $this->currentUser = $this->getCurrentUser();
+        $mw = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug($slug);
+        //if memory wall doesn't exist
+        if(is_null($mw))
+            throw $this->createNotFoundException("Memory wall not found");
+        
+        //if the memory wall is private and the selected wall doesn't belong to the current user throw exception
+        $wallBelongsToCurrentUser = $this->currentUserIsAuthenticated($this->currentUser) && $mw->getUser() == $this->currentUser;        
+        if(!$mw->getIsPublic() && !$wallBelongsToCurrentUser){
+            $this->get('session')->setFlash('notice', memoryWall.show.flash.accessDenied);
+            throw new AccessDeniedException('This user does not have access to this section.');
+        }
         
         return $this->render('SkNdUserBundle:MemoryWall:showMemoryWall.html.twig', array (
-            'memoryWall'    =>  $mw,
+            'memoryWall'                => $mw,
+            'wallBelongsToCurrentUser'  => $wallBelongsToCurrentUser,
         ));
     }
     
     private function currentUserIsAuthenticated($user){
-        return (is_object($this->currentUser) && $this->currentUser instanceof UserInterface);
-        
+        return (is_object($user) && $user instanceof UserInterface);
     }
     
     private function getCurrentUser(){

@@ -4,6 +4,7 @@ namespace SkNd\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use SkNd\UserBundle\Entity\User;
+use SkNd\MediaBundle\Entity\Decade;
 
 /**
  * SkNd\UserBundle\Entity\MemoryWall
@@ -152,7 +153,7 @@ class MemoryWall
     }
     
     
-    public function setAssociatedDecade($associatedDecade)
+    public function setAssociatedDecade(Decade $associatedDecade)
     {
         $this->associatedDecade = $associatedDecade;
     }

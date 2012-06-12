@@ -25,12 +25,6 @@
             {% block topNavLinks %}
             <ul id="memoryWalls">
                 <a href="{{path('memoryWallsIndex')}}">Memory Walls</a>
-                {# if logged in #}
-                {#% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    <a href="{{path('memoryWallsIndex', {'username':app.user.username}) }}">My Memory Walls</a>
-                {% else %}
-                    <a href="{{path('memoryWallsIndexAuthenticate') }}">My Memory Walls</a>
-                {% endif %#}
                 <a href="{{path('memoryWallsPersonalIndex') }}">My Memory Walls</a>
                 <a href="{{path('memoryWallCreate')}}">Add a new Memory Wall</a>
             </ul>
@@ -41,7 +35,7 @@
         <div id="flashMessages">
             <ul>
             {% for key, message in app.session.getFlashes() %}
-            <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle') }}</li>
+            <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle') }}</li>
             {% endfor %}   
             </ul>
         </div>

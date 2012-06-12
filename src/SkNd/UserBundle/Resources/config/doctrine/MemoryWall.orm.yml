@@ -23,9 +23,6 @@ SkNd\UserBundle\Entity\MemoryWall:
       type: string
       length: 255
       nullable: true
-    associatedDecade:
-      type: integer
-      nullable: true
     dateCreated:
       type: datetime
       gedmo:
@@ -41,6 +38,9 @@ SkNd\UserBundle\Entity\MemoryWall:
         timestampable:
           on: update
   lifecycleCallbacks: {  }
+  oneToOne:
+    associatedDecade:
+      targetEntity: SkNd\MediaBundle\Entity\Decade
   manyToOne:
     user:
       targetEntity: User

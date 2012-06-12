@@ -1,0 +1,27 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}
+
+{% block title %}Error!{% endblock %}
+
+{% block topNavLinks %}
+{% block mediaSelect %}
+    <div id="headerMediaSelection">
+        {% render "SkNdMediaBundle:Media:mediaSelection" %}
+    </div>
+{% endblock %}
+
+{{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+{% block content %}
+<h1>Noooo! An error occurred</h1>
+<p>Don&rsquo;t worry about it, it happens to everyone sometimes.</p>
+<p>Just be a bit more careful in future, ok?</p>
+{% endblock %}
+
+    
+{% endblock %}

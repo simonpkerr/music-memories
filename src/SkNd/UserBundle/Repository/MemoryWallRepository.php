@@ -23,5 +23,13 @@ class MemoryWallRepository extends EntityRepository
                 ->getResult();
     }
     
+    public function getMemoryWallBySlug($slug){
+        return $this->createQueryBuilder('mw')
+                ->where('mw.slug = :slug')
+                ->setParameter('slug', $slug)
+                ->getQuery()
+                ->getOneOrNullResult();
+    }
+    
 
 }

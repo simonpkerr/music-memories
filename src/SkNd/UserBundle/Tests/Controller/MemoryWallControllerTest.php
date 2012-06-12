@@ -26,13 +26,13 @@ class MemoryWallControllerTest extends WebTestCase
     public function testMemoryWallIndexWithNoParamsShowsPublicWallsForNonLoggedInUser(){
         //create the user fixtures, which by default creates memory walls
         $crawler = $this->client->request('GET', '/memorywalls/public/index');
-        $this->assertTrue($crawler->filter('All Public Memory Walls')->count() > 0, "showing all public walls");       
+        $this->assertTrue($crawler->filter('h1')->text() == 'All Public Memory Walls', "showing all public walls");       
         $this->assertTrue($crawler->filter('private wall')->count() == 0, "not showing private walls");       
     }
     
     public function testMemoryWallIndexWithUsernameShowsPublicWallsForGivenUserWhenUserNotLoggedIn(){
         $crawler = $this->client->request('GET', '/memorywalls/testuser/index');
-        $this->assertTrue($crawler->filter("Memory Walls")->count() > 0, "showing other users memory walls");       
+        $this->assertTrue($crawler->filter('h1')->text() == htmlentities("testuser's Memory Walls"), "showing other users memory walls");       
         $this->assertTrue($crawler->filter('private wall')->count() == 0, "private walls not available");       
     }
     
@@ -47,18 +47,15 @@ class MemoryWallControllerTest extends WebTestCase
         $crawler = $this->client->submit($form, $params);
         
         $crawler = $this->client->request('GET', '/memorywalls/personal/index');
-        $this->assertTrue($crawler->filter('My Memory Wall')->count() > 0, "showing my memory walls");       
-        $this->assertTrue($crawler->filter('private wall')->count() > 0, "showing private walls");       
-        
+        $this->assertTrue($crawler->filter('h1')->text() == 'My Memory Walls', "showing my memory walls");       
+        $this->assertTrue($crawler->filter('body > ul li')->eq(1)->filter('dd')->text() == 'private wall', "showing private walls");       
     }
     
     /**
-     * @expectedException NotFoundHttpException 
-     * @expectedExceptionMessage User not found
+     * @expectedException NotFoundHttpException
      */
     public function testMemoryWallIndexForNonexistentUserThrowsException(){
-        $crawler = $this->client->request('GET', '/memorywalls/bogus_user/index');
-       
+        $response = $this->client->request('GET', '/memorywalls/bogus_user/index');
     }
     
     public function testCreateMemoryWallWhenNotLoggedInRedirectsToLoginView(){
