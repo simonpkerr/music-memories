@@ -1,0 +1,11 @@
+{% form_theme form 'SkNdUserBundle:MemoryWall:form.html.twig' %}
+    
+<h1>Edit Memory Wall</h1>
+
+<form action="{{ path('memoryWallEdit', {'slug':slug }) }}" {{ form_enctype(form) }} method="POST">
+
+{{ form_widget(form) }}
+    <div>
+        <input type="submit" value="{{ 'memoryWall.edit.submit'|trans({}, 'SkNdUserBundle') }}" />
+    </div>
+</form>

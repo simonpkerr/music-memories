@@ -45,5 +45,9 @@ SkNd\MediaBundle\Entity\MediaResource:
       targetEntity: MediaResourceCache
       cascade: ["persist", "merge", "remove"]
       orphanRemoval: true
+  manyToMany:
+    memoryWalls:
+      targetEntity: SkNd\UserBundle\Entity\MemoryWall
+      mappedBy: mediaResources
     
       

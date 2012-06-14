@@ -5,6 +5,9 @@ namespace SkNd\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use SkNd\UserBundle\Entity\User;
 use SkNd\MediaBundle\Entity\Decade;
+use SkNd\MediaBundle\Entity\MediaResource;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
  * SkNd\UserBundle\Entity\MemoryWall
@@ -52,8 +55,11 @@ class MemoryWall
     protected $lastUpdated;
     
     protected $associatedDecade;
+    
+    protected $mediaResources;
 
     public function __construct(User $user = null){
+        $this->mediaResources = new ArrayCollection();
         $this->setName('My Memory Wall');
         $this->setIsPublic(true);
         if($user != null)
@@ -69,6 +75,14 @@ class MemoryWall
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getMediaResources(){
+        return $this->mediaResources;
+    }
+    
+    public function addMediaResource(MediaResource $mr){
+        $this->mediaResources->add($mr);
     }
 
     public function setUser(User $user)

@@ -41,18 +41,7 @@ class GenreRepository extends EntityRepository
                     )
                 );
         
-        /*$query = $this->createQueryBuilder('g')
-                ->select('g.amazonBrowseNodeId')
-                ->join('g.mediaType', 'm', 'ON', 'm.slug = :media')
-                ->where('g.slug = :slug')
-                ->setParameters(array(
-                    'slug' => $slug,
-                    'media' => $media,))
-                ->getQuery();*/
-                
-               //$qb = $em->createQueryBuilder() ->select('u') ->from('User', 'u') ->innerJoin('u.Phonenumbers', 'p', Expr\Join::WITH, 'p.is_primary = 1');
-        //$query = $this->createQuery('SELECT g.amazonBrowseNodeId FROM Genre g WHERE g.slug == :slug AND g.mediaType_id == m.id JOIN mediaType m WITH m.slug == :media');
-         
+        
         return $query->getSingleResult();
             
     }

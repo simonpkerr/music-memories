@@ -10,7 +10,6 @@ use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\API;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
 
-
 /*
  * Original code Copyright (c) 2011 Simon Kerr
  * MediaResource saves and retrieves items from any api - amazon, youtube, google images, 7digital etc,
@@ -23,8 +22,6 @@ class MediaResource
 {
 
     protected $id;
-
-    //protected $itemId;
 
     protected $viewCount;
 
@@ -43,14 +40,16 @@ class MediaResource
     protected $api;
     
     protected $mediaResourceCache;
+    
+    protected $memoryWalls;
 
     
     public function __construct(){
         $this->viewCount = 0;
         $this->selectedCount = 0;
+        $this->memoryWalls = new ArrayCollection();
     }
-    
-    
+        
     public function getId()
     {
         return $this->id;
@@ -59,6 +58,10 @@ class MediaResource
     public function setId($id)
     {
         $this->id = $id;
+    }
+    
+    public function getRelatedMemoryWalls(){
+        return $this->memoryWalls;
     }
     
     public function setMediaResourceCache(MediaResourceCache $mediaResourceCache = null){
@@ -114,18 +117,6 @@ class MediaResource
     {
         return $this->api;
     }
-
-    
-    /*public function setItemId($itemId)
-    {
-        $this->itemId = $itemId;
-    }
-
-    
-    public function getItemId()
-    {
-        return $this->itemId;
-    }*/
 
     public function incrementViewCount()
     {

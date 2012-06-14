@@ -1,0 +1,11 @@
+{% extends 'SkNdUserBundle::memoryWallLayout.html.twig' %}
+{% block title %}Delete a Memory Wall{% endblock %}
+
+{% block content %}
+<h1>Delete a Memory Wall</h1>
+<p>Are you <span class="italic">really</span> sure you want to delete the Memory Wall called <strong>&ldquo;{{ mw.name }}&rdquo;</strong>? There&rsquo;s still time to turn back!</p>
+<ul>
+    <li><a href="{{ path('memoryWallDeleteConfirm', {'slug':mw.slug}) }}" title="delete the Memory Wall">I&rsquo;m sure. Go ahead and delete it.</a></li> 
+    <li><a href="{{ path('memoryWallsPersonalIndex') }}" title="Cancel deleting the Memory Wall">Whoa! Close one. I didn&rsquo;t want to do that.</a></li> 
+</ul>
+{% endblock content %}

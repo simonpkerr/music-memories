@@ -28,9 +28,11 @@ class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInject
     }
     
     public function load(ObjectManager $manager){
-        //delete all records from the cached listings table first 
-        $q = $this->em->createQuery('DELETE from SkNd\UserBundle\Entity\User');
-        $q->execute();
+
+        $users = $this->userManager->findUsers();
+        foreach($users as $user){
+            $this->userManager->deleteUser($user);
+        }
         
         //3 sample users
         $user = $this->userManager->createUser();

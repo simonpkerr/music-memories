@@ -43,13 +43,13 @@ class MemoryWallType extends AbstractType{
     }
     
     public function getName(){
-        return 'memoryWallCreate';
+        return 'memoryWall';
     }
     
     public function getDefaultOptions(array $options){
         return array(
           'data_class'  =>  'SkNd\UserBundle\Entity\MemoryWall',  
-          'intention'   =>  'memory_wall_create'
+          'intention'   =>  'memory_wall'
         );
     }
     

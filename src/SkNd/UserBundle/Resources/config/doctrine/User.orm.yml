@@ -23,7 +23,7 @@ SkNd\UserBundle\Entity\User:
       cascade: ["persist", "remove"]
       orphanRemoval: true
       orderBy:
-        dateCreated: asc
+        dateCreated: desc
 
       
       

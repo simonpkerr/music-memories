@@ -1,18 +1,31 @@
-memoryWallCreate_name: Name
-memoryWallCreate_description: Description
-memoryWallCreate_associatedDecade: Associated Decade
-memoryWallCreate_isPublic: Memory Wall is public
+memoryWall_name: Name
+memoryWall_description: Description
+memoryWall_associatedDecade: Associated Decade
+memoryWall_isPublic: Memory Wall is public
 
 memoryWall:
   create:
     submit: Create a new Memory Wall
     flash:
-      success: Cool! A new Memory Wall
+      success: Success! Now, get started adding loads of cool stuff to your new Memory Wall
       fail: Oh dear...A bit of a problem. Please fix it and try again 
       accessDenied: A new Memory Wall eh? Nice. Just log in first and then you're away!
+  delete:
+    flash:
+      success: Well, it's gone now. I hope you're happy.
+      accessDenied: Oy! You can't just go deleting anybody's Memory Walls!
+  edit:
+    submit: Edit this wall
+    flash:
+      success: Ah yeah. All updated.
+      accessDenied: No no no. You can't edit that, sorry.
   show:
     flash:
-      accessDenied: Naughty naughty. You don't have access to that!
+      accessDenied: Naughty naughty. You don't have access to that! You'll need to log in first.
+  showOwnWalls:
+    flash:
+      accessDenied: Naughty naughty. You have to log in first to see your own Memory Walls
+  
   
 registration:
   memoryWallReminder: By the way, we've set up a Memory Wall for you just to save you a bit of hassle! You can start adding stuff to it straight away.
