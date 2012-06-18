@@ -1,0 +1,23 @@
+{% extends 'SkNdUserBundle::memoryWallLayout.html.twig' %}
+{% block title %}Select a Memory Wall to add to{% endblock %}
+
+{% block content %}
+<h1>Select a Memory Wall</h1>
+<p class="strapline">Choose a wall from below to add to&hellip;</p>
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+<li>
+    <ul class="userMemoryWalls">
+    {% for mw in mws %}
+            <li><dl>
+                    <dt><a href="{{path('memoryWallAddMediaResource', {'slug': mw.slug, 'api': api, 'id':id })}}" title="Add to &ldquo;{{ mw.name }}&rdquo;"><strong>{{ mw.name }}</strong></a></dt>
+                    {% if mw.description is not null %}<dt>Description</dt><dd>({{mw.description}})</dd>{% endif %}
+                    {% if mw.associatedDecade is not null %}<dt>Associated decade</dt><dd>({{mw.description}})</dd>{% endif %}
+                    <dt>Date Created</dt><dd>{{mw.dateCreated|date("d/m/y")}}</dd>
+                </dl>
+            </li>
+    {% endfor %}
+    </ul>
+</li>
+{% endif %}
+
+{% endblock content %}

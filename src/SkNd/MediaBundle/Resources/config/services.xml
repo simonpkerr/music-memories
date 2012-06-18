@@ -32,6 +32,7 @@
         <service id="sk_nd_media.mediaapi" class="%mediaapi.class%">
             <argument>%mediaapi.debug_mode%</argument>
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="session" />
             <argument type="collection" id="apis">
                 <argument type="service" id="amazonapi" key="amazonapi" />
                 <argument type="service" id="youtubeapi" key="youtubeapi" />

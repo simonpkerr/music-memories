@@ -203,7 +203,7 @@ class MemoryWallControllerTest extends WebTestCase
             
         );       
         $crawler = $this->client->submit($form, $params);
-        $url = $this->router->generate('memoryWallEdit', array('slug' => 'test-memory-wall-2'));
+        $url = $this->router->generate('memoryWallEdit', array('slug' => 'my-memory-wall-1'));
         $crawler = $this->client->request('GET', $url);
         
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
@@ -255,32 +255,161 @@ class MemoryWallControllerTest extends WebTestCase
     }
     
     public function testEditMemoryWallSuccessShowsMemoryWall(){
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser',
+            '_password' => 'testuser',
+            
+        );       
+        $crawler = $this->client->submit($form, $params);
+        $url = $this->router->generate('memoryWallEdit', array('slug'   =>  'my-memory-wall'));
+        $crawler = $this->client->request('GET', $url);
         
+        $form = $crawler->selectButton('Edit this wall')->form();
+        $params = array(
+            'memoryWall[description]'   =>  'a new description for the wall',
+        );
+       
+        $crawler = $this->client->submit($form, $params);
+        $this->assertTrue($crawler->filter('dl#memoryWallDetails dd')->eq(0)->text() == 'a new description for the wall');
+    }
+    
+    public function testDeleteNonExistentWallThrowsException(){        
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser',
+            '_password' => 'testuser',
+            
+        );       
+        $crawler = $this->client->submit($form, $params);
+        $url = $this->router->generate('memoryWallDelete', array('slug' => 'non-existent-wall'));
+        $crawler = $this->client->request('GET', $url);
+        
+        $this->assertTrue($this->client->getResponse()->isNotFound());
     }
     
     public function testDeleteOtherUsersWallWhenLoggedInThrowsException(){
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser',
+            '_password' => 'testuser',
+            
+        );       
+        $crawler = $this->client->submit($form, $params);
+        $url = $this->router->generate('memoryWallDelete', array('slug' => 'my-memory-wall-1'));
+        $crawler = $this->client->request('GET', $url);
         
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+    }
+    
+    public function testDeleteConfirmOtherUsersWallWhenLoggedInThrowsException(){
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser',
+            '_password' => 'testuser',
+            
+        );       
+        $crawler = $this->client->submit($form, $params);
+        $url = $this->router->generate('memoryWallDeleteConfirm', array('slug' => 'my-memory-wall-1'));
+        $crawler = $this->client->request('GET', $url);
+        
+        $this->assertTrue($this->client->getResponse()->isNotFound());
+    }
+
+    public function testDeleteConfirmOwnWallDirectlyThrowsException(){
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser',
+            '_password' => 'testuser',
+            
+        );       
+        $crawler = $this->client->submit($form, $params);
+        $url = $this->router->generate('memoryWallDeleteConfirm', array('slug' => 'my-memory-wall'));
+        $crawler = $this->client->request('GET', $url);
+        
+        $this->assertTrue($this->client->getResponse()->isNotFound());
     }
     
     public function testDeleteWallWhenNotLoggedInRedirectsToLogin(){
+        $url = $this->router->generate('memoryWallDelete', array('slug' => 'my-memory-wall-1'));
+        $crawler = $this->client->request('GET', $url);
         
+        $this->assertTrue($crawler->selectButton('Login')->count() > 0);
     }
     
     public function testDeleteWallConfirmDeleteRedirectsToPersonalWallIndexWithMessage(){
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser',
+            '_password' => 'testuser',
+            
+        );       
+        $crawler = $this->client->submit($form, $params);
+        $url = $this->router->generate('memoryWallDelete', array('slug' => 'private-wall'));
+        $crawler = $this->client->request('GET', $url);
+
+        $url = $this->router->generate('memoryWallDeleteConfirm', array('slug' => 'private-wall'));
+        $crawler = $this->client->request('GET', $url);
+        
+        $this->assertTrue(strpos($crawler->filter('div#flashMessages ul li')->eq(0)->text(), 'Memory wall deleted') !== false);
+    }
+    
+    public function testDeleteLastMemoryWallCreatesNewDefaultWall(){
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser',
+            '_password' => 'testuser',
+            
+        );       
+        $crawler = $this->client->submit($form, $params);
+        $url = $this->router->generate('memoryWallDelete', array('slug' => 'my-memory-wall'));
+        $crawler = $this->client->request('GET', $url);
+
+        $url = $this->router->generate('memoryWallDeleteConfirm', array('slug' => 'my-memory-wall'));
+        $crawler = $this->client->request('GET', $url);
+        
+        $this->assertTrue(strpos($crawler->filter('div#flashMessages ul li')->eq(0)->text(), 'That was your last Memory Wall') !== false);
+        $this->assertTrue($crawler->filter('body > ul#memoryWallGallery li dl dd')->eq(0)->text() == 'My Memory Wall');
+    }
+    
+    
+    public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLoginThenAddsResourceIfOnlyOneWallExists(){
         
     }
     
-    public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLogin(){
+    public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLoginThenToSelectWallViewIfMoreThanOneWallExists(){
         
     }
     
-    public function testAddMediaResourceToAccountWithNoMemoryWallRedirectsToCreateMemoryWall(){
+    public function testAddMediaResourceToNonExistentWallThrowsException(){
         
     }
     
+    public function testAddMediaResourceToOthersWallThrowsException(){
+        
+    }
+    
+    public function testAddInvalidMediaResourceToValidMemoryWallThrowsException(){
+        
+    }
+
+    public function testAddSameMediaResourceTwiceToMemoryWallThrowsException(){
+        
+    }
+
     public function testAddMediaResourceToMemoryWallShowsMemoryWallWithResource(){
         
     }
+    
+    
+    
     
     
     

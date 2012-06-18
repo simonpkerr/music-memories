@@ -30,7 +30,7 @@ registration.check_email: An email has been sent to %email%. It contains an acti
 registration.confirmed: Nice one %username%! Your account is now active.
 registration.back: Go back to the original page.
 registration.submit: Register
-registration.flash.user_created: You're now an official noodleDigger! Yay.
+registration.flash.user_created: You&rsquo;re now an official noodleDigger! Yay.
 
 registration.email: |
     Hello %username%!

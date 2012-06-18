@@ -22,11 +22,13 @@ SkNd\MediaBundle\Entity\MediaResourceCache:
     slug:
       type: string
       length: 255
-      nullable: true
+      gedmo:
+        slug:
+          fields:
+            - title
     title:
       type: string
       length: 255
-      nullable: true
     imageUrl:
       type: string
       length: 255

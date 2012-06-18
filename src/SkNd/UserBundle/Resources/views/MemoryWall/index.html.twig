@@ -22,6 +22,11 @@
                 <dt>Created by</dt>
                 <dd><span>{{mw.user.username}}</span><span> &ndash; (<a href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">view all of {{mw.user.username}}&rsquo;s Memory Walls)</a></span></dd>
                 {% endif %}
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and mw.user.username == app.user.username %}
+                <dt>Actions</dt>
+                <dd><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}">Edit</a></dd>
+                <dd><a href="{{ path('memoryWallDelete', {'slug':mw.slug}) }}">Delete</a></dd>
+                {% endif %}
             </dl></li>        
 {% endfor %}
 </ul>

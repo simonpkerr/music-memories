@@ -21,8 +21,7 @@ class User extends BaseUser {
 
     public function __construct(){
         $this->memoryWalls = new ArrayCollection();
-        $mw = new MemoryWall($this);
-        $this->addMemoryWall($mw);
+        $this->createDefaultMemoryWall();
         parent::__construct();
     }
     
@@ -35,6 +34,11 @@ class User extends BaseUser {
                 return $mw->getIsPublic() === true;
             });
         }
+    }
+    
+    public function createDefaultMemoryWall(){
+        $mw = new MemoryWall($this);
+        $this->addMemoryWall($mw);
     }
 
     

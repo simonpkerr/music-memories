@@ -95,7 +95,6 @@ class AmazonAPI implements IAPIStrategy {
     /*
      * getDetails handles calls to the live api, calls to the db to get recommendations
      * and then save a details product back to the db as a MediaResource to drive recommendations
-     * @param searchParams - all the media search parameters 
      * @param params - params to carry out the query - only contains the id of the amazon product
      */
     public function getDetails(array $params){

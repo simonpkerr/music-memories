@@ -6,8 +6,8 @@
     {#<dt><h2>{{title}}</h2></dt>#}
     <img src="{{item.MediumImage.URL}}" alt="{{item.ItemAttributes.Title}}" width="{{item.MediumImage.Width}}" height="{{item.MediumImage.Height}}" />
     <ul class="links">
-        <li><a target="_blank" href="{{item.DetailPageURL}}">Buy from Amazon {% if item.ItemAttributes.ListPrice is defined %}for {{ item.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a></li>
-        <li><a href="#" title="add this to your memory wall">Add to your memory wall</a></li>
+        <li><a target="_blank" href="{{item.DetailPageURL}}">Buy from Amazon{% if item.ItemAttributes.ListPrice is defined %} for {{ item.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a></li>
+        <li><a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':item.ASIN })}}" title="add &ldquo;{{item.ItemAttributes.Title}}&rdquo; to your memory wall">Add to your memory wall</a></li>
     </ul>
 
     {% if item.SimilarProducts is defined %}
@@ -35,7 +35,7 @@
 
 </div>
 
-<div id="youtube-topresults">
+<div id="youtubeTopresults">
     <h2>Top YouTube Videos</h2>
 {% 
     render "SkNdMediaBundle:Media:youTubeRequest" with {
@@ -47,7 +47,7 @@
 %}
 </div>
 
-<div id="flickr-topresults">
+<div id="googleImagesTopresults">
     <h2>Top Images</h2>
 {#%
     render "SkNdMediaBundle:Media:flickrRequest" with {

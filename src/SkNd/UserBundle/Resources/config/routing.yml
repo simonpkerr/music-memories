@@ -1,37 +1,41 @@
+#personalMemoryWallList:
+#  pattern: /memorywalls/personal/index
+#  defaults: { _controller: SkNdUserBundle:MemoryWall:personalMemoryWall }  
+
 memoryWallsPersonalIndex:
-    pattern: /memorywalls/personal/index
-    defaults: 
-      _controller: SkNdUserBundle:MemoryWall:personalIndex
-    requirements:
-      _method: GET
+  pattern: /memorywalls/personal/index
+  defaults: 
+    _controller: SkNdUserBundle:MemoryWall:personalIndex
+  requirements:
+    _method: GET
     
 #shows memory walls for a given user, shows all public\private if user is currently logged in
 #or just public ones for other users
 memoryWallsIndex:
-    pattern: /memorywalls/{scope}/index
-    defaults: 
-      _controller: SkNdUserBundle:MemoryWall:index
-      scope: public
-    requirements:
-      _method: GET
+  pattern: /memorywalls/{scope}/index
+  defaults: 
+    _controller: SkNdUserBundle:MemoryWall:index
+    scope: public
+  requirements:
+    _method: GET
 
 memoryWallCreate:
-    pattern: /memorywall/create
-    defaults: { _controller: SkNdUserBundle:MemoryWall:create }
-    requirements:
-      _method: GET|POST
+  pattern: /memorywall/create
+  defaults: { _controller: SkNdUserBundle:MemoryWall:create }
+  requirements:
+    _method: GET|POST
 
 memoryWallShow:
-    pattern: /memorywall/{slug}/show/
-    defaults: { _controller: SkNdUserBundle:MemoryWall:show }
-    requirements:
-      _method: GET
+  pattern: /memorywall/{slug}/show/
+  defaults: { _controller: SkNdUserBundle:MemoryWall:show }
+  requirements:
+    _method: GET
       
 memoryWallEdit:
-    pattern: /memorywall/{slug}/edit
-    defaults: { _controller: SkNdUserBundle:MemoryWall:edit }
-    requirements:
-      _method: GET|POST
+  pattern: /memorywall/{slug}/edit
+  defaults: { _controller: SkNdUserBundle:MemoryWall:edit }
+  requirements:
+    _method: GET|POST
       
 memoryWallDelete:
   pattern: /memorywall/{slug}/delete
@@ -40,4 +44,10 @@ memoryWallDelete:
 memoryWallDeleteConfirm:
   pattern: /memorywall/{slug}/delete/confirm
   defaults: { _controller: SkNdUserBundle:MemoryWall:deleteConfirm }
+
+memoryWallAddMediaResource:
+  pattern: /memorywall/{slug}/add/{api}/{id}
+  defaults:
+    _controller: SkNdUserBundle:MemoryWall:addMediaResource
+    slug: personal
   

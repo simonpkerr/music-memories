@@ -64,6 +64,13 @@ class MediaResource
         return $this->memoryWalls;
     }
     
+    public function addToMemoryWall(MemoryWall $mw){
+        $this->incrementSelectedCount();
+        $this->incrementViewCount();
+        $this->memoryWalls->add($mw);
+        $mw->addMediaResource($this);
+    }
+    
     public function setMediaResourceCache(MediaResourceCache $mediaResourceCache = null){
         $this->mediaResourceCache = $mediaResourceCache;
     }

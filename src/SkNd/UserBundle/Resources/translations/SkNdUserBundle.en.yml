@@ -9,25 +9,32 @@ memoryWall:
     flash:
       success: Success! Now, get started adding loads of cool stuff to your new Memory Wall
       fail: Oh dear...A bit of a problem. Please fix it and try again 
-      accessDenied: A new Memory Wall eh? Nice. Just log in first and then you're away!
+      accessDenied: A new Memory Wall eh? Nice. Just log in first and then you&rsquo;re away!
   delete:
+    confirm: I&rsquo;m sure. Go ahead and delete it
+    cancel: Whoa! Close one. I didn&rsquo;t want to do that
     flash:
-      success: Well, it's gone now. I hope you're happy.
-      accessDenied: Oy! You can't just go deleting anybody's Memory Walls!
+      success: Memory wall deleted. I hope you&rsquo;re happy
+      accessDenied: Oy! You can&rsquo;t just go deleting anybodys Memory Walls!
+      successCreatedDefault: That was your last Memory Wall, so we&rsquo;ve created a fresh one for you. You&rsquo;ve got to have at least one, sorry. 
   edit:
     submit: Edit this wall
     flash:
-      success: Ah yeah. All updated.
-      accessDenied: No no no. You can't edit that, sorry.
+      success: Ah yeah. All updated
+      accessDenied: No no no. You can&rsquo;t edit that, sorry
   show:
     flash:
-      accessDenied: Naughty naughty. You don't have access to that! You'll need to log in first.
+      accessDenied: Naughty naughty. You don&rsquo;t have access to that! You&rsquo;ll need to log in first
   showOwnWalls:
     flash:
       accessDenied: Naughty naughty. You have to log in first to see your own Memory Walls
-  
+  resources:
+    add:
+      flash:
+        accessDenied: Just log in first, then you can start adding stuff.
+        selectWall: You&rsquo;ve got more than 1 wall. Please select one first.
   
 registration:
-  memoryWallReminder: By the way, we've set up a Memory Wall for you just to save you a bit of hassle! You can start adding stuff to it straight away.
+  memoryWallReminder: By the way, we&rsquo;ve set up a Memory Wall for you just to save you a bit of hassle! You can start adding stuff to it straight away
 
 

@@ -46,6 +46,12 @@ class MemoryWallController extends Controller
      */
     public function indexAction($scope = 'public')
     {
+        $viewParams = $this->getViewParams($scope);
+        
+        return $this->render('SkNdUserBundle:MemoryWall:index.html.twig', $viewParams);
+    }
+    
+    private function getViewParams($scope){
         $this->userManager = $this->getUserManager();
         $this->em = $this->getEntityManager();
         
@@ -78,7 +84,7 @@ class MemoryWallController extends Controller
             'mws'           => $mws,
         );
         
-        return $this->render('SkNdUserBundle:MemoryWall:index.html.twig', $viewParams);
+        return $viewParams;
     }
     
     public function personalIndexAction()
@@ -91,6 +97,18 @@ class MemoryWallController extends Controller
         
         return $this->indexAction($this->currentUser->getUsernameCanonical());
     }
+    
+    
+    /*public function personalMemoryWallListAction(){
+        $this->currentUser = $this->getCurrentUser();
+        if(!$this->currentUserIsAuthenticated($this->currentUser)){
+            $this->get('session')->setFlash('notice', 'memoryWall.showOwnWalls.flash.accessDenied');
+            throw new AccessDeniedException('This user does not have access to this section.');  
+        }
+                
+        return $this->render('SkNdUserBundle:MemoryWall:memoryWallListPartial.html.twig', $this->getViewParams($this->currentUser->getUsernameCanonical()));
+        
+    }*/
     
     public function createAction(Request $request = null){
         $this->userManager = $this->getUserManager();
@@ -168,7 +186,7 @@ class MemoryWallController extends Controller
     
     public function deleteAction($slug){
         $mw = $this->getOwnWall($slug);
-        
+        $this->get('session')->set('tokens/SkNd-delete-token', true);
         return $this->render('SkNdUserBundle:MemoryWall:deleteMemoryWall.html.twig', array(
             'mw'    =>  $mw,
         ));
@@ -176,16 +194,65 @@ class MemoryWallController extends Controller
     }
     
     public function deleteConfirmAction($slug){
+        //if token wasn't set in delete action, throw exception
+        if(!$this->get('session')->get('tokens/SkNd-delete-token'))
+            throw $this->createNotFoundException("Memory wall cannot be deleted");
+        else{
+            $this->get('session')->remove('tokens/SkNd-delete-token');
+        }
         $mw = $this->getOwnWall($slug);
         $this->em->remove($mw);
-        $this->em->flush();
         
-        $this->get('session')->setFlash('notice', 'memoryWall.delete.flash.success');
+        //if this was the last wall, delete but create a new default one
+        if($this->getCurrentUser()->getMemoryWalls()->count() == 1){
+            $this->get('session')->setFlash('notice', 'memoryWall.delete.flash.successCreatedDefault');
+            $this->getCurrentUser()->createDefaultMemoryWall();
+        }else{
+            $this->get('session')->setFlash('notice', 'memoryWall.delete.flash.success');
+        }
+        
+        $this->em->flush();
+                
         return $this->redirect($this->generateUrl('memoryWallsPersonalIndex'));
     }
     
-    
-    public function addMediaResourceAction($id){
+    /*
+     * if there is only 1 wall, add it if ok, else prompt to select a wall to add it to
+     * to add a resource, make sure the wall it's to be added to is valid and belongs to the current user
+     * then look up the details based on the api and id and add it to the wall
+     */
+    public function addMediaResourceAction($api, $id, $slug = 'personal'){
+        $this->currentUser = $this->getCurrentUser();
+        if(!$this->currentUserIsAuthenticated($this->currentUser)){
+            $this->get('session')->setFlash('notice', 'memoryWall.resources.add.flash.accessDenied');
+            throw new AccessDeniedException('This user does not have access to this section.');
+        }
+
+        if($slug == 'personal'){
+            if($this->currentUser->getMemoryWalls()->count() == 1){
+                $mw = $this->currentUser->getMemoryWalls()->first();
+            }else{
+                $this->get('session')->setFlash('notice', 'memoryWall.resources.add.flash.selectWall');
+                $viewParams = $this->getViewParams($this->currentUser->getUsernameCanonical());
+                $viewParams = array_merge($viewParams, array(
+                    'api'   => $api,
+                    'id'    => $id,
+                ));
+                return $this->render('SkNdUserBundle:MemoryWall:selectMemoryWall.html.twig', $viewParams);
+            }
+        }else{
+            $mw = $this->getOwnWall($slug);
+        }
+        
+        //look up the detail and add the resource, then show the memory wall
+        $mediaapi = $this->get('sk_nd_media.mediaapi');
+        $mediaapi->setAPIStrategy($api);
+        $response = $mediaapi->getDetails(array('ItemId'   =>  $id));
+        $mediaResource = $mediaapi->getCurrentMediaResource();
+        //$mediaResource->
+        
+        
+
         
     }
     
