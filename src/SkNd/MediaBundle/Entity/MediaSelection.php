@@ -18,6 +18,8 @@ class MediaSelection
     
     protected $page;
     
+    protected $computedKeywords;
+    
     public function __construct(){
         $this->page = null;
         $this->keywords = null;
@@ -73,28 +75,31 @@ class MediaSelection
         return $this->genres;
     }
     
-    /**
-     * Set keywords
-     *
-     * @param string $keywords
-     */
+    
     public function setKeywords($keywords)
     {
         $this->keywords = urlencode($keywords);
-        //$this->searchSlug = MediaController::slugify($searchKeywords);
     }
 
-    /**
-     * Get keywords
-     *
-     * @return string 
-     */
     public function getKeywords()
     {
         if($this->keywords == null)
             return null;
         else
             return urldecode($this->keywords);
+    }
+    
+    public function setComputedKeywords($computedKeywords)
+    {
+        $this->computedKeywords = urlencode($computedKeywords);
+    }
+
+    public function getComputedKeywords()
+    {
+        if($this->computedKeywords == null)
+            return null;
+        else
+            return urldecode($this->computedKeywords);
     }
     
 }

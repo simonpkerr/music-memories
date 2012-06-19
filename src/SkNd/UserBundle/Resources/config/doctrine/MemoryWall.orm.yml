@@ -53,13 +53,18 @@ SkNd\UserBundle\Entity\MemoryWall:
   manyToMany:
     mediaResources:
       targetEntity: SkNd\MediaBundle\Entity\MediaResource
+      orderBy:
+        dateCreated: desc
       inversedBy: memoryWalls
+      #cascade: ["persist"]
       joinTable:
         name: memoryWalls_mediaResources
         joinColumns:
           memoryWall_id:
             referencedColumnName: id
+            #onDelete: set null
         inverseJoinColumns:
           mediaResource_id:
             referencedColumnName: id
+            #onDelete: set null
      

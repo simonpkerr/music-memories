@@ -9,6 +9,7 @@ use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\API;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
+use Symfony\Component\HttpKernel\Exception;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -64,12 +65,17 @@ class MediaResource
         return $this->memoryWalls;
     }
     
-    public function addToMemoryWall(MemoryWall $mw){
-        $this->incrementSelectedCount();
-        $this->incrementViewCount();
-        $this->memoryWalls->add($mw);
-        $mw->addMediaResource($this);
-    }
+    /*public function addMemoryWall(MemoryWall $mw){
+        //if the memory wall doesn't already contain the media resource
+        if(!$this->memoryWalls->contains($mw)){
+            $this->incrementSelectedCount();
+            $this->incrementViewCount();
+            $this->memoryWalls->add($mw);
+            $mw->addMediaResource($this);
+        } else {
+            throw new \RuntimeException('Media Resource already exists in selected memory wall');
+        }
+    }*/
     
     public function setMediaResourceCache(MediaResourceCache $mediaResourceCache = null){
         $this->mediaResourceCache = $mediaResourceCache;

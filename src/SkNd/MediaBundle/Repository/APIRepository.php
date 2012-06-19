@@ -12,13 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class APIRepository extends EntityRepository
 {
-    public function getAPIByName($apiName){
-        return $this->findOneBy(array('apiName' => $apiName));
+    public function getAPIByName($name){
+        return $this->findOneBy(array('name' => $name));
     }
     
-    /*public function getDefaultAPIName(){
+    /*public function getDefaultname(){
         return $this->createQueryBuilder('a')
-                ->select('a.apiName')
+                ->select('a.name')
                 ->where('id = :id')
                 ->setParameter('id', 1)
                 ->getQuery()

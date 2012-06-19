@@ -247,6 +247,8 @@ class MediaController extends Controller
     }
           
     public function youTubeRequestAction($title, $media, $decade, $genre){
+        $session = $this->getRequest()->getSession();
+        $mediaSelection = $session->get('mediaSelection');
         //look up YouTube
         $responseParams = array();
         
@@ -254,11 +256,11 @@ class MediaController extends Controller
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $this->mediaapi->setAPIStrategy('youtubeapi');
         $mediaSelection = $this->mediaapi->getMediaSelection(array(
-            'media'     => $media,
-            'decade'    => $decade,
-            'genre'     => $genre,
+            'media'             => $media,
+            'decade'            => $decade,
+            'genre'             => $genre,
+            'computedKeywords'  => urldecode($title),
         ));
-        $mediaSelection->setKeywords(urldecode($title));
                         
         try{
             $ytResponse = $this->mediaapi->getListings();

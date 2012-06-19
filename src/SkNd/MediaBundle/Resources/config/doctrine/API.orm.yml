@@ -8,7 +8,7 @@ SkNd\MediaBundle\Entity\API:
       id: true
       generator:
         strategy: AUTO
-    apiName:
+    name:
       type: string
       length: '100'
     host:

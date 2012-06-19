@@ -15,7 +15,7 @@ use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
+use Symfony\Component\HttpFoundation\Session;
 
 class MediaAPITests extends WebTestCase {
     private $em;
@@ -25,6 +25,7 @@ class MediaAPITests extends WebTestCase {
     private $cachedXMLResponse;
     private $liveXMLResponse;
     private $mediaResource;
+    private $session;
     
     protected function setUp(){
         $this->cachedXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedData"></item></items>');
@@ -51,7 +52,9 @@ class MediaAPITests extends WebTestCase {
                 ->method('getDetails')
                 ->will($this->returnValue($this->liveXMLResponse));
         
-        $this->mediaAPI = new MediaAPI('true', $this->em, array(
+        $this->session = $kernel->getContainer()->get('session');
+        
+        $this->mediaAPI = new MediaAPI('true', $this->em, $this->session, array(
             'amazonapi'     =>  $this->testAmazonAPI,
             'youtubeapi'    =>  2,
         ));
@@ -64,6 +67,7 @@ class MediaAPITests extends WebTestCase {
         $this->mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
         $this->mediaResource->setMediaType($this->mediaSelection->getMediaTypes());
         
+        $this->session->set('mediaSelection', $this->mediaSelection);
     }
     
     /**
@@ -83,6 +87,7 @@ class MediaAPITests extends WebTestCase {
                 ->setConstructorArgs(array(
                         'true', 
                         $this->em, 
+                        $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  2,
@@ -98,7 +103,7 @@ class MediaAPITests extends WebTestCase {
                 ->method('cacheListings')
                 ->will($this->returnValue('cached live listings'));
         
-        $response = $this->mediaAPI->getListings($this->mediaSelection);
+        $response = $this->mediaAPI->getListings();
         $this->assertEquals($response->item->attributes()->id, 'amazonLiveData');
         
     }
@@ -110,6 +115,7 @@ class MediaAPITests extends WebTestCase {
                 ->setConstructorArgs(array(
                         'true', 
                         $this->em, 
+                        $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  2,
@@ -121,7 +127,7 @@ class MediaAPITests extends WebTestCase {
                 ->method('getCachedListings')
                 ->will($this->returnValue($this->cachedXMLResponse));
 
-        $response = $this->mediaAPI->getListings($this->mediaSelection);
+        $response = $this->mediaAPI->getListings();
         $this->assertEquals($response->item->attributes()->id, 'cachedData');
     }
     
@@ -130,7 +136,8 @@ class MediaAPITests extends WebTestCase {
         $this->mediaAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\MediaAPI')
                 ->setConstructorArgs(array(
                         'true', 
-                        $this->em, 
+                        $this->em,
+                        $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  2,
@@ -156,6 +163,7 @@ class MediaAPITests extends WebTestCase {
                 ->setConstructorArgs(array(
                         'true', 
                         $this->em, 
+                        $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  2,
@@ -186,6 +194,7 @@ class MediaAPITests extends WebTestCase {
                 ->setConstructorArgs(array(
                         'true', 
                         $this->em, 
+                        $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  2,
@@ -207,7 +216,23 @@ class MediaAPITests extends WebTestCase {
         
     }
     
+    public function testProcessMediaResourcesWith1CachedAmazonResourceReturnsFalse(){
+        
+    }
+    
+    public function testProcessMediaResourcesWith2UncachedAmazonResourcesCallsLiveAPICachesResourceAndReturnsTrue(){
+        
+    }
+    
+    public function testProcessMediaResourcesWith5CachedAnd5UncachedAmazonResourcesUpdatesUncachedResourcesReturnsTrue(){
+        
+    }
        
+    public function testProcessMediaResourcesWith5CachedAnd11UncachedAmazonResourcesUpdates10UncachedResourcesReturnsTrue(){
+        
+    }
+    
+    
     
 }
 

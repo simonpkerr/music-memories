@@ -22,7 +22,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
      * @params includes mediatype, optional decade, optional genre, optional keywords,
      * optional page
     */
-    public function getCachedListings(MediaSelection $mediaSelection, $apiName){
+    public function getCachedListings(MediaSelection $mediaSelection, $name){
   
         //initial selection parameters
         
@@ -30,10 +30,10 @@ class MediaResourceListingsCacheRepository extends EntityRepository
                 ->select('cl.xmlData, cl.dateCreated, cl.id')
                 ->innerJoin('cl.api', 'a')
                 ->where('cl.mediaType_id = :mediaTypeId')
-                ->andWhere('a.apiName = :apiName')
+                ->andWhere('a.apiName = :name')
                 ->setParameters(array(
                     'mediaTypeId'        =>  $mediaSelection->getMediaTypes()->getId(),
-                    'apiName'            =>  $apiName,
+                    'name'            =>  $name,
                    ));
          
         /*
@@ -59,6 +59,13 @@ class MediaResourceListingsCacheRepository extends EntityRepository
                 ->setParameter('keywords', $mediaSelection->getKeywords());
         }else{
             $q = $q->andWhere('cl.keywords is null');
+        }
+        
+        if($mediaSelection->getComputedKeywords() != null){
+            $q = $q->andWhere('cl.computedKeywords = :computedKeywords')
+                ->setParameter('computedKeywords', $mediaSelection->getComputedKeywords());
+        }else{
+            $q = $q->andWhere('cl.computedKeywords is null');
         }
         
         if($mediaSelection->getPage() != 1 && $mediaSelection->getPage() != null){

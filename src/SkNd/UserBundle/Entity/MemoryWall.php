@@ -7,7 +7,7 @@ use SkNd\UserBundle\Entity\User;
 use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaResource;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Symfony\Component\HttpKernel\Exception;
 
 /**
  * SkNd\UserBundle\Entity\MemoryWall
@@ -82,7 +82,18 @@ class MemoryWall
     }
     
     public function addMediaResource(MediaResource $mr){
-        $this->mediaResources->add($mr);
+        if(!$this->mediaResources->contains($mr))
+            $this->mediaResources->add($mr);
+        else
+            throw new \RuntimeException ('Media Resource has already been added to this memory wall');
+        
+        /*$this->mediaResources->add($mr);
+        if(!$mr->getRelatedMemoryWalls()->contains($this))
+            $mr->addMemoryWall($this);
+        else
+            throw new \RuntimeException ('Media Resource has already been added to this memory wall');
+
+        }*/
     }
 
     public function setUser(User $user)

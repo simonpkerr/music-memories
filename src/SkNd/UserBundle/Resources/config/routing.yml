@@ -26,8 +26,10 @@ memoryWallCreate:
     _method: GET|POST
 
 memoryWallShow:
-  pattern: /memorywall/{slug}/show/
-  defaults: { _controller: SkNdUserBundle:MemoryWall:show }
+  pattern: /memorywall/{slug}/show/{page}
+  defaults:
+    _controller: SkNdUserBundle:MemoryWall:show
+    page: 1
   requirements:
     _method: GET
       

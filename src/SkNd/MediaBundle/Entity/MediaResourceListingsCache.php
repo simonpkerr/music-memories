@@ -32,19 +32,11 @@ class MediaResourceListingsCache
      */
     protected $page;
 
-    /**
-     * @var string $keywords
-     */
     protected $keywords;
+    protected $computedKeywords;
 
-    /**
-     * @var text $xmlData
-     */
     protected $xmlData;
 
-    /**
-     * @var datetime $dateCreated
-     */
     protected $dateCreated;
     
     protected $api_id;
@@ -138,24 +130,24 @@ class MediaResourceListingsCache
         return $this->page;
     }
 
-    /**
-     * Set keywords
-     *
-     * @param string $keywords
-     */
     public function setKeywords($keywords = null)
     {
         $this->keywords = $keywords;
     }
 
-    /**
-     * Get keywords
-     *
-     * @return string 
-     */
     public function getKeywords()
     {
         return $this->keywords;
+    }
+    
+    public function setComputedKeywords($computedKeywords = null)
+    {
+        $this->computedKeywords = $computedKeywords;
+    }
+
+    public function getComputedKeywords()
+    {
+        return $this->computedKeywords;
     }
 
     /**

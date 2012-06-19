@@ -27,7 +27,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE IF NOT EXISTS `apitype` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `apiName` varchar(75) NOT NULL,
+  `name` varchar(75) NOT NULL,
   `apiHost` varchar(150) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

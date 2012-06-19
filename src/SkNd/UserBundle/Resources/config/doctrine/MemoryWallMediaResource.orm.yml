@@ -1,0 +1,15 @@
+SkNd\UserBundle\Entity\MemoryWallMediaResource:
+  type: entity
+  table: null
+  fields:
+    userTitle:
+      type: string
+      length: 255
+    dateAdded:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    
+          
+  lifecycleCallbacks: {  }

@@ -1,53 +1,90 @@
 <?php
 namespace SkNd\MediaBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use SkNd\MediaBundle\MediaAPI\MediaAPI;
+use SkNd\MediaBundle\Entity\MediaSelection;
+use SkNd\MediaBundle\Entity\MediaResource;
 require_once 'src\SkNd\MediaBundle\MediaAPI\AmazonSignedRequest.php';
 //require_once 'Zend/Loader.php';
 
 class MediaControllerTest extends WebTestCase
 {
     private $client;
+    private $mediaSelection;
+    private $testAmazonAPI;
+    private $testYouTubeAPI;
+    private $cachedXMLResponse;
+    private $liveXMLResponse;
+    private $mediaResource;
+    private $session;
     
     public function setup(){
         //load the youtube api
         //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
-        
+               
         $this->client = static::createClient();
         $this->client->followRedirects(true);
-        //$this->client->insulate();
-       
-        //use the below line to inject mock services into a controller, to avoid calling live apis
-        $amazonapi = $this->client->getContainer()->get('sk_nd_media.amazonapi');
-        $valid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\valid_xml_response.xml');
-        $testASR = $this->getMockBuilder('AmazonSignedRequest')
+        
+        $this->cachedXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedData"></item></items>');
+        $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="amazonLiveData"></item></items>');
+        
+        $this->cachedYouTubeXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedYouTubeData"></item></items>');
+        $this->liveYouTubeXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="youTubeLiveData"></item></items>');
+        
+        $kernel = static::createKernel();
+        $kernel->boot();
+        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        
+        //for the mock object, need to provide a fully qualified path 
+        $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
+                ->disableOriginalConstructor()
                 ->setMethods(array(
-                    'aws_signed_request',
+                    'getListings',
+                    'getDetails',
                 ))
                 ->getMock();
+        //always make the getListings method of amazon api return the sample xml data
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getListings')
+                ->will($this->returnValue($this->liveXMLResponse));              
         
-        $testASR->expects($this->any())
-                ->method('aws_signed_request')
-                ->will($this->returnValue($valid_xml_data_set));
-        $amazonapi->setAmazonSignedRequest($testASR);
-        $this->client->getContainer()->set('sk_nd_media.amazonapi', $amazonapi);
+        //always make the getDetails method of amazon api return the sample xml data
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getDetails')
+                ->will($this->returnValue($this->liveXMLResponse));
         
+        //create mock youtube object
+        $this->testYouTubeAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\YouTubeAPI')
+                ->disableOriginalConstructor()
+                ->setMethods(array(
+                    'getListings',
+                    'getDetails',
+                ))
+                ->getMock();
+        $this->testYouTubeAPI->expects($this->any())
+                ->method('getListings')
+                ->will($this->returnValue($this->liveYouTubeXMLResponse));              
         
-        /*
-         * use the below to inject a dummy Zend_Gdata_YouTube into the YouTubeAPI class
-         */
-        $yt = $this->client->getContainer()->get('sk_nd_media.youtubeapi');
-        $ytReqObj = $this->getMock('\Zend_Gdata_YouTube',
-                array(
-                    'getVideoFeed'
-                ));
-
-        $ytReqObj->expects($this->any())
-                ->method('getVideoFeed')
-                ->will($this->returnValue(array()));
+        $this->testYouTubeAPI->expects($this->any())
+                ->method('getDetails')
+                ->will($this->returnValue($this->liveYouTubeXMLResponse));
+                
+        $this->session = $kernel->getContainer()->get('session');
+          
+        $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
+        $this->mediaSelection = new MediaSelection();
+        $this->mediaSelection->setMediaTypes($mediaType);
         
-        $yt->setRequestObject($ytReqObj);
-        $this->client->getContainer()->set('sk_nd_media.youtubeapi', $yt);
+        $this->mediaResource = new MediaResource();
+        $this->mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
+        $this->mediaResource->setMediaType($this->mediaSelection->getMediaTypes());
         
+        $this->session->set('mediaSelection', $this->mediaSelection);
+        
+        $this->client->getContainer()->get('sk_nd_media.mediaapi')->setAPIs(array(
+            'amazonapi'     =>  $this->testAmazonAPI,
+            'youtubeapi'    =>  $this->testYouTubeAPI,
+        ));
     }
     
     /*
@@ -64,7 +101,6 @@ class MediaControllerTest extends WebTestCase
     public function testMediaSelectionPostGoesToListings(){
         
         $crawler = $this->client->request('GET', '/index');
-        
         
         $form = $crawler->selectButton('Search noodleDig')->form();
         $form['mediaSelection[decades]']->select('1');//all decades

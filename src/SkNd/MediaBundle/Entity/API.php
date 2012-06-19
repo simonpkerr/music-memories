@@ -15,9 +15,9 @@ class API
     protected $id;
 
     /**
-     * @var string $apiName
+     * @var string $name
      */
-    protected $apiName;
+    protected $name;
 
     /**
      * @var string $host
@@ -36,23 +36,23 @@ class API
     }
 
     /**
-     * Set apiName
+     * Set name
      *
-     * @param string $apiName
+     * @param string $name
      */
-    public function setApiName($apiName)
+    public function setName($name)
     {
-        $this->apiName = $apiName;
+        $this->name = $name;
     }
 
     /**
-     * Get apiName
+     * Get name
      *
      * @return string 
      */
-    public function getApiName()
+    public function getName()
     {
-        return $this->apiName;
+        return $this->name;
     }
 
     /**

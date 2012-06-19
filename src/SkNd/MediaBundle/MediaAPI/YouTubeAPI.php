@@ -122,7 +122,7 @@ class YouTubeAPI implements IAPIStrategy {
             
         }
         $keywordQuery = Utilities::formatSearchString(array(
-            'keywords'  => $mediaSelection->getKeywords(),
+            'keywords'  => $mediaSelection->getComputedKeywords(),
             'media'     => $mediaSelection->getMediaTypes()->getSlug(),
         ));
         

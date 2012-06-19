@@ -11,6 +11,10 @@ use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
+use SkNd\UserBundle\Entity\MemoryWall;
+use Symfony\Component\HttpKernel\Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -56,7 +60,7 @@ class MediaAPI {
         
         //this needs changing to accomodate different APIs
         $this->setAPIStrategy('amazonapi');
-                ////$this->em->getRepository('SkNdMediaBundle:API')->getDefaultAPIName());
+                ////$this->em->getRepository('SkNdMediaBundle:API')->getDefaultname());
     }
     
     public function getAPIs(){
@@ -74,6 +78,10 @@ class MediaAPI {
         return $this->apiStrategy;
     }
     
+    //for testing purposes, allow injection of apis
+    public function setAPIs(array $apis){
+        $this->apis = $apis;
+    }
     
     /*
      * check session, return mediaSelection if not null
@@ -86,7 +94,9 @@ class MediaAPI {
         $decadeSlug = null;
         $genreSlug = null;
         $keywords = null;
+        $computedKeywords = null;
         $page = 1;
+        
         //try getting the media selection from the session
         $mediaSelection = $this->session->get('mediaSelection');//$this->getSessionData('mediaSelection');        
         
@@ -95,6 +105,7 @@ class MediaAPI {
             $decadeSlug = isset($params['decade']) ? $params['decade'] : Decade::$default;
             $genreSlug = isset($params['genre']) ? $params['genre'] : Genre::$default;
             $keywords = isset($params['keywords']) ? $params['keywords'] != '-' ? $params['keywords'] : null : null;
+            $computedKeywords = isset($params['computedKeywords']) ? $params['computedKeywords'] : null;
             $page = isset($params['page']) ? $params['page'] : $page;
         }
         
@@ -151,13 +162,20 @@ class MediaAPI {
             }else{
                 $mediaSelection->setSelectedMediaGenres(null);
             }
+            
+            /*
+             * if the keywords are set from a search then removed and another search performed
+             * they should be removed from the MediaSelection object. 
+             */
+            if($keywords != null && $mediaSelection->getKeywords() == null){
+                $mediaSelection->setKeywords($keywords);
+            }
+            
+            if($computedKeywords != $mediaSelection->getComputedKeywords()){
+                $mediaSelection->setComputedKeywords($computedKeywords);
+            }
         }
 
-        //if($keywords != null && $mediaSelection->getKeywords() == null){
-        if($keywords != $mediaSelection->getKeywords()){
-            $mediaSelection->setKeywords($keywords);
-        }
-        
         /*
          * if navigating from a listings page to a details page, the return route needs calculating
          * from a details page, the page number is not passed
@@ -273,6 +291,7 @@ class MediaAPI {
         $cachedListing->setDecade($this->mediaSelection->getDecades());
         $cachedListing->setGenre($this->mediaSelection->getSelectedMediaGenres());
         $cachedListing->setKeywords($this->mediaSelection->getKeywords());
+        $cachedListing->setComputedKeywords($this->mediaSelection->getComputedKeywords());
         $cachedListing->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
         $cachedListing->setXmlData($response->asXML());        
         
@@ -340,6 +359,33 @@ class MediaAPI {
         $this->em->flush();
     }
     
+    /**
+     *
+     * @param ArrayCollection $mediaResources 
+     * @param int $page - optional page number to determine which results to process
+     * @return null
+     * @method processMediaResources checks through all media resources of 
+     * a given memory wall, checks to see if cached data exists for them
+     * and if it doesn't loads the data from a live api, then caches it
+     * For use by show memory wall
+     */
+    public function processMediaResources($mediaResources, $page){
+        $updatesMade = false;
+        //loop through each api, get the relevant media resources
+        foreach($this->apis as $api){
+            $this->setAPIStrategy($api->getName());
+            
+            $resources = $mediaResources->filter(function($mr) use ($api){
+                return $mr->getAPI()->getName() === $api->getName() && $mr->getMediaResourceCache() === null;
+            });
+            if($resources->count() > 0){
+                $ids = $resources->getValues();
+                $updatesMade = true;
+            }
+        }
+        
+        return $updatesMade;
+    }
     
     /*
      * will receive an array of parameters specifying criteria to query the db

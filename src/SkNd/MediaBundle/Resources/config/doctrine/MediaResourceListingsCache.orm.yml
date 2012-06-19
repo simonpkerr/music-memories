@@ -15,6 +15,10 @@ SkNd\MediaBundle\Entity\MediaResourceListingsCache:
       type: string
       length: 255
       nullable: true
+    computedKeywords:
+      type: string
+      length: 255
+      nullable: true
     xmlData:
       type: text
     dateCreated:

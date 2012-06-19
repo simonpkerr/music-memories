@@ -3,24 +3,44 @@
 
 {% block content %}
 <h1><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}" title="edit this wall">{{ mw.name }}</a></h1>
-<h2>Memory Wall Details</h2>
-<dl id="memoryWallDetails">
-    <dt>Description</dt>
-    <dd>{{mw.description is not null ? mw.description : 'No description available'}}</dd>
-    <dt>Associated Decade</dt>
-    <dd>{{mw.associatedDecade is not null ? mw.associatedDecade.decadeName : 'All decades'}}</dd>
-    <dt>Date Created</dt>
-    <dd>{{mw.dateCreated|date("d/m/y")}}</dd>
-    {# if the wall is public and belongs to someone else, give a link to show all their memory walls #}
-    {% if mw.isPublic and mw.user.username != app.user.username %}
-    <dt>Created by</dt>
-    <dd><span>{{mw.user.username}}</span><span> &ndash; (<a href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">view all of {{mw.user.username}}&rsquo;s Memory Walls)</a></span></dd>
+<div>
+    <h2>Details</h2>
+    <dl id="memoryWallDetails">
+        <dt>Description</dt>
+        <dd>{{mw.description is not null ? mw.description : 'No description available'}}</dd>
+        <dt>Associated Decade</dt>
+        <dd>{{mw.associatedDecade is not null ? mw.associatedDecade.decadeName : 'All decades'}}</dd>
+        <dt>Date Created</dt>
+        <dd>{{mw.dateCreated|date("d/m/y")}}</dd>
+        {# if the wall is public and belongs to someone else, give a link to show all their memory walls #}
+        {% if mw.isPublic and mw.user.username != app.user.username %}
+        <dt>Created by</dt>
+        <dd><span>{{mw.user.username}}</span><span> &ndash; (<a href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">view all of {{mw.user.username}}&rsquo;s Memory Walls)</a></span></dd>
+        {% endif %}
+    </dl> 
+</div>
+<div>
+    <h2>Contents</h2>
+    {% if mw.mediaResources is not empty %}
+    {% for mr in mw.mediaResources %}
+    <div class="mediaResource">
+        <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
+        <h3><a href="{{path('mediaDetails', {'media':mr.mediaType.slug, 'decade':mr.decade.slug, 'genre':mr.genre.slug, 'id':mr.id })}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></h3>
+        {#<dl>
+            <dt>Date added</dt>
+            <dd>{{ mr.dateCreated }}</dd>
+        </dl>#}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>Sorry, there isn&rsquo;t anything on this wall yet.</p>
     {% endif %}
-</dl>        
+</div>
+
 {# if the memory wall being shown belongs to the current user, show further actions #}
 {% if mw.user.username == app.user.username %}
-<h2>Memory Wall Actions</h2>
-<div id="memoryWallActions">
+<div>
+    <h2>Actions</h2>
     <ul>
         <li><a href="{{ path('index') }}">Add some stuff</a> &ndash; Use noodleDig to find something and then just select &lsquo;add to my Memory Wall&rsquo; wherever you see it.</li>
         <li><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}">Edit this wall</a> &ndash; Update the details of this wall, go on.</li>

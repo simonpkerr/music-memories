@@ -27,7 +27,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE IF NOT EXISTS `api` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `apiName` varchar(100) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `host` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `api` (
 -- Dumping data for table `api`
 --
 
-INSERT INTO `api` (`id`, `apiName`, `host`) VALUES
+INSERT INTO `api` (`id`, `name`, `host`) VALUES
 (1, 'amazonapi', NULL),
 (2, 'youtubeapi', NULL),
 (3, 'sevendigitalapi', NULL),

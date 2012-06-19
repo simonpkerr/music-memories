@@ -408,6 +408,9 @@ class MemoryWallControllerTest extends WebTestCase
         
     }
     
+    public function testRemoveMediaResourceFromMemoryWallOnlyRemovesMediaResource(){
+        
+    }
     
     
     

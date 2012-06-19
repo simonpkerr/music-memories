@@ -89,6 +89,7 @@ class MemoryWallController extends Controller
     
     public function personalIndexAction()
     {
+        $this->em = $this->getEntityManager();
         $this->currentUser = $this->getCurrentUser();
         if(!$this->currentUserIsAuthenticated($this->currentUser)){
             $this->get('session')->setFlash('notice', 'memoryWall.showOwnWalls.flash.accessDenied');
@@ -98,19 +99,8 @@ class MemoryWallController extends Controller
         return $this->indexAction($this->currentUser->getUsernameCanonical());
     }
     
-    
-    /*public function personalMemoryWallListAction(){
-        $this->currentUser = $this->getCurrentUser();
-        if(!$this->currentUserIsAuthenticated($this->currentUser)){
-            $this->get('session')->setFlash('notice', 'memoryWall.showOwnWalls.flash.accessDenied');
-            throw new AccessDeniedException('This user does not have access to this section.');  
-        }
-                
-        return $this->render('SkNdUserBundle:MemoryWall:memoryWallListPartial.html.twig', $this->getViewParams($this->currentUser->getUsernameCanonical()));
-        
-    }*/
-    
     public function createAction(Request $request = null){
+        $this->em = $this->getEntityManager();
         $this->userManager = $this->getUserManager();
         $this->currentUser = $this->getCurrentUser();
         if(!$this->currentUserIsAuthenticated($this->currentUser)){
@@ -138,12 +128,18 @@ class MemoryWallController extends Controller
         ));
     }
     
-    public function showAction($slug){
+    public function showAction($slug, $page = 1){
+        $this->em = $this->getEntityManager();
         $mw = $this->getMemoryWall($slug);
         $wallBelongsToCurrentUser = $this->memoryWallBelongsToUser($mw);
         if(!$mw->getIsPublic() && !$wallBelongsToCurrentUser){
             $this->get('session')->setFlash('notice', 'memoryWall.show.flash.accessDenied');
             throw new AccessDeniedException('This user does not have access to this section.');
+        }
+        
+        //check the mediaresources related to this wall and refresh from api if necessary
+        if(!$mw->getMediaResources()->isEmpty()){
+            $this->get('sk_nd_media.mediaapi')->processMediaResources($mw->getMediaResources(), $page);
         }
         
         return $this->render('SkNdUserBundle:MemoryWall:showMemoryWall.html.twig', array (
@@ -185,6 +181,7 @@ class MemoryWallController extends Controller
     }
     
     public function deleteAction($slug){
+        $this->em = $this->getEntityManager();
         $mw = $this->getOwnWall($slug);
         $this->get('session')->set('tokens/SkNd-delete-token', true);
         return $this->render('SkNdUserBundle:MemoryWall:deleteMemoryWall.html.twig', array(
@@ -194,6 +191,7 @@ class MemoryWallController extends Controller
     }
     
     public function deleteConfirmAction($slug){
+        $this->em = $this->getEntityManager();        
         //if token wasn't set in delete action, throw exception
         if(!$this->get('session')->get('tokens/SkNd-delete-token'))
             throw $this->createNotFoundException("Memory wall cannot be deleted");
@@ -222,12 +220,14 @@ class MemoryWallController extends Controller
      * then look up the details based on the api and id and add it to the wall
      */
     public function addMediaResourceAction($api, $id, $slug = 'personal'){
+        $this->em = $this->getEntityManager();
         $this->currentUser = $this->getCurrentUser();
         if(!$this->currentUserIsAuthenticated($this->currentUser)){
             $this->get('session')->setFlash('notice', 'memoryWall.resources.add.flash.accessDenied');
             throw new AccessDeniedException('This user does not have access to this section.');
         }
-
+        
+        //if the user clicked 'add to wall' when not logged in, is redirected back after log in
         if($slug == 'personal'){
             if($this->currentUser->getMemoryWalls()->count() == 1){
                 $mw = $this->currentUser->getMemoryWalls()->first();
@@ -249,11 +249,13 @@ class MemoryWallController extends Controller
         $mediaapi->setAPIStrategy($api);
         $response = $mediaapi->getDetails(array('ItemId'   =>  $id));
         $mediaResource = $mediaapi->getCurrentMediaResource();
-        //$mediaResource->
         
+        //add the resource to the selected wall
+        $mw->addMediaResource($mediaResource);
+        $this->em->flush();
         
-
-        
+        return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
+              
     }
     
     private function getOwnWall($slug){
@@ -274,7 +276,6 @@ class MemoryWallController extends Controller
     }
     
     private function getMemoryWall($slug){
-        $this->em = $this->getEntityManager();
         $mw = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug($slug);
         //if memory wall doesn't exist
         if(is_null($mw))
