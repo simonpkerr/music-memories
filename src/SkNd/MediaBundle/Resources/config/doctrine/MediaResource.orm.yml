@@ -45,9 +45,18 @@ SkNd\MediaBundle\Entity\MediaResource:
       targetEntity: MediaResourceCache
       cascade: ["persist", "merge", "remove"]
       orphanRemoval: true
-  manyToMany:
-    memoryWalls:
-      targetEntity: SkNd\UserBundle\Entity\MemoryWall
-      mappedBy: mediaResources
-      #cascade: ["persist"]
+  oneToMany:
+    memoryWallMediaResource:
+      targetEntity: SkNd\UserBundle\Entity\MemoryWallMediaResource
+      mappedBy: mediaResource
+      cascade: ["persist", "remove"]
+      orphanRemoval: true
+      orderBy:
+        dateCreated: desc
+      
+#  manyToMany:
+#    memoryWalls:
+#      targetEntity: SkNd\UserBundle\Entity\MemoryWall
+#      mappedBy: mediaResources
+#      #cascade: ["persist"]
       

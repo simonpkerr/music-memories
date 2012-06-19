@@ -5,20 +5,36 @@ namespace SkNd\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\MediaBundle\Entity\MediaResource;
+use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * SkNd\UserBundle\Entity\memoryWallMediaResource
- */
-class memoryWallMediaResource
+class MemoryWallMediaResource
 {
-
+    protected $id;
+    
     protected $memoryWall;
 
     protected $mediaResource;
 
     protected $userTitle;
 
+    protected $slug;
+    
     protected $dateAdded;
+    
+    /*public function __construct(){
+        $this->memoryWall = new ArrayCollection();
+        $this->mediaResource = new ArrayCollection();
+    }*/
+     
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     public function setMemoryWall(MemoryWall $memoryWall)
     {
@@ -45,7 +61,7 @@ class memoryWallMediaResource
      *
      * @param string $userTitle
      */
-    public function setUserTitle($userTitle)
+    public function setUserTitle($userTitle = null)
     {
         $this->userTitle = $userTitle;
     }
@@ -60,6 +76,11 @@ class memoryWallMediaResource
         return $this->userTitle;
     }
 
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+    
     /**
      * Set dateAdded
      *

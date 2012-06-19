@@ -1,15 +1,34 @@
 SkNd\UserBundle\Entity\MemoryWallMediaResource:
   type: entity
   table: null
+  id:
+   id:
+     type: integer
+     generator: { strategy: AUTO }
   fields:
     userTitle:
       type: string
       length: 255
+      nullable: true
+    slug:
+      type: string
+      length: 255
+      nullable: true
+      gedmo:
+        slug:
+          fields:
+            - userTitle
     dateAdded:
       type: datetime
       gedmo:
         timestampable:
           on: create
-    
+  manyToOne:
+    mediaResource:
+      targetEntity: SkNd\MediaBundle\Entity\MediaResource
+      inversedBy: memoryWallMediaResource
+    memoryWall:
+      targetEntity: MemoryWall
+      inversedBy: memoryWallMediaResource
           
   lifecycleCallbacks: {  }

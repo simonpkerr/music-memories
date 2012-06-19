@@ -44,11 +44,13 @@ class MediaResource
     
     protected $memoryWalls;
 
+    protected $memoryWallMediaResource;
     
     public function __construct(){
         $this->viewCount = 0;
         $this->selectedCount = 0;
         $this->memoryWalls = new ArrayCollection();
+        $this->memoryWalls = $this->getMemoryWall();
     }
         
     public function getId()
@@ -61,8 +63,8 @@ class MediaResource
         $this->id = $id;
     }
     
-    public function getRelatedMemoryWalls(){
-        return $this->memoryWalls;
+    public function getMemoryWalls(){
+        return $this->memoryWallMediaResource->getMemoryWall();
     }
     
     /*public function addMemoryWall(MemoryWall $mw){

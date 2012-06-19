@@ -57,6 +57,8 @@ class MemoryWall
     protected $associatedDecade;
     
     protected $mediaResources;
+    
+    protected $memoryWallMediaResource;
 
     public function __construct(User $user = null){
         $this->mediaResources = new ArrayCollection();
@@ -64,6 +66,8 @@ class MemoryWall
         $this->setIsPublic(true);
         if($user != null)
             $this->setUser($user);
+        
+        $this->mediaResources = $this->getMediaResources();
     }
  
     
@@ -78,7 +82,9 @@ class MemoryWall
     }
     
     public function getMediaResources(){
-        return $this->mediaResources;
+        //return $this->mediaResources;
+        return $this->memoryWallMediaResource->getMediaResources();
+        
     }
     
     public function addMediaResource(MediaResource $mr){
@@ -87,13 +93,7 @@ class MemoryWall
         else
             throw new \RuntimeException ('Media Resource has already been added to this memory wall');
         
-        /*$this->mediaResources->add($mr);
-        if(!$mr->getRelatedMemoryWalls()->contains($this))
-            $mr->addMemoryWall($this);
-        else
-            throw new \RuntimeException ('Media Resource has already been added to this memory wall');
-
-        }*/
+        
     }
 
     public function setUser(User $user)

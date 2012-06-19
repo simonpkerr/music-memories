@@ -41,6 +41,14 @@ SkNd\UserBundle\Entity\MemoryWall:
   oneToOne:
     associatedDecade:
       targetEntity: SkNd\MediaBundle\Entity\Decade
+  oneToMany:
+    memoryWallMediaResource:
+      targetEntity: MemoryWallMediaResource
+      mappedBy: memoryWall
+      cascade: ["persist", "remove"]
+      orphanRemoval: true
+      orderBy:
+        dateCreated: desc
   manyToOne:
     user:
       targetEntity: User
@@ -50,21 +58,21 @@ SkNd\UserBundle\Entity\MemoryWall:
         name: user_id
         referencedColumnName: id
         #onDelete: set null
-  manyToMany:
-    mediaResources:
-      targetEntity: SkNd\MediaBundle\Entity\MediaResource
-      orderBy:
-        dateCreated: desc
-      inversedBy: memoryWalls
-      #cascade: ["persist"]
-      joinTable:
-        name: memoryWalls_mediaResources
-        joinColumns:
-          memoryWall_id:
-            referencedColumnName: id
-            #onDelete: set null
-        inverseJoinColumns:
-          mediaResource_id:
-            referencedColumnName: id
-            #onDelete: set null
+#  manyToMany:
+#    mediaResources:
+#      targetEntity: SkNd\MediaBundle\Entity\MediaResource
+#      orderBy:
+#        dateCreated: desc
+#      inversedBy: memoryWalls
+#      #cascade: ["persist"]
+#      joinTable:
+#        name: memoryWalls_mediaResources
+#        joinColumns:
+#          memoryWall_id:
+#            referencedColumnName: id
+#            #onDelete: set null
+#        inverseJoinColumns:
+#          mediaResource_id:
+#            referencedColumnName: id
+#            #onDelete: set null
      
