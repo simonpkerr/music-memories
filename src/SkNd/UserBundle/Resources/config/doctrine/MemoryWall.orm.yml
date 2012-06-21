@@ -42,13 +42,13 @@ SkNd\UserBundle\Entity\MemoryWall:
     associatedDecade:
       targetEntity: SkNd\MediaBundle\Entity\Decade
   oneToMany:
-    memoryWallMediaResource:
+    memoryWallMediaResources:
       targetEntity: MemoryWallMediaResource
       mappedBy: memoryWall
       cascade: ["persist", "remove"]
       orphanRemoval: true
       orderBy:
-        dateCreated: desc
+        dateAdded: desc
   manyToOne:
     user:
       targetEntity: User

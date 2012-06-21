@@ -220,7 +220,7 @@ class MediaAPITests extends WebTestCase {
         
     }
     
-    public function testProcessMediaResourcesWith2UncachedAmazonResourcesCallsLiveAPICachesResourceAndReturnsTrue(){
+    public function testProcessMediaResourcesWith2UncachedAmazonResourcesCallsLiveAPICachesResourcesAndReturnsTrue(){
         
     }
     

@@ -39,6 +39,7 @@ class YouTubeAPI implements IAPIStrategy {
      * and improve memory walls
      */
     public function getDetails(array $params){}
+    public function doBatchProcess(array $ids){}
     
     public function getId(\SimpleXMLElement $xmlData){}
     public function getImageUrlFromXML(\SimpleXMLElement $xmlData) {}

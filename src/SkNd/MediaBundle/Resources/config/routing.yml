@@ -15,7 +15,7 @@ error:
 #  defaults: { _controller: SkNdMediaBundle:Media:setMedia }
 
 mediaSelection:
-  pattern: /mediaSelection
+  pattern: /mediaselection
   defaults: { _controller: SkNdMediaBundle:Media:mediaSelection }
   requirements:
     _method: GET|POST
@@ -49,11 +49,14 @@ search:
 #  defaults: { _controller: SkNdMediaBundle:Media:mediaSearchResults }  
 
 mediaDetails:
-  pattern: /mediaDetails/{media}/{decade}/{genre}/{id}
-  defaults: { _controller: SkNdMediaBundle:Media:mediaDetails }
+  pattern: /mediadetails/{id}/{media}/{decade}/{genre}
+  defaults:
+    _controller: SkNdMediaBundle:Media:mediaDetails
+    decade: all-decades
+    genre: all-genres
 
 youTubeRequest:
-  pattern: /youTubeRequest/{title}/{media}/{decade}/{genre}
+  pattern: /youtuberequest/{title}/{media}/{decade}/{genre}
   defaults: { _controller: SkNdMediaBundle:Media:youTubeRequest }
 
 #flickrRequest:

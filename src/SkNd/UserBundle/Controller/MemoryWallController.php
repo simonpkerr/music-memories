@@ -31,7 +31,7 @@ class MemoryWallController extends Controller
     protected $userManager;
     
     private function getEntityManager(){
-        return $this->getDoctrine()->getEntityManager();
+        return $this->get('sk_nd_media.mediaapi')->getEntityManager();
     }
         
     protected function getUserManager(){
@@ -138,12 +138,14 @@ class MemoryWallController extends Controller
         }
         
         //check the mediaresources related to this wall and refresh from api if necessary
-        if(!$mw->getMediaResources()->isEmpty()){
-            $this->get('sk_nd_media.mediaapi')->processMediaResources($mw->getMediaResources(), $page);
+        $mediaResources = $mw->getMediaResources();
+        if(!$mediaResources->isEmpty()){
+            $this->get('sk_nd_media.mediaapi')->processMediaResources($mediaResources, $page);
         }
         
         return $this->render('SkNdUserBundle:MemoryWall:showMemoryWall.html.twig', array (
             'mw'                        => $mw,
+            //'mediaResources'            => $mediaResources,
             'wallBelongsToCurrentUser'  => $wallBelongsToCurrentUser,
         ));
     }
@@ -276,6 +278,9 @@ class MemoryWallController extends Controller
     }
     
     private function getMemoryWall($slug){
+        if(!isset($this->em))
+            $this->em = $this->getEntityManager();
+        
         $mw = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug($slug);
         //if memory wall doesn't exist
         if(is_null($mw))

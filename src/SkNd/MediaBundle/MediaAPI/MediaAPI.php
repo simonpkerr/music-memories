@@ -63,6 +63,10 @@ class MediaAPI {
                 ////$this->em->getRepository('SkNdMediaBundle:API')->getDefaultname());
     }
     
+    public function getEntityManager(){
+        return $this->em;
+    }
+    
     public function getAPIs(){
         return $this->apis;
     }
@@ -98,8 +102,14 @@ class MediaAPI {
         $page = 1;
         
         //try getting the media selection from the session
-        $mediaSelection = $this->session->get('mediaSelection');//$this->getSessionData('mediaSelection');        
+        if($this->mediaSelection == null)
+            $this->mediaSelection = $this->session->get('mediaSelection') != null ? $this->session->get('mediaSelection') : new MediaSelection();
         
+        $mediaType = $this->mediaSelection->getMediaTypes();
+        $decade = $this->mediaSelection->getDecades();
+        $genre = $this->mediaSelection->getSelectedMediaGenres();
+        
+        //if params passed, update the mediaSelection
         if($params != null){
             $mediaTypeSlug = isset($params['media']) ? $params['media'] : MediaType::$default;
             $decadeSlug = isset($params['decade']) ? $params['decade'] : Decade::$default;
@@ -107,95 +117,99 @@ class MediaAPI {
             $keywords = isset($params['keywords']) ? $params['keywords'] != '-' ? $params['keywords'] : null : null;
             $computedKeywords = isset($params['computedKeywords']) ? $params['computedKeywords'] : null;
             $page = isset($params['page']) ? $params['page'] : $page;
-        }
         
-        if($mediaSelection == null)
-            $mediaSelection = new MediaSelection();
-        
-        if($params != null){
-            //only update the media type if its different
-            if($mediaSelection->getMediaTypes() == null || $mediaTypeSlug != $mediaSelection->getMediaTypes()->getSlug())
+            //only update the mediaSelection if different
+            if($this->mediaSelection->getMediaTypes() == null || $mediaTypeSlug != $this->mediaSelection->getMediaTypes()->getSlug()){
                 $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
-            else
-                $mediaType = $mediaSelection->getMediaTypes();
+                if($mediaType == null)
+                    throw new NotFoundHttpException("There was a problem with that address");
+            } 
+            //else {
+            //    $mediaType = $this->mediaSelection->getMediaTypes();
+            //}
             
-            
-            if($mediaType == null)
-                throw new NotFoundHttpException("There was a problem with that address");
-            
-            $mediaType = $this->em->merge($mediaType);
-            $mediaSelection->setMediaTypes($mediaType);
+            //$mediaType = $this->em->merge($mediaType);
+            //$this->mediaSelection->setMediaTypes($mediaType);
             
             
             //if decade is not default decade and is not the same as existing decade
             if($decadeSlug != Decade::$default){
-                if($mediaSelection->getDecades() == null || $decadeSlug != $mediaSelection->getDecades()->getSlug())
+                if($this->mediaSelection->getDecades() == null || $decadeSlug != $this->mediaSelection->getDecades()->getSlug()){
                     $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
-                else
-                    $decade = $mediaSelection->getDecades();
-                
-                if($decade == null)
-                    throw new NotFoundHttpException ("There was a problem with that address");
-
-                $decade = $this->em->merge($decade);
-                $mediaSelection->setDecades($decade);
+                    if($decade == null)
+                        throw new NotFoundHttpException ("There was a problem with that address");
+                } 
+                //else {
+                //    $decade = $this->mediaSelection->getDecades();
                 //}
+//                $decade = $this->em->merge($decade);
+//                $this->mediaSelection->setDecades($decade);
             }else{
                 //if the entity exists already, set to null so defaults to all-decades
-                $mediaSelection->setDecades(null);
+                $this->mediaSelection->setDecades(null);
             }
 
             if($genreSlug != Genre::$default){
                 //if the genre is different or the media type is different, reset the genre
-                if($mediaSelection->getSelectedMediaGenres() == null || $genreSlug != $mediaSelection->getSelectedMediaGenres()->getSlug() || $mediaTypeSlug != $mediaSelection->getMediaTypes()->getSlug())
+                if($this->mediaSelection->getSelectedMediaGenres() == null || $genreSlug != $this->mediaSelection->getSelectedMediaGenres()->getSlug() || $mediaTypeSlug != $this->mediaSelection->getMediaTypes()->getSlug()){
                     try{
                         $genre = $this->em->getRepository('SkNdMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
                     }catch(\Exception $ex){
                         throw new NotFoundHttpException ("There was a problem with that address");
                     }
-                else 
-                    $genre = $mediaSelection->getSelectedMediaGenres();
-
-                $genre = $this->em->merge($genre);
-                $mediaSelection->setSelectedMediaGenres($genre);
+                } 
+                //else {
+                //    $genre = $this->mediaSelection->getSelectedMediaGenres();
                 //}
+                
+//                $genre = $this->em->merge($genre);
+//                $this->mediaSelection->setSelectedMediaGenres($genre);
+               
             }else{
-                $mediaSelection->setSelectedMediaGenres(null);
+                $this->mediaSelection->setSelectedMediaGenres(null);
             }
             
             /*
              * if the keywords are set from a search then removed and another search performed
              * they should be removed from the MediaSelection object. 
              */
-            if($keywords != null && $mediaSelection->getKeywords() == null){
-                $mediaSelection->setKeywords($keywords);
+            if($keywords != null){// && $this->mediaSelection->getKeywords() == null){
+                $this->mediaSelection->setKeywords($keywords);
             }
             
-            if($computedKeywords != $mediaSelection->getComputedKeywords()){
-                $mediaSelection->setComputedKeywords($computedKeywords);
+            if($computedKeywords != null){// && $computedKeywords != $this->mediaSelection->getComputedKeywords()){
+                $this->mediaSelection->setComputedKeywords($computedKeywords);
             }
         }
-
-        /*
-         * if navigating from a listings page to a details page, the return route needs calculating
-         * from a details page, the page number is not passed
-         */
         
-        //$mediaSelection->getPage() != null && 
         if(isset($params['page']))
-            $mediaSelection->setPage($page);
+            $this->mediaSelection->setPage($page);
             
-        if($mediaSelection->getGenres() == null){
+        if($this->mediaSelection->getGenres() == null){
             $genres = $this->em->getRepository('SkNdMediaBundle:Genre')->getAllGenres();
-            $mediaSelection->setGenres($genres);
+            $this->mediaSelection->setGenres($genres);
         }
-            
-        //save the data so this process is only done once
-        $this->session->set('mediaSelection', $mediaSelection);
         
-        return $mediaSelection;
+        //*****is necessary to merge the entities back into the entity manager after retrieving them
+        $mediaType = $this->em->merge($mediaType);
+        $this->mediaSelection->setMediaTypes($mediaType);
+        if(!is_null($decade)){
+            $decade = $this->em->merge($decade);
+            $this->mediaSelection->setDecades($decade);
+        }
+        if(!is_null($genre)){
+            $genre = $this->em->merge($genre);
+            $this->mediaSelection->setSelectedMediaGenres($genre);
+        }
+                
+        //save the data so this process is only done once
+        $this->session->set('mediaSelection', $this->mediaSelection);
+        
+        return $this->mediaSelection;
+   
+        
     }
-    
+   
     /*
      * if no media, decade or genre is selected, defaults should be returned
      * so that the media selection form can be correctly set.
@@ -235,7 +249,9 @@ class MediaAPI {
      * like Operation, Id. For youtube it contains things like keywords, decade, media etc
      */
     public function getDetails(array $params){
-        $this->mediaSelection = $this->session->get('mediaSelection');
+        //try getting the media selection from the session
+        //$this->mediaSelection = $this->session->get('mediaSelection');
+        $this->mediaSelection = $this->getMediaSelection();
         $this->response = null;
         
         //look up the mediaResource in the db and fetch associated cached object
@@ -264,7 +280,8 @@ class MediaAPI {
      * 
      */
     public function getListings(){
-        $this->mediaSelection = $this->session->get('mediaSelection');
+        //$this->mediaSelection = $this->session->get('mediaSelection');
+        $this->mediaSelection = $this->getMediaSelection();
         $this->response = null;
            
         $this->response = $this->getCachedListings();
@@ -376,10 +393,16 @@ class MediaAPI {
             $this->setAPIStrategy($api->getName());
             
             $resources = $mediaResources->filter(function($mr) use ($api){
-                return $mr->getAPI()->getName() === $api->getName() && $mr->getMediaResourceCache() === null;
+                //$mr = $mr->getMediaResource();
+                return $mr->getAPI()->getName() == $api->getName() && $mr->getMediaResourceCache() == null;
             });
             if($resources->count() > 0){
-                $ids = $resources->getValues();
+                $ids = array();
+                foreach($resources as $mediaResource){
+                    array_push($ids, $mediaResource->getId());
+                }
+                //do batch process of ids
+                $this->apiStrategy->batchProcess($ids);
                 $updatesMade = true;
             }
         }

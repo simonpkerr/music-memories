@@ -16,10 +16,12 @@ interface IAPIStrategy {
     public function getListings(MediaSelection $mediaSelection);
     public function getDetails(array $params);
     public function getName();
+    public function doBatchProcess(array $ids);
     //each api implements its own method of getting the id
     public function getId(\SimpleXMLElement $xmlData);
     public function getImageUrlFromXML(\SimpleXMLElement $xmlData);
     public function getItemTitleFromXML(\SimpleXMLElement $xmlData);
+    
    
     
 }

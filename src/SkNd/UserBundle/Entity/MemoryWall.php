@@ -58,16 +58,18 @@ class MemoryWall
     
     protected $mediaResources;
     
-    protected $memoryWallMediaResource;
+    protected $memoryWallMediaResources;
 
     public function __construct(User $user = null){
         $this->mediaResources = new ArrayCollection();
+        $this->memoryWallMediaResources = new ArrayCollection();
+        
         $this->setName('My Memory Wall');
         $this->setIsPublic(true);
         if($user != null)
             $this->setUser($user);
         
-        $this->mediaResources = $this->getMediaResources();
+        //$this->mediaResources = $this->getMediaResources();
     }
  
     
@@ -83,13 +85,30 @@ class MemoryWall
     
     public function getMediaResources(){
         //return $this->mediaResources;
-        return $this->memoryWallMediaResource->getMediaResources();
+        //return $this->memoryWallMediaResources;
+        //$mrs = array();
+        $mrs = new ArrayCollection();
+        foreach($this->memoryWallMediaResources as $mwMr){
+            $mrs->add($mwMr->getMediaResource());
+        }
+        return $mrs;
         
     }
     
+    public function getMemoryWallMediaResources(){
+        return $this->memoryWallMediaResources;                
+    }
+    
     public function addMediaResource(MediaResource $mr){
-        if(!$this->mediaResources->contains($mr))
-            $this->mediaResources->add($mr);
+        $mwmrs = $this->getMemoryWallMediaResources();
+        $mediaResourceExists = $mwmrs->filter(function($mwmr) use ($mr){
+            return $mwmr->getMediaResource() == $mr && $mwmr->getMemoryWall() == $this;
+        });
+        
+        if(!$mediaResourceExists){
+            $mwMr = new MemoryWallMediaResource($this, $mr);        
+            $this->memoryWallMediaResources->add($mwMr);
+        }
         else
             throw new \RuntimeException ('Media Resource has already been added to this memory wall');
         

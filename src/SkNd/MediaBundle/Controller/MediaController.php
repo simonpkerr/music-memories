@@ -46,7 +46,7 @@ class MediaController extends Controller
     public function mediaSelectionAction(Request $request = null){
         $session = $this->getRequest()->getSession();
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
-        $em = $this->getEntityManager();
+        $em = $this->mediaapi->getEntityManager();
  
         /*
          * if the data was posted before and is now saved in the session
@@ -134,7 +134,7 @@ class MediaController extends Controller
             'page'      => $page,
         ));
        
-       $em = $this->getEntityManager();
+       //$em = $this->mediaapi->getEntityManager();
         
        $pagerCount = 5;
        $pagerParams = array(
@@ -197,7 +197,7 @@ class MediaController extends Controller
        return $this->render('SkNdMediaBundle:Media:searchResults.html.twig', $responseParams);
     }
 
-    public function mediaDetailsAction($media, $decade, $genre, $id){
+    public function mediaDetailsAction($id, $media, $decade = 'all-decades', $genre = 'all-genres'){
         /*
          * set the mediaSelection object if it doesn't exist - user may have gone straight to the page
          * without going through the selection process

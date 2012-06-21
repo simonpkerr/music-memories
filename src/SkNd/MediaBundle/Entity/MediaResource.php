@@ -44,13 +44,14 @@ class MediaResource
     
     protected $memoryWalls;
 
-    protected $memoryWallMediaResource;
+    protected $memoryWallMediaResources;
     
     public function __construct(){
         $this->viewCount = 0;
         $this->selectedCount = 0;
         $this->memoryWalls = new ArrayCollection();
-        $this->memoryWalls = $this->getMemoryWall();
+        $this->memoryWallMediaResources = new ArrayCollection();
+        $this->memoryWalls = $this->getMemoryWalls();
     }
         
     public function getId()
@@ -64,9 +65,20 @@ class MediaResource
     }
     
     public function getMemoryWalls(){
-        return $this->memoryWallMediaResource->getMemoryWall();
+        return $this->memoryWallMediaResources;
     }
     
+    public function getDetailsPageParams(){
+        $params = array();
+        $params['media'] = $this->mediaType->getSlug();
+        $params['id'] = $this->getId();
+        if($this->decade != null)
+            $params['decade'] = $this->decade->getSlug();
+        if($this->genre != null)
+            $params['genre'] = $this->genre->getSlug();
+        
+        return $params;
+    }
     /*public function addMemoryWall(MemoryWall $mw){
         //if the memory wall doesn't already contain the media resource
         if(!$this->memoryWalls->contains($mw)){

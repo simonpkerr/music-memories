@@ -116,6 +116,16 @@ class AmazonAPI implements IAPIStrategy {
         }
     }
     
+    /**
+     * Performs a batch process of up to 10 ids to look up 
+     * for memory walls
+     * @param array $ids 
+     * 
+     */
+    public function doBatchProcess(array $ids){
+        $this->amazonParameters['Operation'] = 'batch';
+    }
+    
     //each api will have it's own method for returning the id of a mediaresource for caching purposes.
     public function getId(\SimpleXMLElement $xmlData){
         

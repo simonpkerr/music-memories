@@ -5,6 +5,10 @@ SkNd\UserBundle\Entity\MemoryWallMediaResource:
    id:
      type: integer
      generator: { strategy: AUTO }
+#   mediaResource_id:
+#      type: string
+#   memoryWall_id:
+#      type: integer
   fields:
     userTitle:
       type: string
@@ -26,9 +30,13 @@ SkNd\UserBundle\Entity\MemoryWallMediaResource:
   manyToOne:
     mediaResource:
       targetEntity: SkNd\MediaBundle\Entity\MediaResource
-      inversedBy: memoryWallMediaResource
+      inversedBy: memoryWallMediaResources
+#      cascade: ["persist", "remove"]
+#      orphanRemoval: true
     memoryWall:
       targetEntity: MemoryWall
-      inversedBy: memoryWallMediaResource
+      inversedBy: memoryWallMediaResources
+#      cascade: ["persist", "remove"]
+#      orphanRemoval: true
           
   lifecycleCallbacks: {  }

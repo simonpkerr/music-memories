@@ -1,6 +1,5 @@
 {% extends 'SkNdUserBundle::memoryWallLayout.html.twig' %}
 {% block title %}Memory Wall &hellip; {{ mw.name }}{% endblock %}
-
 {% block content %}
 <h1><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}" title="edit this wall">{{ mw.name }}</a></h1>
 <div>
@@ -21,15 +20,25 @@
 </div>
 <div>
     <h2>Contents</h2>
-    {% if mw.mediaResources is not empty %}
-    {% for mr in mw.mediaResources %}
+    {% if mw.memoryWallMediaResources is not empty %}
+    {% for mwmr in mw.memoryWallMediaResources %}
+    {% set mr = mwmr.mediaResource %}
     <div class="mediaResource">
         <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
-        <h3><a href="{{path('mediaDetails', {'media':mr.mediaType.slug, 'decade':mr.decade.slug, 'genre':mr.genre.slug, 'id':mr.id })}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></h3>
-        {#<dl>
+        <h3><a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></h3>
+        <dl>
             <dt>Date added</dt>
-            <dd>{{ mr.dateCreated }}</dd>
-        </dl>#}
+            <dd>{{ mwmr.dateAdded|date("F jS \\a\\t g:ia") }}</dd>
+            {% if mwmr.userTitle is not null %}
+            <dt>Your title</dt>
+            <dd>{{ mwmr.userTitle }}</dd>
+            {% endif %}            
+        </dl>
+        <h4>Actions</h4>
+        <ul>
+            <li>Edit details</li>
+            <li>Remove from this Memory Wall</li>
+        </ul>
     </div>
     {% endfor %}
     {% else %}

@@ -41,7 +41,7 @@ SkNd\MediaBundle\Entity\MediaResourceListingsCache:
       targetEntity: API
     mediaType:
       targetEntity: MediaType
-      #cascade: ["persist", "merge", "remove"] 
+      #cascade: ["merge"] 
     decade:
       targetEntity: Decade
       #cascade: ["persist", "merge", "remove"] 

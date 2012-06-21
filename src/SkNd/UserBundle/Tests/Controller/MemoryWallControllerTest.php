@@ -412,6 +412,14 @@ class MemoryWallControllerTest extends WebTestCase
         
     }
     
+    public function testRemoveOtherUsersMediaResourceFromMemoryWallThrowsException(){
+        
+    }
+    
+    public function testRemoveMediaResourceWhenNotLoggedInRedirectsToLogin(){
+        
+    }
+    
     
     
     

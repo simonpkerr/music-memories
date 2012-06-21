@@ -46,10 +46,10 @@ SkNd\MediaBundle\Entity\MediaResource:
       cascade: ["persist", "merge", "remove"]
       orphanRemoval: true
   oneToMany:
-    memoryWallMediaResource:
+    memoryWallMediaResources:
       targetEntity: SkNd\UserBundle\Entity\MemoryWallMediaResource
       mappedBy: mediaResource
-      cascade: ["persist", "remove"]
+      cascade: ["persist", "merge", "remove"]
       orphanRemoval: true
       orderBy:
         dateCreated: desc
