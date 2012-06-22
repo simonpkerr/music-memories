@@ -162,7 +162,7 @@ class MediaController extends Controller
             $this->mediaapi->setAPIStrategy('amazonapi');
             try{
                 $response = $this->mediaapi->getListings();
-                $pagerParams['pagerUpperBound'] = $response->Items->TotalPages > 10 ? 10 : $response->Items->TotalPages;
+                $pagerParams['pagerUpperBound'] = $response->TotalPages > 10 ? 10 : $response->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
                 $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
                 $pagerParams['pagerRouteParams'] = $this->mediaapi->getMediaSelectionParams();
@@ -237,7 +237,7 @@ class MediaController extends Controller
         if(!isset($exception)){
             $responseParams['mainResponse'] = $response;
             if($media != 'music')
-                $responseParams['title'] = $response->Items->Item->ItemAttributes->Title;
+                $responseParams['title'] = $response->ItemAttributes->Title;
         }
         else
             $responseParams['exception'] = $exception;

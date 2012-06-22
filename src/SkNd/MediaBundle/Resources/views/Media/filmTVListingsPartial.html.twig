@@ -3,14 +3,14 @@
 {% include "SkNdMediaBundle:Media:pagerPartial.html.twig" 
 with 
 {
-'currentPage':mainResponse.Items.Request.ItemSearchRequest.ItemPage,
+'currentPage':mainResponse.Request.ItemSearchRequest.ItemPage,
 'pagerParams':pagerParams
 } 
 %}
 </div>    
 
 <ul>
-{% for item in mainResponse.Items.Item %}
+{% for item in mainResponse.Item %}
 <li class="listing">
     <dl>
         <dt><a title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">{{item.ItemAttributes.Title}}</a></dt>

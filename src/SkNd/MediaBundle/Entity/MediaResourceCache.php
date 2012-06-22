@@ -26,6 +26,8 @@ class MediaResourceCache
      */
     private $dateCreated;
 
+    //private $dateUpdated;
+    
     /**
      * @var string $slug
      */
@@ -52,6 +54,10 @@ class MediaResourceCache
         return $this->id;
     }
 
+    /*public function __construct(){
+        $this->dateCreated = new \DateTime("now");
+                
+    }*/
     
     /*public function setMediaResourceId($mediaResourceId)
     {
@@ -84,25 +90,28 @@ class MediaResourceCache
         return $this->xmlData;
     }
 
-    /**
-     * Set dateCreated
-     *
-     * @param datetime $dateCreated
-     */
+    
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
     }
 
-    /**
-     * Get dateCreated
-     *
-     * @return datetime 
-     */
+    
     public function getDateCreated()
     {
         return $this->dateCreated;
     }
+    
+//    public function setDateUpdated($date)
+//    {
+//        $this->dateUpdated = $date;
+//    }
+//
+//    
+//    public function getDateUpdated()
+//    {
+//        return $this->dateUpdated;
+//    }
 
     /**
      * Set slug

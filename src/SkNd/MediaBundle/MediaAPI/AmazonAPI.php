@@ -84,7 +84,7 @@ class AmazonAPI implements IAPIStrategy {
         $xml_response = $this->queryAmazon($this->amazonParameters, "co.uk");
         
         try{
-            return $this->verifyXmlResponse($xml_response);
+            return $this->verifyXmlResponse($xml_response)->Items;
         }catch(\RunTimeException $re){
             throw $re;
         }catch(\LengthException $le){
@@ -104,11 +104,11 @@ class AmazonAPI implements IAPIStrategy {
  
         ));
 
-        $this->amazonParameters = array_merge($this->amazonParameters, $params);
+        //$this->amazonParameters = array_merge($this->amazonParameters, $params);
         $xml_response = $this->queryAmazon($this->amazonParameters, "co.uk");
         
         try{
-            return $this->verifyXmlResponse($xml_response);
+            return $this->verifyXmlResponse($xml_response)->Items->Item;
         }catch(\RunTimeException $re){
             throw $re;
         }catch(\LengthException $le){
@@ -123,7 +123,10 @@ class AmazonAPI implements IAPIStrategy {
      * 
      */
     public function doBatchProcess(array $ids){
-        $this->amazonParameters['Operation'] = 'batch';
+        $params = array(
+            'ItemId'  => implode(',', $ids),
+        );
+        return $this->getDetails($params);
     }
     
     //each api will have it's own method for returning the id of a mediaresource for caching purposes.
@@ -134,7 +137,8 @@ class AmazonAPI implements IAPIStrategy {
     
     public function getImageUrlFromXML(\SimpleXMLElement $xmlData){
         try{
-            return $xmlData->Items->Item->MediumImage->URL;
+            //return $xmlData->Items->Item->MediumImage->URL;
+            return (string)$xmlData->MediumImage->URL;
         } catch(\Exception $ex){
             return null;
         }
@@ -142,7 +146,8 @@ class AmazonAPI implements IAPIStrategy {
     
     public function getItemTitleFromXML(\SimpleXMLElement $xmlData){
         try{
-            return $xmlData->Items->Item->ItemAttributes->Title;
+            //return $xmlData->Items->Item->ItemAttributes->Title;
+            return (string)$xmlData->ItemAttributes->Title;
         } catch(\Exception $ex){
             return null;
         }

@@ -16,7 +16,7 @@ memoryWall:
     flash:
       success: Memory wall deleted. I hope you&rsquo;re happy
       accessDenied: Oy! You can&rsquo;t just go deleting anybodys Memory Walls!
-      successCreatedDefault: That was your last Memory Wall, so we&rsquo;ve created a fresh one for you. You&rsquo;ve got to have at least one, sorry. 
+      successCreatedDefault: That was your last Memory Wall, so we&rsquo;ve created a fresh one for you. You&rsquo;ve got to have at least one, sorry
   edit:
     submit: Edit this wall
     flash:
@@ -31,8 +31,10 @@ memoryWall:
   resources:
     add:
       flash:
-        accessDenied: Just log in first, then you can start adding stuff.
-        selectWall: You&rsquo;ve got more than 1 wall. Please select one first.
+        accessDenied: Just log in first, then you can start adding stuff
+        identicalResourceError: Whoops. You&rsquo;re trying to add something that already exists on this wall
+        selectWall: You&rsquo;ve got more than 1 wall. Please select one first
+        success: Yay. Your item was added successfully
   
 registration:
   memoryWallReminder: By the way, we&rsquo;ve set up a Memory Wall for you just to save you a bit of hassle! You can start adding stuff to it straight away

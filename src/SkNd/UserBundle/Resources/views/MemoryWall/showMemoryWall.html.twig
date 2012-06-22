@@ -1,6 +1,7 @@
 {% extends 'SkNdUserBundle::memoryWallLayout.html.twig' %}
 {% block title %}Memory Wall &hellip; {{ mw.name }}{% endblock %}
 {% block content %}
+{% set wallBelongsToThisUser = app.user is not null and mw.user.username == app.user.username %}
 <h1><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}" title="edit this wall">{{ mw.name }}</a></h1>
 <div>
     <h2>Details</h2>
@@ -12,7 +13,7 @@
         <dt>Date Created</dt>
         <dd>{{mw.dateCreated|date("d/m/y")}}</dd>
         {# if the wall is public and belongs to someone else, give a link to show all their memory walls #}
-        {% if mw.isPublic and mw.user.username != app.user.username %}
+        {% if mw.isPublic and not wallBelongsToThisUser %}
         <dt>Created by</dt>
         <dd><span>{{mw.user.username}}</span><span> &ndash; (<a href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">view all of {{mw.user.username}}&rsquo;s Memory Walls)</a></span></dd>
         {% endif %}
@@ -47,7 +48,7 @@
 </div>
 
 {# if the memory wall being shown belongs to the current user, show further actions #}
-{% if mw.user.username == app.user.username %}
+{% if wallBelongsToThisUser %}
 <div>
     <h2>Actions</h2>
     <ul>

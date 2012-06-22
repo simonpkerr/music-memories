@@ -145,7 +145,6 @@ class MemoryWallController extends Controller
         
         return $this->render('SkNdUserBundle:MemoryWall:showMemoryWall.html.twig', array (
             'mw'                        => $mw,
-            //'mediaResources'            => $mediaResources,
             'wallBelongsToCurrentUser'  => $wallBelongsToCurrentUser,
         ));
     }
@@ -253,8 +252,15 @@ class MemoryWallController extends Controller
         $mediaResource = $mediaapi->getCurrentMediaResource();
         
         //add the resource to the selected wall
-        $mw->addMediaResource($mediaResource);
+        try{
+            $mw->addMediaResource($mediaResource);
+        }catch(\RuntimeException $ex){
+            $this->get('session')->setFlash('notice', 'memoryWall.resources.add.flash.identicalResourceError');
+            return $this->redirect($this->getRequest()->headers->get('referer'));
+        }
         $this->em->flush();
+        
+        $this->get('session')->setFlash('notice', 'memoryWall.resources.add.flash.success');
         
         return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
               

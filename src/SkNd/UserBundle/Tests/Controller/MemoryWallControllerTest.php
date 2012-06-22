@@ -3,6 +3,9 @@
 namespace SkNd\UserBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use SkNd\MediaBundle\MediaAPI\MediaAPI;
+use SkNd\MediaBundle\Entity\MediaSelection;
+use SkNd\MediaBundle\Entity\MediaResource;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -18,6 +21,14 @@ class MemoryWallControllerTest extends WebTestCase
 {
     private $client;
     private $router;
+    private $cachedXMLResponse;
+    private $liveXMLResponse;
+    private $cachedYouTubeXMLResponse;
+    private $liveYouTubeXMLResponse;
+    private $testAmazonAPI;
+    private $testYouTubeAPI;
+    private $session;
+    
     
     public function setup(){
         $this->client = static::createClient();
@@ -27,7 +38,7 @@ class MemoryWallControllerTest extends WebTestCase
         $this->router = $kernel->getContainer()->get('router');
         
     }
-    
+     
     public function testMemoryWallIndexWithNoParamsShowsPublicWallsForNonLoggedInUser(){
         //create the user fixtures, which by default creates memory walls
         $crawler = $this->client->request('GET', '/memorywalls/public/index');
@@ -53,7 +64,7 @@ class MemoryWallControllerTest extends WebTestCase
         
         $crawler = $this->client->request('GET', '/memorywalls/personal/index');
         $this->assertTrue($crawler->filter('h1')->text() == 'My Memory Walls', "showing my memory walls");       
-        $this->assertTrue($crawler->filter('body > ul li')->eq(1)->filter('dd')->text() == 'private wall', "showing private walls");       
+        $this->assertTrue($crawler->filter('body > ul li')->eq(1)->filter('dl dd')->eq(0)->text() == 'private wall', "showing private walls");       
     }
     
     public function testMemoryWallIndexForNonexistentUserThrowsException(){
@@ -378,53 +389,6 @@ class MemoryWallControllerTest extends WebTestCase
         $this->assertTrue(strpos($crawler->filter('div#flashMessages ul li')->eq(0)->text(), 'That was your last Memory Wall') !== false);
         $this->assertTrue($crawler->filter('body > ul#memoryWallGallery li dl dd')->eq(0)->text() == 'My Memory Wall');
     }
-    
-    
-    public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLoginThenAddsResourceIfOnlyOneWallExists(){
-        
-    }
-    
-    public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLoginThenToSelectWallViewIfMoreThanOneWallExists(){
-        
-    }
-    
-    public function testAddMediaResourceToNonExistentWallThrowsException(){
-        
-    }
-    
-    public function testAddMediaResourceToOthersWallThrowsException(){
-        
-    }
-    
-    public function testAddInvalidMediaResourceToValidMemoryWallThrowsException(){
-        
-    }
 
-    public function testAddSameMediaResourceTwiceToMemoryWallThrowsException(){
-        
-    }
-
-    public function testAddMediaResourceToMemoryWallShowsMemoryWallWithResource(){
-        
-    }
-    
-    public function testRemoveMediaResourceFromMemoryWallOnlyRemovesMediaResource(){
-        
-    }
-    
-    public function testRemoveOtherUsersMediaResourceFromMemoryWallThrowsException(){
-        
-    }
-    
-    public function testRemoveMediaResourceWhenNotLoggedInRedirectsToLogin(){
-        
-    }
-    
-    
-    
-    
-    
-    
-    
     
 }

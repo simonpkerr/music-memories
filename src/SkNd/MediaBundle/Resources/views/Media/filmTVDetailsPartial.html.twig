@@ -1,5 +1,5 @@
 {% if mainResponse is defined %}
-{% set item = mainResponse.Items.Item %}
+{% set item = mainResponse %}
 
 {#% debug item %#}
 <div class="itemOverview">
@@ -7,7 +7,12 @@
     <img src="{{item.MediumImage.URL}}" alt="{{item.ItemAttributes.Title}}" width="{{item.MediumImage.Width}}" height="{{item.MediumImage.Height}}" />
     <ul class="links">
         <li><a target="_blank" href="{{item.DetailPageURL}}">Buy from Amazon{% if item.ItemAttributes.ListPrice is defined %} for {{ item.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a></li>
-        <li><a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':item.ASIN })}}" title="add &ldquo;{{item.ItemAttributes.Title}}&rdquo; to your memory wall">Add to your memory wall</a></li>
+        {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
+                with {
+                'api' : api,
+                'item' : item
+                } 
+        %}
     </ul>
 
     {% if item.SimilarProducts is defined %}

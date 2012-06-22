@@ -4,7 +4,7 @@ require_once 'Zend/Loader.php';
 /*
  * empty class for the Zend_Gdata_YouTube class
  */
-class Zend_Gdata_YouTube  {
+class TestYouTubeRequest {
     
     
     public function setMajorProtocolVersion($version){
@@ -16,7 +16,8 @@ class Zend_Gdata_YouTube  {
     }
     
     public function getVideoFeed($queryUrl){
-        return array();
+        $feed = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\sampleYouTubeListings.xml');
+        return $feed;
     }
     
 }

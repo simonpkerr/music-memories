@@ -60,7 +60,9 @@ class MediaAPI {
         
         //this needs changing to accomodate different APIs
         $this->setAPIStrategy('amazonapi');
-                ////$this->em->getRepository('SkNdMediaBundle:API')->getDefaultname());
+         ////$this->em->getRepository('SkNdMediaBundle:API')->getDefaultname());
+        
+        //if debug mode is true, set the api's to dummy objects
     }
     
     public function getEntityManager(){
@@ -105,6 +107,7 @@ class MediaAPI {
         if($this->mediaSelection == null)
             $this->mediaSelection = $this->session->get('mediaSelection') != null ? $this->session->get('mediaSelection') : new MediaSelection();
         
+        //----*****THIS NEEDS WORK - IF A STRAIGHT URL IS ENTERED WITH NO SESSION, FATAL ERROR OCCURS WHEN ADDING RESOURCES
         $mediaType = $this->mediaSelection->getMediaTypes();
         $decade = $this->mediaSelection->getDecades();
         $genre = $this->mediaSelection->getSelectedMediaGenres();
@@ -124,13 +127,6 @@ class MediaAPI {
                 if($mediaType == null)
                     throw new NotFoundHttpException("There was a problem with that address");
             } 
-            //else {
-            //    $mediaType = $this->mediaSelection->getMediaTypes();
-            //}
-            
-            //$mediaType = $this->em->merge($mediaType);
-            //$this->mediaSelection->setMediaTypes($mediaType);
-            
             
             //if decade is not default decade and is not the same as existing decade
             if($decadeSlug != Decade::$default){
@@ -139,11 +135,7 @@ class MediaAPI {
                     if($decade == null)
                         throw new NotFoundHttpException ("There was a problem with that address");
                 } 
-                //else {
-                //    $decade = $this->mediaSelection->getDecades();
-                //}
-//                $decade = $this->em->merge($decade);
-//                $this->mediaSelection->setDecades($decade);
+
             }else{
                 //if the entity exists already, set to null so defaults to all-decades
                 $this->mediaSelection->setDecades(null);
@@ -158,12 +150,6 @@ class MediaAPI {
                         throw new NotFoundHttpException ("There was a problem with that address");
                     }
                 } 
-                //else {
-                //    $genre = $this->mediaSelection->getSelectedMediaGenres();
-                //}
-                
-//                $genre = $this->em->merge($genre);
-//                $this->mediaSelection->setSelectedMediaGenres($genre);
                
             }else{
                 $this->mediaSelection->setSelectedMediaGenres(null);
@@ -191,8 +177,10 @@ class MediaAPI {
         }
         
         //*****is necessary to merge the entities back into the entity manager after retrieving them
-        $mediaType = $this->em->merge($mediaType);
-        $this->mediaSelection->setMediaTypes($mediaType);
+        if(!is_null($mediaType)){
+            $mediaType = $this->em->merge($mediaType);
+            $this->mediaSelection->setMediaTypes($mediaType);
+        }
         if(!is_null($decade)){
             $decade = $this->em->merge($decade);
             $this->mediaSelection->setDecades($decade);
@@ -376,15 +364,43 @@ class MediaAPI {
         $this->em->flush();
     }
     
+    //from a batch operation, take the xml data and resources and re-cache them
+    public function cacheMediaResourceBatch(\SimpleXMLElement $xmlData, $mediaResources, $flush = true){
+        $mr = $mediaResources->first();
+        foreach($xmlData as $itemXml){
+            //$cachedResource = $mr->getMediaResourceCache() != null ? $mr->getMediaResourceCache() : new MediaResourceCache();
+            $cachedResource = new MediaResourceCache();
+            $cachedResource->setId((string)$itemXml->ASIN);
+            $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($itemXml));
+            $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($itemXml));
+            $cachedResource->setXmlData($itemXml->asXML());
+            $cachedResource->setDateCreated(new \DateTime("now"));
+            try{
+                $mr->setMediaResourceCache($cachedResource);
+                if($this->em->contains($mr))
+                    $this->em->merge($mr);
+                else
+                    $this->em->persist($mr);
+            } catch(\Exception $ex){
+                throw $ex;
+            }
+            $mr = $mediaResources->next();
+            
+        }
+        
+        if($flush)
+            $this->em->flush();
+    }
+    
     /**
      *
      * @param ArrayCollection $mediaResources 
      * @param int $page - optional page number to determine which results to process
      * @return null
      * @method processMediaResources checks through all media resources of 
-     * a given memory wall, checks to see if cached data exists for them
-     * and if it doesn't loads the data from a live api, then caches it
-     * For use by show memory wall
+     * a given memory wall, checks to see if valid cached data exists for them (newer than 24 hours)
+     * deletes older cached records and loads uncached mediaresources from live api, then caches it 
+     * For use by show memory wall and the timeline
      */
     public function processMediaResources($mediaResources, $page){
         $updatesMade = false;
@@ -393,16 +409,25 @@ class MediaAPI {
             $this->setAPIStrategy($api->getName());
             
             $resources = $mediaResources->filter(function($mr) use ($api){
-                //$mr = $mr->getMediaResource();
-                return $mr->getAPI()->getName() == $api->getName() && $mr->getMediaResourceCache() == null;
+                //return mediaresources whos cache either doesn't exist or is older than 24 hours
+                return $mr->getAPI()->getName() == $api->getName() && ($mr->getMediaResourceCache() == null || $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < Utilities::getValidCreationTime());
             });
             if($resources->count() > 0){
                 $ids = array();
                 foreach($resources as $mediaResource){
+                    //if($mediaResource->getMediaResourceCache() != null && $mediaResource->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") >= Utilities::getValidCreationTime()){
+                    //    $mediaResource->deleteMediaResourceCache();
+                    //}
                     array_push($ids, $mediaResource->getId());
                 }
-                //do batch process of ids
-                $this->apiStrategy->batchProcess($ids);
+                //do batch process of ids then store in cache
+                $this->response = $this->apiStrategy->doBatchProcess($ids);
+                
+                //cache the data using the collection of uncached resources, but don't flush yet
+                $this->cacheMediaResourceBatch($this->response, $resources, false);
+                
+                //flush will remove all the older cached records from db and insert the new ones
+                $this->em->flush();       
                 $updatesMade = true;
             }
         }

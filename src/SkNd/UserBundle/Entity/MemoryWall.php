@@ -101,17 +101,16 @@ class MemoryWall
     
     public function addMediaResource(MediaResource $mr){
         $mwmrs = $this->getMemoryWallMediaResources();
-        $mediaResourceExists = $mwmrs->filter(function($mwmr) use ($mr){
-            return $mwmr->getMediaResource() == $mr && $mwmr->getMemoryWall() == $this;
-        });
-        
-        if(!$mediaResourceExists){
-            $mwMr = new MemoryWallMediaResource($this, $mr);        
-            $this->memoryWallMediaResources->add($mwMr);
+        if($mwmrs->count() > 0){
+            $mediaResourceExists = $mwmrs->filter(function($mwmr) use ($mr){
+                return $mwmr->getMediaResource() == $mr;
+            })->count() > 0;
+            if($mediaResourceExists)
+                throw new \RuntimeException ('Media Resource has already been added to this memory wall');
         }
-        else
-            throw new \RuntimeException ('Media Resource has already been added to this memory wall');
         
+        $mwMr = new MemoryWallMediaResource($this, $mr);        
+        $this->memoryWallMediaResources->add($mwMr);
         
     }
 
