@@ -2,7 +2,7 @@
 {% block title %}Memory Wall &hellip; {{ mw.name }}{% endblock %}
 {% block content %}
 {% set wallBelongsToThisUser = app.user is not null and mw.user.username == app.user.username %}
-<h1><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}" title="edit this wall">{{ mw.name }}</a></h1>
+<h1><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}" title="edit this wall">{{ mw.name|capitalize }}</a></h1>
 <div>
     <h2>Details</h2>
     <dl id="memoryWallDetails">
@@ -19,41 +19,19 @@
         {% endif %}
     </dl> 
 </div>
-<div>
-    <h2>Contents</h2>
-    {% if mw.memoryWallMediaResources is not empty %}
-    {% for mwmr in mw.memoryWallMediaResources %}
-    {% set mr = mwmr.mediaResource %}
-    <div class="mediaResource">
-        <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
-        <h3><a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></h3>
-        <dl>
-            <dt>Date added</dt>
-            <dd>{{ mwmr.dateAdded|date("F jS \\a\\t g:ia") }}</dd>
-            {% if mwmr.userTitle is not null %}
-            <dt>Your title</dt>
-            <dd>{{ mwmr.userTitle }}</dd>
-            {% endif %}            
-        </dl>
-        <h4>Actions</h4>
-        <ul>
-            <li>Edit details</li>
-            <li>Remove from this Memory Wall</li>
-        </ul>
-    </div>
-    {% endfor %}
-    {% else %}
-    <p>Sorry, there isn&rsquo;t anything on this wall yet.</p>
-    {% endif %}
-</div>
-
+{% include "SkNdUserBundle:MemoryWall:memoryWallMediaResourcesPartial.html.twig" 
+    with {
+        'wallBelongsToThisUser' : wallBelongsToThisUser,
+        'mw' : mw
+    } 
+%}
 {# if the memory wall being shown belongs to the current user, show further actions #}
 {% if wallBelongsToThisUser %}
 <div>
     <h2>Actions</h2>
     <ul>
         <li><a href="{{ path('index') }}">Add some stuff</a> &ndash; Use noodleDig to find something and then just select &lsquo;add to my Memory Wall&rsquo; wherever you see it.</li>
-        <li><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}">Edit this wall</a> &ndash; Update the details of this wall, go on.</li>
+        <li><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}">Edit this wall</a> &ndash; Update the details of this wall, go nuts.</li>
         <li><a href="{{ path('memoryWallDelete', {'slug':mw.slug}) }}">Delete the wall</a> &ndash; If you really want to, you can delete it, but where&rsquo;s the fun in that?</li>
     </ul>
 </div>

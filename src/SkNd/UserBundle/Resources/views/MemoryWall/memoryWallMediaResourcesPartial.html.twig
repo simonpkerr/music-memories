@@ -1,0 +1,29 @@
+<div>
+    <h2>Contents</h2>
+    {% if mw.memoryWallMediaResources|length > 0 %}
+    {% for mwmr in mw.memoryWallMediaResources %}
+    {% set mr = mwmr.mediaResource %}
+    <div class="mediaResource">
+        <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
+        <h3><a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></h3>
+        <dl>
+            <dt>Date added</dt>
+            <dd>{{ mwmr.dateAdded|date("F jS \\a\\t g:ia") }}</dd>
+            {% if mwmr.userTitle is not null %}
+            <dt>Your title</dt>
+            <dd>{{ mwmr.userTitle }}</dd>
+            {% endif %}            
+        </dl>
+        {% if wallBelongsToThisUser %}
+        <h4>Actions</h4>
+        <ul>
+            <li>Edit</li>
+            <li><a href="{{ path('memoryWallDeleteMediaResource', {'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall">Delete</a></li>
+        </ul>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>Sorry, there isn&rsquo;t anything on this wall yet.</p>
+    {% endif %}
+</div>

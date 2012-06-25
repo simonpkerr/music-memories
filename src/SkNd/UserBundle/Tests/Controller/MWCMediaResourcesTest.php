@@ -21,13 +21,17 @@ class MWCMediaResourcesTest extends WebTestCase
 {
     private $client;
     private $router;
+    private $em;
+    private $mediaapi;
+    private $session;
+    private $mediaSelection;
     /*private $cachedXMLResponse;
     private $liveXMLResponse;
     private $cachedYouTubeXMLResponse;
     private $liveYouTubeXMLResponse;
     private $testAmazonAPI;
     private $testYouTubeAPI;
-    private $session;*/
+    */
     
     
     public function setup(){
@@ -36,13 +40,35 @@ class MWCMediaResourcesTest extends WebTestCase
         $kernel = static::createKernel();
         $kernel->boot();
         $this->router = $kernel->getContainer()->get('router');
+ 
+        //$this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
         
+        //$this->session = $kernel->getContainer()->get('session');
+         
+       $this->mediaapi = $kernel->getContainer()->get('sk_nd_media.mediaapi');
+        $this->session = $this->mediaapi->getSession();
+        $this->em = $this->mediaapi->getEntityManager();
+        //$this->mediaapi->setSession($this->session);
+        //$this->mediaapi->setEntityManager($this->em);
+        
+        /*$mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
+        $this->mediaSelection = new MediaSelection();
+        $this->mediaSelection->setMediaTypes($mediaType);
+        
+        $this->session->set('mediaSelection', $this->mediaSelection);*/
     }
-
-
+    
+    private function getNewMediaResource($id = 'testMR'){
+        $mr = new MediaResource();
+        $mr->setId($id);
+        $mr->setAPI($this->em->getRepository('SkNdMediaBundle:API')->find(1));
+        $mr->setMediaType($this->em->getRepository('SkNdMediaBundle:MediaType')->find(1));
+        return $mr;
+    }
+    
     public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLogin(){
         $url = $this->router->generate('memoryWallAddMediaResource', array(
-            'slug'  => 'my-memory-wall-1',
+            'slug'  => 'my-memory-wall',
             'api'   => 'amazonapi',
             'id'    => '12345',
         ));
@@ -54,23 +80,27 @@ class MWCMediaResourcesTest extends WebTestCase
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $params = array(
-            '_username' => 'testuser2',
-            '_password' => 'testuser2',
-            
-        ); 
-        
+            '_username' => 'testuser',
+            '_password' => 'testuser',
+        );
+       
         $crawler = $this->client->submit($form, $params);
+        
+        //***** TRY MANUALLY SETTING THE MEDIA SELECTION PARAMETERS FIRST OR LOOKING AT A DETAILS PAGE FIRST
+        $this->mediaapi->getMediaSelection(array(
+            'media' => 'film',
+        ));
+        
         $url = $this->router->generate('memoryWallAddMediaResource', array(
-            'slug'  => 'my-memory-wall-1',
+            'slug'  => 'my-memory-wall',
             'api'   => 'amazonapi',
-            'id'    => 'B00061S0QE',
+            'id'    => 'testMR',
         ));
         $crawler = $this->client->request('GET', $url);
-        
+        $this->assertTrue($this->em->getRepository('SkNdMediaBundle:MediaResource')->findOneBy(array('id' => 'testMR'))->count() > 0);
         
     }
-    
-    
+  
     public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLoginThenToSelectWallViewIfMoreThanOneWallExists(){
         
     }
@@ -115,5 +145,38 @@ class MWCMediaResourcesTest extends WebTestCase
         
     }
     
+    public function testDeleteMemoryWallAlsoRemovesAssociatedMediaResources(){
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser2',
+            '_password' => 'testuser2',
+            
+        ); 
+        $crawler = $this->client->submit($form, $params);
+        
+        //add a resource to memory wall 1
+        //$mr = getNewMediaResource('newMR');        
+        //$this->mediaapi->addMediaResource();
+        
+        $url = $this->router->generate('memoryWallAddMediaResource', array(
+            'slug'  => 'my-memory-wall-1',
+            'api'   => 'amazonapi',
+            'id'    => 'newMR'
+        ));
+        $crawler = $this->client->request('GET', $url);
+        
+        $url = $this->router->generate('memoryWallDelete', array('slug' => 'my-memory-wall-1'));
+        $crawler = $this->client->request('GET', $url);
+
+        $url = $this->router->generate('memoryWallDeleteConfirm', array('slug' => 'my-memory-wall-1'));
+        $crawler = $this->client->request('GET', $url);
+        
+        $this->assertTrue($this->em->getRepository('SkNdMediaBundle:MediaResource')->find('newMR')->count() == 0);
+    }
+    
+    
+    
 }
 
+?>

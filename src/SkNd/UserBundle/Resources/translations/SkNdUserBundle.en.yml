@@ -28,13 +28,19 @@ memoryWall:
   showOwnWalls:
     flash:
       accessDenied: Naughty naughty. You have to log in first to see your own Memory Walls
-  resources:
-    add:
-      flash:
-        accessDenied: Just log in first, then you can start adding stuff
-        identicalResourceError: Whoops. You&rsquo;re trying to add something that already exists on this wall
-        selectWall: You&rsquo;ve got more than 1 wall. Please select one first
-        success: Yay. Your item was added successfully
+mediaResource:
+  add:
+    flash:
+      accessDenied: Just log in first, then you can start adding stuff
+      identicalResourceError: Uh&ndash;oh. You&rsquo;re trying to add something that already exists on this wall. You can&rsquo;t do that, sorry
+      selectWall: You&rsquo;ve got more than 1 wall. Please select one first
+      success: Yay. Your item was added successfully
+  delete:
+    confirm: I&rsquo;m sure. Delete it
+    cancel: No. On second thoughts, I don&rsquo;t think I will.
+    flash:
+      accessDenied: Just log in first, then you can delete this
+      success: The item was successfully deleted. 
   
 registration:
   memoryWallReminder: By the way, we&rsquo;ve set up a Memory Wall for you just to save you a bit of hassle! You can start adding stuff to it straight away

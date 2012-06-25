@@ -2,13 +2,14 @@ SkNd\UserBundle\Entity\MemoryWallMediaResource:
   type: entity
   table: null
   id:
-   id:
-     type: integer
-     generator: { strategy: AUTO }
-#   mediaResource_id:
-#      type: string
-#   memoryWall_id:
-#      type: integer
+    mediaResource:
+      associationKey: true
+    memoryWall:
+      associationKey: true
+#   id:
+#     type: integer
+#     generator: { strategy: AUTO }
+
   fields:
     userTitle:
       type: string

@@ -84,15 +84,15 @@ class MemoryWall
     }
     
     public function getMediaResources(){
-        //return $this->mediaResources;
-        //return $this->memoryWallMediaResources;
-        //$mrs = array();
         $mrs = new ArrayCollection();
         foreach($this->memoryWallMediaResources as $mwMr){
             $mrs->add($mwMr->getMediaResource());
         }
         return $mrs;
-        
+    }
+    
+    public function getMediaResource($id){
+        $mr = $this->memoryWallMediaResources->get($id, $this->getId())->getMediaResource();
     }
     
     public function getMemoryWallMediaResources(){
@@ -100,18 +100,9 @@ class MemoryWall
     }
     
     public function addMediaResource(MediaResource $mr){
-        $mwmrs = $this->getMemoryWallMediaResources();
-        if($mwmrs->count() > 0){
-            $mediaResourceExists = $mwmrs->filter(function($mwmr) use ($mr){
-                return $mwmr->getMediaResource() == $mr;
-            })->count() > 0;
-            if($mediaResourceExists)
-                throw new \RuntimeException ('Media Resource has already been added to this memory wall');
-        }
-        
+        $mr->incrementSelectedCount();
         $mwMr = new MemoryWallMediaResource($this, $mr);        
         $this->memoryWallMediaResources->add($mwMr);
-        
     }
 
     public function setUser(User $user)

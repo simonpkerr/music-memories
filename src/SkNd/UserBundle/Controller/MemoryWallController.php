@@ -31,7 +31,7 @@ class MemoryWallController extends Controller
     protected $userManager;
     
     private function getEntityManager(){
-        return $this->get('sk_nd_media.mediaapi')->getEntityManager();
+        return $this->container->get('sk_nd_media.mediaapi')->getEntityManager();
     }
         
     protected function getUserManager(){
@@ -224,7 +224,7 @@ class MemoryWallController extends Controller
         $this->em = $this->getEntityManager();
         $this->currentUser = $this->getCurrentUser();
         if(!$this->currentUserIsAuthenticated($this->currentUser)){
-            $this->get('session')->setFlash('notice', 'memoryWall.resources.add.flash.accessDenied');
+            $this->get('session')->setFlash('notice', 'mediaResource.add.flash.accessDenied');
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
@@ -233,7 +233,7 @@ class MemoryWallController extends Controller
             if($this->currentUser->getMemoryWalls()->count() == 1){
                 $mw = $this->currentUser->getMemoryWalls()->first();
             }else{
-                $this->get('session')->setFlash('notice', 'memoryWall.resources.add.flash.selectWall');
+                $this->get('session')->setFlash('notice', 'mediaResource.add.flash.selectWall');
                 $viewParams = $this->getViewParams($this->currentUser->getUsernameCanonical());
                 $viewParams = array_merge($viewParams, array(
                     'api'   => $api,
@@ -254,17 +254,48 @@ class MemoryWallController extends Controller
         //add the resource to the selected wall
         try{
             $mw->addMediaResource($mediaResource);
-        }catch(\RuntimeException $ex){
-            $this->get('session')->setFlash('notice', 'memoryWall.resources.add.flash.identicalResourceError');
+            $this->em->flush();
+        }catch(\Exception $ex){
+            $this->get('session')->setFlash('notice', 'mediaResource.add.flash.identicalResourceError');
             return $this->redirect($this->getRequest()->headers->get('referer'));
         }
-        $this->em->flush();
         
-        $this->get('session')->setFlash('notice', 'memoryWall.resources.add.flash.success');
+        
+        $this->get('session')->setFlash('notice', 'mediaResource.add.flash.success');
         
         return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
               
     }
+    
+    public function deleteMediaResourceAction($slug, $id, $confirmed = false){
+        $this->em = $this->getEntityManager();
+        $mw = $this->getOwnWall($slug);
+        $mr = $mw->getMediaResource($id);
+        if(is_null($mr))
+            throw new \UnexpectedValueException('Media Resource not found');
+        
+        //if the token is set, delete the media resource, else show the confirmation screen
+        if($confirmed){
+            //$this->get('session')->remove('tokens/SkNd-delete-mr-token');
+            $mw->deleteMediaResource($mr);
+            $this->em->flush();
+            $this->get('session')->setFlash('notice', 'mediaResource.delete.flash.success');
+            return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
+            
+        } else {
+            /**
+             * the likelihood is that delete resource has been selected from the show wall page,
+             * in which case, all the media resources will have been cached, so there is no need
+             * to look up the resource again
+             */
+            return $this->render('SkNdUserBundle:MemoryWall:deleteMediaResource.html.twig', array(
+                'mw'    => $mw,
+                'mr'    => $mr,
+            ));
+        }
+    }
+    
+    
     
     private function getOwnWall($slug){
         $mw = $this->getMemoryWall($slug);

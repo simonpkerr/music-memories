@@ -15,6 +15,7 @@ use SkNd\UserBundle\Entity\MemoryWall;
 use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\Common\Collections\ArrayCollection;
+use \RuntimeException;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -30,7 +31,6 @@ class MediaAPI {
     public static $GENERAL_RECOMMENDATION = 3;
     
     protected $session;
-    
     protected $apiStrategy;
     protected $apis;
     protected $debugMode = false;
@@ -69,15 +69,27 @@ class MediaAPI {
         return $this->em;
     }
     
+    public function setEntityManager(EntityManager $em){
+        $this->em = $em;
+    }
+    
     public function getAPIs(){
         return $this->apis;
+    }
+    
+    public function setSession(Session $session){
+        $this->session = $session;
+    }
+    
+    public function getSession(){
+        return $this->session;
     }
     
     public function setAPIStrategy($apiStrategyKey){
         if(array_key_exists($apiStrategyKey, $this->apis))
             $this->apiStrategy = $this->apis[$apiStrategyKey];
         else
-            throw new \RuntimeException("api key not found");
+            throw new RuntimeException("api key not found");
     }
     
     public function getCurrentAPI(){
@@ -107,7 +119,6 @@ class MediaAPI {
         if($this->mediaSelection == null)
             $this->mediaSelection = $this->session->get('mediaSelection') != null ? $this->session->get('mediaSelection') : new MediaSelection();
         
-        //----*****THIS NEEDS WORK - IF A STRAIGHT URL IS ENTERED WITH NO SESSION, FATAL ERROR OCCURS WHEN ADDING RESOURCES
         $mediaType = $this->mediaSelection->getMediaTypes();
         $decade = $this->mediaSelection->getDecades();
         $genre = $this->mediaSelection->getSelectedMediaGenres();
@@ -189,7 +200,11 @@ class MediaAPI {
             $genre = $this->em->merge($genre);
             $this->mediaSelection->setSelectedMediaGenres($genre);
         }
-                
+        
+        //final check to see if everything is still null
+        if(is_null($mediaType) && is_null($decade) && is_null($genre))
+            throw new RuntimeException('No media selection has been made');
+        
         //save the data so this process is only done once
         $this->session->set('mediaSelection', $this->mediaSelection);
         
@@ -301,7 +316,7 @@ class MediaAPI {
         $cachedListing->setXmlData($response->asXML());        
         
         $this->em->persist($cachedListing);
-        $this->em->flush();
+        $this->flush();
     }
     
     public function getCachedListings(){
@@ -324,7 +339,7 @@ class MediaAPI {
             $dateCreated = $this->mediaResource->getMediaResourceCache()->getDateCreated();
             if($dateCreated->format("Y-m-d H:i:s") < Utilities::getValidCreationTime()){
                 $this->mediaResource->deleteMediaResourceCache();
-                $this->em->flush();
+                $this->flush();
             }
         }
         
@@ -343,9 +358,21 @@ class MediaAPI {
             $this->mediaResource = new MediaResource();
             $this->mediaResource->setId($itemId);
             $this->mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->API_NAME));
-            $this->mediaResource->setDecade($this->mediaSelection->getDecades());
             $this->mediaResource->setMediaType($this->mediaSelection->getMediaTypes());
+            $this->mediaResource->setDecade($this->mediaSelection->getDecades());
             $this->mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenres());
+        } else {
+            /**
+             * if the media resource exists but was discovered using more specific parameters (i.e. mediatype, decade and genre)
+             * set these parameters on the media resource. This means that items discovered using vague parameters become 
+             * more precise over time
+             **/ 
+            if($this->mediaResource->getDecade() == null && $this->mediaSelection->getDecades() != null)
+                $this->mediaResource->setDecade($this->mediaSelection->getDecades());
+            
+            if($this->mediaResource->getGenre() == null && $this->mediaSelection->getSelectedMediaGenres() != null)
+                $this->mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenres());
+            
         }
             
         //if cached listings not exists create a new MediaResourceCache object and update the mediaResource    
@@ -361,7 +388,8 @@ class MediaAPI {
         $this->mediaResource->incrementViewCount();
         
         $this->em->persist($this->mediaResource);
-        $this->em->flush();
+        $this->flush();
+        
     }
     
     //from a batch operation, take the xml data and resources and re-cache them
@@ -389,7 +417,7 @@ class MediaAPI {
         }
         
         if($flush)
-            $this->em->flush();
+            $this->flush();
     }
     
     /**
@@ -402,7 +430,7 @@ class MediaAPI {
      * deletes older cached records and loads uncached mediaresources from live api, then caches it 
      * For use by show memory wall and the timeline
      */
-    public function processMediaResources($mediaResources, $page){
+    public function processMediaResources($mediaResources, $page = 1){
         $updatesMade = false;
         //loop through each api, get the relevant media resources
         foreach($this->apis as $api){
@@ -415,9 +443,6 @@ class MediaAPI {
             if($resources->count() > 0){
                 $ids = array();
                 foreach($resources as $mediaResource){
-                    //if($mediaResource->getMediaResourceCache() != null && $mediaResource->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") >= Utilities::getValidCreationTime()){
-                    //    $mediaResource->deleteMediaResourceCache();
-                    //}
                     array_push($ids, $mediaResource->getId());
                 }
                 //do batch process of ids then store in cache
@@ -427,7 +452,7 @@ class MediaAPI {
                 $this->cacheMediaResourceBatch($this->response, $resources, false);
                 
                 //flush will remove all the older cached records from db and insert the new ones
-                $this->em->flush();       
+                $this->flush();       
                 $updatesMade = true;
             }
         }
@@ -460,6 +485,10 @@ class MediaAPI {
         $params['decade'] = $params['decade'] == Decade::$default ? null : $params['decade'];
         $params['genre'] = $params['genre'] == Genre::$default ? null : $params['genre'];
         
+    }
+    
+    protected function flush(){
+        $this->em->flush();
     }
     
     

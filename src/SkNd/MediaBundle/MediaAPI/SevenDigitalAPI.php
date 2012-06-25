@@ -8,6 +8,7 @@
 
 namespace SkNd\MediaBundle\MediaAPI;
 require_once 'SimpleXmlRequest.php';
+use SkNd\MediaBundle\Entity\MediaSelection;
 
 class SevenDigitalAPI implements IAPIStrategy{
     public $API_NAME = 'sevendigital';
@@ -36,6 +37,19 @@ class SevenDigitalAPI implements IAPIStrategy{
     public function getName(){
         return $this->API_NAME;
     }
+    
+    /*
+     * for youtube, details are retrieved on the client,
+     * but still need to be stored to drive recommendations, timeline
+     * and improve memory walls
+     */
+    public function getDetails(array $params){}
+    public function doBatchProcess(array $ids){}
+    
+    public function getId(\SimpleXMLElement $xmlData){}
+    public function getImageUrlFromXML(\SimpleXMLElement $xmlData) {}
+    public function getItemTitleFromXML(\SimpleXMLElement $xmlData){}
+    public function getListings(MediaSelection $mediaSelection){}
     
 }
 

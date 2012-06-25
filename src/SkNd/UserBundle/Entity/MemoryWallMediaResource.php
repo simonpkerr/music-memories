@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class MemoryWallMediaResource
 {
-    protected $id;
+    //protected $id;
     
     //protected $memoryWall_id;
     protected $memoryWall;
@@ -24,19 +24,19 @@ class MemoryWallMediaResource
     protected $dateAdded;
     
     
-    public function getId()
+    /*public function getId()
     {
         return $this->id;
     }
     public function setId($id)
     {
         $this->id = $id;
-    }
+    }*/
     
-    public function __construct(MemoryWall $mw = null, MediaResource $mr = null){
-        if(!is_null($mw))
+    public function __construct(MemoryWall $mw, MediaResource $mr){
+        //if(!is_null($mw))
             $this->memoryWall = $mw;
-        if(!is_null($mr))
+        //if(!is_null($mr))
             $this->mediaResource = $mr;             
     }
     

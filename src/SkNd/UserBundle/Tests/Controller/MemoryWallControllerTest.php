@@ -28,6 +28,7 @@ class MemoryWallControllerTest extends WebTestCase
     private $testAmazonAPI;
     private $testYouTubeAPI;
     private $session;
+    private $em;
     
     
     public function setup(){
@@ -36,7 +37,7 @@ class MemoryWallControllerTest extends WebTestCase
         $kernel = static::createKernel();
         $kernel->boot();
         $this->router = $kernel->getContainer()->get('router');
-        
+        //$this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
      
     public function testMemoryWallIndexWithNoParamsShowsPublicWallsForNonLoggedInUser(){
@@ -389,6 +390,10 @@ class MemoryWallControllerTest extends WebTestCase
         $this->assertTrue(strpos($crawler->filter('div#flashMessages ul li')->eq(0)->text(), 'That was your last Memory Wall') !== false);
         $this->assertTrue($crawler->filter('body > ul#memoryWallGallery li dl dd')->eq(0)->text() == 'My Memory Wall');
     }
+    
+    
+    
+    
 
     
 }
