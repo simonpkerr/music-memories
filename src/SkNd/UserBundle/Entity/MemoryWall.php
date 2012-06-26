@@ -91,8 +91,11 @@ class MemoryWall
         return $mrs;
     }
     
-    public function getMediaResource($id){
-        $mr = $this->memoryWallMediaResources->get($id, $this->getId())->getMediaResource();
+    public function getMediaResourceById($mrId){
+        if(!isset($this->memoryWallMediaResources[$mrId]))
+            throw new \InvalidArgumentException('Media Resource not found');
+        
+        return $this->memoryWallMediaResources[$mrId]->getMediaResource();
     }
     
     public function getMemoryWallMediaResources(){
@@ -100,10 +103,21 @@ class MemoryWall
     }
     
     public function addMediaResource(MediaResource $mr){
+        if(isset($this->memoryWallMediaResources[$mr->getId()]))
+            throw new \InvalidArgumentException('Duplicate Media Resource found');
+        
         $mr->incrementSelectedCount();
         $mwMr = new MemoryWallMediaResource($this, $mr);        
-        $this->memoryWallMediaResources->add($mwMr);
+        $this->memoryWallMediaResources->set($mr->getId(), $mwMr);
     }
+    
+    public function deleteMediaResourceById($id){
+        if(!isset($this->memoryWallMediaResources[$id]))
+            throw new \InvalidArgumentException('Media Resource not found');
+        
+        $this->memoryWallMediaResources->remove($id);
+    }
+    
 
     public function setUser(User $user)
     {

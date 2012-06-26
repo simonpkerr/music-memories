@@ -39,7 +39,7 @@ mediaResource:
     confirm: I&rsquo;m sure. Delete it
     cancel: No. On second thoughts, I don&rsquo;t think I will.
     flash:
-      accessDenied: Just log in first, then you can delete this
+      accessDenied: Oh behave! You have to log in first, then you can delete stuff
       success: The item was successfully deleted. 
   
 registration:

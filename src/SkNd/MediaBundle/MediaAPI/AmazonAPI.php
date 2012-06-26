@@ -16,6 +16,8 @@ class AmazonAPI implements IAPIStrategy {
     private $private_key;
     private $associate_tag;
     protected $asr;
+    private $ITEM_SEARCH = 'ItemSearch';
+    private $ITEM_LOOKUP = 'ItemLookup';
     //private $doctrine;
     //private $em;
     
@@ -31,7 +33,7 @@ class AmazonAPI implements IAPIStrategy {
         //$this->em = $doctrine->getEntityManager();
         
         $this->amazonParameters = array(
-                "Operation"     => "ItemSearch",
+                "Operation"     => $this->ITEM_SEARCH,
                 //"ResponseGroup" => "ItemAttributes,SalesRank,Similarities,Request",
                 "ResponseGroup" => "Images,ItemAttributes,SalesRank,Request",
                 "Condition"     => "All",
@@ -99,7 +101,7 @@ class AmazonAPI implements IAPIStrategy {
      */
     public function getDetails(array $params){
         $this->amazonParameters = array_merge($params, array(
-               'Operation'          =>      'ItemLookup',
+               'Operation'          =>      $this->ITEM_LOOKUP,
                'ResponseGroup'      =>      'Images,ItemAttributes,SalesRank,Request,Similarities',
  
         ));
@@ -108,7 +110,8 @@ class AmazonAPI implements IAPIStrategy {
         $xml_response = $this->queryAmazon($this->amazonParameters, "co.uk");
         
         try{
-            return $this->verifyXmlResponse($xml_response)->Items->Item;
+            $verifiedResponse = $this->verifyXmlResponse($xml_response);
+            return $verifiedResponse->Items->Item;
         }catch(\RunTimeException $re){
             throw $re;
         }catch(\LengthException $le){
@@ -169,14 +172,16 @@ class AmazonAPI implements IAPIStrategy {
         }
         else
         {
-            /*previous class used below statement, but modified looks at total results returned
-            if (isset($response->Items->Item->ItemAttributes->Title))
-            */
-
-            if($response->Items->TotalResults > 0 || $this->amazonParameters['Operation'] == 'ItemLookup')
-                return ($response);
-            else
+            //for searches
+            if($response->Items->TotalResults == 0 && $this->amazonParameters['Operation'] == $this->ITEM_SEARCH)
                 throw new \LengthException("No results were returned");
+            
+            //for lookups
+            if(!$response->Items->Request->IsValid && $this->amazonParameters['Operation'] == $this->ITEM_LOOKUP)
+                throw new \RuntimeException("Invalid result set");
+            
+            if($response->Items->Request->Errors->Error != null) 
+                throw new \RuntimeException($response->Items->Request->Errors->Error->Message);
             
             return $response;
         }

@@ -62,4 +62,5 @@ memoryWallDeleteMediaResourceConfirm:
   pattern: /memorywall/{slug}/delete/{id}/{confirmed}
   defaults:
     _controller: SkNdUserBundle:MemoryWall:deleteMediaResource
+  requirements:
     confirmed: true

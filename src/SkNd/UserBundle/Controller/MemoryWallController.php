@@ -242,7 +242,7 @@ class MemoryWallController extends Controller
                 return $this->render('SkNdUserBundle:MemoryWall:selectMemoryWall.html.twig', $viewParams);
             }
         }else{
-            $mw = $this->getOwnWall($slug);
+            $mw = $this->getOwnWall($slug, 'mediaResource.add.flash.accessDenied');
         }
         
         //look up the detail and add the resource, then show the memory wall
@@ -260,7 +260,6 @@ class MemoryWallController extends Controller
             return $this->redirect($this->getRequest()->headers->get('referer'));
         }
         
-        
         $this->get('session')->setFlash('notice', 'mediaResource.add.flash.success');
         
         return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
@@ -269,20 +268,23 @@ class MemoryWallController extends Controller
     
     public function deleteMediaResourceAction($slug, $id, $confirmed = false){
         $this->em = $this->getEntityManager();
-        $mw = $this->getOwnWall($slug);
-        $mr = $mw->getMediaResource($id);
-        if(is_null($mr))
-            throw new \UnexpectedValueException('Media Resource not found');
+        $mw = $this->getOwnWall($slug, 'mediaResource.delete.flash.accessDenied');
+        try{
+            $mr = $mw->getMediaResourceById($id);
+        } catch(\InvalidArgumentException $iae) {
+            throw $this->createNotFoundException("Media Resource cannot be deleted");
+        }
         
         //if the token is set, delete the media resource, else show the confirmation screen
-        if($confirmed){
+        if($confirmed){ //&& $this->get('session')->get('tokens/SkNd-delete-mr-token')){
             //$this->get('session')->remove('tokens/SkNd-delete-mr-token');
-            $mw->deleteMediaResource($mr);
+            $mw->deleteMediaResourceById($id);
             $this->em->flush();
             $this->get('session')->setFlash('notice', 'mediaResource.delete.flash.success');
             return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
             
         } else {
+            //$this->get('session')->set('tokens/SkNd-delete-mr-token', true);
             /**
              * the likelihood is that delete resource has been selected from the show wall page,
              * in which case, all the media resources will have been cached, so there is no need
@@ -296,11 +298,10 @@ class MemoryWallController extends Controller
     }
     
     
-    
-    private function getOwnWall($slug){
+    private function getOwnWall($slug, $exceptionMessage = 'memoryWall.delete.flash.accessDenied'){
         $mw = $this->getMemoryWall($slug);
         if(!$this->memoryWallBelongsToUser($mw)){
-            $this->get('session')->setFlash('notice', 'memoryWall.delete.flash.accessDenied');
+            $this->get('session')->setFlash('notice', $exceptionMessage);
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         return $mw;

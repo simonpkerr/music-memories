@@ -50,21 +50,13 @@ class Genre
         return $this->id;
     }
 
-    /**
-     * Set mediaTypeId
-     *
-     * @param integer $mediaTypeId
-     */
+    
     public function setMediaTypeId($mediaTypeId)
     {
         $this->mediaType_id = $mediaTypeId;
     }
 
-    /**
-     * Get mediaTypeId
-     *
-     * @return integer 
-     */
+    
     public function getMediaTypeId()
     {
         return $this->mediaType_id;

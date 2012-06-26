@@ -1,3 +1,9 @@
+<?xml version="1.0"?>
+<ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">
+<Items>
+<Request>
+    <IsValid>True</IsValid>
+</Request>
 <Item>
     <ASIN>B00061S0QE</ASIN>
     <DetailPageURL>http://www.amazon.co.uk/Elf-DVD-Will-Ferrell/dp/B00061S0QE%3FSubscriptionId%3DAKIAJH6G4CGNH5FCPVHA%26tag%3DSkNdcouk-20%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB00061S0QE</DetailPageURL>
@@ -127,3 +133,5 @@
       <UPC>501723919247</UPC>
     </ItemAttributes>
     </Item>
+    </Items>
+    </ItemLookupResponse>

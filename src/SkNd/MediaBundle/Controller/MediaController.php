@@ -100,14 +100,11 @@ class MediaController extends Controller
                 return $this->redirect($this->generateUrl('error'));
             }
         }
-       
         
         //just returns a partial segment of code to show the form for selecting media
         return $this->render('SkNdMediaBundle:Media:mediaSelectionPartial.html.twig', array(
            'form' => $form->createView(), 
         ));
-            
-        
     }
     
     private function calculatePagingBounds($pagerCount, $currentPage){

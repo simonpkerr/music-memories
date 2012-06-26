@@ -14,7 +14,7 @@ class MemoryWallMediaResource
     //protected $memoryWall_id;
     protected $memoryWall;
 
-    //protected $mediaResource_id;
+    protected $mediaResource_id;
     protected $mediaResource;
 
     protected $userTitle;
@@ -24,20 +24,28 @@ class MemoryWallMediaResource
     protected $dateAdded;
     
     
-    /*public function getId()
+    public function getMemoryWallId()
     {
-        return $this->id;
+        return $this->memoryWall->getId();
     }
-    public function setId($id)
+    public function getMediaResourceId()
     {
-        $this->id = $id;
-    }*/
+        return $this->mediaResource_id;//->getId();
+    }
+    
+    public function getId(){
+        return array(
+            $this->memoryWall->getId(),
+            $this->mediaResource->getId(),
+        );
+    }
     
     public function __construct(MemoryWall $mw, MediaResource $mr){
         //if(!is_null($mw))
             $this->memoryWall = $mw;
         //if(!is_null($mr))
             $this->mediaResource = $mr;             
+            $this->mediaResource_id = $mr->getId();
     }
     
 

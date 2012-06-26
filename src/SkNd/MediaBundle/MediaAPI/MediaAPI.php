@@ -98,7 +98,7 @@ class MediaAPI {
     
     //for testing purposes, allow injection of apis
     public function setAPIs(array $apis){
-        $this->apis = $apis;
+        $this->apis = array_merge($apis);
     }
     
     /*

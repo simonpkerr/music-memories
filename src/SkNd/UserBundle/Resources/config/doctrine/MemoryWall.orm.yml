@@ -47,6 +47,9 @@ SkNd\UserBundle\Entity\MemoryWall:
       mappedBy: memoryWall
       cascade: ["persist", "remove"]
       orphanRemoval: true
+      #the indexBy key means that the resulting array collection in memory wall will be indexed by media resource ids
+      #meaning that searches for specific media resources are easier
+      indexBy: mediaResource_id
       orderBy:
         dateAdded: desc
   manyToOne:
@@ -58,21 +61,5 @@ SkNd\UserBundle\Entity\MemoryWall:
         name: user_id
         referencedColumnName: id
         #onDelete: set null
-#  manyToMany:
-#    mediaResources:
-#      targetEntity: SkNd\MediaBundle\Entity\MediaResource
-#      orderBy:
-#        dateCreated: desc
-#      inversedBy: memoryWalls
-#      #cascade: ["persist"]
-#      joinTable:
-#        name: memoryWalls_mediaResources
-#        joinColumns:
-#          memoryWall_id:
-#            referencedColumnName: id
-#            #onDelete: set null
-#        inverseJoinColumns:
-#          mediaResource_id:
-#            referencedColumnName: id
-#            #onDelete: set null
+
      

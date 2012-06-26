@@ -3,10 +3,13 @@
 
 {% block content %}
 <h1>Delete an item from your Memory Wall</h1>
-{% set itemTitle = mr.mediaResourceCache is null ? 'this item' : ['&ldquo;<strong>',mr.mediaResourceCache.title,'&rdquo;</strong>']|join %}
-<p>Are you <span class="italic">really</span> sure you want to delete {{ itemTitle }} from your Memory Wall ({{ mw.name }})?</p>
+{#% set itemTitle = mr.mediaResourceCache is null ? 'this item' :  mr.mediaResourceCache.title %#}
+{% if mr.mediaResourceCache is not null %}
+<img class="mediaResource-image" src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
+{% endif %}
+<p>Are you <span class="italic">really</span> sure you want to delete &ldquo;<strong>{{ mr.mediaResourceCache.title|default('this item') }}&rdquo;</strong> from your Memory Wall ({{ mw.name }})?</p>
 <ul>
-    <li><a href="{{ path('memoryWallDeleteMediaResourceConfirm', {'slug':mw.slug, 'id': mr.id }) }}" title="delete the item">{{ 'mediaResource.delete.confirm'|trans({}, 'SkNdUserBundle')|raw }}</a></li> 
+    <li><a href="{{ path('memoryWallDeleteMediaResourceConfirm', {'slug':mw.slug, 'id': mr.id, 'confirmed':true }) }}" title="delete the item">{{ 'mediaResource.delete.confirm'|trans({}, 'SkNdUserBundle')|raw }}</a></li> 
     <li><a href="{{ path('memoryWallShow', {'slug' : mw.slug }) }}" title="Cancel deleting the item">{{ 'mediaResource.delete.cancel'|trans({}, 'SkNdUserBundle')|raw }}</a></li> 
 </ul>
 {% endblock content %}

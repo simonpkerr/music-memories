@@ -13,6 +13,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use SkNd\UserBundle\Entity\User;
 use SkNd\UserBundle\Entity\MemoryWall;
+use SkNd\MediaBundle\Entity\MediaResource;
+use SkNd\MediaBundle\Entity\MediaResourceCache;
 
 class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInjection\ContainerAwareInterface {
     
@@ -25,14 +27,27 @@ class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInject
         $this->container = $container;
         $this->em = $this->container->get('doctrine')->getEntityManager();
         $this->userManager = $this->container->get('fos_user.user_manager');
+        
     }
     
     public function load(ObjectManager $manager){
-
+        //$this->em->createQuery('DELETE from SkNd\MediaBundle\Entity\MediaResource')->execute();
+        $mrs = $this->em->getRepository('SkNdMediaBundle:MediaResource')->findAll();
+        foreach($mrs as $mr){
+            $this->em->remove($mr);
+        }
+        
+        $this->em->flush();
+        
         $users = $this->userManager->findUsers();
         foreach($users as $user){
             $this->userManager->deleteUser($user);
         }
+             
+        $mrs = array();
+        array_push($mrs, $this->getNewMediaResource('testuser-mr1',$manager));
+        array_push($mrs, $this->getNewMediaResource('testuser-mr2',$manager));
+        array_push($mrs, $this->getNewMediaResource('testuser-mr3',$manager));
         
         //3 sample users
         $user = $this->userManager->createUser();
@@ -47,9 +62,9 @@ class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInject
         $privateMw->setName('private wall');                
         $user->addMemoryWall($privateMw);
         $this->userManager->updateUser($user, true);
-        
-        //$manager->persist($user);
-        
+        $mw = $user->getMemoryWalls()->first();
+        $mw->addMediaResource($mrs[0]);
+
         $user = $this->userManager->createUser();
         $user->setDateofbirth(new \DateTime("now"));
         $user->setUsername('testuser2');
@@ -57,7 +72,10 @@ class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInject
         $user->setPlainPassword('testuser2');
         $user->setEnabled(true);
         $this->userManager->updateUser($user, true);
-        
+        $mw = $user->getMemoryWalls()->first();
+        $mw->addMediaResource($mrs[0]);
+        $mw->addMediaResource($mrs[1]);
+          
         $user = $this->userManager->createUser();
         $user->setDateofbirth(new \DateTime("now"));
         $user->setUsername('testuser3');
@@ -65,7 +83,31 @@ class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInject
         $user->setPlainPassword('testuser3');
         $user->setEnabled(true);
         $this->userManager->updateUser($user, true);
+        $mw = $user->getMemoryWalls()->first();
+        $mw->addMediaResource($mrs[2]);
         
+        $manager->flush();
+        
+    }
+    
+    private function getNewMediaResource($id, $manager){
+        $mr = new MediaResource();
+        $mr->setId($id);
+        $mr->setAPI($this->em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType($this->em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        $mr->setMediaResourceCache($this->getCache($id));
+        $manager->persist($mr);
+        $manager->flush();
+        
+        return $mr;
+    }
+    private function getCache($id){
+        $mrc = new MediaResourceCache();
+        $mrc->setId($id);
+        //$mrc->setDateCreated(new \DateTime("now"));
+        $mrc->setTitle($id);
+        $mrc->setXmlData(simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\sampleAmazonDetails.xml')->asXml());
+        return $mrc;
     }
        
     

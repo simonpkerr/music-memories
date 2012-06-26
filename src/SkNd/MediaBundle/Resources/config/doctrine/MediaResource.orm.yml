@@ -55,8 +55,8 @@ SkNd\MediaBundle\Entity\MediaResource:
       mappedBy: mediaResource
       cascade: ["persist", "merge", "remove"]
       orphanRemoval: true
-      orderBy:
-        dateCreated: desc
+      #orderBy:
+      #  dateCreated: desc
       
 #  manyToMany:
 #    memoryWalls:
