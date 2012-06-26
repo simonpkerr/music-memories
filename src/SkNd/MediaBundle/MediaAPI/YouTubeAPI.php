@@ -38,7 +38,9 @@ class YouTubeAPI implements IAPIStrategy {
      * but still need to be stored to drive recommendations, timeline
      * and improve memory walls
      */
-    public function getDetails(array $params){}
+    public function getDetails(array $params){
+        
+    }
     public function doBatchProcess(array $ids){}
     
     public function getId(\SimpleXMLElement $xmlData){}

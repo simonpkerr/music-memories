@@ -1,45 +1,57 @@
 {% if youTubeResponse is defined %}
-    <div id="ytapiplayerContainer">
-        <div id="ytapiplayer">
-            <p>You need Flash player 8+ and JavaScript enabled to view this video.</p>
-        </div>
-        <script type="text/javascript">
-        function onYouTubePlayerReady(playerId) {
-            ytplayer = document.getElementById("myytplayer");
-        }
-        function play(videoId) {
-            if (ytplayer) 
-                ytplayer.loadVideoById(videoId);
-        }
-
-        var params = { allowScriptAccess: "always" };
-        var atts = { id: "myytplayer" };
-    </script>
+<div id="ytapiplayerContainer">
+    <div id="ytapiplayer">
+        <p>You need Flash player 8+ and JavaScript enabled to view this video.</p>
     </div>
-    
+    <script type="text/javascript">
+    function onYouTubePlayerReady(playerId) {
+        ytplayer = document.getElementById("myytplayer");
+    }
+    function play(videoId) {
+        if (ytplayer) 
+            ytplayer.loadVideoById(videoId);
+    }
+
+    var params = { allowScriptAccess: "always" };
+    var atts = { id: "myytplayer" };
+        </script>
+    </div>
+
     <script type="text/javascript">
         swfobject.embedSWF("http://www.youtube.com/e/{{youTubeResponse.feed.entry.id}}?enablejsapi=1&playerapiid=ytplayer",
                        "ytapiplayer", "425", "356", "8", null, null, params, atts);
-    </script>
-    <strong>{{ youTubeResponse.url }}</strong>
-    <dl>
+        </script>
+        <strong>{{ youTubeResponse.url }}</strong>
+        <ul>
     {% for ytResult in youTubeResponse.feed.entry %}
-        <dt><a href="javascript:void(0)" onclick="play('{{ytResult.id}}')">{{ ytResult.title|escape }}</a></dt>
-        <dd>    
-            <a href="javascript:void(0)" onclick="play('{{ytResult.id}}')"><img src="{{ ytResult.thumbnail }}" alt="{{ ytResult.title|escape }}" /></a>
+                <li class="listing">
+                <dl>
+                <dt><a href="javascript:void(0)" onclick="play('{{ytResult.id}}')">{{ ytResult.title }}</a></dt>
+                    <dd>    
+                    <a href="javascript:void(0)" onclick="play('{{ytResult.id}}')"><img src="{{ ytResult.thumbnail }}" alt="{{ ytResult.title }}" /></a>
             {#used for debugging a variable#}
-            {#%  debug ytResult %#}              
-        </dd>
-        <dd><a href="#" title="add {{ytResult.title|escape}} to your memory wall">Add {{ytResult.title|escape}} to your memory wall</a></dd>
+            {#%  debug ytResult %#}  
+                    <ul>
+                    {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
+                    with {
+                    'api'       : api,
+                    'itemId'    : ytResult.id,
+                    'itemTitle' : ytResult.title
+                    } 
+                    %}    
+                    </ul>
+                    </dd>
+               </dl>
+               </li>     
     {% endfor %}
-    </dl>
-    <h3>Videos not right?</h3>
-    <p>Please enter a more relevant search for this item</p>
+        </ul>
+        <h3>Videos not right?</h3>
+        <p>Please enter a more relevant search for this item</p>
     {# add a form to allow users to put a more relevant search #}
-    
-       
+
+
 {% else %} 
-    <h3>Sorry&hellip;</h3>
-    <p>{{youTubeException}}</p>
-    
+                <h3>Sorry&hellip;</h3>
+                <p>{{youTubeException}}</p>
+
 {% endif %}        
