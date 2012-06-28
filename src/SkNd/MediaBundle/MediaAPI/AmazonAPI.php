@@ -8,8 +8,10 @@ use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\MediaAPI\Utilities;
+use \SimpleXMLElement;
 
 class AmazonAPI implements IAPIStrategy {
+    const FRIENDLY_NAME = 'Amazon';
     public $API_NAME = 'amazonapi';
     private $amazonParameters;
     private $public_key;                           
@@ -133,25 +135,25 @@ class AmazonAPI implements IAPIStrategy {
     }
     
     //each api will have it's own method for returning the id of a mediaresource for caching purposes.
-    public function getId(\SimpleXMLElement $xmlData){
+    public function getId(SimpleXMLElement $xmlData){
         
     }
     
     
-    public function getImageUrlFromXML(\SimpleXMLElement $xmlData){
+    public function getImageUrlFromXML(SimpleXMLElement $xmlData){
         try{
             //return $xmlData->Items->Item->MediumImage->URL;
             return (string)$xmlData->MediumImage->URL;
-        } catch(\Exception $ex){
+        } catch(\RuntimeException $re){
             return null;
         }
     }
     
-    public function getItemTitleFromXML(\SimpleXMLElement $xmlData){
+    public function getItemTitleFromXML(SimpleXMLElement $xmlData){
         try{
             //return $xmlData->Items->Item->ItemAttributes->Title;
             return (string)$xmlData->ItemAttributes->Title;
-        } catch(\Exception $ex){
+        } catch(\RuntimeException $re){
             return null;
         }
     }

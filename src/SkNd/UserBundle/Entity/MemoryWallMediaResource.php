@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class MemoryWallMediaResource
 {
     //protected $id;
-    
+    protected $api_id;
     //protected $memoryWall_id;
     protected $memoryWall;
 
@@ -40,14 +40,16 @@ class MemoryWallMediaResource
         );
     }
     
-    public function __construct(MemoryWall $mw, MediaResource $mr){
-        //if(!is_null($mw))
-            $this->memoryWall = $mw;
-        //if(!is_null($mr))
-            $this->mediaResource = $mr;             
-            $this->mediaResource_id = $mr->getId();
+    public function getApi_id(){
+        return $this->api_id;
     }
     
+    public function __construct(MemoryWall $mw, MediaResource $mr){
+        $this->memoryWall = $mw;
+        $this->mediaResource = $mr;             
+        $this->mediaResource_id = $mr->getId();
+        $this->api_id = $mr->getAPI()->getId();
+    }
 
     public function setMemoryWall(MemoryWall $memoryWall)
     {

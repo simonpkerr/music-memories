@@ -1,4 +1,9 @@
 {% extends 'SkNdUserBundle::memoryWallLayout.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>    
+{% endblock %}
+    
 {% block title %}Memory Wall &hellip; {{ mw.name }}{% endblock %}
 {% block content %}
 {% set wallBelongsToThisUser = app.user is not null and mw.user.username == app.user.username %}
@@ -22,7 +27,8 @@
 {% include "SkNdUserBundle:MemoryWall:memoryWallMediaResourcesPartial.html.twig" 
     with {
         'wallBelongsToThisUser' : wallBelongsToThisUser,
-        'mw' : mw
+        'mw'    : mw,
+        'apis'  : apis
     } 
 %}
 {# if the memory wall being shown belongs to the current user, show further actions #}

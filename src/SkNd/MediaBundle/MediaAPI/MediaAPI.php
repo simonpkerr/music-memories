@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\Common\Collections\ArrayCollection;
 use \RuntimeException;
+use \SimpleXMLElement;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -304,7 +305,7 @@ class MediaAPI {
     }
     
     //only results returned from the live api are cached
-    public function cacheListings(\SimpleXMLElement $response){
+    public function cacheListings(SimpleXMLElement $response){
         $cachedListing = new \SkNd\MediaBundle\Entity\MediaResourceListingsCache();
         $cachedListing->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->API_NAME));
         $cachedListing->setMediaType($this->mediaSelection->getMediaTypes());
@@ -352,7 +353,7 @@ class MediaAPI {
     }
     
     //once retrieved, if applicable, cache the resource
-    public function cacheMediaResource(\SimpleXMLElement $xmlData, $itemId){
+    public function cacheMediaResource(SimpleXMLElement $xmlData, $itemId){
         if($this->mediaResource == null){
             //create a mediaresource
             $this->mediaResource = new MediaResource();
@@ -393,7 +394,7 @@ class MediaAPI {
     }
     
     //from a batch operation, take the xml data and resources and re-cache them
-    public function cacheMediaResourceBatch(\SimpleXMLElement $xmlData, $mediaResources, $flush = true){
+    public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, $mediaResources, $flush = true){
         $mr = $mediaResources->first();
         foreach($xmlData as $itemXml){
             //$cachedResource = $mr->getMediaResourceCache() != null ? $mr->getMediaResourceCache() : new MediaResourceCache();

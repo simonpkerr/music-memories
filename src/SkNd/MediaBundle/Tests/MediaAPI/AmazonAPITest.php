@@ -103,41 +103,7 @@ class AmazonAPITest extends WebTestCase {
         $this->assertTrue($response->Items->TotalResults > 0);
     }
     
-    public function testGetDetailsWithValidDataSetReturnsResponse(){
-        
-    }
     
-    public function testGetDetailsWithInvalidDataSetReturnsResponse(){
-        
-    }
-    
-    public function testGetRecommendationsOnExactParamsReturnsData(){
-        
-    }
-    
-    public function testGetRecommendationsOnGenericParamsReturnsData(){
-        
-    }
-    
-    public function testGetRecommendationsOnAgeReturnsData(){
-        
-    }
-    
-    public function testGetRecommendationsOnValidAmazonRecordsReturnsData(){
-        
-    }
-    
-    public function testGetRecommendationsOnTimestampExpiredAmazonRecordsLooksUpAmazonData(){
-        
-    }
-    
-    public function testSetRecommendationsForNewAmazonProductStoresMediaResourceAndCachedResource(){
-        
-    }
-    
-    public function testSetRecommendationsForExistingAmazonProductUpdatesMediaResourceViewCountAndUpdatesCachedResource(){
-        
-    }
     
 }
 

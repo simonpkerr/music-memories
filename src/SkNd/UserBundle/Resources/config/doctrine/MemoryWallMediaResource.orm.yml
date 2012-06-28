@@ -11,6 +11,9 @@ SkNd\UserBundle\Entity\MemoryWallMediaResource:
     mediaResource_id:
       type: string
       #unique: true
+    api_id:
+      type: integer
+      nullable: false
     userTitle:
       type: string
       length: 255

@@ -23,7 +23,8 @@ class API
      * @var string $host
      */
     protected $host;
-
+    
+    protected $friendlyName;
 
     /**
      * Get id
@@ -35,26 +36,27 @@ class API
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
-    /**
-     * Get name
-     *
-     * @return string 
-     */
     public function getName()
     {
         return $this->name;
     }
+    
+    public function setFriendlyName($name)
+    {
+        $this->friendlyName = $name;
+    }
 
+    public function getFriendlyName()
+    {
+        return $this->friendlyName;
+    }
+
+    
     /**
      * Set host
      *

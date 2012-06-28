@@ -9,20 +9,27 @@ namespace SkNd\MediaBundle\MediaAPI;
 //require_once 'Zend/Loader.php';
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\Entity\MediaSelection;
+use \SimpleXMLElement;
 
 class YouTubeAPI implements IAPIStrategy {
+    const FRIENDLY_NAME = 'YouTube';
     public $API_NAME = 'youtubeapi';
+    
     protected $youTube;
     private $query;
     
     public function __construct($youtube_request_object = null){
+        
         //get access to the youtube methods
         //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
-        
-        //$this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : new $youtube_request_object;
-        $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
-        //$f = new \Zend_Gdata_YouTZend_Gdata_YouTube();
        
+        $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
+        $this->youTube->setMajorProtocolVersion(2);
+       
+        $this->youTube = new \Zend_Gdata_YouTube();
+        
+        //$vf = $this->youTube->getVideoFeed();
+        //$vf->getE
     }
     
     public function getName(){
@@ -39,17 +46,85 @@ class YouTubeAPI implements IAPIStrategy {
      * and improve memory walls
      */
     public function getDetails(array $params){
+        if(!isset($params['ItemId']))
+            throw new \InvalidArgumentException('No id was passed to Youtube');
+        
+        $ve = $this->youTube->getVideoEntry($params['ItemId']);
+        
+        if($ve === false)
+            throw new \RuntimeException("Could not connect to YouTube");
+        
+        if(count($ve) < 1){
+            throw new \LengthException("No results were returned");
+        }
+        
+        $response = $this->constructVideoEntry(new SimpleXMLElement('<entry></entry>'), $ve);
+        return $response;
+        
+                
+    }
+    public function doBatchProcess(array $ids){
+        //construct a batch feed 
+        /*$feed = new \Zend_Gdata_YouTube_VideoFeed();
+        $feed->registerNamespace('batch', "http://schemas.google.com/gdata/batch");
+        
+        foreach($ids as $id){
+            $entry = new \Zend_Gdata_YouTube_VideoEntry();
+            $entry->setId($id);
+            $feed->addEntry($entry);
+        }
+        $response = $this->youTube->post($feed->__toString(), 'http://gdata.youtube.com/feeds/api/videos/batch');
+        
+        return $response;*/
+        
+        $feed = '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"
+xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtube.com/schemas/2007"><batch:operation type="query" />';
+        //$b = $feed->addChild('batch:operation type="query"');
+        
+        $entries = array();
+        foreach($ids as $id){
+            array_push($entries, '<entry><id>http://gdata.youtube.com/feeds/api/videos/' . $id . '</id></entry>');
+        }
+        $feed = $feed . implode('', $entries) . '</feed>';
+        try{
+            $response = $this->youTube->post($feed, 'http://gdata.youtube.com/feeds/api/videos/batch');
+        }catch(\Exception $ex){
+            throw $ex;
+        }
+        
+        if($response === false)
+            throw new \RuntimeException('could not connect to YouTube');
+        
+        if($response->getStatus() != 200)
+            throw new \RuntimeException('Problem loading results from YouTube');
+        
+        $response = $response->getBody();//gets the raw response
+        $feed = new \Zend_Gdata_YouTube_VideoFeed();
+        $feed->transferFromXML($response);
+        /************* THIS NEEDS WORK TO TRANSFORM FOR PASSING BACK*/
+        
+        return $response;
         
     }
-    public function doBatchProcess(array $ids){}
     
-    public function getId(\SimpleXMLElement $xmlData){}
-    public function getImageUrlFromXML(\SimpleXMLElement $xmlData) {}
-    public function getItemTitleFromXML(\SimpleXMLElement $xmlData){}
+    public function getId(SimpleXMLElement $xmlData){}
+    
+    public function getImageUrlFromXML(SimpleXMLElement $xmlData) {
+        try{
+            return (string)$xmlData->thumbnail;
+        } catch(\RuntimeException $re){
+            return null;
+        }
+    }
+    public function getItemTitleFromXML(SimpleXMLElement $xmlData){
+        try{
+            return (string)$xmlData->title;
+        } catch(\RuntimeException $re){
+            return null;
+        }
+    }
     
     public function getListings(MediaSelection $mediaSelection){
-        $this->youTube->setMajorProtocolVersion(2);
-        
                 
         //------to send a simple query to youtube       
         //$query->setVideoQuery($keywordQuery);
@@ -110,6 +185,7 @@ class YouTubeAPI implements IAPIStrategy {
     }
     
     private function getVideoFeed(MediaSelection $mediaSelection){
+        $categories = 'Film|Entertainment';
         $query = $this->youTube->newVideoQuery();
         
         //$query->setOrderBy('viewCount');
@@ -139,22 +215,11 @@ class YouTubeAPI implements IAPIStrategy {
     }
     
     private function getSimpleXml($videoFeed){
-        $sxml = new \SimpleXMLElement('<xml></xml>');
-        $feed = $sxml->addChild('feed');
+        $sxml = new SimpleXMLElement('<feed>');
+        //$feed = $sxml->addChild('feed');
         foreach($videoFeed as $videoEntry){
-            $entry = $feed->addChild('entry');
-                        
-            $id = $entry->addChild('id');
-            $id[0] = $videoEntry->getVideoId();
-            
-            $thumbnails = $videoEntry->getVideoThumbnails();
-            $tn = end($thumbnails);
-            
-            $thumbnail = $entry->addChild('thumbnail');
-            $thumbnail[0] = $tn['url'];
-            
-            $title = $entry->addChild('title');
-            $title[0] = $videoEntry->getVideoTitle();
+            $entry = $sxml->addChild('entry');
+            $this->constructVideoEntry($entry, $videoEntry);
         }
         
         //debug - output the search url
@@ -163,6 +228,21 @@ class YouTubeAPI implements IAPIStrategy {
         return $sxml;
     }
     
+    private function constructVideoEntry(SimpleXMLElement $entry, $videoEntry){
+        $id = $entry->addChild('id');
+        $id[0] = $videoEntry->getVideoId();
+
+        $thumbnails = $videoEntry->getVideoThumbnails();
+        $tn = end($thumbnails);
+
+        $thumbnail = $entry->addChild('thumbnail');
+        $thumbnail[0] = $tn['url'];
+
+        $title = $entry->addChild('title');
+        $title[0] = $videoEntry->getVideoTitle();
+        
+        return $entry;
+    }
     
    
 }

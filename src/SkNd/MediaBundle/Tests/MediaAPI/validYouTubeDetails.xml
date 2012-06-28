@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<entry xmlns='http://www.w3.org/2005/Atom' xmlns:app='http://purl.org/atom/app#' xmlns:media='http://search.yahoo.com/mrss/' xmlns:gd='http://schemas.google.com/g/2005' xmlns:yt='http://gdata.youtube.com/schemas/2007'>
+  <id>http://gdata.youtube.com/feeds/api/videos/bwOOkb-FyU8</id>
+  <published>2008-04-19T20:12:06.000Z</published>
+  <updated>2012-06-24T00:52:18.000Z</updated>
+  <app:control>
+    <yt:state name='restricted' reasonCode='limitedSyndication'>Syndication of this video was restricted.</yt:state>
+  </app:control>
+  <category scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Film' label='Film &amp; Animation'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='the'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='running'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='man'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='arnold'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='schwarzenegger'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='action'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='80s'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='satire'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='maria'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='conchita'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='alonso'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='sport'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='sci'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='fi'/>
+  <category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='terminator'/>
+  <title type='text'>The Running Man (pt 1)</title>
+  <content type='text'>enjoy</content>
+  <link rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=bwOOkb-FyU8&amp;feature=youtube_gdata'/>
+  <link rel='http://gdata.youtube.com/schemas/2007#video.responses' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/bwOOkb-FyU8/responses'/>
+  <link rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/bwOOkb-FyU8/related'/>
+  <link rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/bwOOkb-FyU8'/>
+  <author>
+    <name>do0dranch</name>
+    <uri>http://gdata.youtube.com/feeds/api/users/do0dranch</uri>
+  </author>
+  <gd:comments>
+    <gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments' href='http://gdata.youtube.com/feeds/api/videos/bwOOkb-FyU8/comments' countHint='570'/>
+  </gd:comments>
+  <media:group>
+    <media:category label='Film &amp; Animation' scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Film</media:category>
+    <media:description type='plain'>enjoy</media:description>
+    <media:keywords>the, running, man, arnold, schwarzenegger, action, 80s, satire, maria, conchita, alonso, sport, sci, fi, terminator</media:keywords>
+    <media:player url='http://www.youtube.com/watch?v=bwOOkb-FyU8&amp;feature=youtube_gdata_player'/>
+    <media:thumbnail url='http://i.ytimg.com/vi/bwOOkb-FyU8/0.jpg' height='360' width='480' time='00:05:27.500'/>
+    <media:thumbnail url='http://i.ytimg.com/vi/bwOOkb-FyU8/1.jpg' height='90' width='120' time='00:02:43.750'/>
+    <media:thumbnail url='http://i.ytimg.com/vi/bwOOkb-FyU8/2.jpg' height='90' width='120' time='00:05:27.500'/>
+    <media:thumbnail url='http://i.ytimg.com/vi/bwOOkb-FyU8/3.jpg' height='90' width='120' time='00:08:11.250'/>
+    <media:title type='plain'>The Running Man (pt 1)</media:title>
+    <yt:duration seconds='655'/>
+  </media:group>
+  <yt:noembed/>
+  <gd:rating average='4.9054375' max='5' min='1' numRaters='423' rel='http://schemas.google.com/g/2005#overall'/>
+  <yt:statistics favoriteCount='275' viewCount='220962'/>
+</entry>

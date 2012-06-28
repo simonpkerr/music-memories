@@ -1,28 +1,11 @@
 {% if youTubeResponse is defined %}
-<div id="ytapiplayerContainer">
-    <div id="ytapiplayer">
-        <p>You need Flash player 8+ and JavaScript enabled to view this video.</p>
-    </div>
-    <script type="text/javascript">
-    function onYouTubePlayerReady(playerId) {
-        ytplayer = document.getElementById("myytplayer");
-    }
-    function play(videoId) {
-        if (ytplayer) 
-            ytplayer.loadVideoById(videoId);
-    }
-
-    var params = { allowScriptAccess: "always" };
-    var atts = { id: "myytplayer" };
-        </script>
-    </div>
-
-    <script type="text/javascript">
-        swfobject.embedSWF("http://www.youtube.com/e/{{youTubeResponse.feed.entry.id}}?enablejsapi=1&playerapiid=ytplayer",
-                       "ytapiplayer", "425", "356", "8", null, null, params, atts);
-        </script>
-        <strong>{{ youTubeResponse.url }}</strong>
-        <ul>
+{% include "SkNdMediaBundle:Media:youTubePlayerPartial.html.twig" 
+    with {
+        'firstVideo' : youTubeResponse.feed.entry,
+    } 
+%}
+    <strong>{{ youTubeResponse.url }}</strong>
+    <ul>
     {% for ytResult in youTubeResponse.feed.entry %}
                 <li class="listing">
                 <dl>

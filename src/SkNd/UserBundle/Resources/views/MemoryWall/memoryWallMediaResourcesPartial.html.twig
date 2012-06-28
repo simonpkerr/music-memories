@@ -1,29 +1,55 @@
-<div>
-    <h2>Contents</h2>
-    {% if mw.memoryWallMediaResources|length > 0 %}
-    {% for mwmr in mw.memoryWallMediaResources %}
-    {% set mr = mwmr.mediaResource %}
-    <div class="mediaResource">
+{% macro mrLinkAndPic(mr, api) %}
+{% if api.name == 'youtubeapi' %}
+    <a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}')">
         <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
-        <h3><a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></h3>
-        <dl>
-            <dt>Date added</dt>
-            <dd>{{ mwmr.dateAdded|date("F jS \\a\\t g:ia") }}</dd>
-            {% if mwmr.userTitle is not null %}
-            <dt>Your title</dt>
-            <dd>{{ mwmr.userTitle }}</dd>
-            {% endif %}            
-        </dl>
-        {% if wallBelongsToThisUser %}
-        <h4>Actions</h4>
-        <ul>
-            <li>Edit</li>
-            <li><a href="{{ path('memoryWallDeleteMediaResource', {'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall">Delete</a></li>
-        </ul>
+    </a>
+    <h3><a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}')">{{ mr.mediaResourceCache.title }}</a></h3>
+{% else %}
+    <a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">
+        <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
+    </a>
+    <h3><a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></h3>
+{% endif %}
+{% endmacro %}
+
+<div>
+<h2>Contents</h2>
+{% if mw.memoryWallMediaResources|length > 0 %}
+{% for api in apis %}
+    {% set mwmrs = mw.getMemoryWallMediaResources(api.id) %}
+    {% if mwmrs|length > 0 %}
+        <h3>Added from {{ api.friendlyName }}</h3>
+        {% if api.name == 'youtubeapi' %}
+            {% include "SkNdMediaBundle:Media:youTubePlayerPartial.html.twig" 
+                with {
+                    'firstVideo' : mwmrs.first.mediaResource,
+                } 
+            %}
         {% endif %}
-    </div>
-    {% endfor %}
-    {% else %}
-    <p>Sorry, there isn&rsquo;t anything on this wall yet.</p>
+        {% for mwmr in mwmrs %}
+        {% set mr = mwmr.mediaResource %}
+        <div class="mediaResource">
+            {{ _self.mrLinkAndPic(mr, api) }}
+            <dl>
+                <dt>Date added</dt>
+                <dd>{{ mwmr.dateAdded|date("F jS \\a\\t g:ia") }}</dd>
+                {% if mwmr.userTitle is not null %}
+                <dt>Your title</dt>
+                <dd>{{ mwmr.userTitle }}</dd>
+                {% endif %}            
+            </dl>
+            {% if wallBelongsToThisUser %}
+            <h4>Actions</h4>
+            <ul>
+                <li>Edit</li>
+                <li><a href="{{ path('memoryWallDeleteMediaResource', {'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall">Delete</a></li>
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
     {% endif %}
+{% endfor %}
+{% else %}
+<p>Sorry, there isn&rsquo;t anything on this wall yet.</p>
+{% endif %}
 </div>

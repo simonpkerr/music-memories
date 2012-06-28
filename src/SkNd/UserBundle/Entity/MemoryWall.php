@@ -98,10 +98,16 @@ class MemoryWall
         return $this->memoryWallMediaResources[$mrId]->getMediaResource();
     }
     
-    public function getMemoryWallMediaResources(){
+    public function getMemoryWallMediaResources($apiId = null){
+        if($apiId != null){
+            return $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
+                return $mwmr->getApi_id() == $apiId;
+            });
+        }
+        
         return $this->memoryWallMediaResources;                
     }
-    
+ 
     public function addMediaResource(MediaResource $mr){
         if(isset($this->memoryWallMediaResources[$mr->getId()]))
             throw new \InvalidArgumentException('Duplicate Media Resource found');

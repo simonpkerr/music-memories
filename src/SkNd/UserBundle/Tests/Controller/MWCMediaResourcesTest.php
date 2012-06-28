@@ -111,7 +111,6 @@ class MWCMediaResourcesTest extends WebTestCase
         ));
         $crawler = $this->client->request('GET', $url);
         $this->assertTrue($crawler->filter('div.mediaResource')->count() > 0);
-        
     }
   
     public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLoginThenToSelectWallViewIfMoreThanOneWallExists(){
@@ -323,6 +322,11 @@ class MWCMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->selectButton('Login')->count() > 0);
     }
     
+    public function testRemoveMultipleReferencedMediaResourceFromWallOnlyRemovesSingleReference(){
+        //if two users have the same media resource on their walls and one is removed, the other reference should remain in tact
+        
+    }
+    
     public function testDeleteMemoryWallAlsoRemovesAssociatedMediaResources(){
         $this->getMediaSelection();
         
@@ -350,6 +354,8 @@ class MWCMediaResourcesTest extends WebTestCase
         
         $this->assertTrue($crawler->filter('ul#memoryWallGallery dd')->eq(4)->text() == '0');
     }
+    
+    
     
     
     

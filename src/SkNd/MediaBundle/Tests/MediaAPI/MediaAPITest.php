@@ -293,6 +293,41 @@ class MediaAPITests extends WebTestCase {
         
     }
     
+    public function testGetDetailsWithValidDataSetReturnsResponse(){
+        
+    }
+    
+    public function testGetDetailsWithInvalidDataSetReturnsResponse(){
+        
+    }
+    
+    public function testGetRecommendationsOnExactParamsReturnsData(){
+        
+    }
+    
+    public function testGetRecommendationsOnGenericParamsReturnsData(){
+        
+    }
+    
+    public function testGetRecommendationsOnAgeReturnsData(){
+        
+    }
+    
+    public function testGetRecommendationsOnValidAmazonRecordsReturnsData(){
+        
+    }
+    
+    public function testGetRecommendationsOnTimestampExpiredAmazonRecordsLooksUpAmazonData(){
+        
+    }
+    
+    public function testSetRecommendationsForNewAmazonProductStoresMediaResourceAndCachedResource(){
+        
+    }
+    
+    public function testSetRecommendationsForExistingAmazonProductUpdatesMediaResourceViewCountAndUpdatesCachedResource(){
+        
+    }
     
     
 }

@@ -10,15 +10,22 @@
 
 namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
+use SkNd\MediaBundle\Entity\MediaSelection;
 
 //require_once 'Zend/Loader.php';
 
 class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
 
     private $params;
+    private $ms;
+    private $ytObj;
     
     protected function setUp(){
         //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
+        $this->ytObj = $this->getMock('\Zend_Gdata_YouTube',
+                array(
+                    'getVideoFeed'
+                ));
         
         $this->params = array(
             'keywords'  =>  'sample title',
@@ -26,6 +33,26 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
             'media'     =>  'film',
             'genre'     =>  'all',
         );
+        
+        $this->ms = $this->getMockBuilder('\\SkNd\\MediaBundle\\Entity\\MediaSelection')
+                ->setMethods(array(
+                    'getComputedKeywords'))
+                ->getMock();
+        
+        $this->ms->expects($this->any())
+                ->method('getComputedKeywords')
+                ->will($this->returnValue('computed keywords'));
+        
+        $mt = $this->getMockBuilder('\\SkNd\\MediaBundle\\Entity\\MediaType')
+                ->setMethods(array(
+                    'getSlug'))
+                ->getMock();
+        
+        $mt->expects($this->any())
+                ->method('getSlug')
+                ->will($this->returnValue('slug'));
+                
+        $this->ms->setMediaTypes($mt);
     }
     
     /**
@@ -33,18 +60,13 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
      * @expectedExceptionMessage Could not connect to YouTube 
      */
     public function testNoResponseThrowsRuntimeException(){
-        $ytObj = $this->getMock('\Zend_Gdata_YouTube',
-                array(
-                    'getVideoFeed'
-                ));
-
-        $ytObj->expects($this->any())
+        $this->ytObj->expects($this->any())
                 ->method('getVideoFeed')
                 ->will($this->returnValue(false));
         
         $yt = new YouTubeAPI();
-        $yt->setRequestObject($ytObj);
-        $yt->getRequest($this->params);
+        $yt->setRequestObject($this->ytObj);
+        $yt->getListings($this->ms);
     }
     
     /**
@@ -52,38 +74,64 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
      * @expectedExceptionMessage No results were returned
      */
     public function testEmptyResponseReturnsLengthException(){
-        $ytObj = $this->getMock('\Zend_Gdata_YouTube',
-                array(
-                    'getVideoFeed'
-                ));
-
-        $ytObj->expects($this->any())
+        $this->ytObj->expects($this->any())
                 ->method('getVideoFeed')
                 ->will($this->returnValue(array()));
         
         $yt = new YouTubeAPI();
-        $yt->setRequestObject($ytObj);
-        $yt->getRequest($this->params);
+        $yt->setRequestObject($this->ytObj);
+        $yt->getListings($this->ms);
     }
     
-    //can't test this as the youtube variable is protected and no point creating a getter just for testing
-    /*public function testSimpleParametersReturnsURL(){
+    /**
+     * @expectedException InvalidArgumentException 
+     * @expectedExceptionMessage No id was passed to Youtube
+     */
+    public function testGetYouTubeDetailsWithNoParamsThrowsException(){
+              
+        $yt = new YouTubeAPI($this->ytObj);
+        $yt->getDetails(array());
+    }
+    
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Could not connect to YouTube
+     */
+    public function testGetYouTubeDetailsNoConnectionThrowsException(){
         $ytObj = $this->getMock('\Zend_Gdata_YouTube',
                 array(
-                    'getVideoFeed'
+                    'getVideoEntry'
                 ));
 
         $ytObj->expects($this->any())
-                ->method('getVideoFeed')
-                ->will($this->returnValue(array()));
-        
-        $this->params['keywords'] = "sherlock";
+                ->method('getVideoEntry')
+                ->will($this->returnValue(false));
         
         $yt = new YouTubeAPI();
         $yt->setRequestObject($ytObj);
-        $yt->getRequest($this->params);
-        //$this->assertEquals("http://gdata.youtube.com/feeds/api/videos/-/Film%7CEntertainment?max-results=25&q=sherlock", $yt->)
-    }*/
+        $yt->getDetails(array('ItemId' => '1'));
+    }
+    
+    /**
+     * @expectedException LengthException 
+     * @expectedExceptionMessage No results were returned
+     */
+    public function testGetYouTubeDetailsNoResultsThrowsException(){
+        $ytObj = $this->getMock('\Zend_Gdata_YouTube',
+                array(
+                    'getVideoEntry'
+                ));
+
+        $ytObj->expects($this->any())
+                ->method('getVideoEntry')
+                ->will($this->returnValue(array()));
+        
+        $yt = new YouTubeAPI();
+        $yt->setRequestObject($ytObj);
+        $yt->getDetails(array('ItemId' => '1'));
+    }
+    
+    
 
 }
 

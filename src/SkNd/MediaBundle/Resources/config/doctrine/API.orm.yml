@@ -11,6 +11,9 @@ SkNd\MediaBundle\Entity\API:
     name:
       type: string
       length: '100'
+    friendlyName:
+      type: string
+      length: '100'    
     host:
       type: string
       length: 255

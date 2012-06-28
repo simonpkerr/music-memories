@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<atom:feed xmlns:atom='http://www.w3.org/2005/Atom'>
+  <atom:id>http://gdata.youtube.com/feeds/api/videos/batch/1340895504609</atom:id>
+  <atom:updated>2012-06-28T14:58:24.710Z</atom:updated>
+  <atom:category scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/>
+  <atom:title type='text'>Batch Feed</atom:title>
+  <atom:entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:media='http://search.yahoo.com/mrss/' xmlns:gd='http://schemas.google.com/g/2005' xmlns:yt='http://gdata.youtube.com/schemas/2007'>
+    <atom:id>http://gdata.youtube.com/feeds/api/videos/G2iq6uONT_M</atom:id>
+    <atom:published>2011-08-02T02:55:00.000Z</atom:published>
+    <atom:updated>2012-06-28T09:16:34.000Z</atom:updated>
+    <atom:category scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment' label='Entertainment'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='doctor'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='who'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='1996'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='film'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='movie'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='paul'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='mcgann'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='sylvester'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='mccoy'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='daphne'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='ashbrook'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='grace'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='holloway'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='eric'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='roberts'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='the'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='master'/>
+    <atom:title type='text'>Doctor Who (1996 film) (part 1 of 6)</atom:title>
+    <atom:content type='text'>Cast
+      Doctor
+      
+      Paul McGann (Eighth Doctor)
+      Sylvester McCoy (Seventh Doctor)
+      
+      Companion
+      
+      Daphne Ashbrook (Grace Holloway)
+      
+      Others
+      
+      Yee Jee Tso (Chang Lee)
+      Eric Roberts -- The Master
+      John Novak -- Salinger
+      Michael David Simms -- Dr. Swift
+      Eliza Roberts -- Miranda
+      Dave Hurtubise -- Professor Wagg
+      Dolores Drake -- Curtis
+      Catherine Lough -- Wheeler
+      William Sasso -- Pete
+      Joel Wirkkunen -- Ted
+      Jeremy Radick -- Gareth
+      Bill Croft -- Motorcyclist Policeman
+      Mi-Jung Lee -- News Anchor
+      Joanna Piros -- News Anchor
+      Dee Jay Jackson -- Security Man
+      Gordon Tipple -- The Old Master
+      
+      Production
+      Writer  Matthew Jacobs
+      Director  Geoffrey Sax
+      Script editor  None
+      Producer  Peter V. Ware
+      Matthew Jacobs (co-producer)
+      Executive producer(s)  Philip David Segal
+      Alex Beaton
+      Jo Wright (for the BBC)
+      Production code  50/LDX071Y/01X[1]
+      Series  Television movie
+      Length  85 mins (UK)
+      89 mins (US)
+      Originally broadcast  12 May 1996 (Canada)
+      14 May 1996 (USA)
+      27 May 1996 (UK)</atom:content>
+    <atom:link rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=G2iq6uONT_M&amp;feature=youtube_gdata'/>
+    <atom:link rel='http://gdata.youtube.com/schemas/2007#video.responses' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/G2iq6uONT_M/responses'/>
+    <atom:link rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/G2iq6uONT_M/related'/>
+    <atom:link rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=G2iq6uONT_M'/>
+    <atom:link rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/G2iq6uONT_M'/>
+    <atom:author>
+      <atom:name>TARDIStheater</atom:name>
+      <atom:uri>http://gdata.youtube.com/feeds/api/users/TARDIStheater</atom:uri>
+    </atom:author>
+    <batch:operation type='query'/>
+    <batch:status code='200' reason='Success'/>
+    <gd:comments>
+      <gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments' href='http://gdata.youtube.com/feeds/api/videos/G2iq6uONT_M/comments' countHint='31'/>
+    </gd:comments>
+    <media:group>
+      <media:category label='Entertainment' scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category>
+      <media:content url='http://www.youtube.com/v/G2iq6uONT_M?version=3&amp;f=videos&amp;app=youtube_gdata' type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full' duration='871' yt:format='5'/>
+      <media:content url='rtsp://v4.cache3.c.youtube.com/CiILENy73wIaGQnzT43j6qpoGxMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp' type='video/3gpp' medium='video' expression='full' duration='871' yt:format='1'/>
+      <media:content url='rtsp://v3.cache1.c.youtube.com/CiILENy73wIaGQnzT43j6qpoGxMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp' type='video/3gpp' medium='video' expression='full' duration='871' yt:format='6'/>
+      <media:description type='plain'>Cast
+        Doctor
+        
+        Paul McGann (Eighth Doctor)
+        Sylvester McCoy (Seventh Doctor)
+        
+        Companion
+        
+        Daphne Ashbrook (Grace Holloway)
+        
+        Others
+        
+        Yee Jee Tso (Chang Lee)
+        Eric Roberts -- The Master
+        John Novak -- Salinger
+        Michael David Simms -- Dr. Swift
+        Eliza Roberts -- Miranda
+        Dave Hurtubise -- Professor Wagg
+        Dolores Drake -- Curtis
+        Catherine Lough -- Wheeler
+        William Sasso -- Pete
+        Joel Wirkkunen -- Ted
+        Jeremy Radick -- Gareth
+        Bill Croft -- Motorcyclist Policeman
+        Mi-Jung Lee -- News Anchor
+        Joanna Piros -- News Anchor
+        Dee Jay Jackson -- Security Man
+        Gordon Tipple -- The Old Master
+        
+        Production
+        Writer  Matthew Jacobs
+        Director  Geoffrey Sax
+        Script editor  None
+        Producer  Peter V. Ware
+        Matthew Jacobs (co-producer)
+        Executive producer(s)  Philip David Segal
+        Alex Beaton
+        Jo Wright (for the BBC)
+        Production code  50/LDX071Y/01X[1]
+        Series  Television movie
+        Length  85 mins (UK)
+        89 mins (US)
+        Originally broadcast  12 May 1996 (Canada)
+        14 May 1996 (USA)
+        27 May 1996 (UK)</media:description>
+      <media:keywords>doctor, who, 1996, film, movie, paul, mcgann, sylvester, mccoy, daphne, ashbrook, grace, holloway, eric, roberts, the, master</media:keywords>
+      <media:player url='http://www.youtube.com/watch?v=G2iq6uONT_M&amp;feature=youtube_gdata_player'/>
+      <media:thumbnail url='http://i.ytimg.com/vi/G2iq6uONT_M/0.jpg' height='360' width='480' time='00:07:15.500'/>
+      <media:thumbnail url='http://i.ytimg.com/vi/G2iq6uONT_M/1.jpg' height='90' width='120' time='00:03:37.750'/>
+      <media:thumbnail url='http://i.ytimg.com/vi/G2iq6uONT_M/2.jpg' height='90' width='120' time='00:07:15.500'/>
+      <media:thumbnail url='http://i.ytimg.com/vi/G2iq6uONT_M/3.jpg' height='90' width='120' time='00:10:53.250'/>
+      <media:title type='plain'>Doctor Who (1996 film) (part 1 of 6)</media:title>
+      <yt:duration seconds='871'/>
+    </media:group>
+    <gd:rating average='4.733333' max='5' min='1' numRaters='30' rel='http://schemas.google.com/g/2005#overall'/>
+    <yt:statistics favoriteCount='58' viewCount='15078'/>
+  </atom:entry>
+  <atom:entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:media='http://search.yahoo.com/mrss/' xmlns:gd='http://schemas.google.com/g/2005' xmlns:yt='http://gdata.youtube.com/schemas/2007'>
+    <atom:id>http://gdata.youtube.com/feeds/api/videos/eOjzLggAKis</atom:id>
+    <atom:published>2010-08-11T15:05:36.000Z</atom:published>
+    <atom:updated>2012-06-28T00:27:21.000Z</atom:updated>
+    <atom:category scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Film' label='Film &amp; Animation'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='Star Wars'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='Silent'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='Movies'/>
+    <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='Film'/>
+    <atom:title type='text'>Silent Star Wars</atom:title>
+    <atom:content type='text'>Star Wars without special effects. More cool stuff: http://www.random-good-stuff.com</atom:content>
+    <atom:link rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=eOjzLggAKis&amp;feature=youtube_gdata'/>
+    <atom:link rel='http://gdata.youtube.com/schemas/2007#video.responses' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/eOjzLggAKis/responses'/>
+    <atom:link rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/eOjzLggAKis/related'/>
+    <atom:link rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=eOjzLggAKis'/>
+    <atom:link rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/eOjzLggAKis'/>
+    <atom:author>
+      <atom:name>funfunfunfunfunfive</atom:name>
+      <atom:uri>http://gdata.youtube.com/feeds/api/users/funfunfunfunfunfive</atom:uri>
+    </atom:author>
+    <batch:operation type='query'/>
+    <batch:status code='200' reason='Success'/>
+    <gd:comments>
+      <gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments' href='http://gdata.youtube.com/feeds/api/videos/eOjzLggAKis/comments' countHint='590'/>
+    </gd:comments>
+    <media:group>
+      <media:category label='Film &amp; Animation' scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Film</media:category>
+      <media:content url='http://www.youtube.com/v/eOjzLggAKis?version=3&amp;f=videos&amp;app=youtube_gdata' type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full' duration='205' yt:format='5'/>
+      <media:content url='rtsp://v5.cache4.c.youtube.com/CiILENy73wIaGQkrKgAILvPoeBMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp' type='video/3gpp' medium='video' expression='full' duration='205' yt:format='1'/>
+      <media:content url='rtsp://v8.cache3.c.youtube.com/CiILENy73wIaGQkrKgAILvPoeBMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp' type='video/3gpp' medium='video' expression='full' duration='205' yt:format='6'/>
+      <media:description type='plain'>Star Wars without special effects. More cool stuff: http://www.random-good-stuff.com</media:description>
+      <media:keywords>Star Wars, Silent, Movies, Film</media:keywords>
+      <media:player url='http://www.youtube.com/watch?v=eOjzLggAKis&amp;feature=youtube_gdata_player'/>
+      <media:thumbnail url='http://i.ytimg.com/vi/eOjzLggAKis/0.jpg' height='360' width='480' time='00:01:42.500'/>
+      <media:thumbnail url='http://i.ytimg.com/vi/eOjzLggAKis/1.jpg' height='90' width='120' time='00:00:51.250'/>
+      <media:thumbnail url='http://i.ytimg.com/vi/eOjzLggAKis/2.jpg' height='90' width='120' time='00:01:42.500'/>
+      <media:thumbnail url='http://i.ytimg.com/vi/eOjzLggAKis/3.jpg' height='90' width='120' time='00:02:33.750'/>
+      <media:title type='plain'>Silent Star Wars</media:title>
+      <yt:duration seconds='205'/>
+    </media:group>
+    <gd:rating average='4.936342' max='5' min='1' numRaters='4964' rel='http://schemas.google.com/g/2005#overall'/>
+    <yt:statistics favoriteCount='4647' viewCount='681417'/>
+  </atom:entry>
+</atom:feed>

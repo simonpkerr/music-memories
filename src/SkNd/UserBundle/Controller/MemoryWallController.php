@@ -130,6 +130,7 @@ class MemoryWallController extends Controller
     
     public function showAction($slug, $page = 1){
         $this->em = $this->getEntityManager();
+        $mediaapi = $this->get('sk_nd_media.mediaapi');
         $mw = $this->getMemoryWall($slug);
         $wallBelongsToCurrentUser = $this->memoryWallBelongsToUser($mw);
         if(!$mw->getIsPublic() && !$wallBelongsToCurrentUser){
@@ -140,12 +141,13 @@ class MemoryWallController extends Controller
         //check the mediaresources related to this wall and refresh from api if necessary
         $mediaResources = $mw->getMediaResources();
         if(!$mediaResources->isEmpty()){
-            $this->get('sk_nd_media.mediaapi')->processMediaResources($mediaResources, $page);
+            $mediaapi->processMediaResources($mediaResources, $page);
         }
         
         return $this->render('SkNdUserBundle:MemoryWall:showMemoryWall.html.twig', array (
             'mw'                        => $mw,
             'wallBelongsToCurrentUser'  => $wallBelongsToCurrentUser,
+            'apis'                      => $this->em->getRepository('SkNdMediaBundle:API')->findAll(),
         ));
     }
     
