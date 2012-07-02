@@ -1,27 +1,28 @@
 $(document).ready(function(){
 var $allGenres = eval($("#mediaSelection_genres").val());
-var $selectedMediaGenres = $("select#mediaSelection_selectedMediaGenres");
-var $selectedGenre = $selectedMediaGenres.val();
+var $selectedMediaGenre = $("select#mediaSelection_selectedMediaGenre");
+var $selectedGenre = $selectedMediaGenre.val();
 
-populateGenres($("#mediaSelection_mediaTypes").val());
-$("select#mediaSelection_mediaTypes").change(function(){
+populateGenres($("select#mediaSelection_mediaType").val());
+
+$("select#mediaSelection_mediaType").change(function(){
     populateGenres($(this).val())
 });
 
 //when a media is selected, populate the genres
 function populateGenres(selectedMedia){
-    $selectedMediaGenres.empty();
-    $selectedMediaGenres.append("<option value=\"\">All Genres</option>");
+    $selectedMediaGenre.empty();
+    $selectedMediaGenre.append("<option value=\"\">All Genres</option>");
     
     //only populate with genres if the film and tv option was not selected
     if(selectedMedia != 4){
         $.each($allGenres, function(i,genre){
             if(genre.mediaType_id == selectedMedia){
-                $selectedMediaGenres.append("<option value=\""+ genre.id +"\">"+ genre.genreName +"</option>");
+                $selectedMediaGenre.append("<option value=\""+ genre.id +"\">"+ genre.genreName +"</option>");
 
             }
         });
-        $selectedMediaGenres.val($selectedGenre);
+        $selectedMediaGenre.val($selectedGenre);
     }
     
 }

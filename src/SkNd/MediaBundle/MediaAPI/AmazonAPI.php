@@ -55,13 +55,13 @@ class AmazonAPI implements IAPIStrategy {
     public function getListings(MediaSelection $mediaSelection){
         $browseNodeArray = array(); 
             
-        array_push($browseNodeArray, $mediaSelection->getMediaTypes()->getAmazonBrowseNodeId());
+        array_push($browseNodeArray, $mediaSelection->getMediaType()->getAmazonBrowseNodeId());
         
-        if($mediaSelection->getDecades() != null)
-            array_push($browseNodeArray, $mediaSelection->getDecades()->getAmazonBrowseNodeId());
+        if($mediaSelection->getDecade() != null)
+            array_push($browseNodeArray, $mediaSelection->getDecade()->getAmazonBrowseNodeId());
 
-        if($mediaSelection->getSelectedMediaGenres() != null)
-            array_push($browseNodeArray, $mediaSelection->getSelectedMediaGenres()->getAmazonBrowseNodeId());
+        if($mediaSelection->getSelectedMediaGenre() != null)
+            array_push($browseNodeArray, $mediaSelection->getSelectedMediaGenre()->getAmazonBrowseNodeId());
             
         $canonicalBrowseNodes = implode(',', $browseNodeArray);
 

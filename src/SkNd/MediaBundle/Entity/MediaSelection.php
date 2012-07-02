@@ -6,13 +6,13 @@ namespace SkNd\MediaBundle\Entity;
  */
 class MediaSelection
 {
-    protected $decades;
+    protected $decade;
 
-    protected $mediaTypes;
+    protected $mediaType;
 
     protected $genres;
     
-    protected $selectedMediaGenres;
+    protected $selectedMediaGenre;
 
     protected $keywords;
     
@@ -33,34 +33,34 @@ class MediaSelection
         return $this->page;
     }
     
-    public function setSelectedMediaGenres($genres){
-        $this->selectedMediaGenres = $genres;
+    public function setSelectedMediaGenre($genre){
+        $this->selectedMediaGenre = $genre;
     }
-    public function getSelectedMediaGenres(){
-        return $this->selectedMediaGenres;
+    public function getSelectedMediaGenre(){
+        return $this->selectedMediaGenre;
     }
 
-    public function setDecades($decades)
+    public function setDecade($decade)
     {
-        $this->decades = $decades;
+        $this->decade = $decade;
     }
 
    
-    public function getDecades()
+    public function getDecade()
     {
-        return $this->decades;
+        return $this->decade;
     }
 
     
-    public function setMediaTypes($mediaTypes)
+    public function setMediaType($mediaType)
     {
-        $this->mediaTypes = $mediaTypes;
+        $this->mediaType = $mediaType;
     }
 
    
-    public function getMediaTypes()
+    public function getMediaType()
     {
-        return $this->mediaTypes;
+        return $this->mediaType;
     }
 
     

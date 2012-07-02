@@ -106,7 +106,7 @@ class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInject
         $mrc->setId($id);
         //$mrc->setDateCreated(new \DateTime("now"));
         $mrc->setTitle($id);
-        $mrc->setXmlData(simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\sampleAmazonDetails.xml')->asXml());
+        $mrc->setXmlData(simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\sampleAmazonDetails.xml')->asXml());
         return $mrc;
     }
        

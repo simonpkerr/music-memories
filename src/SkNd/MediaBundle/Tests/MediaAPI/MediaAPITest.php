@@ -71,7 +71,7 @@ class MediaAPITests extends WebTestCase {
         $this->mediaResource = new MediaResource();
         $this->mediaResource->setId('testMediaResource');
         $this->mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
-        $this->mediaResource->setMediaType($this->mediaSelection->getMediaTypes());
+        $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
         
         $this->mediaAPIService = $kernel->getContainer()->get('sk_nd_media.mediaapi');
         

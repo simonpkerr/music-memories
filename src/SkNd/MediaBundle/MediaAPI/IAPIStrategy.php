@@ -24,6 +24,7 @@ interface IAPIStrategy {
     public function getImageUrlFromXML(SimpleXMLElement $xmlData);
     public function getItemTitleFromXML(SimpleXMLElement $xmlData);
     public function getValidCreationTime();
+    public function getRecommendations(MediaSelection $mediaSelection);
    
     
 }

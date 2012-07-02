@@ -38,16 +38,16 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
     
     private function setUpMediaSelection(array $options){
         $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($options['media']);
-        $this->mediaSelection->setMediaTypes($mediaType);
+        $this->mediaSelection->setMediaType($mediaType);
         
         if(array_key_exists('decade', $options)){
             $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($options['decade']);
-            $this->mediaSelection->setDecades($decade);
+            $this->mediaSelection->setDecade($decade);
         }
         
         if(array_key_exists('genre', $options)){
             $genre = $this->em->getRepository('SkNdMediaBundle:Genre')->getGenreBySlugAndMedia($options['genre'], $options['media']);
-            $this->mediaSelection->setSelectedMediaGenres($genre);
+            $this->mediaSelection->setSelectedMediaGenre($genre);
         }
         
         if(array_key_exists('keywords', $options))

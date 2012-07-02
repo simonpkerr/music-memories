@@ -50,3 +50,10 @@ li.listing {
     border-bottom: 1px solid #ddd;
     padding: 0.5em;
 }
+
+/*----------- specific page elements -------------*/
+
+div#recommendations {
+    float: right;
+    width: 20em;
+}

@@ -175,7 +175,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             throw new \LengthException("No results were returned");
         }
 
-        return $this->getSimpleXml($videoFeed);
+        return $this->getSimpleXml($videoFeed, true);
         
                 
     }
@@ -189,7 +189,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         //$query->setSafeSearch('none'); //not supported when using setCategory
         $query->setMaxResults('25');
         
-        switch($mediaSelection->getMediaTypes()->getSlug()){
+        switch($mediaSelection->getMediaType()->getSlug()){
             case 'film':
             case 'tv':
                 $categories = 'Film|Entertainment';
@@ -198,9 +198,9 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         }
         $keywordQuery = Utilities::formatSearchString(array(
             'keywords'  => $mediaSelection->getComputedKeywords(),
-            'media'     => $mediaSelection->getMediaTypes()->getSlug(),
-            'decade'    => $mediaSelection->getDecades() != null ? $mediaSelection->getDecades()->getDecadeName() : null,
-            'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getGenreName() : null
+            'media'     => $mediaSelection->getMediaType()->getSlug(),
+            'decade'    => $mediaSelection->getDecade() != null ? $mediaSelection->getDecade()->getDecadeName() : null,
+            'genre'     => $mediaSelection->getSelectedMediaGenre() != null ? $mediaSelection->getSelectedMediaGenre()->getGenreName() : null
         ));
         
         //$keywordQuery = urlencode($keywordQuery);

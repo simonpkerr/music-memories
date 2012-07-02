@@ -36,7 +36,7 @@ class AmazonAPITest extends WebTestCase {
         
         $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
         $this->mediaSelection = new MediaSelection();
-        $this->mediaSelection->setMediaTypes($mediaType);
+        $this->mediaSelection->setMediaType($mediaType);
            
         $this->testASR = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonSignedRequest')
                 ->setMethods(array(
@@ -69,7 +69,7 @@ class AmazonAPITest extends WebTestCase {
      * @expectedExceptionMessage No results were returned
      */
     public function testGetListingsEmptyDataSetThrowsException(){
-        $empty_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\empty_xml_response.xml');
+        $empty_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\empty_xml_response.xml');
         
         $this->testASR->expects($this->any())
                 ->method('aws_signed_request')
@@ -80,7 +80,7 @@ class AmazonAPITest extends WebTestCase {
     }   
     
     public function testGetListingsValidDataSetReturnsResponse(){
-        $valid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\valid_xml_response.xml');
+        $valid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\valid_xml_response.xml');
         
         $this->testASR->expects($this->any())
                 ->method('aws_signed_request')
@@ -108,7 +108,7 @@ class AmazonAPITest extends WebTestCase {
      * @expectedException RuntimeException 
      */
     public function testGetDetailsWithNoErrorResponseThrowsException(){
-        $invalid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\invalidSampleAmazonDetails.xml');
+        $invalid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\invalidSampleResponses\sampleAmazonDetails.xml');
         $this->testASR->expects($this->any())
                 ->method('aws_signed_request')
                 ->will($this->returnValue($invalid_xml_data_set));

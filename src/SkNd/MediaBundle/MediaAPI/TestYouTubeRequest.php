@@ -16,12 +16,12 @@ class TestYouTubeRequest {
     }
     
     public function getVideoFeed($queryUrl){
-        $feed = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\sampleYouTubeListings.xml');
+        $feed = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\sampleYouTubeListings.xml');
         return $feed;
     }
     
     public function post($data){
-        $feed = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\ytBatchProcess.xml');
+        $feed = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\ytBatchProcess.xml');
         return $feed;
     }
     

@@ -9,10 +9,10 @@ class TestAmazonSignedRequest extends AmazonSignedRequest{
     {
         if($params["Operation"] == "ItemSearch"){
             //load sample listings
-            $response = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\sampleAmazonListings.xml');
+            $response = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\sampleAmazonListings.xml');
         }else{
             //load sample details
-            $response = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\sampleAmazonDetails.xml');
+            $response = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\sampleAmazonDetails.xml');
         }
         
         return $response;

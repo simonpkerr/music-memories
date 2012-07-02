@@ -32,7 +32,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
                 ->where('cl.mediaType_id = :mediaTypeId')
                 ->andWhere('a.name = :apiName')
                 ->setParameters(array(
-                    'mediaTypeId'        =>  $mediaSelection->getMediaTypes()->getId(),
+                    'mediaTypeId'        =>  $mediaSelection->getMediaType()->getId(),
                     'apiName'            =>  $api->getName(),
                    ));
          
@@ -40,16 +40,16 @@ class MediaResourceListingsCacheRepository extends EntityRepository
          * if a specific decade was passed as a param, search for this
          * otherwise search for records with a null value for decade
          */
-        if($mediaSelection->getDecades() != null){
+        if($mediaSelection->getDecade() != null){
             $q = $q->andWhere('cl.decade_id = :decadeId')
-                    ->setParameter('decadeId', $mediaSelection->getDecades()->getId());
+                    ->setParameter('decadeId', $mediaSelection->getDecade()->getId());
         }else {
             $q = $q->andWhere('cl.decade_id is null');
         }
         
-        if($mediaSelection->getSelectedMediaGenres() != null){
+        if($mediaSelection->getSelectedMediaGenre() != null){
             $q = $q->andWhere('cl.genre_id = :genreId')
-                ->setParameter('genreId', $mediaSelection->getSelectedMediaGenres()->getId());
+                ->setParameter('genreId', $mediaSelection->getSelectedMediaGenre()->getId());
         }else{
             $q = $q->andWhere('cl.genre_id is null');
         }

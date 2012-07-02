@@ -4,6 +4,7 @@ namespace SkNd\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use SkNd\UserBundle\Entity\MemoryWall;
+use SkNd\MediaBundle\Entity\Decade;
 
 /*
  * Original code Copyright (c) 2012 Simon Kerr
@@ -15,12 +16,13 @@ use SkNd\UserBundle\Entity\MemoryWall;
 class MemoryWallRepository extends EntityRepository
 {
     public function getPublicMemoryWalls(){
-        return $this->createQueryBuilder('mw')
-                ->where('mw.isPublic = :public')
-                ->orderBy('mw.dateCreated', 'DESC')
-                ->setParameter('public', true)
-                ->getQuery()
-                ->getResult();
+        $q = $this->createQueryBuilder('mw');
+                
+        $q = $this->getPublicMemoryWallsQuery($q);
+        $q = $q->orderBy('mw.dateCreated', 'DESC')
+               ->getQuery();
+        
+        return $q->getResult();
     }
     
     public function getMemoryWallBySlug($slug){
@@ -31,5 +33,29 @@ class MemoryWallRepository extends EntityRepository
                 ->getOneOrNullResult();
     }
     
+    /**
+     * gets memory walls based on a specified decade
+     * for use in making recommendations
+     * @param Decade $decade 
+     * @return array
+     */
+    public function getMemoryWallsByDecade(Decade $decade){
+        $q = $this->createQueryBuilder('mw');
+        $q = $this->getPublicMemoryWallsQuery($q);
+        $q = $q->andWhere('mw.associatedDecade = :decadeId')
+                ->setParameter('decadeId', $decade)
+                ->orderBy('mw.lastUpdated', 'DESC')
+                ->getQuery();
+                
+        return $q->getResult();
+                 
+    }
+    
+    private function getPublicMemoryWallsQuery($q){
+        $q = $q->where('mw.isPublic = :public')
+                ->setParameter('public', true);
+        
+        return $q;
+    }
 
 }

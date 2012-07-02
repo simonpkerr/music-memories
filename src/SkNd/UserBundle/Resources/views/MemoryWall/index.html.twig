@@ -7,31 +7,11 @@
 
 {% if mws is not null %}
 {# put a sort control #}
-<ul id="memoryWallGallery">
-{% for mw in mws %}
-        <li><dl>
-                <dt>Name</dt>
-                <dd><a href="{{ path('memoryWallShow', {'slug': mw.slug }) }}">{{mw.name}}</a></dd>
-                <dt>Description</dt>
-                <dd>{{mw.description is not null ? mw.description : 'No description available'}}</dd>
-                <dt>Associated Decade</dt>
-                <dd>{{mw.associatedDecade is not null ? mw.associatedDecade.decadeName : 'All decades'}}</dd>
-                <dt>Date Created</dt>
-                <dd>{{mw.dateCreated|date("d/m/y")}}</dd>
-                <dt>Items on this wall</dt>
-                <dd>{{ mw.memoryWallMediaResources|length }}</dd>
-                {% if pageTitle == 'All Public' %}
-                <dt>Created by</dt>
-                <dd><span>{{mw.user.username}}</span><span> &ndash; (<a href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">view all of {{mw.user.username}}&rsquo;s Memory Walls)</a></span></dd>
-                {% endif %}
-                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and mw.user.username == app.user.username %}
-                <dt>Actions</dt>
-                <dd><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}">Edit</a></dd>
-                <dd><a href="{{ path('memoryWallDelete', {'slug':mw.slug}) }}">Delete</a></dd>
-                {% endif %}
-            </dl></li>        
-{% endfor %}
-</ul>
+{% include 'SkNdUserBundle:MemoryWall:memoryWallGalleryPartial.html.twig' with {
+    'mws' : mws,
+    'pageTitle':pageTitle
+    }
+%}
 {% else %}
 <p>There aren&rsquo;t any Memory Walls yet. Be the envy of all your friends and make one first!</p>
 <p>If you&rsquo;ve already registered, just <a href="{{path('fos_user_security_login')}}">log in</a> to start adding stuff to your memory wall.</p>

@@ -45,7 +45,7 @@ class MediaType
         return $this->genres;
     }
     
-    /*public function getDecades(){
+    /*public function getDecade(){
         return $this->decades;
     }*/
 

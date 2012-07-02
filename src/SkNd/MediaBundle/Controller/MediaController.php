@@ -58,20 +58,20 @@ class MediaController extends Controller
         $sessionFormData = $session->get('mediaSelection');
         if($sessionFormData != null){
             
-            $mediaTypes = $sessionFormData->getMediaTypes();
-            $mediaTypes = $em->merge($mediaTypes);
-            $mediaSelection->setMediaTypes($mediaTypes);
+            $mediaType = $sessionFormData->getMediaType();
+            $mediaType = $em->merge($mediaType);
+            $mediaSelection->setMediaType($mediaType);
 
-            if($sessionFormData->getDecades() != null){
-                $decades = $sessionFormData->getDecades();
-                $decades = $em->merge($decades);
-                $mediaSelection->setDecades($decades);
+            if($sessionFormData->getDecade() != null){
+                $decade = $sessionFormData->getDecade();
+                $decade = $em->merge($decade);
+                $mediaSelection->setDecade($decade);
             }
             
-            if($sessionFormData->getSelectedMediaGenres() != null){
-                $selectedMediaGenres = $sessionFormData->getSelectedMediaGenres();
-                $selectedMediaGenres = $em->merge($selectedMediaGenres);
-                $mediaSelection->setSelectedMediaGenres($selectedMediaGenres);
+            if($sessionFormData->getSelectedMediaGenre() != null){
+                $selectedMediaGenre = $sessionFormData->getSelectedMediaGenre();
+                $selectedMediaGenre = $em->merge($selectedMediaGenre);
+                $mediaSelection->setSelectedMediaGenre($selectedMediaGenre);
             }
             
             if($sessionFormData->getKeywords() != null)
@@ -139,26 +139,20 @@ class MediaController extends Controller
        );
        
        if($media == "music"){
-            //the correct parameters for a given API are retrieved through the mediaapi class
-            /*$params = array(
-                $em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decade)->getSevenDigitalTag(),
-                $genre != 'all' ? $em->getRepository('SkNdMediaBundle:Genre')->getGenreBySlug($genre)->getSevenDigitalTag(): '',
-            );*/
-
             //todo
-            //$this->mediaapi = $this->get('sk_nd_media.mediaapi');
             $this->mediaapi->setAPIStrategy('sevendigitalapi');
             try{
-                //$response = $sevenDigitalAPI->getRequest($params);
                 $response = $this->mediaapi->getListings();
             }catch(Exception $ex){
                 $exception = $ex;
             }
        }else{
-            //$this->mediaapi = $this->get('sk_nd_media.mediaapi');
             $this->mediaapi->setAPIStrategy('amazonapi');
             try{
-                $response = $this->mediaapi->getListings();
+                $listings = $this->mediaapi->getListings();
+                $response = $listings['response'];
+                $recommendations = isset($listings['recommendations']) && count($listings['recommendations']) > 0 ? $listings['recommendations'] : null;
+                
                 $pagerParams['pagerUpperBound'] = $response->TotalPages > 10 ? 10 : $response->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
                 $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
@@ -170,12 +164,14 @@ class MediaController extends Controller
                 $exception = $le->getMessage();
             }
        }
-       
        //if the page was set, set the page on the mediaSelection object
-       $session = $this->getRequest()->getSession();
-       $mediaSelection = $session->get('mediaSelection');
-       $mediaSelection->setPage($page);
-       $session->set('mediaSelection', $mediaSelection);
+       /*if($page > 1){
+           $session = $this->getRequest()->getSession();
+           $mediaSelection = $session->get('mediaSelection');
+           $mediaSelection->setPage($page);
+           $session->set('mediaSelection', $mediaSelection);
+           
+       }*/
        
        $responseParams = Utilities::removeNullEntries(array(
            'decade'         => $decade,
@@ -184,6 +180,7 @@ class MediaController extends Controller
            'keywords'       => $keywords != '-' ? $keywords : null,
            'pagerParams'    => $pagerParams,
            'api'            => $this->mediaapi->getCurrentAPI()->getName(),
+           'recommendations'=> $recommendations,
        ));
        
        if(!isset($exception))

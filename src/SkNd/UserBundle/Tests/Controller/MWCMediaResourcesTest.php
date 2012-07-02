@@ -50,7 +50,7 @@ class MWCMediaResourcesTest extends WebTestCase
         $form = $crawler->selectButton('Search noodleDig')->form();
         $form['mediaSelection[decades]']->select('1');//all decades
         $form['mediaSelection[mediaTypes]']->select('1');//Film
-        $form['mediaSelection[selectedMediaGenres]']->select('1');//All Genres
+        $form['mediaSelection[SelectedMediaGenre]']->select('1');//All Genres
         $crawler = $this->client->submit($form);     
     }
     
@@ -162,7 +162,7 @@ class MWCMediaResourcesTest extends WebTestCase
                 ->getMock();
         $testAmazonAPI->expects($this->any())
                 ->method('getDetails')
-                ->will($this->returnValue(simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\invalidSampleAmazonDetails.xml')));
+                ->will($this->returnValue(simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\invalidSampleAmazonDetails.xml')));
   
     }*/
 

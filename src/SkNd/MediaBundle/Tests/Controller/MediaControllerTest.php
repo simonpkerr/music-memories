@@ -73,11 +73,11 @@ class MediaControllerTest extends WebTestCase
           
         $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
         $this->mediaSelection = new MediaSelection();
-        $this->mediaSelection->setMediaTypes($mediaType);
+        $this->mediaSelection->setMediaType($mediaType);
         
         $this->mediaResource = new MediaResource();
         $this->mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
-        $this->mediaResource->setMediaType($this->mediaSelection->getMediaTypes());
+        $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
         
         $this->session->set('mediaSelection', $this->mediaSelection);
         
@@ -105,7 +105,7 @@ class MediaControllerTest extends WebTestCase
         $form = $crawler->selectButton('Search noodleDig')->form();
         $form['mediaSelection[decades]']->select('1');//all decades
         $form['mediaSelection[mediaTypes]']->select('1');//Film
-        $form['mediaSelection[selectedMediaGenres]']->select('1');//All Genres
+        $form['mediaSelection[SelectedMediaGenre]']->select('1');//All Genres
         
         $crawler = $this->client->submit($form);        
         $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
@@ -117,7 +117,7 @@ class MediaControllerTest extends WebTestCase
         $form = $crawler->selectButton('Search noodleDig')->form();
         $form['mediaSelection[decades]']->select('1');//all decades
         $form['mediaSelection[mediaTypes]']->select('1');//Film
-        $form['mediaSelection[selectedMediaGenres]']->select('1');//All Genres
+        $form['mediaSelection[SelectedMediaGenre]']->select('1');//All Genres
         $form['mediaSelection[keywords]'] = 'sherlock';
         
         $crawler = $this->client->submit($form);       

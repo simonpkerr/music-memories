@@ -52,7 +52,7 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
                 ->method('getSlug')
                 ->will($this->returnValue('slug'));
                 
-        $this->ms->setMediaTypes($mt);
+        $this->ms->setMediaType($mt);
     }
     
     /**

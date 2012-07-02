@@ -20,7 +20,7 @@ class MediaSelectionType extends AbstractType{
     public function buildForm(FormBuilder $builder, array $options = null){
         
         //entity field mapped to the decade class displaying the id and decadeName properties
-        $builder->add('decades', 'entity', array(
+        $builder->add('decade', 'entity', array(
             'label'         => 'Decade',
             'property'      => 'decadeName',
             'class'         => 'SkNdMediaBundle:Decade',
@@ -31,13 +31,13 @@ class MediaSelectionType extends AbstractType{
         ));
         
         //entity field mapped to the mediatype class displaying the id and mediaName properties
-        $builder->add('mediaTypes', 'entity', array(
+        $builder->add('mediaType', 'entity', array(
             'property'      => 'mediaName',
             'label'         => 'Media',
             'class'         => 'SkNdMediaBundle:MediaType',
         ));
         
-        $builder->add('selectedMediaGenres','entity', array(
+        $builder->add('selectedMediaGenre','entity', array(
             'label'             =>  'Genre',
             'property'          =>  'genreName',
             'class'             =>  'SkNdMediaBundle:Genre',
@@ -55,16 +55,7 @@ class MediaSelectionType extends AbstractType{
             'trim'      => true,
    
         ));
-        /*$builder->add('genres','entity', array(
-            'label'             =>  'Genre',
-            'property'          =>  'genreName',
-            'class'             =>  'SkNdMediaBundle:Genre',
-            'query_builder'     =>  function(EntityRepository $er){
-                return $er->createQueryBuilder('g')
-                        ->orderBy('g.genreName', 'ASC');
-            },                    
-        ));*/
-        
+                
         //hidden field to hold all genres 
         $builder->add('genres', 'hidden');
  
