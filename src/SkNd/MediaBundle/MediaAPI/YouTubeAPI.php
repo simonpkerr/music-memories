@@ -13,7 +13,7 @@ use \SimpleXMLElement;
 
 class YouTubeAPI implements IAPIStrategy {
     const FRIENDLY_NAME = 'YouTube';
-    public $API_NAME = 'youtubeapi';
+    const API_NAME = 'youtubeapi';
     
     protected $youTube;
     private $query;
@@ -33,7 +33,7 @@ class YouTubeAPI implements IAPIStrategy {
     }
     
     public function getName(){
-        return $this->API_NAME;
+        return self::API_NAME;
     }
     
     public function setRequestObject($obj){
@@ -63,23 +63,9 @@ class YouTubeAPI implements IAPIStrategy {
         
                 
     }
-    public function doBatchProcess(array $ids){
-        //construct a batch feed 
-        /*$feed = new \Zend_Gdata_YouTube_VideoFeed();
-        $feed->registerNamespace('batch', "http://schemas.google.com/gdata/batch");
-        
-        foreach($ids as $id){
-            $entry = new \Zend_Gdata_YouTube_VideoEntry();
-            $entry->setId($id);
-            $feed->addEntry($entry);
-        }
-        $response = $this->youTube->post($feed->__toString(), 'http://gdata.youtube.com/feeds/api/videos/batch');
-        
-        return $response;*/
-        
+    public function getBatch(array $ids){
         $feed = '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"
 xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtube.com/schemas/2007"><batch:operation type="query" />';
-        //$b = $feed->addChild('batch:operation type="query"');
         
         $entries = array();
         foreach($ids as $id){
@@ -93,21 +79,31 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         }
         
         if($response === false)
-            throw new \RuntimeException('could not connect to YouTube');
+            throw new \RuntimeException('Could not connect to YouTube');
         
         if($response->getStatus() != 200)
             throw new \RuntimeException('Problem loading results from YouTube');
         
-        $response = $response->getBody();//gets the raw response
+        if(count($response) < 1)
+            throw new \LengthException('No results were returned');
+        
+        
+        $response = $response->getBody();//gets the raw response as Zend_Http_Response
         $feed = new \Zend_Gdata_YouTube_VideoFeed();
         $feed->transferFromXML($response);
-        /************* THIS NEEDS WORK TO TRANSFORM FOR PASSING BACK*/
-        
+        $response = $this->getSimpleXml($feed);
+
         return $response;
         
     }
     
-    public function getId(SimpleXMLElement $xmlData){}
+    public function getIdFromXML(SimpleXMLElement $xmlData){
+        return (string)$xmlData->id;
+    }
+    
+    public function getXML(SimpleXMLElement $xmlData){
+        return null;
+    }
     
     public function getImageUrlFromXML(SimpleXMLElement $xmlData) {
         try{
@@ -203,9 +199,12 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         $keywordQuery = Utilities::formatSearchString(array(
             'keywords'  => $mediaSelection->getComputedKeywords(),
             'media'     => $mediaSelection->getMediaTypes()->getSlug(),
+            'decade'    => $mediaSelection->getDecades() != null ? $mediaSelection->getDecades()->getDecadeName() : null,
+            'genre'     => $mediaSelection->getSelectedMediaGenres() != null ? $mediaSelection->getSelectedMediaGenres()->getGenreName() : null
         ));
         
         //$keywordQuery = urlencode($keywordQuery);
+        //$query = new \Zend_Gdata_YouTube_VideoQuery();
         $query->setVideoQuery($keywordQuery);
         $query->setCategory(urlencode($categories));
         $this->query = $query->getQueryUrl(2);
@@ -214,8 +213,8 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
                 
     }
     
-    private function getSimpleXml($videoFeed){
-        $sxml = new SimpleXMLElement('<feed>');
+    private function getSimpleXml($videoFeed, $debugURL = false){
+        $sxml = new SimpleXMLElement('<feed></feed>');
         //$feed = $sxml->addChild('feed');
         foreach($videoFeed as $videoEntry){
             $entry = $sxml->addChild('entry');
@@ -223,8 +222,10 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         }
         
         //debug - output the search url
-        $url = $sxml->addChild('url');
-        $url[0] = $this->query;
+        if($debugURL){
+            $url = $sxml->addChild('url');
+            $url[0] = $this->query;
+        }
         return $sxml;
     }
     
@@ -242,6 +243,20 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         $title[0] = $videoEntry->getVideoTitle();
         
         return $entry;
+    }
+    
+    /**
+     * method returns a date time object against which records can be compared
+     * for youtube. This enables updates to be made to out of date records
+     * as there is no set time threshold for youtube, a threshold of 3 days 
+     * has been chosen
+     * @return type DateTime
+     */
+    public function getValidCreationTime(){
+         $date = new \DateTime("now");
+         $date = $date->sub(new \DateInterval('PT72H'))->format("Y-m-d H:i:s");
+
+         return $date;
     }
     
    

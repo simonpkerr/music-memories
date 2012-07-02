@@ -10,18 +10,20 @@
 
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
+use \SimpleXMLElement;
 
 interface IAPIStrategy {
     
     public function getListings(MediaSelection $mediaSelection);
     public function getDetails(array $params);
     public function getName();
-    public function doBatchProcess(array $ids);
+    public function getBatch(array $ids);
     //each api implements its own method of getting the id
-    public function getId(\SimpleXMLElement $xmlData);
-    public function getImageUrlFromXML(\SimpleXMLElement $xmlData);
-    public function getItemTitleFromXML(\SimpleXMLElement $xmlData);
-    
+    public function getIdFromXML(SimpleXMLElement $xmlData);
+    public function getXML(SimpleXMLElement $xmlData);
+    public function getImageUrlFromXML(SimpleXMLElement $xmlData);
+    public function getItemTitleFromXML(SimpleXMLElement $xmlData);
+    public function getValidCreationTime();
    
     
 }

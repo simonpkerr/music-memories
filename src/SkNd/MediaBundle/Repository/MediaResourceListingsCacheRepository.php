@@ -7,7 +7,7 @@ use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\MediaAPI\Utilities;
-
+use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 /*
  * Original code Copyright (c) 2011 Simon Kerr
  * MediaController controls all aspects of connecting to and displaying media
@@ -22,7 +22,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
      * @params includes mediatype, optional decade, optional genre, optional keywords,
      * optional page
     */
-    public function getCachedListings(MediaSelection $mediaSelection, $apiName){
+    public function getCachedListings(MediaSelection $mediaSelection, IAPIStrategy $api){
   
         //initial selection parameters
         
@@ -33,7 +33,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
                 ->andWhere('a.name = :apiName')
                 ->setParameters(array(
                     'mediaTypeId'        =>  $mediaSelection->getMediaTypes()->getId(),
-                    'apiName'            =>  $apiName,
+                    'apiName'            =>  $api->getName(),
                    ));
          
         /*
@@ -79,7 +79,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
         
         if($q == null)
             return null;
-        else if($q['dateCreated'] < Utilities::getValidCreationTime()){
+        else if($q['dateCreated'] < $api->getValidCreationTime()){
             //delete the entry since the timestamp is out of date
             $this->createQueryBuilder('cl')
                     ->delete()

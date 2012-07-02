@@ -22,6 +22,7 @@ class MediaAPITests extends WebTestCase {
     private $mediaAPI;
     private $mediaSelection;
     private $testAmazonAPI;
+    private $testYouTubeAPI;
     private $cachedXMLResponse;
     private $liveXMLResponse;
     private $mediaResource;
@@ -56,11 +57,11 @@ class MediaAPITests extends WebTestCase {
                 ->method('getDetails')
                 ->will($this->returnValue($this->liveXMLResponse));
         
-        
+        $this->testYouTubeAPI = new YouTubeAPI(new \SkNd\MediaBundle\MediaAPI\TestYouTubeRequest());
         
         $this->mediaAPI = new MediaAPI('true', $this->em, $this->session, array(
             'amazonapi'     =>  $this->testAmazonAPI,
-            'youtubeapi'    =>  2,
+            'youtubeapi'    =>  $this->testYouTubeAPI,
         ));
         
         $this->mediaSelection = $this->mediaAPI->getMediaSelection(array(
@@ -97,7 +98,7 @@ class MediaAPITests extends WebTestCase {
                         $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
-                            'youtubeapi'    =>  2,
+                            'youtubeapi'    =>  $this->testYouTubeAPI,
                         )))
                 ->setMethods(array('getCachedListings', 'cacheListings'))
                 ->getMock();
@@ -125,7 +126,7 @@ class MediaAPITests extends WebTestCase {
                         $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
-                            'youtubeapi'    =>  2,
+                            'youtubeapi'    =>  $this->testYouTubeAPI,
                         )))
                 ->setMethods(array('getCachedListings'))
                 ->getMock();
@@ -147,7 +148,7 @@ class MediaAPITests extends WebTestCase {
                         $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
-                            'youtubeapi'    =>  2,
+                            'youtubeapi'    =>  $this->testYouTubeAPI,
                         )))
                 ->setMethods(array(
                     'getMediaResource',
@@ -172,7 +173,7 @@ class MediaAPITests extends WebTestCase {
                         $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
-                            'youtubeapi'    =>  2,
+                            'youtubeapi'    =>  $this->testYouTubeAPI,
                         )))
                 ->setMethods(array(
                     'getMediaResource',
@@ -202,7 +203,7 @@ class MediaAPITests extends WebTestCase {
                         $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
-                            'youtubeapi'    =>  2,
+                            'youtubeapi'    =>  $this->testYouTubeAPI,
                         )))
                 ->setMethods(array(
                     'getMediaResource',
@@ -237,7 +238,7 @@ class MediaAPITests extends WebTestCase {
                         $this->session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
-                            'youtubeapi'    =>  2,
+                            'youtubeapi'    =>  $this->testYouTubeAPI,
                         )))
                 ->setMethods(array(
                     'getMediaResource',
@@ -252,7 +253,7 @@ class MediaAPITests extends WebTestCase {
 
         $this->mediaAPI->getMediaSelection(array(
             'media'  => 'film',
-            'decade' => '1980',
+            'decade' => '1980s',
             'genre'  => 'drama',
         ));
         
@@ -280,25 +281,35 @@ class MediaAPITests extends WebTestCase {
         
     }
     
-    public function testProcessMediaResourcesWith2UncachedAmazonResourcesCallsLiveAPICachesResourcesAndReturnsTrue(){
-        //create 2 records with no cache then process
+    public function testProcessMediaResourcesWith1CachedOutOfDateAmazonResourceCallsLiveAPICachesResourcesAndReturnsTrue(){
+        //set more specific params on media selection
+        $this->mediaAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\MediaAPI')
+                ->setConstructorArgs(array(
+                        'true', 
+                        $this->em, 
+                        $this->session,
+                        array(
+                            'amazonapi'     =>  $this->testAmazonAPI,
+                            'youtubeapi'    =>  $this->testYouTubeAPI,
+                        )))
+                ->setMethods(array(
+                    'flush',
+                    'cacheMediaResourceBatch',
+                    ))
+                ->getMock();
+               
+        $cachedResource = new MediaResourceCache();
+        $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
+        $cachedResource->setId($this->mediaResource->getId());
+        $cachedResource->setDateCreated(new \DateTime("1st jan 1980"));
+        $this->mediaResource->setMediaResourceCache($cachedResource);
         
-    }
-    
-    public function testProcessMediaResourcesWith5CachedAnd5UncachedAmazonResourcesUpdatesUncachedResourcesReturnsTrue(){
+        $mediaResources = new \Doctrine\Common\Collections\ArrayCollection();
+        $mediaResources->add($this->mediaResource);
+            
+        $updatesMade = $this->mediaAPI->processMediaResources($mediaResources);
         
-    }
-       
-    public function testProcessMediaResourcesWith5CachedAnd11UncachedAmazonResourcesUpdates10UncachedResourcesReturnsTrue(){
-        
-    }
-    
-    public function testGetDetailsWithValidDataSetReturnsResponse(){
-        
-    }
-    
-    public function testGetDetailsWithInvalidDataSetReturnsResponse(){
-        
+        $this->assertEquals($updatesMade, true);
     }
     
     public function testGetRecommendationsOnExactParamsReturnsData(){

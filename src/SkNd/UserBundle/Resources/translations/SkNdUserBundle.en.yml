@@ -33,6 +33,7 @@ mediaResource:
     flash:
       accessDenied: Just log in first, then you can start adding stuff
       identicalResourceError: Uh&ndash;oh. You&rsquo;re trying to add something that already exists on this wall. You can&rsquo;t do that, sorry
+      amazonResourcesThresholdError: Sorry, you can only add 10 Amazon items to your wall
       selectWall: You&rsquo;ve got more than 1 wall. Please select one first
       success: Yay. Your item was added successfully
   delete:

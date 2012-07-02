@@ -257,11 +257,13 @@ class MemoryWallController extends Controller
         try{
             $mw->addMediaResource($mediaResource);
             $this->em->flush();
-        }catch(\Exception $ex){
+        }catch(\InvalidArgumentException $ex){
             $this->get('session')->setFlash('notice', 'mediaResource.add.flash.identicalResourceError');
             return $this->redirect($this->getRequest()->headers->get('referer'));
+        }catch(\RuntimeException $ex){
+            $this->get('session')->setFlash('notice', 'mediaResource.add.flash.amazonResourcesThresholdError');
+            return $this->redirect($this->getRequest()->headers->get('referer'));
         }
-        
         $this->get('session')->setFlash('notice', 'mediaResource.add.flash.success');
         
         return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));

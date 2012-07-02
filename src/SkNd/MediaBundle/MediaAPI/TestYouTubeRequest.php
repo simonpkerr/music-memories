@@ -20,6 +20,11 @@ class TestYouTubeRequest {
         return $feed;
     }
     
+    public function post($data){
+        $feed = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\ytBatchProcess.xml');
+        return $feed;
+    }
+    
 }
 
 ?>

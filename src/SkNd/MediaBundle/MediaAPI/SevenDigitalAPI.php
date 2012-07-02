@@ -11,7 +11,8 @@ require_once 'SimpleXmlRequest.php';
 use SkNd\MediaBundle\Entity\MediaSelection;
 
 class SevenDigitalAPI implements IAPIStrategy{
-    public $API_NAME = 'sevendigital';
+    const API_NAME = 'sevendigital';
+    const FRIENDLY_NAME = '7Digital';
     protected $method = "release/bytag/top";
     protected $host = "http://api.7digital.com/1.2/";
     protected $page = 1;
@@ -35,7 +36,7 @@ class SevenDigitalAPI implements IAPIStrategy{
     }
     
     public function getName(){
-        return $this->API_NAME;
+        return self::API_NAME;
     }
     
     /*
@@ -44,7 +45,7 @@ class SevenDigitalAPI implements IAPIStrategy{
      * and improve memory walls
      */
     public function getDetails(array $params){}
-    public function doBatchProcess(array $ids){}
+    public function getBatch(array $ids){}
     
     public function getId(\SimpleXMLElement $xmlData){}
     public function getImageUrlFromXML(\SimpleXMLElement $xmlData) {}

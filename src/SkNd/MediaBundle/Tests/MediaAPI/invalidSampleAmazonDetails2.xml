@@ -2,11 +2,38 @@
 <ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">
     <OperationRequest>
         <RequestId>08c5961c-cde7-499f-b25b-81ee12900653</RequestId>
-        <Arguments><Argument Name="Operation" Value="ItemLookup"/><Argument Name="Service" Value="AWSECommerceService"/><Argument Name="AssociateTag" Value="noodledig-21"/><Argument Name="Version" Value="2009-03-31"/><Argument Name="Signature" Value="ANZat3am2Sm0V0jiiM8DElJUGabSJKAvtPMhYhInPCE="/><Argument Name="ItemId" Value="bogys"/><Argument Name="AWSAccessKeyId" Value="AKIAJVJZWBLIJ353LQ2Q"/><Argument Name="Timestamp" Value="2012-06-26T08:30:35Z"/><Argument Name="ResponseGroup" Value="Images,ItemAttributes,SalesRank,Request,Similarities"/></Arguments>
-        <RequestProcessingTime>0.0056010000000000</RequestProcessingTime></OperationRequest>
-        <Items>
-            <Request><IsValid>True</IsValid>
-            <ItemLookupRequest><IdType>ASIN</IdType><ItemId>BOGYS</ItemId><ResponseGroup>Images</ResponseGroup><ResponseGroup>ItemAttributes</ResponseGroup><ResponseGroup>SalesRank</ResponseGroup><ResponseGroup>Request</ResponseGroup><ResponseGroup>Similarities</ResponseGroup><VariationPage>All</VariationPage></ItemLookupRequest>
+        <Arguments>
+            <Argument Name="Operation" Value="ItemLookup"/>
+            <Argument Name="Service" Value="AWSECommerceService"/>
+            <Argument Name="AssociateTag" Value="noodledig-21"/>
+            <Argument Name="Version" Value="2009-03-31"/>
+            <Argument Name="Signature" Value="ANZat3am2Sm0V0jiiM8DElJUGabSJKAvtPMhYhInPCE="/>
+            <Argument Name="ItemId" Value="bogys"/>
+            <Argument Name="AWSAccessKeyId" Value="AKIAJVJZWBLIJ353LQ2Q"/>
+            <Argument Name="Timestamp" Value="2012-06-26T08:30:35Z"/>
+            <Argument Name="ResponseGroup" Value="Images,ItemAttributes,SalesRank,Request,Similarities"/>
+        </Arguments>
+        <RequestProcessingTime>0.0056010000000000</RequestProcessingTime>
+    </OperationRequest>
+    <Items>
+        <Request>
+            <IsValid>True</IsValid>
+            <ItemLookupRequest>
+                <IdType>ASIN</IdType>
+                <ItemId>BOGYS</ItemId>
+                <ResponseGroup>Images</ResponseGroup>
+                <ResponseGroup>ItemAttributes</ResponseGroup>
+                <ResponseGroup>SalesRank</ResponseGroup>
+                <ResponseGroup>Request</ResponseGroup>
+                <ResponseGroup>Similarities</ResponseGroup>
+                <VariationPage>All</VariationPage>
+            </ItemLookupRequest>
             <Errors>
-                <Error><Code>AWS.InvalidParameterValue</Code><Message>BOGYS is not a valid value for ItemId. Please change this value and retry your request.</Message></Error></Errors></Request></Items>
+                <Error>
+                    <Code>AWS.InvalidParameterValue</Code>
+                    <Message>BOGYS is not a valid value for ItemId. Please change this value and retry your request.</Message>
+                </Error>
+            </Errors>
+        </Request>
+    </Items>
 </ItemLookupResponse>

@@ -307,7 +307,7 @@ class MediaAPI {
     //only results returned from the live api are cached
     public function cacheListings(SimpleXMLElement $response){
         $cachedListing = new \SkNd\MediaBundle\Entity\MediaResourceListingsCache();
-        $cachedListing->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->API_NAME));
+        $cachedListing->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
         $cachedListing->setMediaType($this->mediaSelection->getMediaTypes());
         $cachedListing->setDecade($this->mediaSelection->getDecades());
         $cachedListing->setGenre($this->mediaSelection->getSelectedMediaGenres());
@@ -322,7 +322,7 @@ class MediaAPI {
     
     public function getCachedListings(){
         //look up the MediaResourceListingsCache with the params and the current apistrategy name   
-        $xmlResponse = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection, $this->apiStrategy->API_NAME);
+        $xmlResponse = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection, $this->apiStrategy);
         
         if($xmlResponse != null){
             return @simplexml_load_string($xmlResponse);
@@ -338,7 +338,7 @@ class MediaAPI {
         if($this->mediaResource != null && $this->mediaResource->getMediaResourceCache() != null){
             //if a cached resource exists and is older than 24 hours, delete it
             $dateCreated = $this->mediaResource->getMediaResourceCache()->getDateCreated();
-            if($dateCreated->format("Y-m-d H:i:s") < Utilities::getValidCreationTime()){
+            if($dateCreated->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
                 $this->mediaResource->deleteMediaResourceCache();
                 $this->flush();
             }
@@ -358,7 +358,7 @@ class MediaAPI {
             //create a mediaresource
             $this->mediaResource = new MediaResource();
             $this->mediaResource->setId($itemId);
-            $this->mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->API_NAME));
+            $this->mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
             $this->mediaResource->setMediaType($this->mediaSelection->getMediaTypes());
             $this->mediaResource->setDecade($this->mediaSelection->getDecades());
             $this->mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenres());
@@ -394,16 +394,16 @@ class MediaAPI {
     }
     
     //from a batch operation, take the xml data and resources and re-cache them
-    public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, $mediaResources, $flush = true){
-        $mr = $mediaResources->first();
+    public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, array $mediaResources, $flush = true){
         foreach($xmlData as $itemXml){
             //$cachedResource = $mr->getMediaResourceCache() != null ? $mr->getMediaResourceCache() : new MediaResourceCache();
             $cachedResource = new MediaResourceCache();
-            $cachedResource->setId((string)$itemXml->ASIN);
+            $cachedResource->setId($this->apiStrategy->getIdFromXML($itemXml));
             $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($itemXml));
             $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($itemXml));
-            $cachedResource->setXmlData($itemXml->asXML());
+            $cachedResource->setXmlData($this->apiStrategy->getXML($itemXml));
             $cachedResource->setDateCreated(new \DateTime("now"));
+            $mr = $mediaResources[$cachedResource->getId()];
             try{
                 $mr->setMediaResourceCache($cachedResource);
                 if($this->em->contains($mr))
@@ -413,8 +413,6 @@ class MediaAPI {
             } catch(\Exception $ex){
                 throw $ex;
             }
-            $mr = $mediaResources->next();
-            
         }
         
         if($flush)
@@ -439,7 +437,7 @@ class MediaAPI {
             
             $resources = $mediaResources->filter(function($mr) use ($api){
                 //return mediaresources whos cache either doesn't exist or is older than 24 hours
-                return $mr->getAPI()->getName() == $api->getName() && ($mr->getMediaResourceCache() == null || $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < Utilities::getValidCreationTime());
+                return $mr->getAPI()->getName() == $api->getName() && ($mr->getMediaResourceCache() == null || $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime());
             });
             if($resources->count() > 0){
                 $ids = array();
@@ -447,16 +445,17 @@ class MediaAPI {
                     array_push($ids, $mediaResource->getId());
                 }
                 //do batch process of ids then store in cache
-                $this->response = $this->apiStrategy->doBatchProcess($ids);
+                $this->response = $this->apiStrategy->getBatch($ids);
                 
                 //cache the data using the collection of uncached resources, but don't flush yet
-                $this->cacheMediaResourceBatch($this->response, $resources, false);
+                $this->cacheMediaResourceBatch($this->response, $resources->toArray(), false);
                 
-                //flush will remove all the older cached records from db and insert the new ones
-                $this->flush();       
                 $updatesMade = true;
             }
         }
+        //only flush when finished going through all records.
+        //flush will update all the older cached records from db 
+        $this->flush();
         
         return $updatesMade;
     }

@@ -21,6 +21,7 @@ class AmazonAPITest extends WebTestCase {
     private $access_params;
     private $mediaSelection;
     private $em;
+    private $testASR;
     
     protected function setUp(){
         $this->access_params = array(
@@ -36,11 +37,16 @@ class AmazonAPITest extends WebTestCase {
         $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
         $this->mediaSelection = new MediaSelection();
         $this->mediaSelection->setMediaTypes($mediaType);
-               
+           
+        $this->testASR = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonSignedRequest')
+                ->setMethods(array(
+                    'aws_signed_request',
+                ))
+                ->getMock();
     }
     
     private function getBasicTestASR(){
-        return $this->getMock('AmazonSignedRequest');
+        return $this->getMock('\\SkNd\\MediaBundle\\MediaAPI\\AmazonSignedRequest');
     }
     
     /**
@@ -48,18 +54,12 @@ class AmazonAPITest extends WebTestCase {
      * @expectedExceptionMessage Could not connect to Amazon 
      */
     public function testGetListingsNoConnectionThrowsException(){
-        
-        $testASR = $this->getMockBuilder('AmazonSignedRequest')
-                ->setMethods(array(
-                    'aws_signed_request',
-                ))
-                ->getMock();
-        
-        $testASR->expects($this->any())
+       
+        $this->testASR->expects($this->any())
                 ->method('aws_signed_request')
                 ->will($this->returnValue(False));
         
-        $api = new AmazonAPI($this->access_params, $testASR);
+        $api = new AmazonAPI($this->access_params, $this->testASR);
         $response = $api->getListings($this->mediaSelection);
         
     }
@@ -71,39 +71,51 @@ class AmazonAPITest extends WebTestCase {
     public function testGetListingsEmptyDataSetThrowsException(){
         $empty_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\empty_xml_response.xml');
         
-        $testASR = $this->getMockBuilder('AmazonSignedRequest')
-                ->setMethods(array(
-                    'aws_signed_request',
-                ))
-                ->getMock();
-        
-        $testASR->expects($this->any())
+        $this->testASR->expects($this->any())
                 ->method('aws_signed_request')
                 ->will($this->returnValue($empty_xml_data_set));
         
-        $api = new AmazonAPI($this->access_params, $testASR);
+        $api = new AmazonAPI($this->access_params, $this->testASR);
         $response = $api->getListings($this->mediaSelection);
     }   
     
     public function testGetListingsValidDataSetReturnsResponse(){
         $valid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\valid_xml_response.xml');
         
-        $testASR = $this->getMockBuilder('AmazonSignedRequest')
-                ->setMethods(array(
-                    'aws_signed_request',
-                ))
-                ->getMock();
-        
-        $testASR->expects($this->any())
+        $this->testASR->expects($this->any())
                 ->method('aws_signed_request')
                 ->will($this->returnValue($valid_xml_data_set));
         
-        $api = new AmazonAPI($this->access_params, $testASR);
+        $api = new AmazonAPI($this->access_params, $this->testASR);
         $response = $api->getListings($this->mediaSelection);
-        $this->assertTrue($response->Items->TotalResults > 0);
+        $this->assertTrue((int)$response->TotalResults > 0);
     }
     
+    /**
+     * @expectedException RuntimeException 
+     * @expectedExceptionMessage Could not connect to Amazon 
+     */
+    public function testGetDetailsWithNoResponseThrowsException(){
+        $this->testASR->expects($this->any())
+                ->method('aws_signed_request')
+                ->will($this->returnValue(False));
+        
+        $api = new AmazonAPI($this->access_params, $this->testASR);
+        $response = $api->getDetails(array());
+    }
     
+    /**
+     * @expectedException RuntimeException 
+     */
+    public function testGetDetailsWithNoErrorResponseThrowsException(){
+        $invalid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\invalidSampleAmazonDetails.xml');
+        $this->testASR->expects($this->any())
+                ->method('aws_signed_request')
+                ->will($this->returnValue($invalid_xml_data_set));
+        
+        $api = new AmazonAPI($this->access_params, $this->testASR);
+        $response = $api->getDetails(array());
+    }
     
 }
 

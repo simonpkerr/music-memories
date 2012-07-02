@@ -12,7 +12,7 @@ use \SimpleXMLElement;
 
 class AmazonAPI implements IAPIStrategy {
     const FRIENDLY_NAME = 'Amazon';
-    public $API_NAME = 'amazonapi';
+    const API_NAME = 'amazonapi';
     private $amazonParameters;
     private $public_key;                           
     private $private_key;
@@ -20,19 +20,14 @@ class AmazonAPI implements IAPIStrategy {
     protected $asr;
     private $ITEM_SEARCH = 'ItemSearch';
     private $ITEM_LOOKUP = 'ItemLookup';
-    //private $doctrine;
-    //private $em;
-    
-    public function __construct(array $access_params, $amazon_signed_request){//, Registry $doctrine){
+ 
+    public function __construct(array $access_params, $amazon_signed_request){
             
         $this->public_key = $access_params['amazon_public_key'];
         $this->private_key = $access_params['amazon_private_key'];
         $this->associate_tag = $access_params['amazon_associate_tag'];
         
         $this->asr = $amazon_signed_request; 
-        
-        //$this->doctrine = $doctrine;
-        //$this->em = $doctrine->getEntityManager();
         
         $this->amazonParameters = array(
                 "Operation"     => $this->ITEM_SEARCH,
@@ -50,7 +45,7 @@ class AmazonAPI implements IAPIStrategy {
     }
     
     public function getName(){
-        return $this->API_NAME;
+        return self::API_NAME;
     }
     
     public function setAmazonSignedRequest($asr){
@@ -97,8 +92,7 @@ class AmazonAPI implements IAPIStrategy {
     }
     
     /*
-     * getDetails handles calls to the live api, calls to the db to get recommendations
-     * and then save a details product back to the db as a MediaResource to drive recommendations
+     * getDetails handles calls to the live api, 
      * @param params - params to carry out the query - only contains the id of the amazon product
      */
     public function getDetails(array $params){
@@ -127,7 +121,7 @@ class AmazonAPI implements IAPIStrategy {
      * @param array $ids 
      * 
      */
-    public function doBatchProcess(array $ids){
+    public function getBatch(array $ids){
         $params = array(
             'ItemId'  => implode(',', $ids),
         );
@@ -135,8 +129,12 @@ class AmazonAPI implements IAPIStrategy {
     }
     
     //each api will have it's own method for returning the id of a mediaresource for caching purposes.
-    public function getId(SimpleXMLElement $xmlData){
-        
+    public function getIdFromXML(SimpleXMLElement $xmlData){
+        return (string)$xmlData->ASIN;
+    }
+    
+    public function getXML(SimpleXMLElement $xmlData){
+        return $xmlData->asXML();
     }
     
     
@@ -200,6 +198,19 @@ class AmazonAPI implements IAPIStrategy {
         return $this->asr->aws_signed_request($region, $parameters, $this->public_key, $this->private_key, $this->associate_tag);
     }
     
+    /**
+     * returns a DateTime object against which records can be compared 
+     * to determine whether cached records for amazon can be used or need
+     * to be updated from the live api. According to toc for amazon, this
+     * threshold is 24 hours.
+     * @return type DateTime
+     */
+    public function getValidCreationTime(){
+         $date = new \DateTime("now");
+         $date = $date->sub(new \DateInterval('PT24H'))->format("Y-m-d H:i:s");
+
+         return $date;
+    }
 }
 
 

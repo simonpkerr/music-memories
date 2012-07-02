@@ -40,30 +40,9 @@ class MWCMediaResourcesTest extends WebTestCase
         $kernel = static::createKernel();
         $kernel->boot();
         $this->router = $kernel->getContainer()->get('router');
- 
-        //$this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        
-        //$this->session = $kernel->getContainer()->get('session');
-         
         $this->mediaapi = $kernel->getContainer()->get('sk_nd_media.mediaapi');
         $this->session = $this->mediaapi->getSession();
         $this->em = $this->mediaapi->getEntityManager();
-        //$this->mediaapi->setSession($this->session);
-        //$this->mediaapi->setEntityManager($this->em);
-        
-        /*$mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
-        $this->mediaSelection = new MediaSelection();
-        $this->mediaSelection->setMediaTypes($mediaType);
-        
-        $this->session->set('mediaSelection', $this->mediaSelection);
-        $this->client->getRequest()->getSession();*/
-        
-        /*$this->mediaapi->getMediaSelection(array(
-            'media'     => 'film',
-            'decade'    => '1980',
-        ));*/
-  
-        
     }
     
     private function getMediaSelection(){

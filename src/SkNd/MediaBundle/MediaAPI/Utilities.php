@@ -16,7 +16,8 @@ class Utilities {
      * this function is needed to optimize titles from amazon products
      * to search youtube and google images
      * 
-     * @param string $keywords 
+     * @param array $params contains media, [decade name] and [genre name]
+     *  
      * @return string $formattedKeywords
      * @method formatSearchString looks for irrelevant 
      * parts of the keyword search and removes them
@@ -29,8 +30,6 @@ class Utilities {
     public static function formatSearchString(array $params){
         $keywords = $params['keywords'];
         $media = $params['media'];
-        /*$decade = $params['decade'];
-        $genre = $params['genre'];*/
         
         //$keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD))/i', '$1$2', $keywords)));
         
@@ -40,6 +39,7 @@ class Utilities {
         //'/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set))/i', '$1$2', $keywords)));
         //'/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*))/i'
         
+        $keywordQuery .= ' '. $media; 
               
         //add the decade and media tags as keywords if the doing a tv search
         //only add decade to search if the searched for item is older than 20 years
@@ -49,15 +49,24 @@ class Utilities {
          * this doesn't appear to help for certain results
          * as videos aren't tagged with all the tags (title decade, media)
          */
-        //$year = date('Y');
-        //if($media == 'tv' && !isset($params['secondarySearch'])){
-        //    $decade < $year - 20 ? $keywordQuery .= ' ' . $decade . 's ' . $media : $keywordQuery .= ' '. $media;
+        $year = date('Y');
+        if(isset($params['decade'])){
+            $decade = $params['decade'];
+            if($year - $decade > 20)
+                $keywordQuery .= ' ' . 'original';
             
             //this still doesn't bring relevant results for moomins (the moomins 1970s tv)
             //need a way to decide relevant results (maybe successive calls to youtube if no results found?)
-        //}
-        $keywordQuery .= ' '. $media; 
         
+        }
+        
+        //only add genre if applies to children
+        if(isset($params['genre'])){
+            $genre = $params['genre'];
+            if($genre == 'Childrens')
+                $keywordQuery .= ' ' . $genre;
+        }
+                
         //---- MAYBE look at the bracketed part of a title and check to see if a year is supplied and use that in the search.
         
         //$keywordQuery = urlencode($keywordQuery);

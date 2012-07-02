@@ -1,12 +1,12 @@
 {% if youTubeResponse is defined %}
 {% include "SkNdMediaBundle:Media:youTubePlayerPartial.html.twig" 
     with {
-        'firstVideo' : youTubeResponse.feed.entry,
+        'firstVideo' : youTubeResponse.entry,
     } 
 %}
-    <strong>{{ youTubeResponse.url }}</strong>
+    {%if youTubeResponse.url is defined %}<strong>{{ youTubeResponse.url }}</strong>{%endif%}
     <ul>
-    {% for ytResult in youTubeResponse.feed.entry %}
+    {% for ytResult in youTubeResponse.entry %}
                 <li class="listing">
                 <dl>
                 <dt><a href="javascript:void(0)" onclick="play('{{ytResult.id}}')">{{ ytResult.title }}</a></dt>

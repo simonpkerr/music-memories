@@ -83,10 +83,15 @@ class MemoryWall
         return $this->id;
     }
     
+    /**
+     * gets all referenced mediaresources for this memory wall
+     * for the purpose of batch processing
+     * @return type arraycollection
+     */
     public function getMediaResources(){
         $mrs = new ArrayCollection();
         foreach($this->memoryWallMediaResources as $mwMr){
-            $mrs->add($mwMr->getMediaResource());
+            $mrs->set($mwMr->getMediaResource()->getId(), $mwMr->getMediaResource());
         }
         return $mrs;
     }
@@ -100,9 +105,13 @@ class MemoryWall
     
     public function getMemoryWallMediaResources($apiId = null){
         if($apiId != null){
-            return $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
-                return $mwmr->getApi_id() == $apiId;
-            });
+            try{
+                return $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
+                    return $mwmr->getApi_id() == $apiId;
+                });
+            } catch (\Exception $ex){
+                throw new \InvalidArgumentException('there was a problem with the given api name');
+            }
         }
         
         return $this->memoryWallMediaResources;                
@@ -111,6 +120,9 @@ class MemoryWall
     public function addMediaResource(MediaResource $mr){
         if(isset($this->memoryWallMediaResources[$mr->getId()]))
             throw new \InvalidArgumentException('Duplicate Media Resource found');
+        
+        if($mr->getAPI()->getName == 'amazonapi' && $this->getMemoryWallMediaResources('amazonapi')->count() >= 10)
+            throw new \RuntimeException('Only 10 Amazon items can be added to a wall');
         
         $mr->incrementSelectedCount();
         $mwMr = new MemoryWallMediaResource($this, $mr);        
