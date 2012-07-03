@@ -117,6 +117,11 @@ class AmazonAPITest extends WebTestCase {
         $response = $api->getDetails(array());
     }
     
+    
+    public function testGetDetailsAndRecommendationsReturnsValidMediaResources(){
+        
+    }
+    
 }
 
 

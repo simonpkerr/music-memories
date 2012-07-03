@@ -35,7 +35,7 @@
         <div id="flashMessages">
             <ul>
             {% for key, message in app.session.getFlashes() %}
-            <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle')|raw }}</li>
+            <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle')|raw|trans({}, 'SkNdMediaBundle')|raw }}</li>
             {% endfor %}   
             </ul>
         </div>

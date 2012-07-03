@@ -140,7 +140,7 @@ class MemoryWallController extends Controller
         
         //check the mediaresources related to this wall and refresh from api if necessary
         $mediaResources = $mw->getMediaResources();
-        if(!$mediaResources->isEmpty()){
+        if(count($mediaResources) > 0){
             $mediaapi->processMediaResources($mediaResources, $page);
         }
         

@@ -1,0 +1,4 @@
+media:
+  amazon:
+    length_exception: Sorry, there were no results returned from Amazon
+    runtime_exception: Uh&ndash;oh, something went wrong. Please try again in a bit  

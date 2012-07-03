@@ -31,15 +31,15 @@ class Utilities {
         $keywords = $params['keywords'];
         $media = $params['media'];
         
-        //$keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD))/i', '$1$2', $keywords)));
-        
         //this version removes any references to disc set, box set etc
-        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*)|(\s*\(.*\)))/i','$1$2', $keywords)));
+        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\d*)((\sseries.*)|(\s\-)|(\s*\:.*)|(\[[A-Z]+\]\s?)|(\[)|(\])|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*)|(\()|(\)\s?)|(\s*\([a-z]*\)\s?))/i','$1$2', $keywords)));
         //older regexs
+        //'/(\w*)(\d*)((\sseries.*)|(\s\-)|(\s*\:.*)|(\[[A-Z]+\]\s?)|(\[)|(\])|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*)|(\s*\([a-z]*\)))/i'
+        //'/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*)|(\s*\(.*\)))/i'
         //'/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set))/i', '$1$2', $keywords)));
         //'/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*))/i'
-        
-        $keywordQuery .= ' '. $media; 
+         
+        //$keywordQuery .= ' '. $media; 
               
         //add the decade and media tags as keywords if the doing a tv search
         //only add decade to search if the searched for item is older than 20 years
@@ -53,7 +53,7 @@ class Utilities {
         if(isset($params['decade'])){
             $decade = $params['decade'];
             if($year - $decade > 20)
-                $keywordQuery .= ' ' . 'original';
+                $keywordQuery .= '|' . 'original';
             
             //this still doesn't bring relevant results for moomins (the moomins 1970s tv)
             //need a way to decide relevant results (maybe successive calls to youtube if no results found?)
@@ -64,7 +64,7 @@ class Utilities {
         if(isset($params['genre'])){
             $genre = $params['genre'];
             if($genre == 'Childrens')
-                $keywordQuery .= ' ' . $genre;
+                $keywordQuery .= '|' . $genre;
         }
                 
         //---- MAYBE look at the bracketed part of a title and check to see if a year is supplied and use that in the search.

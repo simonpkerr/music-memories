@@ -312,6 +312,19 @@ class MediaAPITests extends WebTestCase {
         $this->assertEquals($updatesMade, true);
     }
     
+    public function testGetAmazonListingRecommendationsWhenCallingLiveAPIReturnsResponse(){
+        
+    }
+    
+    public function testGetAmazonListingRecommendationsWhenGettingCachedListingsReturnsResponse(){
+        
+    }
+    
+    public function testGetAmazonDetailRecommendationsWhenCallingLiveAPIReturnsResponse(){
+        
+    }
+    
+    
     public function testGetRecommendationsOnExactParamsReturnsData(){
         
     }
@@ -332,13 +345,7 @@ class MediaAPITests extends WebTestCase {
         
     }
     
-    public function testSetRecommendationsForNewAmazonProductStoresMediaResourceAndCachedResource(){
-        
-    }
     
-    public function testSetRecommendationsForExistingAmazonProductUpdatesMediaResourceViewCountAndUpdatesCachedResource(){
-        
-    }
     
     
 }

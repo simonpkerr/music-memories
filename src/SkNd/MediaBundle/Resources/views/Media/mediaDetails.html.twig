@@ -4,11 +4,12 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>    
 {% endblock %}
 
-{% block title %}Details {% if mainResponse is defined %}for {{title}}{% endif %}{% endblock %}
+{% block title %}Details {% if response is defined %}for {{title}}{% endif %}{% endblock %}
 
 {% block content %}
-<a href="{{path('search', returnRouteParams)}}">back to listings</a>
-{%if mainResponse is defined %}
+{#<a href="{{path('search', returnRouteParams)}}">back to listings</a>#}
+<a href="{{referrer}}">go back to the previous page</a>
+{%if response is defined %}
 <h1>{{title}}</h1>
 {% endif %}
 

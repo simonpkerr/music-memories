@@ -93,7 +93,7 @@ class MemoryWall
         foreach($this->memoryWallMediaResources as $mwMr){
             $mrs->set($mwMr->getMediaResource()->getId(), $mwMr->getMediaResource());
         }
-        return $mrs;
+        return $mrs->toArray();
     }
     
     public function getMediaResourceById($mrId){
@@ -114,14 +114,14 @@ class MemoryWall
             }
         }
         
-        return $this->memoryWallMediaResources;                
+        return $this->memoryWallMediaResources->toArray();                
     }
  
     public function addMediaResource(MediaResource $mr){
         if(isset($this->memoryWallMediaResources[$mr->getId()]))
             throw new \InvalidArgumentException('Duplicate Media Resource found');
         
-        if($mr->getAPI()->getName == 'amazonapi' && $this->getMemoryWallMediaResources('amazonapi')->count() >= 10)
+        if($mr->getAPI()->getName == 'amazonapi' && count($this->getMemoryWallMediaResources('amazonapi')) >= 10)
             throw new \RuntimeException('Only 10 Amazon items can be added to a wall');
         
         $mr->incrementSelectedCount();

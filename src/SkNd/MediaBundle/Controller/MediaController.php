@@ -124,19 +124,27 @@ class MediaController extends Controller
     public function searchAction($media, $decade = "all-decades", $genre = "all-genres", $keywords = '-', $page = 1){
        $this->mediaapi = $this->get('sk_nd_media.mediaapi');
        $mediaSelection = $this->mediaapi->getMediaSelection(array(
-            'media'     => $media,
-            'decade'    => $decade,
-            'genre'     => $genre,
-            'keywords'  => $keywords,
-            'page'      => $page,
+           'api'       => 'amazonapi', 
+           'media'     => $media,
+           'decade'    => $decade,
+           'genre'     => $genre,
+           'keywords'  => $keywords,
+           'page'      => $page,
+           'computedKeywords'  => null,
         ));
        
-       //$em = $this->mediaapi->getEntityManager();
-        
        $pagerCount = 5;
        $pagerParams = array(
            'pagerCount' => $pagerCount,
        );
+       
+       $responseParams = Utilities::removeNullEntries(array(
+           'decade'         => $decade,
+           'genre'          => $genre,
+           'media'          => $media,
+           'keywords'       => $keywords != '-' ? $keywords : null,
+           'api'            => $this->mediaapi->getCurrentAPI()->getName(),
+       ));
        
        if($media == "music"){
             //todo
@@ -151,43 +159,23 @@ class MediaController extends Controller
             try{
                 $listings = $this->mediaapi->getListings();
                 $response = $listings['response'];
-                $recommendations = isset($listings['recommendations']) && count($listings['recommendations']) > 0 ? $listings['recommendations'] : null;
-                
                 $pagerParams['pagerUpperBound'] = $response->TotalPages > 10 ? 10 : $response->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
                 $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
                 $pagerParams['pagerRouteParams'] = $this->mediaapi->getMediaSelectionParams();
+                $responseParams['pagerParams'] = $pagerParams;
+                
+                $responseParams = array_merge($responseParams, $listings);
                 //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
             }catch(\RunTimeException $re){
                 $exception = $re->getMessage();
+                $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
             }catch(\LengthException $le){
                 $exception = $le->getMessage();
+                $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
             }
        }
-       //if the page was set, set the page on the mediaSelection object
-       /*if($page > 1){
-           $session = $this->getRequest()->getSession();
-           $mediaSelection = $session->get('mediaSelection');
-           $mediaSelection->setPage($page);
-           $session->set('mediaSelection', $mediaSelection);
-           
-       }*/
        
-       $responseParams = Utilities::removeNullEntries(array(
-           'decade'         => $decade,
-           'genre'          => $genre,
-           'media'          => $media,
-           'keywords'       => $keywords != '-' ? $keywords : null,
-           'pagerParams'    => $pagerParams,
-           'api'            => $this->mediaapi->getCurrentAPI()->getName(),
-           'recommendations'=> $recommendations,
-       ));
-       
-       if(!isset($exception))
-           $responseParams['mainResponse'] = $response;
-       else
-           $responseParams['exception'] = $exception;
-            
        return $this->render('SkNdMediaBundle:Media:searchResults.html.twig', $responseParams);
     }
 
@@ -198,12 +186,27 @@ class MediaController extends Controller
          */
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $mediaSelection = $this->mediaapi->getMediaSelection(array(
-            'media'     => $media,
-            'decade'    => $decade,
-            'genre'     => $genre,
+            'api'               => 'amazonapi',
+            'media'             => $media,
+            'decade'            => $decade,
+            'genre'             => $genre,
+            'computedKeywords'  => null,
         ));
         
-        //look up product
+        $details = null;
+        $title = null;
+        
+        $referrer = $this->getRequest()->headers->get('referer');
+        
+        $responseParams = array(
+            //'returnRouteParams' => $this->mediaapi->getMediaSelectionParams(),
+            'media'             => $media,
+            'decade'            => $decade,
+            'genre'             => $genre,
+            'api'               => $this->mediaapi->getCurrentAPI()->getName(),
+            'referrer'          => $referrer,
+        );
+        
         if($media != 'music'){
             $params = array(
                'ItemId' =>  $id,
@@ -211,31 +214,19 @@ class MediaController extends Controller
             $this->mediaapi->setAPIStrategy('amazonapi');
             
             try{
-                $response = $this->mediaapi->getDetails($params);
+                $details = $this->mediaapi->getDetails($params);
+                $responseParams['title'] = $details['response']->ItemAttributes->Title;
+                //merge the response and recommendations with the responseParams array
+                $responseParams = array_merge($responseParams, $details);
             }catch(\RunTimeException $re){
                 $exception = $re->getMessage();
+                $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
             }catch(\LengthException $le){
                 $exception = $le->getMessage();
+                $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
             }
         }
-             
-        $responseParams = array(
-            'returnRouteParams' => $this->mediaapi->getMediaSelectionParams(),
-            'media'             => $media,
-            'decade'            => $decade,
-            'genre'             => $genre,
-            'api'               => $this->mediaapi->getCurrentAPI()->getName(),
-        );
-        
-        //set the amazon response to either data or exception
-        if(!isset($exception)){
-            $responseParams['mainResponse'] = $response;
-            if($media != 'music')
-                $responseParams['title'] = $response->ItemAttributes->Title;
-        }
-        else
-            $responseParams['exception'] = $exception;
-     
+       
         return $this->render('SkNdMediaBundle:Media:mediaDetails.html.twig', $responseParams);
         
     }
@@ -250,19 +241,24 @@ class MediaController extends Controller
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $this->mediaapi->setAPIStrategy('youtubeapi');
         $mediaSelection = $this->mediaapi->getMediaSelection(array(
+            'api'               => 'youtubeapi',
             'media'             => $media,
             'decade'            => $decade,
             'genre'             => $genre,
             'computedKeywords'  => urldecode($title),
         ));
-                        
+        
+        $listings = null;
         try{
-            $ytResponse = $this->mediaapi->getListings();
+            $listings = $this->mediaapi->getListings();
         }catch(\RuntimeException $re){
             $ytException = $re->getMessage();
         }catch(\LengthException $le){
             $ytException = $le->getMessage();
         }
+        /*------- CHANGE THIS SO THAT A FLASH MESSAGE IS SHOWN INSTEAD -----------*/
+        $ytResponse = $listings['response'];
+        $recommendations = $listings['recommendations'];
         
         $responseParams['api'] = $this->mediaapi->getCurrentAPI()->getName();
         //set the youtube response to either data or exception
@@ -270,6 +266,9 @@ class MediaController extends Controller
             $responseParams['youTubeResponse'] = $ytResponse;
         else
             $responseParams['youTubeException'] = $ytException;
+        
+        $responseParams['recommendations'] = $recommendations; 
+        $responseParams = Utilities::removeNullEntries($responseParams);
         
         return $this->render('SkNdMediaBundle:Media:youTubePartial.html.twig', $responseParams);        
     }

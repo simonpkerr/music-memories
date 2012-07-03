@@ -9,6 +9,7 @@ namespace SkNd\MediaBundle\MediaAPI;
 //require_once 'Zend/Loader.php';
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\Entity\MediaSelection;
+use Doctrine\ORM\EntityManager;
 use \SimpleXMLElement;
 
 class YouTubeAPI implements IAPIStrategy {
@@ -17,11 +18,13 @@ class YouTubeAPI implements IAPIStrategy {
     
     protected $youTube;
     private $query;
+    private $em;
     
-    public function __construct($youtube_request_object = null){
+    public function __construct(EntityManager $em, $youtube_request_object = null){
         
         //get access to the youtube methods
         //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
+        $this->em = $em;
        
         $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
         $this->youTube->setMajorProtocolVersion(2);
@@ -45,7 +48,7 @@ class YouTubeAPI implements IAPIStrategy {
      * but still need to be stored to drive recommendations, timeline
      * and improve memory walls
      */
-    public function getDetails(array $params){
+    public function getDetails(array $params, MediaSelection $mediaSelection = null){
         if(!isset($params['ItemId']))
             throw new \InvalidArgumentException('No id was passed to Youtube');
         
@@ -59,8 +62,16 @@ class YouTubeAPI implements IAPIStrategy {
         }
         
         $response = $this->constructVideoEntry(new SimpleXMLElement('<entry></entry>'), $ve);
-        return $response;
         
+        if($mediaSelection != null){
+            return array(
+                'response'          =>  $response,
+                'recommendations'   =>  $this->getRecommendations($mediaSelection, 'details'),
+                //'title'             =>  $response->entry->title,
+            ); 
+        }
+        
+        return $response;
                 
     }
     public function getBatch(array $ids){
@@ -102,7 +113,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
     }
     
     public function getXML(SimpleXMLElement $xmlData){
-        return null;
+        return $xmlData->asXML();
     }
     
     public function getImageUrlFromXML(SimpleXMLElement $xmlData) {
@@ -120,8 +131,27 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         }
     }
     
+    /**
+     * gets recommendations for either the listings or details pages
+     * @param MediaSelection $mediaSelection
+     * @param type $recType 
+     * @return $recommendatations array
+     */
+    public function getRecommendations(MediaSelection $mediaSelection, $recType) {
+        //$recommendations = null;
+        
+        if($recType == 'listings'){
+            
+        }
+        if($recType == 'details'){
+            
+        }
+        
+        return null;
+    }
+    
     public function getListings(MediaSelection $mediaSelection){
-                
+          throw new \RuntimeException("Could not connect to YouTube");      
         //------to send a simple query to youtube       
         //$query->setVideoQuery($keywordQuery);
         
@@ -175,7 +205,11 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             throw new \LengthException("No results were returned");
         }
 
-        return $this->getSimpleXml($videoFeed, true);
+        return array(
+            'response'          => $this->getSimpleXml($videoFeed, true),
+            'recommendations'   => $this->getRecommendations($mediaSelection, 'listings')
+        );
+        
         
                 
     }
@@ -191,8 +225,10 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         
         switch($mediaSelection->getMediaType()->getSlug()){
             case 'film':
-            case 'tv':
                 $categories = 'Film|Entertainment';
+                break;
+            case 'tv':
+                $categories = 'Film|Entertainment|Shows';
                 break;
             
         }
@@ -205,6 +241,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         
         //$keywordQuery = urlencode($keywordQuery);
         //$query = new \Zend_Gdata_YouTube_VideoQuery();
+        
         $query->setVideoQuery($keywordQuery);
         $query->setCategory(urlencode($categories));
         $this->query = $query->getQueryUrl(2);

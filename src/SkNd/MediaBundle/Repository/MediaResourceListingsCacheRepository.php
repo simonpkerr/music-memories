@@ -28,12 +28,11 @@ class MediaResourceListingsCacheRepository extends EntityRepository
         
         $q = $this->createQueryBuilder('cl')
                 ->select('cl.xmlData, cl.dateCreated, cl.id')
-                ->innerJoin('cl.api', 'a')
-                ->where('cl.mediaType_id = :mediaTypeId')
-                ->andWhere('a.name = :apiName')
+                ->where('cl.mediaType = :mediaType')
+                ->andWhere('cl.api = :api')
                 ->setParameters(array(
-                    'mediaTypeId'        =>  $mediaSelection->getMediaType()->getId(),
-                    'apiName'            =>  $api->getName(),
+                    'mediaType'    =>  $mediaSelection->getMediaType(),
+                    'api'          =>  $mediaSelection->getAPI(),
                    ));
          
         /*
@@ -41,17 +40,17 @@ class MediaResourceListingsCacheRepository extends EntityRepository
          * otherwise search for records with a null value for decade
          */
         if($mediaSelection->getDecade() != null){
-            $q = $q->andWhere('cl.decade_id = :decadeId')
-                    ->setParameter('decadeId', $mediaSelection->getDecade()->getId());
+            $q = $q->andWhere('cl.decade = :decade')
+                    ->setParameter('decade', $mediaSelection->getDecade());
         }else {
-            $q = $q->andWhere('cl.decade_id is null');
+            $q = $q->andWhere('cl.decade is null');
         }
         
         if($mediaSelection->getSelectedMediaGenre() != null){
-            $q = $q->andWhere('cl.genre_id = :genreId')
-                ->setParameter('genreId', $mediaSelection->getSelectedMediaGenre()->getId());
+            $q = $q->andWhere('cl.genre = :genre')
+                ->setParameter('genre', $mediaSelection->getSelectedMediaGenre());
         }else{
-            $q = $q->andWhere('cl.genre_id is null');
+            $q = $q->andWhere('cl.genre is null');
         }
         
         if($mediaSelection->getKeywords() != null){
@@ -93,9 +92,5 @@ class MediaResourceListingsCacheRepository extends EntityRepository
             return $q['xmlData'];
 
      }
-     
-     
-     
-     
      
 }

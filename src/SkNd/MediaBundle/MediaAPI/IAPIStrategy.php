@@ -15,7 +15,7 @@ use \SimpleXMLElement;
 interface IAPIStrategy {
     
     public function getListings(MediaSelection $mediaSelection);
-    public function getDetails(array $params);
+    public function getDetails(array $params, MediaSelection $mediaSelection = null);
     public function getName();
     public function getBatch(array $ids);
     //each api implements its own method of getting the id
@@ -24,7 +24,7 @@ interface IAPIStrategy {
     public function getImageUrlFromXML(SimpleXMLElement $xmlData);
     public function getItemTitleFromXML(SimpleXMLElement $xmlData);
     public function getValidCreationTime();
-    public function getRecommendations(MediaSelection $mediaSelection);
+    public function getRecommendations(MediaSelection $mediaSelection, $recType);
    
     
 }

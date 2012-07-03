@@ -20,14 +20,17 @@ class AmazonAPI implements IAPIStrategy {
     protected $asr;
     private $ITEM_SEARCH = 'ItemSearch';
     private $ITEM_LOOKUP = 'ItemLookup';
+    private $em;
  
-    public function __construct(array $access_params, $amazon_signed_request){
+    public function __construct(EntityManager $em, array $access_params, $amazon_signed_request){
             
         $this->public_key = $access_params['amazon_public_key'];
         $this->private_key = $access_params['amazon_private_key'];
         $this->associate_tag = $access_params['amazon_associate_tag'];
         
         $this->asr = $amazon_signed_request; 
+        
+        $this->em = $em;
         
         $this->amazonParameters = array(
                 "Operation"     => $this->ITEM_SEARCH,
@@ -83,19 +86,25 @@ class AmazonAPI implements IAPIStrategy {
         $xml_response = $this->queryAmazon($this->amazonParameters, "co.uk");
         
         try{
-            return $this->verifyXmlResponse($xml_response)->Items;
+            $xml_response = $this->verifyXmlResponse($xml_response)->Items;
         }catch(\RunTimeException $re){
             throw $re;
         }catch(\LengthException $le){
             throw $le;
         }
+        
+        $recommendations = $this->getRecommendations($mediaSelection, 'listings');
+        return array(
+            'response'          =>  $xml_response,
+            'recommendations'   =>  $recommendations,
+        );
     }
     
     /*
      * getDetails handles calls to the live api, 
      * @param params - params to carry out the query - only contains the id of the amazon product
      */
-    public function getDetails(array $params){
+    public function getDetails(array $params, MediaSelection $mediaSelection = null){
         $this->amazonParameters = array_merge($params, array(
                'Operation'          =>      $this->ITEM_LOOKUP,
                'ResponseGroup'      =>      'Images,ItemAttributes,SalesRank,Request,Similarities',
@@ -107,12 +116,24 @@ class AmazonAPI implements IAPIStrategy {
         
         try{
             $verifiedResponse = $this->verifyXmlResponse($xml_response);
-            return $verifiedResponse->Items->Item;
         }catch(\RunTimeException $re){
             throw $re;
         }catch(\LengthException $le){
             throw $le;
         }
+        
+        
+        if($mediaSelection != null){
+            $recommendations = $this->getRecommendations($mediaSelection, 'details');
+            return array(
+                'response'          =>  $verifiedResponse->Items->Item,
+                'recommendations'   =>  $recommendations,
+            );
+        }
+        
+        //certain operations like batch processing only pass ids and do not require recommendations
+        return $verifiedResponse->Items->Item;
+        
     }
     
     /**
@@ -140,7 +161,6 @@ class AmazonAPI implements IAPIStrategy {
     
     public function getImageUrlFromXML(SimpleXMLElement $xmlData){
         try{
-            //return $xmlData->Items->Item->MediumImage->URL;
             return (string)$xmlData->MediumImage->URL;
         } catch(\RuntimeException $re){
             return null;
@@ -149,11 +169,39 @@ class AmazonAPI implements IAPIStrategy {
     
     public function getItemTitleFromXML(SimpleXMLElement $xmlData){
         try{
-            //return $xmlData->Items->Item->ItemAttributes->Title;
             return (string)$xmlData->ItemAttributes->Title;
         } catch(\RuntimeException $re){
             return null;
         }
+    }
+    
+    /**
+     * gets recommendations for either the listings or details pages
+     * @param MediaSelection $mediaSelection
+     * @param type $recType 
+     * @return $recommendatations array
+     */
+    public function getRecommendations(MediaSelection $mediaSelection, $recType) {
+        //$recommendations = null;
+        
+        if($recType == 'listings'){
+            //get memory walls with same associated date just for listings page
+            if($mediaSelection->getDecade() != null){
+                $r = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallsByDecade($mediaSelection->getDecade());
+                if(count($r) > 0)
+                    return $r;
+            }
+        }
+        /*
+         * details recommendations needs to look at the mediaselection and try to get media resources based on all params
+         * then just on decade, and then based on the users age
+         */
+        if($recType == 'details'){
+           //$r = $this->em->getRepository('SkNdUserBundle:MediaResource')->getMediaResourceRecommendations($mediaSelection);
+           
+        }
+        
+        return null;
     }
    
     /**

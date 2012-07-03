@@ -26,21 +26,13 @@ SkNd\MediaBundle\Entity\MediaResourceListingsCache:
       gedmo:
         timestampable:
           on: create
-    api_id:
-      type: integer
-    mediaType_id:
-      type: integer
-    genre_id:
-      type: integer  
-      nullable: true
-    decade_id:
-      type: integer
-      nullable: true
   manyToOne:
     api:
       targetEntity: API
+      nullable: false
     mediaType:
       targetEntity: MediaType
+      nullable: false
       #cascade: ["merge"] 
     decade:
       targetEntity: Decade

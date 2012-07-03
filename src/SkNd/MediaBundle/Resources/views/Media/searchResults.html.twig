@@ -8,7 +8,8 @@
     and {{keywords}}
     {% endif %}
 </h1>
-{% if recommendations is defined %}
+{% if response is defined %}
+{% if recommendations is not null %}
 <div id="recommendations">
     <h2>Recommendations</h2>
     <p>We&rsquo;ve found some Memory Walls that are associated with the decade you chose. Here they are &hellip;</p>
@@ -40,5 +41,6 @@
             }#}
         
 </div>
+{% endif %}
 
 {% endblock %}

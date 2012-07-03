@@ -4,7 +4,7 @@ namespace SkNd\MediaBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use SkNd\MediaBundle\MediaAPI\Utilities;
-
+use SkNd\MediaBundle\Entity\MediaSelection;
 /*
  * Original code Copyright (c) 2012 Simon Kerr
  * MediaResourceRepository controls access to db and deletion of old cached records based on time stamp
@@ -27,4 +27,19 @@ class MediaResourceRepository extends EntityRepository
         return $mediaResource;
         
     }
+    
+    public function getMediaResourceRecommendations(MediaSelection $mediaSelection){
+        //get media resources based most generic data
+        if($mediaSelection->getDecade() != null){
+            $q = $this->createQueryBuilder('mr')
+                    ->where('mr.decade = :decade')
+                    ->setParameter('decade', $mediaSelection->getDecade());
+        } else {
+            $q = $this->createQueryBuilder('mr')
+                    ->where('mr.mediaType = :mediaType')
+                    ->setParameter('mediaType', $mediaSelection->getMediaType());
+        }
+        
+    }
+    
 }

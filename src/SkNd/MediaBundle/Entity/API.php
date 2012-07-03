@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class API
 {
+    public static $DEFAULT = 'amazonapi';
     /**
      * @var integer $id
      */

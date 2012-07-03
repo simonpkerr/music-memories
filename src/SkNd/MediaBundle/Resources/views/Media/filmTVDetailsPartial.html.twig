@@ -1,5 +1,5 @@
-{% if mainResponse is defined %}
-{% set item = mainResponse %}
+{% if response is defined %}
+{% set item = response %}
 
 {#% debug item %#}
 <div class="itemOverview">
@@ -65,7 +65,4 @@
 %#}
 </div>
 
-{% else %}
-<h2>Sorry, something went wrong&hellip;</h2>
-<p>{{exception}}</p>
 {% endif %}

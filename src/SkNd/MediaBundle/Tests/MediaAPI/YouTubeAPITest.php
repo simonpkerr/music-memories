@@ -171,6 +171,11 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
         $yt->getBatch(array('ItemId' => '1'));
     }
     
+    
+    public function testGetRecommendationsForListingsReturnsValidMediaResources(){
+        
+    }
+    
     /**
      * @expectedException RuntimeException 
      * @expectedExceptionMessage Problem loading results from YouTube

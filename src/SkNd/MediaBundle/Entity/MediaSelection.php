@@ -6,6 +6,8 @@ namespace SkNd\MediaBundle\Entity;
  */
 class MediaSelection
 {
+    protected $api; 
+    
     protected $decade;
 
     protected $mediaType;
@@ -31,6 +33,14 @@ class MediaSelection
     
     public function getPage(){
         return $this->page;
+    }
+    
+    public function setAPI($api){
+        $this->api = $api;
+    }
+    
+    public function getAPI(){
+        return $this->api;
     }
     
     public function setSelectedMediaGenre($genre){
