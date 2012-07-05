@@ -32,7 +32,7 @@
             {% endblock %}
         </div>
         {% if app.session.getFlashes() %}    
-        <div id="flashMessages">
+        <div class="flashMessages">
             <ul>
             {% for key, message in app.session.getFlashes() %}
             <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle')|raw|trans({}, 'SkNdMediaBundle')|raw }}</li>

@@ -1,12 +1,12 @@
-{% if youTubeResponse is defined %}
+{% if response is defined %}
 {% include "SkNdMediaBundle:Media:youTubePlayerPartial.html.twig" 
     with {
-        'firstVideo' : youTubeResponse.entry,
+        'firstVideo' : response.entry,
     } 
 %}
-    {%if youTubeResponse.url is defined %}<strong>{{ youTubeResponse.url }}</strong>{%endif%}
+    {%if response.url is defined %}<strong>{{ response.url }}</strong>{%endif%}
     <ul>
-    {% for ytResult in youTubeResponse.entry %}
+    {% for ytResult in response.entry %}
                 <li class="listing">
                 <dl>
                 <dt><a href="javascript:void(0)" onclick="play('{{ytResult.id}}')">{{ ytResult.title }}</a></dt>
@@ -32,9 +32,15 @@
         <p>Please enter a more relevant search for this item</p>
     {# add a form to allow users to put a more relevant search #}
 
-
-{% else %} 
-    <h3>Sorry&hellip;</h3>
-    <p>{{youTubeException}}</p>
-
+{% else %}
+        {% if app.session.getFlashes('yt-notice') %}    
+        <div class="flashMessages">
+            <ul>
+            {% for key, message in app.session.getFlashes() %}
+            <li class="{{ key }}">{{ message|trans({}, 'SkNdMediaBundle')|raw }}</li>
+            {% endfor %}   
+            </ul>
+        </div>
+        {% endif %}
+        
 {% endif %}        

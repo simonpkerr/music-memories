@@ -111,7 +111,7 @@ class AmazonAPI implements IAPIStrategy {
  
         ));
 
-        //$this->amazonParameters = array_merge($this->amazonParameters, $params);
+        
         $xml_response = $this->queryAmazon($this->amazonParameters, "co.uk");
         
         try{
@@ -123,13 +123,13 @@ class AmazonAPI implements IAPIStrategy {
         }
         
         
-        if($mediaSelection != null){
+        /*if($mediaSelection != null){
             $recommendations = $this->getRecommendations($mediaSelection, 'details');
             return array(
                 'response'          =>  $verifiedResponse->Items->Item,
                 'recommendations'   =>  $recommendations,
             );
-        }
+        }*/
         
         //certain operations like batch processing only pass ids and do not require recommendations
         return $verifiedResponse->Items->Item;

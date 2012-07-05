@@ -1,4 +1,7 @@
 media:
   amazon:
     length_exception: Sorry, there were no results returned from Amazon
-    runtime_exception: Uh&ndash;oh, something went wrong. Please try again in a bit  
+    runtime_exception: Uh&ndash;oh, something went wrong with Amazon. Please try again in a bit  
+  youtube:
+    length_exception: Oh dear. No results returned from YouTube
+    runtime_exception: Something went wrong with YouTube. Please try again later  

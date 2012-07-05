@@ -324,6 +324,10 @@ class MediaAPITests extends WebTestCase {
         
     }
     
+    public function testGetAmazonDetailsRecommendationsWhenNoExactMatchesButGeneralMatchesReturnsResponse(){
+        
+    }
+    
     
     public function testGetRecommendationsOnExactParamsReturnsData(){
         

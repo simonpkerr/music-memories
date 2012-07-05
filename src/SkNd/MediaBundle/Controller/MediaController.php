@@ -168,10 +168,10 @@ class MediaController extends Controller
                 $responseParams = array_merge($responseParams, $listings);
                 //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
             }catch(\RunTimeException $re){
-                $exception = $re->getMessage();
+                //$exception = $re->getMessage();
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
             }catch(\LengthException $le){
-                $exception = $le->getMessage();
+                //$exception = $le->getMessage();
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
             }
        }
@@ -215,14 +215,14 @@ class MediaController extends Controller
             
             try{
                 $details = $this->mediaapi->getDetails($params);
-                $responseParams['title'] = $details['response']->ItemAttributes->Title;
+                //$responseParams['title'] = $details['response']->ItemAttributes->Title;
                 //merge the response and recommendations with the responseParams array
                 $responseParams = array_merge($responseParams, $details);
             }catch(\RunTimeException $re){
-                $exception = $re->getMessage();
+                //$exception = $re->getMessage();
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
             }catch(\LengthException $le){
-                $exception = $le->getMessage();
+                //$exception = $le->getMessage();
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
             }
         }
@@ -232,14 +232,12 @@ class MediaController extends Controller
     }
           
     public function youTubeRequestAction($title, $media, $decade, $genre){
-        $session = $this->getRequest()->getSession();
-        $mediaSelection = $session->get('mediaSelection');
-        //look up YouTube
         $responseParams = array();
         
         //get the youtube service
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $this->mediaapi->setAPIStrategy('youtubeapi');
+        $responseParams['api'] = $this->mediaapi->getCurrentAPI()->getName();
         $mediaSelection = $this->mediaapi->getMediaSelection(array(
             'api'               => 'youtubeapi',
             'media'             => $media,
@@ -251,25 +249,16 @@ class MediaController extends Controller
         $listings = null;
         try{
             $listings = $this->mediaapi->getListings();
+            //merge the listings and responseParams and remove null entries
+            $responseParams = Utilities::removeNullEntries(array_merge($responseParams, $listings));
         }catch(\RuntimeException $re){
-            $ytException = $re->getMessage();
+            //$ytException = $re->getMessage();
+            $this->get('session')->setFlash('yt-notice', 'media.youtube.runtime_exception');
         }catch(\LengthException $le){
-            $ytException = $le->getMessage();
+            //$ytException = $le->getMessage();
+            $this->get('session')->setFlash('yt-notice', 'media.youtube.length_exception');
         }
-        /*------- CHANGE THIS SO THAT A FLASH MESSAGE IS SHOWN INSTEAD -----------*/
-        $ytResponse = $listings['response'];
-        $recommendations = $listings['recommendations'];
-        
-        $responseParams['api'] = $this->mediaapi->getCurrentAPI()->getName();
-        //set the youtube response to either data or exception
-        if(!isset($ytException))
-            $responseParams['youTubeResponse'] = $ytResponse;
-        else
-            $responseParams['youTubeException'] = $ytException;
-        
-        $responseParams['recommendations'] = $recommendations; 
-        $responseParams = Utilities::removeNullEntries($responseParams);
-        
+
         return $this->render('SkNdMediaBundle:Media:youTubePartial.html.twig', $responseParams);        
     }
     

@@ -151,7 +151,6 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
     }
     
     public function getListings(MediaSelection $mediaSelection){
-          throw new \RuntimeException("Could not connect to YouTube");      
         //------to send a simple query to youtube       
         //$query->setVideoQuery($keywordQuery);
         

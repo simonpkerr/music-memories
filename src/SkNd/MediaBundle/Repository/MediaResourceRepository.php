@@ -30,15 +30,29 @@ class MediaResourceRepository extends EntityRepository
     
     public function getMediaResourceRecommendations(MediaSelection $mediaSelection){
         //get media resources based most generic data
-        if($mediaSelection->getDecade() != null){
-            $q = $this->createQueryBuilder('mr')
-                    ->where('mr.decade = :decade')
-                    ->setParameter('decade', $mediaSelection->getDecade());
-        } else {
-            $q = $this->createQueryBuilder('mr')
-                    ->where('mr.mediaType = :mediaType')
-                    ->setParameter('mediaType', $mediaSelection->getMediaType());
-        }
+        $q = $this->createQueryBuilder('mr')
+                ->where('mr.decade = :decade')
+                ->orderBy('mr.selectedCount','DESC')
+                ->addOrderBy('mr.viewCount', 'DESC')
+                ->addOrderBy('mr.lastUpdated', 'DESC')
+                ->setMaxResults(50)
+                ->setParameter('decade', $mediaSelection->getDecade());
+
+        $genericMatches = $q->getQuery()->getResult();
+        
+        //try to get exact matches based on the mediaSelection
+        $exactMatches = array_filter($genericMatches, function($gm) use ($mediaSelection){
+            return $gm['mediaType'] == $mediaSelection->getMediaType() && $gm['genre'] == $mediaSelection->getSelectedMediaGenre() && $gm['api'] == $mediaSelection->getAPI();
+        });
+        
+        //remove exact matches from the generic array and return the first 4 items
+        $genericMatches = array_slice(array_diff($genericMatches, $exactMatches), 0, 3); 
+        $exactMatches = array_slice($exactMatches, 0, 3);
+        
+        return array(
+            'genericMatches'   => $genericMatches,
+            'exactMatches'     => $exactMatches,
+        );
         
     }
     

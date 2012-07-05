@@ -103,6 +103,11 @@ class MediaAPI {
         $this->apis = array_merge($apis);
     }
     
+    //returns the current media resource or null if it doesn't exist
+    public function getCurrentMediaResource(){
+        return $this->mediaResource;
+    }
+    
     /*
      * check session, return mediaSelection if not null
      * else create new media selection and return
@@ -265,32 +270,51 @@ class MediaAPI {
      * getDetails calls the api of the current strategy
      * but first gets recommendations from the db about that api
      * @param params - contains the relevant parameters to call the api. for amazon this is things
-     * like Operation, Id. For youtube it contains things like keywords, decade, media etc
+     * like ItemId. For youtube it contains things like keywords, decade, media etc
      */
     public function getDetails(array $params){
+        /*---------------------TEST THIS !!!!!!!!! -----------------*/
+        $this->response = null;
+        $itemId = $params['ItemId'];
         //try getting the media selection from the session
         $this->mediaSelection = $this->getMediaSelection();
-        $this->response = null;
         
         //look up the mediaResource in the db and fetch associated cached object
-        $this->mediaResource = $this->getMediaResource($params['ItemId']);
+        $this->mediaResource = $this->getMediaResource($itemId);
         
-        $this->cachedDataExist = ($this->mediaResource != null && $this->mediaResource->getMediaResourceCache() != null) ? true : false;
+        //get the media resource recommendations based on the media selection, returns 2 arrays for generic and exact matches
+        $recommendations = $this->getRecommendations($this->mediaSelection);
+        
+        //get all media resources into one array for processing
+        $allMediaResources = array_merge(array($this->mediaResource), $recommendations['genericMatches'], $recommendations['exactMatches']);
+        
+        //process all the resources, which filters mr's based on uncached ones, then does a batch job
+        $this->processMediaResources($allMediaResources);
+        
+        //$this->cachedDataExist = ($this->mediaResource != null && $this->mediaResource->getMediaResourceCache() != null) ? true : false;
         //look up the details from the api if not cached
-        if(!$this->cachedDataExist){
-            $details = $this->apiStrategy->getDetails($params, $this->mediaSelection);
-            $this->response = $details['response'];
-            $recommendations = $details['recommendations'];
-        } else {
-            $this->response = @simplexml_load_string($this->mediaResource->getMediaResourceCache()->getXmlData());
-            $recommendations = $this->apiStrategy->getRecommendations($this->mediaSelection, 'details');
-        }
+        //if(!$this->cachedDataExist){
+            //$this->response = $this->apiStrategy->getDetails($params, $this->mediaSelection);
+            //$details = $this->apiStrategy->getDetails($params, $this->mediaSelection);
+            //$this->response = $details['response'];
+            //$recommendations = $details['recommendations'];
+        //} else {
+        //    $this->response = @simplexml_load_string($this->mediaResource->getMediaResourceCache()->getXmlData());
+            //$recommendations = $this->apiStrategy->getRecommendations($this->mediaSelection, 'details');
+        //}
         
         //cache the data
-        $this->cacheMediaResource($this->response, $params['ItemId']);
+        //$this->cacheMediaResource($this->response, $itemId);
         
-        return array(
+        //process the returned media resources
+        
+        
+        /*return array(
             'response'          =>  $this->response,
+            'recommendations'   =>  $recommendations
+        );*/
+        return array(
+            'mediaResource'     =>  $this->mediaResource,
             'recommendations'   =>  $recommendations
         );
     }
@@ -329,6 +353,41 @@ class MediaAPI {
                 
     }
     
+    /**
+     * gets recommendations for either the listings or details pages
+     * @param MediaSelection $mediaSelection
+     * @param type $recType 
+     * @return $recommendatations array
+     */
+    public function getRecommendations(MediaSelection $mediaSelection) {
+        //$recommendations = null;
+        
+        /*if($recType == 'listings'){
+            //get memory walls with same associated date just for listings page
+            if($mediaSelection->getDecade() != null){
+                $r = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallsByDecade($mediaSelection->getDecade());
+                if(count($r) > 0)
+                    return $r;
+            }
+        }*/
+        
+        /*
+         * details recommendations needs to look at the mediaselection and try to get media resources based on all params
+         * then just on decade, and then based on the users age
+         */
+        $recommendationSet = $this->em->getRepository('SkNdUserBundle:MediaResource')->getMediaResourceRecommendations($mediaSelection);
+        //delete media resource cache that is older than the age threshold of the api
+        //go through both generic and exact match arrays
+        /*foreach($recommendationSet as $recommendations){
+            foreach($recommendations as $recommendation){
+                $recommendation = $this->processMediaResourceCache($recommendation);
+            }
+        }
+        $this->flush();*/
+        
+        return $recommendationSet;
+    }
+        
     //only results returned from the live api are cached
     public function cacheListings(SimpleXMLElement $response){
         $cachedListing = new \SkNd\MediaBundle\Entity\MediaResourceListingsCache();
@@ -359,34 +418,52 @@ class MediaAPI {
     
     //get an individual media resource based on item id and retrieve or delete associated cached resource
     public function getMediaResource($itemId){
-        $this->mediaResource = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceById($itemId);
-        if($this->mediaResource != null && $this->mediaResource->getMediaResourceCache() != null){
+        $mediaResource = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceById($itemId);
+        if($mediaResource == null)
+            return $this->createNewMediaResource ($itemId);
+        //$mediaResource = $this->processMediaResourceCache($mediaResource);
+        
+        /*if($mediaResource != null && $mediaResource->getMediaResourceCache() != null){
             //if a cached resource exists and is older than 24 hours, delete it
-            $dateCreated = $this->mediaResource->getMediaResourceCache()->getDateCreated();
+            $dateCreated = $mediaResource->getMediaResourceCache()->getDateCreated();
             if($dateCreated->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
-                $this->mediaResource->deleteMediaResourceCache();
+                $mediaResource->deleteMediaResourceCache();
                 $this->flush();
             }
-        }
+        }*/
         
-        return $this->mediaResource;
+        //$this->flush();
+        return $mediaResource;
+    }
+
+    private function processMediaResourceCache($mediaResource){
+        if($mediaResource != null && $mediaResource->getMediaResourceCache() != null){
+            //if a cached resource exists and is older than 24 hours, delete it
+            $dateCreated = $mediaResource->getMediaResourceCache()->getDateCreated();
+            if($dateCreated->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
+                $mediaResource->deleteMediaResourceCache();
+                //$this->flush();
+            }
+        }
+        return $mediaResource;
     }
     
-    //returns the current media resource or null if it doesn't exist
-    public function getCurrentMediaResource(){
-        return $this->mediaResource;
+    private function createNewMediaResource($itemId){
+        $mediaResource = new MediaResource();
+        $mediaResource->setId($itemId);
+        $mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
+        $mediaResource->setMediaType($this->mediaSelection->getMediaType());
+        $mediaResource->setDecade($this->mediaSelection->getDecade());
+        $mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());
+        
+        return $mediaResource;
     }
     
     //once retrieved, if applicable, cache the resource
-    public function cacheMediaResource(SimpleXMLElement $xmlData, $itemId){
+    public function cacheMediaResource(SimpleXMLElement $xmlData, $itemId, $immediateFlush = true){
         if($this->mediaResource == null){
             //create a mediaresource
-            $this->mediaResource = new MediaResource();
-            $this->mediaResource->setId($itemId);
-            $this->mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
-            $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
-            $this->mediaResource->setDecade($this->mediaSelection->getDecade());
-            $this->mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());
+            $this->mediaResource = $this->createNewMediaResource($itemId);
         } else {
             /**
              * if the media resource exists but was discovered using more specific parameters (i.e. mediatype, decade and genre)
@@ -414,32 +491,42 @@ class MediaAPI {
         $this->mediaResource->incrementViewCount();
         
         $this->em->persist($this->mediaResource);
-        $this->flush();
+        
+        if($immediateFlush)
+            $this->flush();
         
     }
     
     //from a batch operation, take the xml data and resources and re-cache them
-    public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, array $mediaResources, $flush = true){
+    public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, array $mediaResources, $immediateFlush = true){
         foreach($xmlData as $itemXml){
-            $cachedResource = new MediaResourceCache();
-            $cachedResource->setId($this->apiStrategy->getIdFromXML($itemXml));
-            $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($itemXml));
-            $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($itemXml));
-            $cachedResource->setXmlData($this->apiStrategy->getXML($itemXml));
-            $cachedResource->setDateCreated(new \DateTime("now"));
-            $mr = $mediaResources[$cachedResource->getId()];
-            try{
-                $mr->setMediaResourceCache($cachedResource);
-                if($this->em->contains($mr))
-                    $this->em->merge($mr);
-                else
-                    $this->em->persist($mr);
-            } catch(\Exception $ex){
-                throw $ex;
+            $id = $this->apiStrategy->getIdFromXML($itemXml);
+            //if media resource exists, re-cache the data
+            if(isset($mediaResources[$cachedResource->getId()])){
+                $mr = $mediaResources[$cachedResource->getId()];
+                $cachedResource = new MediaResourceCache();
+                $cachedResource->setId($id);
+                $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($itemXml));
+                $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($itemXml));
+                $cachedResource->setXmlData($this->apiStrategy->getXML($itemXml));
+                $cachedResource->setDateCreated(new \DateTime("now"));
+                try{
+                    $mr->setMediaResourceCache($cachedResource);
+                    if($this->em->contains($mr))
+                        $this->em->merge($mr);
+                    else
+                        $this->em->persist($mr);
+                } catch(\Exception $ex){
+                    throw $ex;
+                }
+            } else{
+                //otherwise create a new media resource and cache it
+                $this->mediaResource = null;
+                $this->cacheMediaResource($itemXml, $id, false);                
             }
         }
         
-        if($flush)
+        if($immediateFlush)
             $this->flush();
     }
     
@@ -481,6 +568,7 @@ class MediaAPI {
         
         return $updatesMade;
     }
+    
     
     protected function flush(){
         $this->em->flush();

@@ -1,5 +1,5 @@
-{% if response is defined %}
-{% set item = response %}
+{% if mediaResource is defined %}
+{% set item = mediaResource.mediaResourceCache.xmlData %}
 
 {#% debug item %#}
 <div class="itemOverview">
