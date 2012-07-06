@@ -28,26 +28,43 @@ class MediaResourceRepository extends EntityRepository
         
     }
     
-    public function getMediaResourceRecommendations(MediaSelection $mediaSelection){
-        //get media resources based most generic data
+    public function getMediaResourceRecommendations(MediaSelection $mediaSelection, $itemId){
+        $genericMatches = array();
+        $exactMatches = array();
+        
+        //get media resources based most generic data but not including the selected item
         $q = $this->createQueryBuilder('mr')
                 ->where('mr.decade = :decade')
+                ->andWhere('mr.id != :itemId')
+                ->andWhere('mr.api = :api')
                 ->orderBy('mr.selectedCount','DESC')
                 ->addOrderBy('mr.viewCount', 'DESC')
                 ->addOrderBy('mr.lastUpdated', 'DESC')
                 ->setMaxResults(50)
-                ->setParameter('decade', $mediaSelection->getDecade());
-
-        $genericMatches = $q->getQuery()->getResult();
+                ->setParameter('decade', $mediaSelection->getDecade())
+                ->setParameter('itemId', $itemId)        
+                ->setParameter('api', $mediaSelection->getAPI())
+                ->getQuery();
+        
+        //index by is not natively supported by querybuilder, so injecting the index clause
+        $q  = $q->setDQL(str_replace('WHERE', 'INDEX BY mr.id WHERE', $q->getDQL()));
+        $genericMatches = $q->getResult();
+        
+        //if genre and decade aren't specified, no point in getting exact matches
+        //if(!(is_null($mediaSelection->getDecade()) || is_null($mediaSelection->getSelectedMediaGenre()))){
         
         //try to get exact matches based on the mediaSelection
         $exactMatches = array_filter($genericMatches, function($gm) use ($mediaSelection){
-            return $gm['mediaType'] == $mediaSelection->getMediaType() && $gm['genre'] == $mediaSelection->getSelectedMediaGenre() && $gm['api'] == $mediaSelection->getAPI();
+            return $gm->getMediaType() == $mediaSelection->getMediaType()
+                    && $gm->getGenre() == $mediaSelection->getSelectedMediaGenre() 
+                    && $gm->getAPI() == $mediaSelection->getAPI();
         });
+        //}
         
         //remove exact matches from the generic array and return the first 4 items
-        $genericMatches = array_slice(array_diff($genericMatches, $exactMatches), 0, 3); 
-        $exactMatches = array_slice($exactMatches, 0, 3);
+        $genericMatches = array_diff_key($genericMatches, $exactMatches);
+        $genericMatches = array_slice($genericMatches, 0, 4); 
+        $exactMatches = array_slice($exactMatches, 0, 4);
         
         return array(
             'genericMatches'   => $genericMatches,

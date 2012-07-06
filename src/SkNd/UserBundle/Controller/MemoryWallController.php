@@ -130,6 +130,7 @@ class MemoryWallController extends Controller
     
     public function showAction($slug, $page = 1){
         $this->em = $this->getEntityManager();
+        
         $mediaapi = $this->get('sk_nd_media.mediaapi');
         $mw = $this->getMemoryWall($slug);
         $wallBelongsToCurrentUser = $this->memoryWallBelongsToUser($mw);
@@ -250,12 +251,14 @@ class MemoryWallController extends Controller
         //look up the detail and add the resource, then show the memory wall
         $mediaapi = $this->get('sk_nd_media.mediaapi');
         $mediaapi->setAPIStrategy($api);
-        $response = $mediaapi->getDetails(array('ItemId'   =>  $id));
-        $mediaResource = $mediaapi->getCurrentMediaResource();
+        //$response = $mediaapi->getDetails(array('ItemId'   =>  $id));
+        $mediaResource = $mediaapi->getDetails(array('ItemId'   =>  $id));
+        //$mediaResource = $mediaapi->getCurrentMediaResource();
         
         //add the resource to the selected wall
         try{
             $mw->addMediaResource($mediaResource);
+            
             $this->em->flush();
         }catch(\InvalidArgumentException $ex){
             $this->get('session')->setFlash('notice', 'mediaResource.add.flash.identicalResourceError');

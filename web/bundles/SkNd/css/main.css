@@ -6,12 +6,20 @@
     float: right;
 }
 
+.clear {
+    clear: both;
+}
+
 .half-width {
     width: 49%;
 }
 
 .third-width {
     width: 32%;
+}
+
+.two-thirds-width {
+    width: 65%;
 }
 
 .left,
@@ -53,7 +61,7 @@ li.listing {
 
 /*----------- specific page elements -------------*/
 
-div#recommendations {
+/*div#recommendations {
     float: right;
     width: 20em;
-}
+}*/

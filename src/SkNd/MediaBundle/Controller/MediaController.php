@@ -214,7 +214,10 @@ class MediaController extends Controller
             $this->mediaapi->setAPIStrategy('amazonapi');
             
             try{
-                $details = $this->mediaapi->getDetails($params);
+                //$recommendations = $this->mediaapi->getRecommendations($mediaSelection);
+                //$mediaResource = $this->mediaapi->getMediaResource($id);
+                
+                $details = $this->mediaapi->getDetails($params, true);
                 //$responseParams['title'] = $details['response']->ItemAttributes->Title;
                 //merge the response and recommendations with the responseParams array
                 $responseParams = array_merge($responseParams, $details);

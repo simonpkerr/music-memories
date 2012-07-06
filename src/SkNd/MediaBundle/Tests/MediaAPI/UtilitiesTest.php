@@ -9,9 +9,11 @@
 
 namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\Resources\MediaAPI\MediaAPI;
+use SkNd\MediaBundle\MediaAPI\Utilities;
 
 class MediaAPITests extends \PHPUnit_Framework_TestCase {
-    private $params; 
+    private $params;
+    private $searchKeywords;
     
     protected function setUp(){
         $this->params = array(
@@ -19,9 +21,27 @@ class MediaAPITests extends \PHPUnit_Framework_TestCase {
             'media'     => 'film',
             'genre'     => 'all',
         );
+        $this->searchKeywords = array(
+            'Trap Door Series 1 & 2 [DVD] [1984]'   => 'Trap Door 1984',
+            'Stig Of The Dump : Complete BBC Series [1981] [DVD]' => 'Stig Of The Dump 1981',
+            'The Chronicles Of Narnia 4 DVD Box Set' => 'The Chronicles Of Narnia',
+            'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy',
+            'Ripping Yarns - The Complete Series[DVD] [1976]' => 'Ripping Yarns 1976',
+        );
     }
     
-    public function testShortKeywordFilmQuery(){
+    public function testKeywordStringProducesFriendlySearchString(){
+        $mediaAPI = new MediaAPI();
+        foreach($this->searchKeywords as $searchKeywordString){
+            $result = Utilities::formatSearchString(array(
+                'keywords'  => $searchKeywordString,
+                'media'     => 'film',
+            ));
+            $this->assertEquals('avatar', $result);
+        }
+    }
+    
+    /*public function testShortKeywordFilmQuery(){
         $mediaAPI = new MediaAPI();
         $this->params['keywords'] = 'Avatar [DVD]';
         
@@ -123,7 +143,7 @@ class MediaAPITests extends \PHPUnit_Framework_TestCase {
         
         $result = $mediaAPI->formatSearchString($this->params);
         $this->assertEquals('the chronicles of narnia 1980s tv', $result);
-    }
+    }*/
     
 
     

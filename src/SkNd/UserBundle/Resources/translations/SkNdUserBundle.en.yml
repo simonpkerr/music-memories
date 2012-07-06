@@ -18,7 +18,7 @@ memoryWall:
       accessDenied: Oy! You can&rsquo;t just go deleting anybodys Memory Walls!
       successCreatedDefault: That was your last Memory Wall, so we&rsquo;ve created a fresh one for you. You&rsquo;ve got to have at least one, sorry
   edit:
-    submit: Edit this wall
+    submit: Update this wall
     flash:
       success: Ah yeah. All updated
       accessDenied: No no no. You can&rsquo;t edit that, sorry

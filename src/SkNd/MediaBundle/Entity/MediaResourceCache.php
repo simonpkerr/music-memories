@@ -87,7 +87,7 @@ class MediaResourceCache
      */
     public function getXmlData()
     {
-        return $this->xmlData;
+        return simplexml_load_string($this->xmlData);
     }
 
     

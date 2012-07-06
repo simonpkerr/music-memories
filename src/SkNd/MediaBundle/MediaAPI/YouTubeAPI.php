@@ -43,6 +43,29 @@ class YouTubeAPI implements IAPIStrategy {
         $this->youTube = $obj;
     }
     
+    public function getIdFromXML(SimpleXMLElement $xmlData){
+        return (string)$xmlData->id;
+    }
+    
+    public function getXML(SimpleXMLElement $xmlData){
+        return $xmlData->asXML();
+    }
+    
+    public function getImageUrlFromXML(SimpleXMLElement $xmlData) {
+        try{
+            return (string)$xmlData->thumbnail;
+        } catch(\RuntimeException $re){
+            return null;
+        }
+    }
+    public function getItemTitleFromXML(SimpleXMLElement $xmlData){
+        try{
+            return (string)$xmlData->title;
+        } catch(\RuntimeException $re){
+            return null;
+        }
+    }
+    
     /*
      * for youtube, details are retrieved on the client,
      * but still need to be stored to drive recommendations, timeline
@@ -63,17 +86,19 @@ class YouTubeAPI implements IAPIStrategy {
         
         $response = $this->constructVideoEntry(new SimpleXMLElement('<entry></entry>'), $ve);
         
-        if($mediaSelection != null){
+        /*if($mediaSelection != null){
             return array(
                 'response'          =>  $response,
                 'recommendations'   =>  $this->getRecommendations($mediaSelection, 'details'),
                 //'title'             =>  $response->entry->title,
             ); 
-        }
+        }*/
+        
         
         return $response;
                 
     }
+    
     public function getBatch(array $ids){
         $feed = '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"
 xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtube.com/schemas/2007"><batch:operation type="query" />';
@@ -107,30 +132,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         return $response;
         
     }
-    
-    public function getIdFromXML(SimpleXMLElement $xmlData){
-        return (string)$xmlData->id;
-    }
-    
-    public function getXML(SimpleXMLElement $xmlData){
-        return $xmlData->asXML();
-    }
-    
-    public function getImageUrlFromXML(SimpleXMLElement $xmlData) {
-        try{
-            return (string)$xmlData->thumbnail;
-        } catch(\RuntimeException $re){
-            return null;
-        }
-    }
-    public function getItemTitleFromXML(SimpleXMLElement $xmlData){
-        try{
-            return (string)$xmlData->title;
-        } catch(\RuntimeException $re){
-            return null;
-        }
-    }
-    
+ 
     /**
      * gets recommendations for either the listings or details pages
      * @param MediaSelection $mediaSelection

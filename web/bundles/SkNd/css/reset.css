@@ -33,6 +33,10 @@ ol, ul {
  margin: 0.5em;
 }
 
+li {
+    list-style-type: none;
+}
+
 /* tables still need 'cellspacing="0"' in the markup */
 table {
  border-collapse: separate;

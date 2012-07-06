@@ -33,7 +33,10 @@ class Utilities {
         
         //this version removes any references to disc set, box set etc
         $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\d*)((\sseries.*)|(\s\-)|(\s*\:.*)|(\[[A-Z]+\]\s?)|(\[)|(\])|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*)|(\()|(\)\s?)|(\s*\([a-z]*\)\s?))/i','$1$2', $keywords)));
+        
         //older regexs
+        ///(\w*)(\d*)((\s*the complete)|(\s*series)|(\s*\-)|(\s*\:)|(\[[A-Z]+\])|(\[)|(\])|(\s*Box Set)|(\s*DVD)|(\s*\-*Disc Set)|(\s*\/)|(\()|(\)\s?)|(\s*\([a-z]*\)\s*))/i
+        ///(\w*)(\d*)((the\s*complete)|(\s*series)|(\-)|(*\:)|(\[)|(\])|(\[[A-Z]+\])|(\s*Box Set)|(\s*Disc Set)|(\s*\/)|(\s*\()|(\s*\))|(\s*\([a-z]*\)))/i
         //'/(\w*)(\d*)((\sseries.*)|(\s\-)|(\s*\:.*)|(\[[A-Z]+\]\s?)|(\[)|(\])|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*)|(\s*\([a-z]*\)))/i'
         //'/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*)|(\s*\(.*\)))/i'
         //'/(\w*)(\d*)((\sseries.*)|(\s\-.*)|(\s*\:.*)|(\s\[.*\]+.*)|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set))/i', '$1$2', $keywords)));

@@ -121,7 +121,7 @@ class MemoryWall
         if(isset($this->memoryWallMediaResources[$mr->getId()]))
             throw new \InvalidArgumentException('Duplicate Media Resource found');
         
-        if($mr->getAPI()->getName == 'amazonapi' && count($this->getMemoryWallMediaResources('amazonapi')) >= 10)
+        if($mr->getAPI()->getName() == 'amazonapi' && count($this->getMemoryWallMediaResources('amazonapi')) >= 10)
             throw new \RuntimeException('Only 10 Amazon items can be added to a wall');
         
         $mr->incrementSelectedCount();
