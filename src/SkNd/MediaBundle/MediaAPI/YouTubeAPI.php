@@ -20,11 +20,11 @@ class YouTubeAPI implements IAPIStrategy {
     private $query;
     private $em;
     
-    public function __construct(EntityManager $em, $youtube_request_object = null){
+    public function __construct($youtube_request_object = null){
         
         //get access to the youtube methods
         //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
-        $this->em = $em;
+        //$this->em = $em;
        
         $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
         $this->youTube->setMajorProtocolVersion(2);
@@ -71,7 +71,7 @@ class YouTubeAPI implements IAPIStrategy {
      * but still need to be stored to drive recommendations, timeline
      * and improve memory walls
      */
-    public function getDetails(array $params, MediaSelection $mediaSelection = null){
+    public function getDetails(array $params){
         if(!isset($params['ItemId']))
             throw new \InvalidArgumentException('No id was passed to Youtube');
         
@@ -133,25 +133,6 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         
     }
  
-    /**
-     * gets recommendations for either the listings or details pages
-     * @param MediaSelection $mediaSelection
-     * @param type $recType 
-     * @return $recommendatations array
-     */
-    public function getRecommendations(MediaSelection $mediaSelection, $recType) {
-        //$recommendations = null;
-        
-        if($recType == 'listings'){
-            
-        }
-        if($recType == 'details'){
-            
-        }
-        
-        return null;
-    }
-    
     public function getListings(MediaSelection $mediaSelection){
         //------to send a simple query to youtube       
         //$query->setVideoQuery($keywordQuery);
@@ -206,12 +187,11 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             throw new \LengthException("No results were returned");
         }
 
-        return array(
+        /*return array(
             'response'          => $this->getSimpleXml($videoFeed, true),
             'recommendations'   => $this->getRecommendations($mediaSelection, 'listings')
-        );
-        
-        
+        );*/
+        return $this->getSimpleXml($videoFeed, true);
                 
     }
     

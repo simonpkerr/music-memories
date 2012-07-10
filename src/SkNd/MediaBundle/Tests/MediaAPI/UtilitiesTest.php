@@ -8,8 +8,8 @@
  */
 
 namespace SkNd\MediaBundle\Tests\MediaAPI;
-use SkNd\MediaBundle\Resources\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\Utilities;
+use SkNd\MediaBundle\MediaAPI\MediaAPI;
 
 class MediaAPITests extends \PHPUnit_Framework_TestCase {
     private $params;
@@ -25,19 +25,26 @@ class MediaAPITests extends \PHPUnit_Framework_TestCase {
             'Trap Door Series 1 & 2 [DVD] [1984]'   => 'Trap Door 1984',
             'Stig Of The Dump : Complete BBC Series [1981] [DVD]' => 'Stig Of The Dump 1981',
             'The Chronicles Of Narnia 4 DVD Box Set' => 'The Chronicles Of Narnia',
-            'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy',
+            'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy The Matrix, Matrix Reloaded and Matrix Revolutions',
             'Ripping Yarns - The Complete Series[DVD] [1976]' => 'Ripping Yarns 1976',
+            'Alien Anthology [Blu-ray] [1979] [6 Disc Set]' => 'Alien Anthology 1979',
+            'Saturday Night Fever:25th Anniversary Se [DVD]' => 'Saturday Night Fever:25th Anniversary Se'
         );
     }
     
     public function testKeywordStringProducesFriendlySearchString(){
-        $mediaAPI = new MediaAPI();
-        foreach($this->searchKeywords as $searchKeywordString){
+        //$mediaAPI = new MediaAPI();
+        foreach($this->searchKeywords as $originalString => $optimizedString){
             $result = Utilities::formatSearchString(array(
-                'keywords'  => $searchKeywordString,
+                'keywords'  => $originalString,
                 'media'     => 'film',
             ));
-            $this->assertEquals('avatar', $result);
+            /*$this->assertFalse(strpos($result, 'dvd'), 'dvd string not found');
+            $this->assertFalse(strpos($result, 'series'), 'series string not found');
+            $this->assertFalse(strpos($result, 'box set'), 'box set string not found');
+            $this->assertFalse(strpos($result, 'series'), 'series string not found');*/
+            $this->assertEquals($result, strtolower($optimizedString));
+            
         }
     }
     

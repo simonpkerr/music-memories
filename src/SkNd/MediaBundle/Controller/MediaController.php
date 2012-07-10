@@ -23,7 +23,7 @@ use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Form\Type\MediaSelectionType;
 use SkNd\MediaBundle\Form\Type\MediaSearchType;
 use SkNd\MediaBundle\MediaAPI\Utilities;
-use SkNd\MediaBundle\MediaAPI;
+use SkNd\MediaBundle\MediaAPI\MediaAPI;
 
 class MediaController extends Controller
 {
@@ -157,7 +157,7 @@ class MediaController extends Controller
        }else{
             $this->mediaapi->setAPIStrategy('amazonapi');
             try{
-                $listings = $this->mediaapi->getListings();
+                $listings = $this->mediaapi->getListings(MediaAPI::MEMORY_WALL_RECOMMENDATION);
                 $response = $listings['response'];
                 $pagerParams['pagerUpperBound'] = $response->TotalPages > 10 ? 10 : $response->TotalPages;
                 $pagerParams['pagerLowerBound'] = 1;
@@ -168,10 +168,8 @@ class MediaController extends Controller
                 $responseParams = array_merge($responseParams, $listings);
                 //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
             }catch(\RunTimeException $re){
-                //$exception = $re->getMessage();
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
             }catch(\LengthException $le){
-                //$exception = $le->getMessage();
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
             }
        }
@@ -217,10 +215,12 @@ class MediaController extends Controller
                 //$recommendations = $this->mediaapi->getRecommendations($mediaSelection);
                 //$mediaResource = $this->mediaapi->getMediaResource($id);
                 
-                $details = $this->mediaapi->getDetails($params, true);
+                $responseParams['mediaResource'] = $this->mediaapi->getDetails($params, MediaAPI::MEDIA_RESOURCE_RECOMMENDATION);
+                // = $details['response']->ItemAttributes->Title;                
                 //$responseParams['title'] = $details['response']->ItemAttributes->Title;
                 //merge the response and recommendations with the responseParams array
-                $responseParams = array_merge($responseParams, $details);
+                //$responseParams = array_merge($responseParams, $details);
+                
             }catch(\RunTimeException $re){
                 //$exception = $re->getMessage();
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');

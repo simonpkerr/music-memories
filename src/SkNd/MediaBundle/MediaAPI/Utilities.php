@@ -32,9 +32,12 @@ class Utilities {
         $media = $params['media'];
         
         //this version removes any references to disc set, box set etc
-        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\d*)|(\[)|(\])|(\sthe?\s?complete)|(\sseries)|(\s\-)|(\s*\:)|(\s\[[a-z]+\]+)|(\s*Box Set)|(\s*\d{1}\s?DVD)|(\s*\d{1}\-?Disc Set))/i','$1$2', $keywords)));
+        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\d*)((\s??\[(dvd|blu\-ray)\]\s??)|(\s??the complete\s??)|(\s??series\s??)|(\s??box set\s??)|\s??(complete\s??)|\s??(\d{1}(\s??|\-??)disc set\s??)|(\s??bbc\s??)|(\s??dvd\s??)|(\[)|(\])|(\s+?(\-|\:|\&)\s+?)|(\s+?\d{1}\s+?))/i','$1$2', $keywords)));
         
         //older regexs
+        //'/(\w*)(\d*)((\s??\[(dvd|blu\-ray)\]\s??)|(\s??the complete\s??)|(\s??series\s??)|(\s??box set\s??)|\s??(complete\s??)|\s??(\d{1}(\s??|\-??)disc set\s??)|(\s??bbc\s??)|(\s??dvd\s??)|(\[)|(\])|(\s??(\-|\:|\&)\s??)|(\s??\d{1}\s??))/i'
+        //'/(\w*)(\d*)((\s??\[dvd\]\s??)|(\s??the complete\s??)|(\s??series\s??)|(\s??box set\s??)|\s??(complete\s??)|\s??(disc set\s??)|(\s??bbc\s??)|(\s??dvd\s??)|(\[)|(\])|(\s??(\-|\:|\&)\s??)|(\s??\d{1}\s??))/i'
+        //'/(\w*)(\d*)((\[dvd\])|((\s??(the|complete|series)|box set|complete|disc set|bbc|dvd))|(\[)|(\])|((\-|\:|\&))|(\s?\d{1}\s?))/i'
         //'/(\w*)(\d*)((\sseries.*)|(\s\-)|(\s*\:.*)|(\[[A-Z]+\]\s?)|(\[)|(\])|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*)|(\()|(\)\s?)|(\s*\([a-z]*\)\s?))/i
         //'/(\w*)(\d*)((\s*the complete)|(\s*series)|(\s*\-)|(\s*\:)|(\[[A-Z]+\])|(\[)|(\])|(\s*Box Set)|(\s*DVD)|(\s*\-*Disc Set)|(\s*\/)|(\()|(\)\s?)|(\s*\([a-z]*\)\s*))/i
         //'/(\w*)(\d*)((\sseries.*)|(\s\-)|(\s*\:.*)|(\[[A-Z]+\]\s?)|(\[)|(\])|(\s*Box Set.*)|(\s*\d\s*DVD)|(\s*\d*\-*Disc Set)|(\s*\/.*)|(\s*\([a-z]*\)))/i'

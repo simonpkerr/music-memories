@@ -59,6 +59,9 @@ SkNd\MediaBundle\Entity\MediaResource:
       orphanRemoval: true
       #orderBy:
       #  dateCreated: desc
+    #relatedMediaResources:
+    #  targetEntity: MediaResource
+    #  mappedBy: relatedMediaResources
       
 #  manyToMany:
 #    memoryWalls:
