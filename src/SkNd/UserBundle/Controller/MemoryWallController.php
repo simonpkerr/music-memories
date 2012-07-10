@@ -251,9 +251,7 @@ class MemoryWallController extends Controller
         //look up the detail and add the resource, then show the memory wall
         $mediaapi = $this->get('sk_nd_media.mediaapi');
         $mediaapi->setAPIStrategy($api);
-        //$response = $mediaapi->getDetails(array('ItemId'   =>  $id));
         $mediaResource = $mediaapi->getDetails(array('ItemId'   =>  $id));
-        //$mediaResource = $mediaapi->getCurrentMediaResource();
         
         //add the resource to the selected wall
         try{

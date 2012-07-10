@@ -46,12 +46,18 @@ class MediaResource
 
     protected $memoryWallMediaResources;
     
+    //by setting this as private, it is private to the class only and 
+    //not persisted to the db
+    private $relatedMediaResources;
+    
     public function __construct(){
         $this->viewCount = 0;
         $this->selectedCount = 0;
         $this->memoryWalls = new ArrayCollection();
         $this->memoryWallMediaResources = new ArrayCollection();
+        //$this->relatedMediaResources = new ArrayCollection();
         $this->memoryWalls = $this->getMemoryWalls();
+        
     }
         
     public function getId()
@@ -62,6 +68,16 @@ class MediaResource
     public function setId($id)
     {
         $this->id = $id;
+    }
+    
+    public function setRelatedMediaResources(array $mediaResources){
+        //$this->relatedMediaResources->set('exactMatches', $mediaResources['exactMatches']);
+        //$this->relatedMediaResources->set('genericMatches', $mediaResources['genericMatches']);
+        $this->relatedMediaResources = $mediaResources;
+    }
+    
+    public function getRelatedMediaResources(){
+        return $this->relatedMediaResources;
     }
     
     public function getMemoryWalls(){
