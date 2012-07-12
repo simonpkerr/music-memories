@@ -143,7 +143,7 @@ class MediaController extends Controller
            'genre'          => $genre,
            'media'          => $media,
            'keywords'       => $keywords != '-' ? $keywords : null,
-           'api'            => $this->mediaapi->getCurrentAPI()->getName(),
+           'api'            => 'amazonapi',
        ));
        
        if($media == "music"){

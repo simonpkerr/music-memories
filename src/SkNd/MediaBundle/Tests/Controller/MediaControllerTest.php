@@ -25,50 +25,10 @@ class MediaControllerTest extends WebTestCase
         $this->client = static::createClient();
         $this->client->followRedirects(true);
         
-        $this->cachedXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedData"></item></items>');
-        $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="amazonLiveData"></item></items>');
-        
-        $this->cachedYouTubeXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedYouTubeData"></item></items>');
-        $this->liveYouTubeXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="youTubeLiveData"></item></items>');
-        
         $kernel = static::createKernel();
         $kernel->boot();
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        
-        //for the mock object, need to provide a fully qualified path 
-        $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array(
-                    'getListings',
-                    'getDetails',
-                ))
-                ->getMock();
-        //always make the getListings method of amazon api return the sample xml data
-        $this->testAmazonAPI->expects($this->any())
-                ->method('getListings')
-                ->will($this->returnValue($this->liveXMLResponse));              
-        
-        //always make the getDetails method of amazon api return the sample xml data
-        $this->testAmazonAPI->expects($this->any())
-                ->method('getDetails')
-                ->will($this->returnValue($this->liveXMLResponse));
-        
-        //create mock youtube object
-        $this->testYouTubeAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\YouTubeAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array(
-                    'getListings',
-                    'getDetails',
-                ))
-                ->getMock();
-        $this->testYouTubeAPI->expects($this->any())
-                ->method('getListings')
-                ->will($this->returnValue($this->liveYouTubeXMLResponse));              
-        
-        $this->testYouTubeAPI->expects($this->any())
-                ->method('getDetails')
-                ->will($this->returnValue($this->liveYouTubeXMLResponse));
-                
+          
         $this->session = $kernel->getContainer()->get('session');
           
         $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
@@ -95,7 +55,7 @@ class MediaControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/index');
                 
-        $this->assertTrue($crawler->filter('select#mediaSelection_mediaTypes')->count() > 0);
+        $this->assertTrue($crawler->filter('select#mediaSelection_mediaType')->count() > 0);
     }
     
     public function testMediaSelectionPostGoesToListings(){
@@ -103,9 +63,9 @@ class MediaControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/index');
         
         $form = $crawler->selectButton('Search noodleDig')->form();
-        $form['mediaSelection[decades]']->select('1');//all decades
-        $form['mediaSelection[mediaTypes]']->select('1');//Film
-        $form['mediaSelection[SelectedMediaGenre]']->select('1');//All Genres
+        $form['mediaSelection[decade]']->select('1');//all decades
+        $form['mediaSelection[mediaType]']->select('1');//Film
+        $form['mediaSelection[selectedMediaGenre]']->select('1');//All Genres
         
         $crawler = $this->client->submit($form);        
         $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
@@ -115,9 +75,9 @@ class MediaControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/index');
         
         $form = $crawler->selectButton('Search noodleDig')->form();
-        $form['mediaSelection[decades]']->select('1');//all decades
-        $form['mediaSelection[mediaTypes]']->select('1');//Film
-        $form['mediaSelection[SelectedMediaGenre]']->select('1');//All Genres
+        $form['mediaSelection[decade]']->select('1');//all decades
+        $form['mediaSelection[mediaType]']->select('1');//Film
+        $form['mediaSelection[selectedMediaGenre]']->select('1');//All Genres
         $form['mediaSelection[keywords]'] = 'sherlock';
         
         $crawler = $this->client->submit($form);       
@@ -129,7 +89,7 @@ class MediaControllerTest extends WebTestCase
      * if no session data exists for the media selection form, the search should take 
      * place based on querystring values, which are then used to set the session
      */
-    public function testSearchWithInvalidMediaTypeAndNoSessionThrowsException(){
+    public function testSearchWithInvalidMediaTypeThrowsException(){
         $crawler = $this->client->request('GET', '/search/funk/1990/classics');
         
         $this->assertTrue($crawler->filter('html:contains("Error")')->count() > 0);
@@ -139,13 +99,13 @@ class MediaControllerTest extends WebTestCase
      * querystring params will always override session values but if invalid
      * will throw an exception
      */
-    public function testSearchWithInvalidDecadeAndNoSessionThrowsException(){
+    public function testSearchWithInvalidDecadeThrowsException(){
         $crawler = $this->client->request('GET', '/search/film/invalid-decade/classics');
         
         $this->assertTrue($crawler->filter('html:contains("Error")')->count() > 0);
     }
     
-    public function testSearchWithInvalidGenreNoSessionThrowsException(){
+    public function testSearchWithInvalidGenreThrowsException(){
         $crawler = $this->client->request('GET', '/search/film/1990/invalid-genre');
         
         $this->assertTrue($crawler->filter('html:contains("Error")')->count() > 0);
@@ -154,7 +114,19 @@ class MediaControllerTest extends WebTestCase
     
     //a default decade of all-decades should still override a session decade
     public function testSearchWithDefaultDecadeAndNonDefaultSessionDecadeOverridesSessionDecade(){
-        //todo
+        /*$crawler = $this->client->request('GET', '/index');
+        
+        $form = $crawler->selectButton('Search noodleDig')->form();
+        $form['mediaSelection[decade]']->select('2');//all decades
+        $form['mediaSelection[mediaType]']->select('1');//Film
+        $form['mediaSelection[selectedMediaGenre]']->select('1');//All Genres
+       
+        $crawler = $this->client->submit($form);       
+        $crawler = $this->client->request('GET', '/search/film');
+        
+        $form = $crawler->selectButton('Search noodleDig')->form();
+        $this->assertTrue($form['mediaSelection[decade]'] == 'All Decades');
+        */
     }
     
     public function testSearchWithDefaultGenreAndNonDefaultSessionGenreOverridesSessionGenre(){

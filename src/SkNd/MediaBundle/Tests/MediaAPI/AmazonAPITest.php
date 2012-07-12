@@ -107,19 +107,14 @@ class AmazonAPITest extends WebTestCase {
     /**
      * @expectedException RuntimeException 
      */
-    public function testGetDetailsWithNoErrorResponseThrowsException(){
-        $invalid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\invalidSampleResponses\sampleAmazonDetails.xml');
+    public function testGetDetailsWithErrorResponseThrowsException(){
+        $invalid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\invalidSampleAmazonDetails.xml');
         $this->testASR->expects($this->any())
                 ->method('aws_signed_request')
                 ->will($this->returnValue($invalid_xml_data_set));
         
         $api = new AmazonAPI($this->access_params, $this->testASR);
         $response = $api->getDetails(array());
-    }
-    
-    
-    public function testGetDetailsAndRecommendationsReturnsValidMediaResources(){
-        
     }
     
 }

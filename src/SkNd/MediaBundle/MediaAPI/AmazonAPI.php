@@ -20,7 +20,6 @@ class AmazonAPI implements IAPIStrategy {
     protected $asr;
     private $ITEM_SEARCH = 'ItemSearch';
     private $ITEM_LOOKUP = 'ItemLookup';
-    private $em;
  
     public function __construct(array $access_params, $amazon_signed_request){
             
@@ -29,8 +28,6 @@ class AmazonAPI implements IAPIStrategy {
         $this->associate_tag = $access_params['amazon_associate_tag'];
         
         $this->asr = $amazon_signed_request; 
-        
-        //$this->em = $em;
         
         $this->amazonParameters = array(
                 "Operation"     => $this->ITEM_SEARCH,
@@ -119,11 +116,6 @@ class AmazonAPI implements IAPIStrategy {
             throw $le;
         }
         
-        //$recommendations = $this->getRecommendations($mediaSelection, 'listings');
-        /*return array(
-            'response'          =>  $xml_response,
-            'recommendations'   =>  $recommendations,
-        );*/
         return $xml_response;
     }
     

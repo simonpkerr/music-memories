@@ -18,14 +18,12 @@ class YouTubeAPI implements IAPIStrategy {
     
     protected $youTube;
     private $query;
-    private $em;
     
     public function __construct($youtube_request_object = null){
         
         //get access to the youtube methods
         //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
-        //$this->em = $em;
-       
+        
         $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
         $this->youTube->setMajorProtocolVersion(2);
        
@@ -72,6 +70,7 @@ class YouTubeAPI implements IAPIStrategy {
      * and improve memory walls
      */
     public function getDetails(array $params){
+        
         if(!isset($params['ItemId']))
             throw new \InvalidArgumentException('No id was passed to Youtube');
         
@@ -85,18 +84,8 @@ class YouTubeAPI implements IAPIStrategy {
         }
         
         $response = $this->constructVideoEntry(new SimpleXMLElement('<entry></entry>'), $ve);
-        
-        /*if($mediaSelection != null){
-            return array(
-                'response'          =>  $response,
-                'recommendations'   =>  $this->getRecommendations($mediaSelection, 'details'),
-                //'title'             =>  $response->entry->title,
-            ); 
-        }*/
-        
-        
+ 
         return $response;
-                
     }
     
     public function getBatch(array $ids){
@@ -111,22 +100,23 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         try{
             $response = $this->youTube->post($feed, 'http://gdata.youtube.com/feeds/api/videos/batch');
         }catch(\Exception $ex){
-            throw $ex;
+            throw new \RuntimeException('A problem occurred connecting to YouTube');
         }
         
         if($response === false)
             throw new \RuntimeException('Could not connect to YouTube');
         
         if($response->getStatus() != 200)
-            throw new \RuntimeException('Problem loading results from YouTube');
-        
-        if(count($response) < 1)
-            throw new \LengthException('No results were returned');
-        
+            throw new \RuntimeException('A problem occurred with the response');
         
         $response = $response->getBody();//gets the raw response as Zend_Http_Response
         $feed = new \Zend_Gdata_YouTube_VideoFeed();
-        $feed->transferFromXML($response);
+        
+        try{
+            $feed->transferFromXML($response);
+        }catch(\Exception $ex){
+            throw new \RuntimeException('Could not parse response');
+        }
         $response = $this->getSimpleXml($feed);
 
         return $response;
@@ -187,10 +177,6 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             throw new \LengthException("No results were returned");
         }
 
-        /*return array(
-            'response'          => $this->getSimpleXml($videoFeed, true),
-            'recommendations'   => $this->getRecommendations($mediaSelection, 'listings')
-        );*/
         return $this->getSimpleXml($videoFeed, true);
                 
     }
