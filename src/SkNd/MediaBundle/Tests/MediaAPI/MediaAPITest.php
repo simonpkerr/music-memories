@@ -5,6 +5,8 @@
  * Base class for all media api's tests
  * @author Simon Kerr
  * @version 1.0
+ * Run UserBundle Fixtures first
+ * php app/console doctrine:fixtures:load --fixtures=src/SkNd/UserBundle/DataFixtures/ORM --append
  */
 
 namespace SkNd\MediaBundle\Tests\MediaAPI;
@@ -27,7 +29,7 @@ class MediaAPITests extends WebTestCase {
     private $liveXMLResponse;
     private $mediaResource;
     private $session;
-    private $mediaAPIService;
+    //private $mediaAPIService;
     
     protected function setUp(){
   
@@ -45,6 +47,8 @@ class MediaAPITests extends WebTestCase {
                 ->setMethods(array(
                     'getListings',
                     'getDetails',
+                    'getImageUrlFromXML',
+                    'getItemTitleFromXML',
                 ))
                 ->getMock();
         //always make the getListings method of amazon api return the sample xml data
@@ -57,12 +61,15 @@ class MediaAPITests extends WebTestCase {
                 ->method('getDetails')
                 ->will($this->returnValue($this->liveXMLResponse));
         
-        $this->testYouTubeAPI = new YouTubeAPI(new \SkNd\MediaBundle\MediaAPI\TestYouTubeRequest());
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getImageUrlFromXML')
+                ->will($this->returnValue('imageUrl'));
         
-        /*$this->mediaAPI = new MediaAPI('true', $this->em, $this->session, array(
-            'amazonapi'     =>  $this->testAmazonAPI,
-            'youtubeapi'    =>  $this->testYouTubeAPI,
-        ));*/
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getItemTitleFromXML')
+                ->will($this->returnValue('itemTitle'));
+        
+        $this->testYouTubeAPI = new YouTubeAPI(new \SkNd\MediaBundle\MediaAPI\TestYouTubeRequest());
         
         $this->mediaAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\MediaAPI')
                 ->setConstructorArgs(array(
@@ -74,13 +81,13 @@ class MediaAPITests extends WebTestCase {
                             'youtubeapi'    =>  $this->testYouTubeAPI,
                         )))
                 ->setMethods(array(
-                    'getCachedListings',
-                    'cacheListings',
                     'flush',
-                    'getMediaResource'))
-                ->getMock();
+                ));
+                
+                
         
-        $this->mediaSelection = $this->mediaAPI->getMediaSelection(array(
+        $this->mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+            'api'   => 'amazonapi',
             'media' => 'film'
         ));
         
@@ -90,7 +97,7 @@ class MediaAPITests extends WebTestCase {
                 //$this->em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
         $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
         
-        $this->mediaAPIService = $kernel->getContainer()->get('sk_nd_media.mediaapi');
+        //$this->mediaAPIService = $kernel->getContainer()->get('sk_nd_media.mediaapi');
         
     }
     
@@ -99,11 +106,19 @@ class MediaAPITests extends WebTestCase {
      * @exceptedExceptionMessage api key not found 
      */
     public function testSetAPIStrategyOnNonExistentAPIThrowsException(){
-        $response = $this->mediaAPI->setAPIStrategy('bogusAPIKey');
+        
+        $response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
     }
     
     
     public function testNonExistentCachedListingsCallsLiveAPI(){
+        $this->mediaAPI = 
+                $this->mediaAPI->setMethods(array(
+                    'getCachedListings',
+                    'cacheListings',
+                    ))
+                ->getMock();
+        
  
         $this->mediaAPI->expects($this->once())
                 ->method('getCachedListings')
@@ -120,6 +135,13 @@ class MediaAPITests extends WebTestCase {
     
     
     public function testExistingValidCachedListingsReturnedFromSameQueryReturnsListings(){
+        $this->mediaAPI = $this->mediaAPI
+                ->setMethods(array(
+                    'getCachedListings',
+                    'cacheListings',
+                    ))
+                ->getMock();
+        
 
         $this->mediaAPI->expects($this->once())
                 ->method('getCachedListings')
@@ -129,28 +151,75 @@ class MediaAPITests extends WebTestCase {
         $this->assertEquals($listings['response']->item->attributes()->id, 'cachedData');
     }
     
+    
+    public function testGetDBNonExistentMediaResourceReturnsNewMediaResource(){
+        $this->mediaAPI = $this->mediaAPI->getMock();
+        $mr = $this->mediaAPI->getMediaResource('nonexistentID');
+        $this->assertEquals($mr->getId(), 'nonexistentID', 'new media resource was returned');
+    }
+    
+    public function testGetMediaResourceInDBWithVagueDetailsUpdatesMediaResource(){
+        $this->mediaAPI = $this->mediaAPI->getMock();
+        
+        $this->mediaSelection = $this->mediaAPI->getMediaSelection(array(
+            'media' => 'film',
+            'decade'=> '1980s',
+            'genre' => 'drama',
+        ));
+        
+        //create and insert a dummy mediaresource
+        $mr = new MediaResource();
+        $mr->setId('mediaAPITestMR1');
+        $mr->setAPI($this->em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType($this->em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        //$mr->setMediaResourceCache($this->getCache($id));
+        $this->em->persist($mr);
+        $this->em->flush();
+        
+        $updatedMr = $this->mediaAPI->getMediaResource('mediaAPITestMR1');
+        $this->assertEquals($updatedMr->getDecade()->getDecadeName(), '1980', "Decade was updated to 1980");
+        
+        $this->em->remove($mr);
+        $this->em->flush();
+        
+    }
+    
       
     public function testNonexistentMediaResourceCallsLiveAPI(){
-        $this->mediaAPI->expects($this->once())
+        $this->mediaAPI = 
+                $this->mediaAPI->setMethods(array(
+                    'getMediaResource',
+                    'flush',
+                    ))
+                ->getMock();
+        
+        $this->mediaAPI->expects($this->any())
                 ->method('getMediaResource')
                 ->will($this->returnValue(null));
-        $this->mediaAPI->expects($this->once())
-                ->method('cacheMediaResource')
+        $this->mediaAPI->expects($this->any())
+                ->method('flush')
                 ->will($this->returnValue(true));
         
 
         $mr = $this->mediaAPI->getDetails(
                 array('ItemId'  =>  '1'));
+        
         $this->assertEquals($mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData');
     }
     
     public function testExistingMediaResourceAndNonexistentCachedResourceCallsLiveAPI(){
-       
+        $this->mediaAPI = 
+                $this->mediaAPI->setMethods(array(
+                    'getMediaResource',
+                    
+                    ))
+                ->getMock();
+        
         $this->mediaAPI->expects($this->once())
                 ->method('getMediaResource')
                 ->will($this->returnValue($this->mediaResource));
-        $this->mediaAPI->expects($this->once())
-                ->method('cacheMediaResource')
+        $this->mediaAPI->expects($this->any())
+                ->method('flush')
                 ->will($this->returnValue(true));
 
         $mr = $this->mediaAPI->getDetails(
@@ -159,6 +228,12 @@ class MediaAPITests extends WebTestCase {
     }
     
     public function testExistingMediaResourceAndExistingValidCachedResourceReturnsCache(){
+         $this->mediaAPI = 
+                $this->mediaAPI->setMethods(array(
+                    'getMediaResource',
+                    ))
+                ->getMock();
+         
         $cachedResource = new MediaResourceCache();
         $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
         $cachedResource->setId($this->mediaResource->getId());
@@ -166,54 +241,14 @@ class MediaAPITests extends WebTestCase {
         $this->mediaResource->setMediaResourceCache($cachedResource);
 
         //tell the mocked object which methods to mock and what to return
-        $this->mediaAPI->expects($this->once())
+        $this->mediaAPI->expects($this->any())
                 ->method('getMediaResource')
                 ->will($this->returnValue($this->mediaResource));
-        $this->mediaAPI->expects($this->once())
-                ->method('cacheMediaResource')
-                ->will($this->returnValue(true));
         
         $mr = $this->mediaAPI->getDetails(
                 array('ItemId'  =>  '1'));
         $this->assertEquals($mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData');
         
-    }
-    
-    /*
-     * media resources can be found in various categories. For example, aliens could be found 
-     * by searching for films alone. But to make aliens more relevant to use for recommendation
-     * purposes, if someone finds it through film/1980/sci-fi, the media resource should be updated
-     * with this more specific data
-     */
-    public function testCacheMediaResourceWithMoreSpecificMediaSelectionUpdatesMediaResource(){
-        //get a media resource that has vague params, set specific params on the media selection entity
-        //then update the media resource
-        /*$cachedResource = new MediaResourceCache();
-        $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
-        $cachedResource->setId($this->mediaResource->getId());
-        $cachedResource->setDateCreated(new \DateTime("now"));
-        $this->mediaResource->setMediaResourceCache($cachedResource);
-        
-        $this->mediaAPI->expects($this->once())
-                ->method('getMediaResource')
-                ->will($this->returnValue($this->mediaResource));
-        $this->mediaAPI->expects($this->once())
-                ->method('flush')
-                ->will($this->returnValue(true));
-
-        $this->mediaAPI->getMediaSelection(array(
-            'media'  => 'film',
-            'decade' => '1980s',
-            'genre'  => 'drama',
-        ));
-        
-        $response = $this->mediaAPI->getDetails(
-                array('ItemId'  =>  '1'));
-        
-        $this->assertEquals($this->mediaResource->getDecade()->getDecadeName(), '1980');*/
-        
-        //n.b - not sure how to test this as the functionality to update the mediaresource is in the 
-        //mocked method - and where the functionality is seems to be the most relevant place
     }
     
     public function testProcessMediaResourcesWith1CachedAmazonResourceReturnsFalse(){
@@ -225,21 +260,29 @@ class MediaAPITests extends WebTestCase {
         $cachedResource->setDateCreated(new \DateTime("now"));
         $this->mediaResource->setMediaResourceCache($cachedResource);
         
-        $mediaResources = new \Doctrine\Common\Collections\ArrayCollection();
-        $mediaResources->add($this->mediaResource);
-            
-        $updatesMade = $this->mediaAPIService->processMediaResources($mediaResources);
+        $mediaResources = array(
+            $cachedResource->getId() => $this->mediaResource,
+        );
+                   
+        $updatesMade = $this->mediaAPI->getMock()->processMediaResources($mediaResources);
         
         $this->assertEquals($updatesMade, false);
         
     }
     
-    public function testProcessMediaResourcesWith1CachedOutOfDateAmazonResourceCallsLiveAPICachesResourcesAndReturnsTrue(){
+    public function testProcessMediaResourcesWith1CachedOutOfDateAmazonResourceCallsLiveAPIReturnsTrue(){
+        
+         $this->mediaAPI = 
+                $this->mediaAPI->setMethods(array(
+                    'cacheMediaResourceBatch',
+                    'flush',
+                    ))
+                ->getMock();
 
-        $this->mediaAPI->expects($this->once())
+        $this->mediaAPI->expects($this->any())
                 ->method('cacheMediaResourceBatch')
                 ->will($this->returnValue(true));
-        $this->mediaAPI->expects($this->once())
+        $this->mediaAPI->expects($this->any())
                 ->method('flush')
                 ->will($this->returnValue(true));
         
@@ -249,50 +292,65 @@ class MediaAPITests extends WebTestCase {
         $cachedResource->setDateCreated(new \DateTime("1st jan 1980"));
         $this->mediaResource->setMediaResourceCache($cachedResource);
         
-        $mediaResources = new \Doctrine\Common\Collections\ArrayCollection();
-        $mediaResources->add($this->mediaResource);
+        $mediaResources = array(
+            $cachedResource->getId() => $this->mediaResource,
+        );
             
         $updatesMade = $this->mediaAPI->processMediaResources($mediaResources);
         
         $this->assertEquals($updatesMade, true);
     }
     
-    public function testGetAmazonListingRecommendationsWhenCallingLiveAPIReturnsResponse(){
-        
+    public function testGetRecommendationsWithNullIdentifierReturnsNull(){
+        $response = $this->mediaAPI->getMock()->getRecommendations();
+        $this->assertTrue($response == null, "returned recommendations are null");
     }
     
-    public function testGetAmazonListingRecommendationsWhenGettingCachedListingsReturnsResponse(){
+    public function testRecommendationsForDetailsPageAreAddedToMediaResourceWhenAvailable(){
+        $this->mediaAPI = 
+                $this->mediaAPI->setMethods(array(
+                    'getRecommendations',
+                    'getMediaResource',
+                    'processMediaResources',
+                    ))
+                ->getMock();
         
+        $rec1 = new MediaResource();
+        $rec1->setId('testRec1');
+        $rec1->setAPI($this->mediaSelection->getAPI());
+        $rec1->setMediaType($this->mediaSelection->getMediaType());
+        
+        $rec2 = new MediaResource();
+        $rec2->setId('testRec2');
+        $rec2->setAPI($this->mediaSelection->getAPI());
+        $rec2->setMediaType($this->mediaSelection->getMediaType());
+        
+        $recommendations = array(
+            'exactMatches'     => array(
+                'testRec1'  => $rec1,
+            ),
+            'genericMatches'   => array(
+                'testRec2'  => $rec2,
+            )
+        );
+        
+        $this->mediaAPI->expects($this->any())
+                ->method('getRecommendations')
+                ->will($this->returnValue($recommendations));
+        $this->mediaAPI->expects($this->any())
+                ->method('getMediaResource')
+                ->will($this->returnValue($this->mediaResource));
+        $this->mediaAPI->expects($this->any())
+                ->method('processMediaResources')
+                ->will($this->returnValue(true));
+        
+        $mr = $this->mediaAPI->getDetails(array('ItemId' => 'testMediaResource'), MediaAPI::MEDIA_RESOURCE_RECOMMENDATION);
+        
+        $relatedMrs = $mr->getRelatedMediaResources();
+        $this->assertEquals($relatedMrs['exactMatches']['testRec1']->getId(), 'testRec1', "recommended media resources include testRec1");
     }
     
-    public function testGetAmazonDetailRecommendationsWhenCallingLiveAPIReturnsResponse(){
-        
-    }
-    
-    public function testGetAmazonDetailsRecommendationsWhenNoExactMatchesButGeneralMatchesReturnsResponse(){
-        
-    }
-    
-    
-    public function testGetRecommendationsOnExactParamsReturnsData(){
-        
-    }
-    
-    public function testGetRecommendationsOnGenericParamsReturnsData(){
-        
-    }
-    
-    public function testGetRecommendationsOnAgeReturnsData(){
-        
-    }
-    
-    public function testGetRecommendationsOnValidAmazonRecordsReturnsData(){
-        
-    }
-    
-    public function testGetRecommendationsOnTimestampExpiredAmazonRecordsLooksUpAmazonData(){
-        
-    }
+   
     
     
     

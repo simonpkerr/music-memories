@@ -96,8 +96,7 @@ class MediaAPI {
         if(array_key_exists($apiStrategyKey, $this->apis)){
             $this->apiStrategy = $this->apis[$apiStrategyKey];
             //$this->getMediaSelectionParams($params);
-                    
-                    //setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiStrategyKey));
+            //setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiStrategyKey));
         }
         else
             throw new RuntimeException("api key not found");
@@ -446,6 +445,9 @@ class MediaAPI {
     }
     
     private function createNewMediaResource($itemId){
+        if(is_null($this->mediaSelection))
+            $this->getMediaSelection();
+        
         $mediaResource = new MediaResource();
         $mediaResource->setId($itemId);
         $mediaResource->setAPI($this->mediaSelection->getAPI());
