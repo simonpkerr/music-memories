@@ -46,12 +46,8 @@ class MediaAPI {
     //used when details are being retrieved, gets the mediaResource and cached object if available
     protected $mediaResource;
         
-    /*
-     * not sure how to implement debug_mode yet
-     * so that none of the apis in the array call 
-     * a live api
-     * 
-     * @description - gets the current run mode, passes the doctrine object 
+     /* 
+     * gets the current run mode, passes the doctrine object 
      * and an array of api objects
      */
     public function __construct($debug_mode, EntityManager $em, Session $session, array $apis){
@@ -59,18 +55,19 @@ class MediaAPI {
         $this->debugMode = $debug_mode;
         $this->em = $em;
         $this->session = $session;
-        //$this->mediaSelection = $this->getMediaSelection();
         //this needs changing to accomodate different APIs
         $this->setAPIStrategy('amazonapi');
-         ////$this->em->getRepository('SkNdMediaBundle:API')->getDefaultname());
         
-        //if debug mode is true, set the api's to dummy objects
+        if($this->session->has('mediaSelection'))
+            $this->mediaSelection = $this->session->get('mediaSelection');
+        else 
+            $this->mediaSelection = $this->getMediaSelection();
     }
     
     //??
-    public function __destruct() {
+    /*public function __destruct() {
         $this->flush();
-    }
+    }*/
     
     public function getEntityManager(){
         return $this->em;
@@ -95,8 +92,6 @@ class MediaAPI {
     public function setAPIStrategy($apiStrategyKey){
         if(array_key_exists($apiStrategyKey, $this->apis)){
             $this->apiStrategy = $this->apis[$apiStrategyKey];
-            //$this->getMediaSelectionParams($params);
-            //setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiStrategyKey));
         }
         else
             throw new RuntimeException("api key not found");
@@ -106,7 +101,6 @@ class MediaAPI {
         return $this->apiStrategy;
     }
     
-    //for testing purposes, allow injection of apis
     public function setAPIs(array $apis){
         $this->apis = array_merge($apis);
     }
@@ -114,6 +108,11 @@ class MediaAPI {
     //returns the current media resource or null if it doesn't exist
     public function getCurrentMediaResource(){
         return $this->mediaResource;
+    }
+    
+    public function setMediaSelection(MediaSelection $mediaSelection){
+        $this->mediaSelection = $mediaSelection;
+        $this->session->set('mediaSelection', $this->mediaSelection);
     }
     
     /*
@@ -141,31 +140,31 @@ class MediaAPI {
         $genre = $this->mediaSelection->getSelectedMediaGenre();
         
         //if params passed, update the mediaSelection
+        $apiSlug = isset($params['api']) ? $params['api'] : API::$default;
+        $mediaTypeSlug = isset($params['media']) ? $params['media'] : MediaType::$default;
+        //only update the mediaSelection if different
+        if($api == null || $apiSlug != $api->getName()){
+            $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiSlug);
+            if($api == null)
+                throw new \RuntimeException("There was a problem with that api value");
+
+            $this->setAPIStrategy($apiSlug);
+        } 
+
+        //only update the mediaSelection if different
+        if($mediaType == null || $mediaTypeSlug != $mediaType->getSlug()){
+            $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
+            if($mediaType == null)
+                throw new NotFoundHttpException("There was a problem with that address");
+        } 
+        
         if($params != null){
-            $apiSlug = isset($params['api']) ? $params['api'] : API::$default;
-            $mediaTypeSlug = isset($params['media']) ? $params['media'] : MediaType::$default;
             $decadeSlug = isset($params['decade']) ? $params['decade'] : Decade::$default;
             $genreSlug = isset($params['genre']) ? $params['genre'] : Genre::$default;
             $keywords = isset($params['keywords']) ? $params['keywords'] != '-' ? $params['keywords'] : null : null;
             $computedKeywords = isset($params['computedKeywords']) ? $params['computedKeywords'] : null;
             $page = isset($params['page']) ? $params['page'] : $page;
-        
-            //only update the mediaSelection if different
-            if($api == null || $apiSlug != $api->getName()){
-                $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiSlug);
-                if($api == null)
-                    throw new \RuntimeException("There was a problem with that api value");
-                
-                $this->setAPIStrategy($apiSlug);
-            } 
-            
-            //only update the mediaSelection if different
-            if($mediaType == null || $mediaTypeSlug != $mediaType->getSlug()){
-                $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
-                if($mediaType == null)
-                    throw new NotFoundHttpException("There was a problem with that address");
-            } 
-            
+       
             //if decade is not default decade and is not the same as existing decade
             if($decadeSlug != Decade::$default){
                 if($decade == null || $decadeSlug != $decade->getSlug()){
@@ -194,11 +193,13 @@ class MediaAPI {
              * if the keywords are set from a search then removed and another search performed
              * they should be removed from the MediaSelection object. 
              */
-            if($keywords != null){// && $this->mediaSelection->getKeywords() == null){
+            //if($keywords != null){// && $this->mediaSelection->getKeywords() == null){
+            if($this->mediaSelection->getKeywords() != $keywords){
                 $this->mediaSelection->setKeywords($keywords);
             }
             
-            if($computedKeywords != null || $this->mediaSelection->getComputedKeywords() != $computedKeywords){// && $computedKeywords != $this->mediaSelection->getComputedKeywords()){
+            //$computedKeywords != null || 
+            if($this->mediaSelection->getComputedKeywords() != $computedKeywords){
                 $this->mediaSelection->setComputedKeywords($computedKeywords);
             }
         }
@@ -231,7 +232,7 @@ class MediaAPI {
         $this->mediaSelection->setSelectedMediaGenre($genre);
         
         //final check to see if everything is still null
-        if(is_null($api) && is_null($mediaType) && is_null($decade) && is_null($genre))
+        if(is_null($api) && is_null($mediaType))
             throw new RuntimeException('No media selection has been made');
         
         //save the data so this process is only done once
@@ -247,15 +248,14 @@ class MediaAPI {
      * so that the media selection form can be correctly set.
      */
     public function getMediaSelectionParams(){
-        $mediaSelection = $this->session->get('mediaSelection');
         $params = array();
-        if($mediaSelection != null){
+        if($this->mediaSelection != null){
             $params = array(
-                    'media'     => $mediaSelection->getMediaType()->getSlug(),    
-                    'decade'    => $mediaSelection->getDecade() != null ? $mediaSelection->getDecade()->getSlug() : Decade::$default,
-                    'genre'     => $mediaSelection->getSelectedMediaGenre() != null ? $mediaSelection->getSelectedMediaGenre()->getSlug() : Genre::$default,
-                    'keywords'  => $mediaSelection->getKeywords() != null ? $mediaSelection->getKeywords() : '-',
-                    'page'      => $mediaSelection->getPage() != null ? $mediaSelection->getPage() : 1,
+                    'media'     => $this->mediaSelection->getMediaType()->getSlug(),    
+                    'decade'    => $this->mediaSelection->getDecade() != null ? $this->mediaSelection->getDecade()->getSlug() : Decade::$default,
+                    'genre'     => $this->mediaSelection->getSelectedMediaGenre() != null ? $this->mediaSelection->getSelectedMediaGenre()->getSlug() : Genre::$default,
+                    'keywords'  => $this->mediaSelection->getKeywords() != null ? $this->mediaSelection->getKeywords() : '-',
+                    'page'      => $this->mediaSelection->getPage() != null ? $this->mediaSelection->getPage() : 1,
             );
         }else {
             $params = array(
@@ -287,8 +287,6 @@ class MediaAPI {
     public function getDetails(array $params, $recType = null){
         $this->response = null;
         $itemId = $params['ItemId'];
-        //try getting the media selection from the session
-        $this->mediaSelection = $this->getMediaSelection();
         
         //look up the mediaResource in the db and fetch associated cached object
         $this->mediaResource = $this->getMediaResource($itemId);
@@ -329,7 +327,6 @@ class MediaAPI {
      * 
      */
     public function getListings($recType = null){
-        $this->mediaSelection = $this->getMediaSelection();
         $this->response = null;
            
         $this->response = $this->getCachedListings();
@@ -445,9 +442,6 @@ class MediaAPI {
     }
     
     private function createNewMediaResource($itemId){
-        if(is_null($this->mediaSelection))
-            $this->getMediaSelection();
-        
         $mediaResource = new MediaResource();
         $mediaResource->setId($itemId);
         $mediaResource->setAPI($this->mediaSelection->getAPI());
@@ -460,11 +454,9 @@ class MediaAPI {
     
     //once retrieved, if applicable, cache the resource
     public function cacheMediaResource(SimpleXMLElement $xmlData, $itemId, $immediateFlush = true){
-        if($this->mediaResource == null){
-            //create a mediaresource
+        if($this->mediaResource == null)
             $this->mediaResource = $this->createNewMediaResource($itemId);
-        } 
-            
+        
         //if cached listings not exists create a new MediaResourceCache object and update the mediaResource    
         if($this->mediaResource->getMediaResourceCache() == null){
             $cachedResource = new MediaResourceCache();

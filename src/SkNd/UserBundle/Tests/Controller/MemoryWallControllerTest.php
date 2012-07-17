@@ -30,16 +30,28 @@ class MemoryWallControllerTest extends WebTestCase
     private $session;
     private $em;
     
-    
-    public function setup(){
+    public function __construct(){
         $this->client = static::createClient();
         $this->client->followRedirects(true);
         $kernel = static::createKernel();
         $kernel->boot();
         $this->router = $kernel->getContainer()->get('router');
-        //$this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        
+        /*$loadUsers = new \SkNd\UserBundle\DataFixtures\ORM\LoadUsers();
+        $loadUsers->setContainer($kernel->getContainer());
+        $loadUsers->load($this->em);*/
+        //WORK OUT HOW TO RUN COMMANDS FROM HERE
     }
-     
+        
+    public function __destruct() {
+        foreach($this->em->getRepository('SkNdMediaBundle:MediaResource')->findAll() as $mr)
+            $this->em->remove($mr);
+        
+        $this->em->flush();
+    }
+
+
     public function testMemoryWallIndexWithNoParamsShowsPublicWallsForNonLoggedInUser(){
         //create the user fixtures, which by default creates memory walls
         $crawler = $this->client->request('GET', '/memorywalls/public/index');
@@ -118,7 +130,7 @@ class MemoryWallControllerTest extends WebTestCase
         $crawler = $this->client->submit($form, $params);
         $url = $this->router->generate('memoryWallCreate');
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->selectButton('Create a new Memory Wall')->count() > 0, "Add memory wall form exists");
+        $this->assertTrue($crawler->selectButton('Create a new Memory Wall')->count() > 0, "create memory wall page not shown");
     }
     
     public function testCreateMemoryWallWithMissingParametersShowsErrors(){
@@ -140,7 +152,7 @@ class MemoryWallControllerTest extends WebTestCase
         );
        
         $crawler = $this->client->submit($form, $params);
-        $this->assertTrue($crawler->filter('ul.form-errors li')->count() > 0, "Errors show for missing name field");
+        $this->assertTrue($crawler->filter('ul.form-errors li')->count() > 0, "no errors for missing name field");
         
     }
     
@@ -186,7 +198,7 @@ class MemoryWallControllerTest extends WebTestCase
         );
        
         $crawler = $this->client->submit($form, $params);
-        $this->assertTrue($crawler->filter('h1')->text() == 'test memory wall', "Wall created successfully");
+        $this->assertTrue($crawler->filter('h1')->text() == 'Test memory wall', "Wall not created successfully");
         
     }
     
@@ -233,8 +245,8 @@ class MemoryWallControllerTest extends WebTestCase
         $url = $this->router->generate('memoryWallEdit', array('slug'   =>  'my-memory-wall'));
         $crawler = $this->client->request('GET', $url);
         
-        $crawler->selectButton('Edit this wall')->addContent('formnovalidate="formnovalidate"');
-        $form = $crawler->selectButton('Edit this wall')->form();
+        $crawler->selectButton('Update this wall')->addContent('formnovalidate="formnovalidate"');
+        $form = $crawler->selectButton('Update this wall')->form();
         $params = array(
             'memoryWall[name]'        => 'a',
             'memoryWall[description]' => 'a',
@@ -256,8 +268,8 @@ class MemoryWallControllerTest extends WebTestCase
         $url = $this->router->generate('memoryWallEdit', array('slug'   =>  'my-memory-wall'));
         $crawler = $this->client->request('GET', $url);
         
-        $crawler->selectButton('Edit this wall')->addContent('formnovalidate="formnovalidate"');
-        $form = $crawler->selectButton('Edit this wall')->form();
+        $crawler->selectButton('Update this wall')->addContent('formnovalidate="formnovalidate"');
+        $form = $crawler->selectButton('Update this wall')->form();
         $params = array(
             'memoryWall[name]'        => '',
         );
@@ -278,7 +290,7 @@ class MemoryWallControllerTest extends WebTestCase
         $url = $this->router->generate('memoryWallEdit', array('slug'   =>  'my-memory-wall'));
         $crawler = $this->client->request('GET', $url);
         
-        $form = $crawler->selectButton('Edit this wall')->form();
+        $form = $crawler->selectButton('Update this wall')->form();
         $params = array(
             'memoryWall[description]'   =>  'a new description for the wall',
         );
@@ -369,7 +381,7 @@ class MemoryWallControllerTest extends WebTestCase
         $url = $this->router->generate('memoryWallDeleteConfirm', array('slug' => 'private-wall'));
         $crawler = $this->client->request('GET', $url);
         
-        $this->assertTrue(strpos($crawler->filter('div#flashMessages ul li')->eq(0)->text(), 'Memory wall deleted') !== false);
+        $this->assertTrue($crawler->filter('body > div.flashMessages:contains("Memory wall deleted")')->count() > 0, "memory wall not deleted");
     }
     
     public function testDeleteLastMemoryWallCreatesNewDefaultWall(){
@@ -387,7 +399,7 @@ class MemoryWallControllerTest extends WebTestCase
         $url = $this->router->generate('memoryWallDeleteConfirm', array('slug' => 'my-memory-wall'));
         $crawler = $this->client->request('GET', $url);
         
-        $this->assertTrue(strpos($crawler->filter('div#flashMessages ul li')->eq(0)->text(), 'That was your last Memory Wall') !== false);
+        $this->assertTrue($crawler->filter('body > div.flashMessages ul li:contains("That was your last Memory Wall")')->count() > 0);
         $this->assertTrue($crawler->filter('body > ul#memoryWallGallery li dl dd')->eq(0)->text() == 'My Memory Wall');
     }
     

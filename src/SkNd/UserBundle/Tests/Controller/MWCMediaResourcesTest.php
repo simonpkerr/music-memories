@@ -25,6 +25,7 @@ class MWCMediaResourcesTest extends WebTestCase
     private $mediaapi;
     private $session;
     private $mediaSelection;
+    
     /*private $cachedXMLResponse;
     private $liveXMLResponse;
     private $cachedYouTubeXMLResponse;
@@ -32,6 +33,7 @@ class MWCMediaResourcesTest extends WebTestCase
     private $testAmazonAPI;
     private $testYouTubeAPI;
     */
+    
     
     
     public function setup(){

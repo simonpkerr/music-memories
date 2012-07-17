@@ -178,8 +178,8 @@ class DefaultControllerTest extends WebTestCase
         
     }
     
+    //for some reason phpunit crashes here
     public function testChangePasswordWithDifferentPasswordsShowsErrors(){
-         //log in first
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $params = array(
@@ -208,8 +208,7 @@ class DefaultControllerTest extends WebTestCase
         
         $this->assertTrue($crawler->selectButton("Login")->count() > 0, "redirected to log in screen");
         
-    }
-    
+    }    
     
     public function testChangePasswordWithCorrectDataShowsProfile(){
         $crawler = $this->client->request('GET', '/login');

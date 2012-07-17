@@ -28,7 +28,8 @@ class MediaAPITests extends \PHPUnit_Framework_TestCase {
             'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy The Matrix, Matrix Reloaded and Matrix Revolutions',
             'Ripping Yarns - The Complete Series[DVD] [1976]' => 'Ripping Yarns 1976',
             'Alien Anthology [Blu-ray] [1979] [6 Disc Set]' => 'Alien Anthology 1979',
-            'Saturday Night Fever:25th Anniversary Se [DVD]' => 'Saturday Night Fever:25th Anniversary Se'
+            'Saturday Night Fever:25th Anniversary Se [DVD]' => 'Saturday Night Fever:25th Anniversary Se',
+            'Prometheus - Special Edition (Blu-ray 3D + Blu-ray + Digital Copy)', 'Prometheus'
         );
     }
     

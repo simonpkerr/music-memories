@@ -41,10 +41,10 @@ class MediaControllerTest extends WebTestCase
         
         $this->session->set('mediaSelection', $this->mediaSelection);
         
-        $this->client->getContainer()->get('sk_nd_media.mediaapi')->setAPIs(array(
+        /*$this->client->getContainer()->get('sk_nd_media.mediaapi')->setAPIs(array(
             'amazonapi'     =>  $this->testAmazonAPI,
             'youtubeapi'    =>  $this->testYouTubeAPI,
-        ));
+        ));*/
     }
     
     /*
@@ -68,7 +68,7 @@ class MediaControllerTest extends WebTestCase
         $form['mediaSelection[selectedMediaGenre]']->select('1');//All Genres
         
         $crawler = $this->client->submit($form);        
-        $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
+        $this->assertTrue(trim($crawler->filter('body > h1')->text()) == 'Results for Film (1930s, Action and adventure)');
     }
        
     public function testMediaSelectionWithKeywordsGoesToListings(){
@@ -82,7 +82,7 @@ class MediaControllerTest extends WebTestCase
         
         $crawler = $this->client->submit($form);       
         
-        $this->assertTrue($crawler->filter('html:contains("Results")')->count() > 0);
+        $this->assertTrue($crawler->filter('body > h1:contains("Results")')->count() > 0);
     }
     
     /*
@@ -112,27 +112,6 @@ class MediaControllerTest extends WebTestCase
         
     }
     
-    //a default decade of all-decades should still override a session decade
-    public function testSearchWithDefaultDecadeAndNonDefaultSessionDecadeOverridesSessionDecade(){
-        /*$crawler = $this->client->request('GET', '/index');
-        
-        $form = $crawler->selectButton('Search noodleDig')->form();
-        $form['mediaSelection[decade]']->select('2');//all decades
-        $form['mediaSelection[mediaType]']->select('1');//Film
-        $form['mediaSelection[selectedMediaGenre]']->select('1');//All Genres
-       
-        $crawler = $this->client->submit($form);       
-        $crawler = $this->client->request('GET', '/search/film');
-        
-        $form = $crawler->selectButton('Search noodleDig')->form();
-        $this->assertTrue($form['mediaSelection[decade]'] == 'All Decades');
-        */
-    }
-    
-    public function testSearchWithDefaultGenreAndNonDefaultSessionGenreOverridesSessionGenre(){
-        //todo
-    }
-       
     public function testMediaSelectionWithPageAndNoKeywordsGoesToListings(){
         $crawler = $this->client->request('GET', '/search/film/all-decades/classics/-/2');
         
@@ -143,7 +122,7 @@ class MediaControllerTest extends WebTestCase
         
         $crawler = $this->client->request('GET', '/search/film/all-decades/classics/-/12');
         
-        $this->assertTrue($crawler->filter('html:contains("Sorry")')->count() > 0);
+        $this->assertTrue($crawler->filter('body > div.flashMessages ul li:contains("something went wrong with Amazon")')->count() > 0);
     }
     
     public function testMediaDetailsWithValidRouteGoesToDetailsPage(){

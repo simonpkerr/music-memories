@@ -27,18 +27,27 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
      */
     private $em;
     private $mediaSelection;
+    private $api;
     
     public function setUp(){
         $kernel = static::createKernel();
         $kernel->boot();
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
         $this->mediaSelection = new MediaSelection();
-        
+        $this->api = new \SkNd\MediaBundle\MediaAPI\AmazonAPI(array(
+                'amazon_public_key'     => 1,
+                'amazon_private_key'    => 1,
+                'amazon_associate_tag'  => 1 
+            ),
+            new \SkNd\MediaBundle\MediaAPI\TestAmazonSignedRequest());
     }
     
     private function setUpMediaSelection(array $options){
         $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($options['media']);
         $this->mediaSelection->setMediaType($mediaType);
+        
+        $apiType = $this->em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1));
+        $this->mediaSelection->setAPI($apiType);
         
         if(array_key_exists('decade', $options)){
             $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($options['decade']);
@@ -56,7 +65,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
         if(array_key_exists('page', $options))
             $this->mediaSelection->setPage($options['page']);
 
-                
+        
     }
     
     public function testAmazonAPIFilmsCachedListingsExistsReturnsXML(){
@@ -66,7 +75,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
         
         $results = $this->em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
-            ->getCachedListings($this->mediaSelection, 'amazonapi')
+            ->getCachedListings($this->mediaSelection, $this->api)
         ;
         $this->assertTrue($results != null);
     }
@@ -78,7 +87,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
         
         $results = $this->em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
-            ->getCachedListings($this->mediaSelection, 'amazonapi')
+            ->getCachedListings($this->mediaSelection, $this->api)
         ;
         $this->assertTrue($results == null);
     }
@@ -91,7 +100,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
                 
         $results = $this->em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
-            ->getCachedListings($this->mediaSelection, 'amazonapi')
+            ->getCachedListings($this->mediaSelection, $this->api)
         ;
         $this->assertTrue($results == null);
     }
@@ -105,7 +114,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
         
         $results = $this->em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
-            ->getCachedListings($this->mediaSelection, 'amazonapi')
+            ->getCachedListings($this->mediaSelection, $this->api)
         ;
         $this->assertTrue($results != null);
     }
@@ -120,7 +129,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
         
         $results = $this->em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
-            ->getCachedListings($this->mediaSelection, 'amazonapi')
+            ->getCachedListings($this->mediaSelection, $this->api)
         ;
         $this->assertTrue($results != null);
     }
@@ -136,7 +145,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
         
         $results = $this->em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
-            ->getCachedListings($this->mediaSelection, 'amazonapi')
+            ->getCachedListings($this->mediaSelection, $this->api)
         ;
         $this->assertTrue($results != null);
     }
