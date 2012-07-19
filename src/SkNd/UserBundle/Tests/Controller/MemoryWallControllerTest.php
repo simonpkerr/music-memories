@@ -403,6 +403,34 @@ class MemoryWallControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('body > ul#memoryWallGallery li dl dd')->eq(0)->text() == 'My Memory Wall');
     }
     
+    public function testDeleteMemoryWallAlsoRemovesAssociatedMediaResources(){
+        //$this->getMediaSelection();
+        
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+            
+        ); 
+        $crawler = $this->client->submit($form, $params);
+        
+        $url = $this->router->generate('memoryWallAddMediaResource', array(
+            'slug'  => 'my-memory-wall-2',
+            'api'   => 'amazonapi',
+            'id'    => 'newMR'
+        ));
+        $crawler = $this->client->request('GET', $url);
+        
+        $url = $this->router->generate('memoryWallDelete', array('slug' => 'my-memory-wall-2'));
+        $crawler = $this->client->request('GET', $url);
+
+        $url = $this->router->generate('memoryWallDeleteConfirm', array('slug' => 'my-memory-wall-2'));
+        $crawler = $this->client->request('GET', $url);
+        
+        $this->assertTrue($crawler->filter('ul#memoryWallGallery dd')->eq(4)->text() == '0');
+    }
+    
     
     
     

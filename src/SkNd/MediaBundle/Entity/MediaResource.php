@@ -55,7 +55,6 @@ class MediaResource
         $this->selectedCount = 0;
         $this->memoryWalls = new ArrayCollection();
         $this->memoryWallMediaResources = new ArrayCollection();
-        //$this->relatedMediaResources = new ArrayCollection();
         $this->memoryWalls = $this->getMemoryWalls();
         
     }
@@ -71,8 +70,6 @@ class MediaResource
     }
     
     public function setRelatedMediaResources(array $mediaResources){
-        //$this->relatedMediaResources->set('exactMatches', $mediaResources['exactMatches']);
-        //$this->relatedMediaResources->set('genericMatches', $mediaResources['genericMatches']);
         $this->relatedMediaResources = $mediaResources;
     }
     

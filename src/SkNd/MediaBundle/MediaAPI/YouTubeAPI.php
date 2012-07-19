@@ -27,8 +27,7 @@ class YouTubeAPI implements IAPIStrategy {
         $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
         $this->youTube->setMajorProtocolVersion(2);
        
-        $this->youTube = new \Zend_Gdata_YouTube();
-        
+        //$this->youTube = new \Zend_Gdata_YouTube();
         //$vf = $this->youTube->getVideoFeed();
         //$vf->getE
     }
