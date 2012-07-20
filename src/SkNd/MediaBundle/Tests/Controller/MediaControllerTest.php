@@ -41,10 +41,6 @@ class MediaControllerTest extends WebTestCase
         
         $this->session->set('mediaSelection', $this->mediaSelection);
         
-        /*$this->client->getContainer()->get('sk_nd_media.mediaapi')->setAPIs(array(
-            'amazonapi'     =>  $this->testAmazonAPI,
-            'youtubeapi'    =>  $this->testYouTubeAPI,
-        ));*/
     }
     
     /*

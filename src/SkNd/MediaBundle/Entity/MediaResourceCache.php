@@ -53,19 +53,12 @@ class MediaResourceCache
     {
         return $this->id;
     }
-
-    /*public function __construct(){
-        $this->dateCreated = new \DateTime("now");
-                
-    }*/
-    
   
     public function setXmlData($xmlData)
     {
         $this->xmlData = $xmlData;
     }
-
-   
+ 
     public function getXmlData()
     {
         return simplexml_load_string($this->xmlData);

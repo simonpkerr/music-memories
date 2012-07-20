@@ -17,7 +17,7 @@ use SkNd\MediaBundle\Entity\MediaResource;
  */
 
 
-class MemoryWallControllerTest extends WebTestCase
+class MemoryWallMediaResourcesTest extends WebTestCase
 {
     private $client;
     private $router;
@@ -30,27 +30,30 @@ class MemoryWallControllerTest extends WebTestCase
     private $session;
     private $em;
     
+    public static function setUpBeforeClass(){
+        $kernel = static::createKernel();
+        $kernel->boot();
+        $container = $kernel->getContainer();
+        $em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        
+        $loadUsers = new \SkNd\UserBundle\DataFixtures\ORM\LoadUsers();
+        $loadUsers->setContainer($container);
+        $loadUsers->load($em);
+    }
+    
     public function __construct(){
+
         $this->client = static::createClient();
         $this->client->followRedirects(true);
         $kernel = static::createKernel();
         $kernel->boot();
+        $this->container = $kernel->getContainer();
         $this->router = $kernel->getContainer()->get('router');
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
         
-        /*$loadUsers = new \SkNd\UserBundle\DataFixtures\ORM\LoadUsers();
-        $loadUsers->setContainer($kernel->getContainer());
-        $loadUsers->load($this->em);*/
-        //WORK OUT HOW TO RUN COMMANDS FROM HERE
-    }
         
-    public function __destruct() {
-        foreach($this->em->getRepository('SkNdMediaBundle:MediaResource')->findAll() as $mr)
-            $this->em->remove($mr);
-        
-        $this->em->flush();
     }
-
+   
 
     public function testMemoryWallIndexWithNoParamsShowsPublicWallsForNonLoggedInUser(){
         //create the user fixtures, which by default creates memory walls
@@ -382,6 +385,18 @@ class MemoryWallControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $url);
         
         $this->assertTrue($crawler->filter('body > div.flashMessages:contains("Memory wall deleted")')->count() > 0, "memory wall not deleted");
+        
+        //add wall again
+        /*$url = $this->router->generate('memoryWallCreate');
+        $crawler = $this->client->request('GET', $url);
+        
+        $crawler->selectButton('Create a new Memory Wall')->addContent('formnovalidate="formnovalidate"');
+        $form = $crawler->selectButton('Create a new Memory Wall')->form();
+        $params = array(
+            'memoryWall[name]'        => 'Private Wall',
+        );
+        $crawler = $this->client->submit($form, $params);*/
+        
     }
     
     public function testDeleteLastMemoryWallCreatesNewDefaultWall(){
@@ -404,8 +419,6 @@ class MemoryWallControllerTest extends WebTestCase
     }
     
     public function testDeleteMemoryWallAlsoRemovesAssociatedMediaResources(){
-        //$this->getMediaSelection();
-        
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $params = array(

@@ -14,9 +14,9 @@ use Symfony\Component\HttpKernel\Exception;
  */
 class MemoryWall
 {
-    public static $PRIVATE_WALLS = '0';
-    public static $PUBLIC_WALLS = '1';
-    public static $ALL_WALLS = '2';
+    const PRIVATE_WALLS = '0';
+    const PUBLIC_WALLS = '1';
+    const ALL_WALLS = '2';
     /**
      * @var integer $id
      */
@@ -68,11 +68,9 @@ class MemoryWall
         $this->setIsPublic(true);
         if($user != null)
             $this->setUser($user);
-        
-        //$this->mediaResources = $this->getMediaResources();
     }
  
-    
+  
     /**
      * Get id
      *
@@ -105,13 +103,9 @@ class MemoryWall
     
     public function getMemoryWallMediaResources($apiId = null){
         if($apiId != null){
-            try{
-                return $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
-                    return $mwmr->getApi_id() == $apiId;
-                });
-            } catch (\Exception $ex){
-                throw new \InvalidArgumentException('there was a problem with the given api name');
-            }
+            return $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
+                return $mwmr->getApi_id() == $apiId;
+            });
         }
         
         return $this->memoryWallMediaResources->toArray();                

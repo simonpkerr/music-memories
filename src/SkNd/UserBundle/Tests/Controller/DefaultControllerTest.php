@@ -24,7 +24,10 @@ class DefaultControllerTest extends WebTestCase
         $this->client->followRedirects(true);
     }
     
-    //test all the routes    
+    public function tearDown(){
+        unset($this->client);
+    }
+    
     public function testLoginGetReturnsLoginScreen()
     {
         $crawler = $this->client->request('GET', '/login');

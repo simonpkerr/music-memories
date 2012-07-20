@@ -9,9 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class MemoryWallMediaResource
 {
-    //protected $id;
     protected $api_id;
-    //protected $memoryWall_id;
     protected $memoryWall;
 
     protected $mediaResource_id;
@@ -30,7 +28,7 @@ class MemoryWallMediaResource
     }
     public function getMediaResourceId()
     {
-        return $this->mediaResource_id;//->getId();
+        return $this->mediaResource_id;
     }
     
     public function getId(){

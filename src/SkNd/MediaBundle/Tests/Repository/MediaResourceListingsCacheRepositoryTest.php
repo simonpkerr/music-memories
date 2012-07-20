@@ -40,6 +40,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
                 'amazon_associate_tag'  => 1 
             ),
             new \SkNd\MediaBundle\MediaAPI\TestAmazonSignedRequest());
+  
     }
     
     private function setUpMediaSelection(array $options){
