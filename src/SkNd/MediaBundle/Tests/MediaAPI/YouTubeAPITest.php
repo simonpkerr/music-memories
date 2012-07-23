@@ -55,6 +55,12 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
         $this->ms->setMediaType($mt);
     }
     
+    public function tearDown(){
+        unset($this->ytObj);
+        unset($this->params);
+        unset($this->ms);
+    }
+    
     /**
      * @expectedException RuntimeException 
      * @expectedExceptionMessage Could not connect to YouTube 

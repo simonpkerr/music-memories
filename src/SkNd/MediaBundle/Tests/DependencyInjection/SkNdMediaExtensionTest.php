@@ -14,16 +14,22 @@ use Symfony\Component\Yaml\Parser;
 class SkNdMediaExtensionTest extends \PHPUnit_Framework_TestCase
 {
     protected $configuration;
+    protected $loader;
+    
+    public function tearDown(){
+        unset($this->configuration);
+        unset($this->loader);
+    }
     
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMediaAPILoadThrowsExceptionUnlessAPIsSet()
     {
-        $loader = new SkNdMediaExtension();
-        $config = $this->getConfig();
-        unset($config['mediaapi']['apis']);
-        $loader->load(array($config), new ContainerBuilder());
+        $this->loader = new SkNdMediaExtension();
+        $this->configuration = $this->getConfig();
+        unset($this->configuration['mediaapi']['apis']);
+        $this->loader->load(array($this->configuration), new ContainerBuilder());
     }
     
     /**
@@ -31,10 +37,10 @@ class SkNdMediaExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testMediaAPILoadThrowsExceptionUnlessAmazonAPISet()
     {
-        $loader = new SkNdMediaExtension();
-        $config = $this->getConfig();
-        unset($config['mediaapi']['apis']['amazonapi']);
-        $loader->load(array($config), new ContainerBuilder());
+        $this->loader = new SkNdMediaExtension();
+        $this->configuration = $this->getConfig();
+        unset($this->configuration['mediaapi']['apis']['amazonapi']);
+        $this->loader->load(array($this->configuration), new ContainerBuilder());
     }
     
     /**
@@ -42,10 +48,10 @@ class SkNdMediaExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testMediaAPILoadThrowsExceptionUnlessYouTubeAPISet()
     {
-        $loader = new SkNdMediaExtension();
-        $config = $this->getConfig();
-        unset($config['mediaapi']['apis']['youtubeapi']);
-        $loader->load(array($config), new ContainerBuilder());
+        $this->loader = new SkNdMediaExtension();
+        $this->configuration = $this->getConfig();
+        unset($this->configuration['mediaapi']['apis']['youtubeapi']);
+        $this->loader->load(array($this->configuration), new ContainerBuilder());
     }
     
     /**
@@ -53,10 +59,10 @@ class SkNdMediaExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testMediaAPILoadThrowsExceptionUnlessAmazonAccessParamsSet()
     {
-        $loader = new SkNdMediaExtension();
-        $config = $this->getConfig();
-        unset($config['mediaapi']['apis']['amazonapi']['access_params']);
-        $loader->load(array($config), new ContainerBuilder());
+        $this->loader = new SkNdMediaExtension();
+        $this->configuration = $this->getConfig();
+        unset($this->configuration['mediaapi']['apis']['amazonapi']['access_params']);
+        $this->loader->load(array($this->configuration), new ContainerBuilder());
     }
     
     /**
@@ -64,10 +70,10 @@ class SkNdMediaExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testMediaAPILoadThrowsExceptionUnlessAmazonPublicKeySet()
     {
-        $loader = new SkNdMediaExtension();
-        $config = $this->getConfig();
-        unset($config['mediaapi']['apis']['amazonapi']['access_params']['amazon_public_key']);
-        $loader->load(array($config), new ContainerBuilder());
+        $this->loader = new SkNdMediaExtension();
+        $this->configuration = $this->getConfig();
+        unset($this->configuration['mediaapi']['apis']['amazonapi']['access_params']['amazon_public_key']);
+        $this->loader->load(array($this->configuration), new ContainerBuilder());
     }
     
     /**
@@ -75,10 +81,10 @@ class SkNdMediaExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testMediaAPILoadThrowsExceptionUnlessAmazonPrivateKeySet()
     {
-        $loader = new SkNdMediaExtension();
-        $config = $this->getConfig();
-        unset($config['mediaapi']['apis']['amazonapi']['access_params']['amazon_private_key']);
-        $loader->load(array($config), new ContainerBuilder());
+        $this->loader = new SkNdMediaExtension();
+        $this->configuration = $this->getConfig();
+        unset($this->configuration['mediaapi']['apis']['amazonapi']['access_params']['amazon_private_key']);
+        $this->loader->load(array($this->configuration), new ContainerBuilder());
     }
     
     /**
@@ -86,10 +92,10 @@ class SkNdMediaExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testMediaAPILoadThrowsExceptionUnlessAmazonAssociateTagSet()
     {
-        $loader = new SkNdMediaExtension();
-        $config = $this->getConfig();
-        unset($config['mediaapi']['apis']['amazonapi']['access_params']['amazon_associate_tag']);
-        $loader->load(array($config), new ContainerBuilder());
+        $this->loader = new SkNdMediaExtension();
+        $this->configuration = $this->getConfig();
+        unset($this->configuration['mediaapi']['apis']['amazonapi']['access_params']['amazon_associate_tag']);
+        $this->loader->load(array($this->configuration), new ContainerBuilder());
     }
     
     /**

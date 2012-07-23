@@ -25,14 +25,27 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
     /*
      * @var \Doctrine\ORM\EntityManager
      */
-    private $em;
+    protected static $kernel;
+    protected static $em;
     private $mediaSelection;
     private $api;
     
+    public static function setUpBeforeClass(){
+        self::$kernel = static::createKernel();
+        self::$kernel->boot();
+        self::$em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        
+        $loadListingsFixtures = new ORM\LoadCachedListings();
+        $loadListingsFixtures->setContainer(self::$kernel->getContainer());
+        $loadListingsFixtures->load(self::$em);
+    }
+    
+    public static function tearDownAfterClass(){
+        self::$kernel = null;
+        self::$em = null;
+    }
+    
     public function setUp(){
-        $kernel = static::createKernel();
-        $kernel->boot();
-        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
         $this->mediaSelection = new MediaSelection();
         $this->api = new \SkNd\MediaBundle\MediaAPI\AmazonAPI(array(
                 'amazon_public_key'     => 1,
@@ -40,23 +53,27 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
                 'amazon_associate_tag'  => 1 
             ),
             new \SkNd\MediaBundle\MediaAPI\TestAmazonSignedRequest());
-  
+    }
+    
+    public function tearDown(){
+        unset($this->mediaSelection);
+        unset($this->api);
     }
     
     private function setUpMediaSelection(array $options){
-        $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($options['media']);
+        $mediaType = self::$em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($options['media']);
         $this->mediaSelection->setMediaType($mediaType);
         
-        $apiType = $this->em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1));
+        $apiType = self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1));
         $this->mediaSelection->setAPI($apiType);
         
         if(array_key_exists('decade', $options)){
-            $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($options['decade']);
+            $decade = self::$em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($options['decade']);
             $this->mediaSelection->setDecade($decade);
         }
         
         if(array_key_exists('genre', $options)){
-            $genre = $this->em->getRepository('SkNdMediaBundle:Genre')->getGenreBySlugAndMedia($options['genre'], $options['media']);
+            $genre = self::$em->getRepository('SkNdMediaBundle:Genre')->getGenreBySlugAndMedia($options['genre'], $options['media']);
             $this->mediaSelection->setSelectedMediaGenre($genre);
         }
         
@@ -74,7 +91,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
                 'media'     => 'film',
             ));        
         
-        $results = $this->em
+        $results = self::$em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
             ->getCachedListings($this->mediaSelection, $this->api)
         ;
@@ -86,7 +103,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
                 'media'     => 'tv',
             ));   
         
-        $results = $this->em
+        $results = self::$em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
             ->getCachedListings($this->mediaSelection, $this->api)
         ;
@@ -99,7 +116,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
                 'decade'    => '1990',
             ));   
                 
-        $results = $this->em
+        $results = self::$em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
             ->getCachedListings($this->mediaSelection, $this->api)
         ;
@@ -113,7 +130,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
                 'genre'     => 'science-fiction',
             )); 
         
-        $results = $this->em
+        $results = self::$em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
             ->getCachedListings($this->mediaSelection, $this->api)
         ;
@@ -128,7 +145,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
                 'keywords'  => 'aliens',
             )); 
         
-        $results = $this->em
+        $results = self::$em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
             ->getCachedListings($this->mediaSelection, $this->api)
         ;
@@ -144,7 +161,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
                 'page'      => 2,
             )); 
         
-        $results = $this->em
+        $results = self::$em
             ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
             ->getCachedListings($this->mediaSelection, $this->api)
         ;

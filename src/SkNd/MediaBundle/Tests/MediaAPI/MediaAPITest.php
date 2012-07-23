@@ -20,7 +20,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Session;
 
 class MediaAPITests extends WebTestCase {
-    private $em;
     private $mediaAPI;
     private $mediaSelection;
     private $testAmazonAPI;
@@ -28,19 +27,34 @@ class MediaAPITests extends WebTestCase {
     private $cachedXMLResponse;
     private $liveXMLResponse;
     private $mediaResource;
-    private $session;
-    //private $mediaAPIService;
+    
+    protected static $kernel;
+    protected static $em;
+    protected static $session;
+    
+    
+    public static function setUpBeforeClass(){
+        self::$kernel = static::createKernel();
+        self::$kernel->boot();
+        self::$em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        self::$session = self::$kernel->getContainer()->get('session');
+        
+        $loadUsers = new \SkNd\UserBundle\DataFixtures\ORM\LoadUsers();
+        $loadUsers->setContainer(self::$kernel->getContainer());
+        $loadUsers->load(self::$em);
+    }
+    
+    public static function tearDownAfterClass(){
+        self::$kernel = null;
+        self::$em = null;
+        self::$session = null;
+    }
     
     protected function setUp(){
   
         $this->cachedXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedData"></item></items>');
         $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="liveData"></item></items>');
         
-        $kernel = static::createKernel();
-        $kernel->boot();
-        
-        $this->session = $kernel->getContainer()->get('session');
-        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
         //for the mock object, need to provide a fully qualified path 
         $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
                 ->disableOriginalConstructor()
@@ -74,8 +88,8 @@ class MediaAPITests extends WebTestCase {
         $this->mediaAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\MediaAPI')
                 ->setConstructorArgs(array(
                         'true', 
-                        $this->em, 
-                        $this->session,
+                        self::$em, 
+                        self::$session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  $this->testYouTubeAPI,
@@ -93,6 +107,17 @@ class MediaAPITests extends WebTestCase {
         $this->mediaResource->setId('testMediaResource');
         $this->mediaResource->setAPI($this->mediaSelection->getAPI());
         $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+    }
+    
+    public function tearDown(){
+        unset($this->cachedXMLResponse);
+        unset($this->liveXMLResponse);
+        unset($this->testAmazonAPI);
+        unset($this->testYouTubeAPI);
+        unset($this->mediaAPI);
+        unset($this->mediaSelection);
+        unset($this->mediaResource);
+        
     }
     
     /**
@@ -184,7 +209,7 @@ class MediaAPITests extends WebTestCase {
     }
     
     public function testGetMediaSelectionParamsForNonExistentMediaSelectionReturnsDefaultsArray(){
-        $this->session->remove('mediaSelection');
+        self::$session->remove('mediaSelection');
         
         $response = $this->mediaAPI->getMock()->getMediaSelectionParams();
         $this->assertTrue($response['media'] == 'film-and-tv', "default film and tv was returned as media type");
@@ -250,17 +275,17 @@ class MediaAPITests extends WebTestCase {
         //create and insert a dummy mediaresource
         $mr = new MediaResource();
         $mr->setId('mediaAPITestMR1');
-        $mr->setAPI($this->em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
-        $mr->setMediaType($this->em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
         //$mr->setMediaResourceCache($this->getCache($id));
-        $this->em->persist($mr);
-        $this->em->flush();
+        self::$em->persist($mr);
+        self::$em->flush();
         
         $updatedMr = $this->mediaAPI->getMediaResource('mediaAPITestMR1');
         $this->assertEquals($updatedMr->getDecade()->getDecadeName(), '1980', "Decade was updated to 1980");
         
-        $this->em->remove($mr);
-        $this->em->flush();
+        self::$em->remove($mr);
+        self::$em->flush();
         
     }
     
@@ -276,18 +301,18 @@ class MediaAPITests extends WebTestCase {
         //create and insert a dummy mediaresource
         $mr = new MediaResource();
         $mr->setId('mediaAPITestMR1');
-        $mr->setAPI($this->em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
-        $mr->setMediaType($this->em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
         $mr->setMediaResourceCache($cachedResource);
-        $this->em->persist($mr);
-        $this->em->flush();
+        self::$em->persist($mr);
+        self::$em->flush();
         
         $updatedMr = $this->mediaAPI->getMediaResource('mediaAPITestMR1');
         $this->assertTrue($updatedMr->getMediaResourceCache() == null, "cache was deleted");
         
-        $this->em->remove($mr);
-        $this->em->remove($cachedResource);
-        $this->em->flush();
+        self::$em->remove($mr);
+        self::$em->remove($cachedResource);
+        self::$em->flush();
         
     }
     

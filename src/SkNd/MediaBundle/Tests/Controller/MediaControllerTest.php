@@ -5,42 +5,59 @@ use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\Entity\MediaResource;
 require_once 'src\SkNd\MediaBundle\MediaAPI\AmazonSignedRequest.php';
-//require_once 'Zend/Loader.php';
+
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * All operations related to media selection, searching, details etc
+ * @author Simon Kerr
+ * @version 1.0
+ * debug cmd: set XDEBUG_CONFIG=idekey=netbeans-xdebug 
+ */
+
 
 class MediaControllerTest extends WebTestCase
 {
     private $client;
     private $mediaSelection;
-    private $testAmazonAPI;
-    private $testYouTubeAPI;
-    private $cachedXMLResponse;
-    private $liveXMLResponse;
     private $mediaResource;
-    private $session;
+    
+    protected static $kernel;
+    protected static $em;
+    protected static $session;
+    
+    public static function setUpBeforeClass(){
+        self::$kernel = static::createKernel();
+        self::$kernel->boot();
+        self::$em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        self::$session = self::$kernel->getContainer()->get('session');
+    }
+    
+    public static function tearDownAfterClass(){
+        self::$kernel = null;
+        self::$em = null;
+        self::$session = null;
+    }
     
     public function setup(){
-        //load the youtube api
-        //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
-               
         $this->client = static::createClient();
         $this->client->followRedirects(true);
         
-        $kernel = static::createKernel();
-        $kernel->boot();
-        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-          
-        $this->session = $kernel->getContainer()->get('session');
-          
-        $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
+        $mediaType = self::$em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
         $this->mediaSelection = new MediaSelection();
         $this->mediaSelection->setMediaType($mediaType);
         
         $this->mediaResource = new MediaResource();
-        $this->mediaResource->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
+        $this->mediaResource->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
         $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
         
-        $this->session->set('mediaSelection', $this->mediaSelection);
+        self::$session->set('mediaSelection', $this->mediaSelection);
         
+    }
+    
+    public function tearDown(){
+        unset($this->mediaResource);
+        unset($this->mediaSelection);
+        unset($this->client);
     }
     
     /*

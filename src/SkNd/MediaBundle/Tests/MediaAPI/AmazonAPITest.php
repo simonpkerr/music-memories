@@ -20,8 +20,20 @@ class AmazonAPITest extends WebTestCase {
 
     private $access_params;
     private $mediaSelection;
-    private $em;
     private $testASR;
+    protected static $kernel;
+    protected static $em;
+    
+    public static function setUpBeforeClass(){
+        self::$kernel = static::createKernel();
+        self::$kernel->boot();
+        self::$em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+    }
+    
+    public static function tearDownAfterClass(){
+        self::$kernel = null;
+        self::$em = null;
+    }
     
     protected function setUp(){
         $this->access_params = array(
@@ -29,12 +41,8 @@ class AmazonAPITest extends WebTestCase {
             'amazon_private_key'    => 'aupk',
             'amazon_associate_tag'  => 'aat',
         );
-        
-        $kernel = static::createKernel();
-        $kernel->boot();
-        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        
-        $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
+    
+        $mediaType = self::$em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film');
         $this->mediaSelection = new MediaSelection();
         $this->mediaSelection->setMediaType($mediaType);
            
@@ -45,8 +53,10 @@ class AmazonAPITest extends WebTestCase {
                 ->getMock();
     }
     
-    private function getBasicTestASR(){
-        return $this->getMock('\\SkNd\\MediaBundle\\MediaAPI\\AmazonSignedRequest');
+    protected function tearDown(){
+        unset($this->access_params);
+        unset($this->mediaSelection);
+        unset($this->testASR);                
     }
     
     /**
