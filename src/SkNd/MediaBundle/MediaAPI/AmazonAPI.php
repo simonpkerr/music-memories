@@ -141,15 +141,6 @@ class AmazonAPI implements IAPIStrategy {
             throw $le;
         }
         
-        
-        /*if($mediaSelection != null){
-            $recommendations = $this->getRecommendations($mediaSelection, 'details');
-            return array(
-                'response'          =>  $verifiedResponse->Items->Item,
-                'recommendations'   =>  $recommendations,
-            );
-        }*/
-        
         //certain operations like batch processing only pass ids and do not require recommendations
         return $verifiedResponse->Items->Item;
         

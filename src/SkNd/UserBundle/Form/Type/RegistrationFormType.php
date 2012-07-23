@@ -1,5 +1,5 @@
 <?php
-namespace SkNd\UserBundle\Form\Type {
+namespace SkNd\UserBundle\Form\Type;
     
 use Symfony\Component\Form\FormBuilder;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
@@ -32,8 +32,6 @@ class RegistrationFormType extends BaseType {
     public function getName(){
         return 'sk_nd_user_registration';
     }
-    
-}
     
 }
 

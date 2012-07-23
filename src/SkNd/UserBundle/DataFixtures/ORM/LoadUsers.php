@@ -15,15 +15,16 @@ use SkNd\UserBundle\Entity\User;
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
+use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInjection\ContainerAwareInterface {
+class LoadUsers implements FixtureInterface, ContainerAwareInterface {
     
     private $container; 
     private $em;
     private $userManager;
     
     //in order to get access to methods controlled by the container, it can be automatically injected using this method
-    public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null){
+    public function setContainer(ContainerInterface $container = null){
         $this->container = $container;
         $this->em = $this->container->get('doctrine')->getEntityManager();
         $this->userManager = $this->container->get('fos_user.user_manager');

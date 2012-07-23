@@ -3,6 +3,7 @@
 namespace SkNd\MediaBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use SkNd\MediaBundle\Entity\MediaType;
 
 /**
  * SkNd\MediaBundle\Entity\Genre
@@ -107,7 +108,7 @@ class Genre
      *
      * @param SkNd\MediaBundle\Entity\MediaType $mediaType
      */
-    public function setMediaType(\SkNd\MediaBundle\Entity\MediaType $mediaType)
+    public function setMediaType(MediaType $mediaType)
     {
         $this->mediaType = $mediaType;
     }

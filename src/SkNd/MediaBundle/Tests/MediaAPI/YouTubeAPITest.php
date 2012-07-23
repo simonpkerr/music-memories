@@ -11,10 +11,11 @@
 namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
+//\PHPUnit_Framework_TestCase;
 
 //require_once 'Zend/Loader.php';
 
-class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
+class YouTubeAPITest extends PHPUnit_Framework_TestCase {
 
     private $params;
     private $ms;

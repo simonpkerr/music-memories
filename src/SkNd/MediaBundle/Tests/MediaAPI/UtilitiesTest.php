@@ -10,8 +10,9 @@
 namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\MediaAPI\MediaAPI;
+//\PHPUnit_Framework_TestCase;
 
-class UtilitiesTests extends \PHPUnit_Framework_TestCase {
+class UtilitiesTests extends PHPUnit_Framework_TestCase {
     private $params;
     private $searchKeywords;
     

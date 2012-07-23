@@ -10,8 +10,9 @@ namespace SkNd\MediaBundle\Tests\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use SkNd\MediaBundle\DependencyInjection\SkNdMediaExtension;
 use Symfony\Component\Yaml\Parser;
+use \PHPUnit_Framework_TestCase;
 
-class SkNdMediaExtensionTest extends \PHPUnit_Framework_TestCase
+class SkNdMediaExtensionTest extends PHPUnit_Framework_TestCase
 {
     protected $configuration;
     protected $loader;

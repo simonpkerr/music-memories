@@ -1,5 +1,6 @@
 <?php
 namespace SkNd\MediaBundle\MediaAPI;
+
 use Symfony\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\Session;
 use Doctrine\ORM\EntityManager;
@@ -354,6 +355,34 @@ class MediaAPI {
                 
     }
     
+    //only results returned from the live api are cached
+    public function cacheListings(SimpleXMLElement $response){
+        $cachedListing = new \SkNd\MediaBundle\Entity\MediaResourceListingsCache();
+        $cachedListing->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
+        $cachedListing->setMediaType($this->mediaSelection->getMediaType());
+        $cachedListing->setDecade($this->mediaSelection->getDecade());
+        $cachedListing->setGenre($this->mediaSelection->getSelectedMediaGenre());
+        $cachedListing->setKeywords($this->mediaSelection->getKeywords());
+        $cachedListing->setComputedKeywords($this->mediaSelection->getComputedKeywords());
+        $cachedListing->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
+        $cachedListing->setXmlData($response->asXML());        
+        
+        $this->em->persist($cachedListing);
+        $this->flush();
+    }
+    
+    public function getCachedListings(){
+        //look up the MediaResourceListingsCache with the params and the current apistrategy name   
+        $xmlResponse = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection, $this->apiStrategy);
+        
+        if($xmlResponse != null){
+            return @simplexml_load_string($xmlResponse);
+        }
+        else{
+            return null;
+        }
+    }
+    
     /**
      * gets recommendations for either the listings or details pages
      * @param MediaSelection $mediaSelection
@@ -383,35 +412,7 @@ class MediaAPI {
         return null;
         
     }
-        
-    //only results returned from the live api are cached
-    public function cacheListings(SimpleXMLElement $response){
-        $cachedListing = new \SkNd\MediaBundle\Entity\MediaResourceListingsCache();
-        $cachedListing->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
-        $cachedListing->setMediaType($this->mediaSelection->getMediaType());
-        $cachedListing->setDecade($this->mediaSelection->getDecade());
-        $cachedListing->setGenre($this->mediaSelection->getSelectedMediaGenre());
-        $cachedListing->setKeywords($this->mediaSelection->getKeywords());
-        $cachedListing->setComputedKeywords($this->mediaSelection->getComputedKeywords());
-        $cachedListing->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
-        $cachedListing->setXmlData($response->asXML());        
-        
-        $this->em->persist($cachedListing);
-        $this->flush();
-    }
-    
-    public function getCachedListings(){
-        //look up the MediaResourceListingsCache with the params and the current apistrategy name   
-        $xmlResponse = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection, $this->apiStrategy);
-        
-        if($xmlResponse != null){
-            return @simplexml_load_string($xmlResponse);
-        }
-        else{
-            return null;
-        }
-    }
-    
+   
     //get an individual media resource based on item id and retrieve or delete associated cached resource
     public function getMediaResource($itemId){
         $mediaResource = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceById($itemId);
