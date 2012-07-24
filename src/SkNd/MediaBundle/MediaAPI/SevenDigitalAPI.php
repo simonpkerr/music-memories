@@ -47,6 +47,7 @@ class SevenDigitalAPI implements IAPIStrategy{
      */
     public function getDetails(array $params){}
     public function getBatch(array $ids){}
+    public function getBatchProcessThreshold() {}
     
     public function getId(SimpleXMLElement $xmlData){}
     public function getImageUrlFromXML(SimpleXMLElement $xmlData) {}

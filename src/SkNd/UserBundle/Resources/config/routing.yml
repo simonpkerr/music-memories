@@ -1,7 +1,3 @@
-#personalMemoryWallList:
-#  pattern: /memorywalls/personal/index
-#  defaults: { _controller: SkNdUserBundle:MemoryWall:personalMemoryWall }  
-
 memoryWallsPersonalIndex:
   pattern: /memorywalls/personal/index
   defaults: 

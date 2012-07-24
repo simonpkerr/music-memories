@@ -15,6 +15,7 @@ use \SimpleXMLElement;
 class YouTubeAPI implements IAPIStrategy {
     const FRIENDLY_NAME = 'YouTube';
     const API_NAME = 'youtubeapi';
+    const BATCH_PROCESS_THRESHOLD = 25;
     
     protected $youTube;
     private $query;
@@ -88,6 +89,9 @@ class YouTubeAPI implements IAPIStrategy {
     }
     
     public function getBatch(array $ids){
+        if(count($ids) > self::BATCH_PROCESS_THRESHOLD)
+            $ids = array_slice ($ids, 0, self::BATCH_PROCESS_THRESHOLD);
+        
         $feed = '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"
 xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtube.com/schemas/2007"><batch:operation type="query" />';
         
@@ -121,7 +125,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         return $response;
         
     }
- 
+    
     public function getListings(MediaSelection $mediaSelection){
         //------to send a simple query to youtube       
         //$query->setVideoQuery($keywordQuery);

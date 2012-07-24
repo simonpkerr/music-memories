@@ -13,6 +13,7 @@ use \SimpleXMLElement;
 class AmazonAPI implements IAPIStrategy {
     const FRIENDLY_NAME = 'Amazon';
     const API_NAME = 'amazonapi';
+    const BATCH_PROCESS_THRESHOLD = 10;
     private $amazonParameters;
     private $public_key;                           
     private $private_key;
@@ -153,11 +154,16 @@ class AmazonAPI implements IAPIStrategy {
      * 
      */
     public function getBatch(array $ids){
+        if(count($ids) > self::BATCH_PROCESS_THRESHOLD)
+            $ids = array_slice ($ids, 0, self::BATCH_PROCESS_THRESHOLD);
+            
         $params = array(
             'ItemId'  => implode(',', $ids),
         );
         return $this->getDetails($params);
     }
+    
+   
    
     /**
      * Check if the xml received from Amazon is valid

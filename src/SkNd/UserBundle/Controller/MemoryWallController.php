@@ -155,15 +155,15 @@ class MemoryWallController extends Controller
     public function editAction($slug, Request $request = null){
         $this->em = $this->getEntityManager();
         $mw = $this->getMemoryWall($slug);
-        $form = $this->createForm(new MemoryWallType(), $mw); 
         
         //if the wall belongs to this user allow edit
         if(!$this->memoryWallBelongsToUser($mw)){
             $this->get('session')->setFlash('notice', 'memoryWall.edit.flash.accessDenied');
             throw new AccessDeniedException('This user does not have access to this section.');
-        }else{
-            $this->get('session')->setFlash('notice', '');
         }
+        
+        $this->get('session')->setFlash('notice', '');
+        $form = $this->createForm(new MemoryWallType(), $mw); 
         
         if("POST" === $request->getMethod()){
             $form->bindRequest($request);
@@ -281,15 +281,14 @@ class MemoryWallController extends Controller
         }
         
         //if the token is set, delete the media resource, else show the confirmation screen
-        if($confirmed){ //&& $this->get('session')->get('tokens/SkNd-delete-mr-token')){
-            //$this->get('session')->remove('tokens/SkNd-delete-mr-token');
+        if($confirmed){ 
             $mw->deleteMediaResourceById($id);
             $this->em->flush();
             $this->get('session')->setFlash('notice', 'mediaResource.delete.flash.success');
             return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
             
         } else {
-            //$this->get('session')->set('tokens/SkNd-delete-mr-token', true);
+            
             /**
              * the likelihood is that delete resource has been selected from the show wall page,
              * in which case, all the media resources will have been cached, so there is no need

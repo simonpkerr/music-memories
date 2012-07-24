@@ -16,15 +16,4 @@ class APIRepository extends EntityRepository
         return $this->findOneBy(array('name' => $name));
     }
     
-    
-    /*public function getDefaultname(){
-        return $this->createQueryBuilder('a')
-                ->select('a.name')
-                ->where('id = :id')
-                ->setParameter('id', 1)
-                ->getQuery()
-                ->getResult();
-    }*/
-    
-
 }

@@ -1,6 +1,5 @@
 SkNd\MediaBundle\Entity\MediaResourceCache:
   type: entity
-  #repositoryClass: SkNd\MediaBundle\Repository\MediaResourceCacheRepository
   table: null
   fields:
     id:
