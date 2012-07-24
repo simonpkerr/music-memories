@@ -1,0 +1,88 @@
+/*---------- generics ------------*/
+.fl {
+    float: left;    
+}
+.fr {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+.half-width {
+    width: 49%;
+}
+
+.third-width {
+    width: 32%;
+}
+
+.two-thirds-width {
+    width: 65%;
+}
+
+.left,
+.right,
+.centre{ 
+    margin: 24px;
+}
+
+.left {
+    margin-left: 0;
+}
+.right {
+    margin-right: 0;
+}
+.centre {
+    margin: 24px 0;    
+}
+
+/*----------- styles just for wider screens --------------*/
+
+body {
+    background: #CEDEE8 url("../images/bg.jpg") 50% top no-repeat;    
+    min-height: 750px;
+}
+
+.multiplebgs body {
+    background-color: #CEDEE8;
+    background-image: url("../images/bg-footer.png"), url("../images/bg.jpg");
+    background-position: 50% 100%, 50% top;
+    background-repeat: repeat-x, no-repeat;
+}
+
+div#wrapper {
+    margin: 5em auto 1em;
+    min-width: 600px;
+    max-width: 960px;
+    border: 3px solid #E5961D;
+    background-color: #fff;
+}
+
+.borderradius div#wrapper {
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.boxshadow div#wrapper {
+    -moz-box-shadow: -5px -5px rgba(0,0,0,0.1);
+    -webkit-box-shadow: -5px -5px rgba(0,0,0,0.1);
+    box-shadow: -5px -5px rgba(0,0,0,0.1);
+}
+
+
+/*----------- listings ---------*/
+
+li.listing {
+    margin: 0.5em;
+    border-bottom: 1px solid #ddd;
+    padding: 0.5em;
+}
+
+/*----------- specific page elements -------------*/
+
+/*div#recommendations {
+    float: right;
+    width: 20em;
+}*/

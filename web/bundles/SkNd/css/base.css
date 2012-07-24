@@ -1,0 +1,138 @@
+/*---------- generic styles that apply to all stylesheets ------------*/
+body {
+    background-color: #CEDEE8;
+}
+
+div#wrapper {
+    min-width: 150px;
+    border: 3px solid #E5961D;
+    background-color: #fff;
+    margin: 10px;
+    padding: 5px;
+}
+
+.borderradius div#wrapper {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.search-form-label {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+}
+
+div.errors {
+    color: #CC514F;
+    font-size: 0.9em;
+}
+
+/*----------- font styles -----------------*/
+a {
+    color: #29478D;
+    text-decoration: none;
+}
+a:visited {
+    color: #3967AC;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+
+
+/*---------- button elements ---------------*/
+.button {
+    background-color: #7AA4E2;
+    border: 2px solid #fff;
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px;
+    text-decoration: none;
+}
+
+a.button:link,
+a.button:visited,
+a.button:hover,
+a.button:active {
+   color: #fff;
+   text-decoration: none;
+}
+
+.cssgradients .button {
+    background-image: linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: -o-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: -moz-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: -ms-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            left bottom,
+            color-stop(0, rgb(177,201,237)),
+            color-stop(1, rgb(122,164,226))
+    );
+}
+
+.boxshadow .button {
+    -moz-box-shadow: 0 0 5px #888;
+    -webkit-box-shadow: 0 0 5px#888;
+    box-shadow: 0 0 5px #888;
+}
+
+.borderradius .button {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.button:hover,
+.cssgradients .button:hover
+{
+    background-color: #6A99DF;
+    background-image: none;
+}
+
+.boxshadow .button:hover {
+    -moz-box-shadow: 0 0 0px #888;
+    -webkit-box-shadow: 0 0 0px#888;
+    box-shadow: 0 0 0px #888;
+}
+
+
+/********** HEADER ***********/
+
+/*------ logo -------------------------*/
+a#siteLogo img {
+    display: block;
+    max-width: 361px;
+    min-width: 170px;
+    width: 70%;
+    margin: -20px 0 1em -12px;
+}
+
+/*------ memory wall links ------------*/
+ul#memoryWalls {
+   margin: 0;
+}
+
+ul#memoryWalls li a {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+/*------- log in panel --------------*/
+div#loginPanel {
+    margin: 0.5em 0;
+}
+
+div#loginPanel a.button {
+    display: block;
+}
+
+
+/********** CONTENT ***********/
+div#introPanel {
+    
+}
