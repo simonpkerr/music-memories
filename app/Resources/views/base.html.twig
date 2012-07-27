@@ -21,34 +21,40 @@
         {% endblock %}
     </head>
     <body>
-        <div id="wrapper">
-        <div id="header">
-            {# the 'path' function can be used to target any particular route defined in the routing config file #}
-            <a id="siteLogo" href="{{path('index')}}" title="Go back to noodleDig home page">
-                <img src="{{ asset('bundles/SkNd/images/site-logo.gif') }}" />
-            </a>
-            {% block topNavLinks %}
-            {% include 'SkNdUserBundle:Default:loginPanel.html.twig' %}
-            <ul id="memoryWalls">
-                <li><a class="button" href="{{path('memoryWallsIndex')}}">Memory Walls</a></li>
-                <li><a class="button" href="{{path('memoryWallsPersonalIndex') }}">My Memory Walls</a></li>
-                <li><a class="button" href="{{path('memoryWallCreate')}}">Add a new Memory Wall</a></li>
-            </ul>
-            
-            {% endblock %}
-        </div>
-        {% if app.session.getFlashes() %}    
-        <div class="flashMessages">
-            <ul>
-            {% for key, message in app.session.getFlashes() %}
-            <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle')|raw|trans({}, 'SkNdMediaBundle')|raw }}</li>
-            {% endfor %}   
-            </ul>
-        </div>
-        {% endif %}
-        {% block body %}
+        <div id="wrapper" class="grid-on">
+            <div id="header">
+                {# the 'path' function can be used to target any particular route defined in the routing config file #}
+                <a id="siteLogo" href="{{path('index')}}" title="Go back to noodleDig home page">
+                    <img src="{{ asset('bundles/SkNd/images/site-logo.png') }}" />
+                </a>
+                {% block topNavLinks %}
+                {% include 'SkNdUserBundle:Default:loginPanel.html.twig' %}
+                <ul id="memoryWalls">
+                    <li><a class="button" href="{{path('memoryWallsIndex')}}">Memory Walls</a>
+                        <ul>
+                            <li><a href="{{path('memoryWallsPersonalIndex') }}">My Walls</a></li>
+                            <li><a href="{{path('memoryWallCreate')}}">Add a new wall</a></li>
+                        </ul>
+                    </li>
+                    
+                </ul>
 
-        {% endblock %}
+                {% endblock %}
+            </div>
+            {% if app.session.getFlashes() %}    
+            <div class="flashMessages">
+                <ul>
+                {% for key, message in app.session.getFlashes() %}
+                <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle')|raw|trans({}, 'SkNdMediaBundle')|raw }}</li>
+                {% endfor %}   
+                </ul>
+            </div>
+            {% endif %}
+            <div id="content" class="cf">
+            {% block body %}
+
+            {% endblock %}
+            </div>
         </div>
     </body>
 </html>

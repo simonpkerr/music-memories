@@ -1,4 +1,11 @@
-/*---------- generics ------------*/
+/********** TEST ***********/
+.grid-on {
+    background: url("../images/960-grid.png") left top repeat-y;
+}
+
+
+/********** GENERICS ***********/
+
 .fl {
     float: left;    
 }
@@ -22,6 +29,10 @@
     width: 65%;
 }
 
+.full-width {
+    width: 100%;
+}
+
 .left,
 .right,
 .centre{ 
@@ -38,11 +49,12 @@
     margin: 24px 0;    
 }
 
-/*----------- styles just for wider screens --------------*/
+/********** WIDER SCREEN STYLES ***********/
 
 body {
     background: #CEDEE8 url("../images/bg.jpg") 50% top no-repeat;    
     min-height: 750px;
+    padding: 0 2em;
 }
 
 .multiplebgs body {
@@ -55,8 +67,8 @@ body {
 div#wrapper {
     margin: 5em auto 1em;
     min-width: 600px;
-    max-width: 960px;
-    border: 3px solid #E5961D;
+    max-width: 940px;
+    border: 2px solid #E5961D;
     background-color: #fff;
 }
 
@@ -71,6 +83,55 @@ div#wrapper {
     box-shadow: -5px -5px rgba(0,0,0,0.1);
 }
 
+/********** HEADER ***********/
+div#header {
+    float: left;
+    margin: -80px 0 0 0;
+    width: 100%;
+}
+
+
+/*------ logo -------------------------*/
+a#siteLogo img {
+    float: left;
+    width: 361px;
+    margin: -25px 2em 2em -34px;
+}
+
+/*------ login -------------------------*/
+div#loginPanel {
+    float: right;
+    margin: 0 0 0 1em;
+}
+
+div#loginPanel span,
+div#loginPanel span a {
+    color: #fff;
+    font-weight: bold;
+    text-transform: lowercase;
+       
+}
+
+/*------ memory wall links ------------*/
+ul#memoryWalls {
+    float: right;
+}
+
+ul#memoryWalls li a {
+    float: left;
+    padding: 14px 10px;
+    width: 9em;
+}
+
+
+/********** CONTENT ***********/
+div#introPanel {
+    
+}
+
+div#contentSearches {
+    float: left;
+}
 
 /*----------- listings ---------*/
 
@@ -80,9 +141,3 @@ li.listing {
     padding: 0.5em;
 }
 
-/*----------- specific page elements -------------*/
-
-/*div#recommendations {
-    float: right;
-    width: 20em;
-}*/

@@ -1,14 +1,26 @@
-/*---------- generic styles that apply to all stylesheets ------------*/
+/********** GENERICS FOR ALL STYLES ***********/
+
+/*----- clearfix -----*/
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
 body {
     background-color: #CEDEE8;
 }
 
 div#wrapper {
     min-width: 150px;
-    border: 3px solid #E5961D;
+    border: 2px solid #E5961D;
     background-color: #fff;
     margin: 10px;
-    padding: 5px;
+    padding: 10px;
 }
 
 .borderradius div#wrapper {
@@ -27,7 +39,7 @@ div.errors {
     font-size: 0.9em;
 }
 
-/*----------- font styles -----------------*/
+/********** FONT STYLES ***********/
 a {
     color: #29478D;
     text-decoration: none;
@@ -41,7 +53,7 @@ a:hover {
 
 
 
-/*---------- button elements ---------------*/
+/********** BUTTON ELEMENTS ***********/
 .button {
     background-color: #7AA4E2;
     border: 2px solid #fff;
@@ -50,6 +62,7 @@ a:hover {
     font-weight: bold;
     padding: 5px;
     text-decoration: none;
+    text-align: center;
 }
 
 a.button:link,
@@ -58,6 +71,7 @@ a.button:hover,
 a.button:active {
    color: #fff;
    text-decoration: none;
+    
 }
 
 .cssgradients .button {
@@ -109,7 +123,7 @@ a#siteLogo img {
     max-width: 361px;
     min-width: 170px;
     width: 70%;
-    margin: -20px 0 1em -12px;
+    margin: -20px 0 1em -15px;
 }
 
 /*------ memory wall links ------------*/
@@ -120,7 +134,40 @@ ul#memoryWalls {
 ul#memoryWalls li a {
     display: block;
     margin-bottom: 0.5em;
+    color: #fff;
+    font-weight: bold;
 }
+
+ul#memoryWalls li ul {
+    display: none;
+}
+
+ul#memoryWalls li:hover ul {
+    display: block;
+        
+}
+
+ul#memoryWalls li ul {
+    background-color: #9AB9E8;
+    border: 2px solid #fff;
+    border-top: none;
+}
+
+.borderradius ul#memoryWalls li ul {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+ul#memoryWalls li ul a {
+    float: none;
+    padding: 5px;
+    margin: 0.3 0 0.3em 0;
+    text-align: center;
+    width: auto;
+    border-bottom: 1px solid #fff;
+}
+
+
 
 /*------- log in panel --------------*/
 div#loginPanel {
@@ -133,6 +180,3 @@ div#loginPanel a.button {
 
 
 /********** CONTENT ***********/
-div#introPanel {
-    
-}
