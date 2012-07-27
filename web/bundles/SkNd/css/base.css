@@ -52,7 +52,6 @@ a:hover {
 }
 
 
-
 /********** BUTTON ELEMENTS ***********/
 .button {
     background-color: #7AA4E2;
@@ -60,9 +59,13 @@ a:hover {
     cursor: pointer;
     color: #fff;
     font-weight: bold;
-    padding: 5px;
+    padding: 5px 7px;
     text-decoration: none;
     text-align: center;
+}
+
+.orange {
+    background-color: #F57621;
 }
 
 a.button:link,
@@ -74,7 +77,8 @@ a.button:active {
     
 }
 
-.cssgradients .button {
+.cssgradients .button,
+.cssgradients .blue{
     background-image: linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
     background-image: -o-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
     background-image: -moz-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
@@ -90,6 +94,22 @@ a.button:active {
     );
 }
 
+.cssgradients .orange{
+    background-image: linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+    background-image: -o-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+    background-image: -moz-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+    background-image: -ms-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33)  100%);
+
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            left bottom,
+            color-stop(0, rgb(245,146,54)),
+            color-stop(1, rgb(245,118,33))
+    );
+}
+
 .boxshadow .button {
     -moz-box-shadow: 0 0 5px #888;
     -webkit-box-shadow: 0 0 5px#888;
@@ -97,14 +117,21 @@ a.button:active {
 }
 
 .borderradius .button {
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 
 .button:hover,
 .cssgradients .button:hover
 {
     background-color: #6A99DF;
+    background-image: none;
+}
+
+.orange:hover,
+.cssgradients .orange:hover
+{
+    background-color: #F57621;
     background-image: none;
 }
 
@@ -119,10 +146,9 @@ a.button:active {
 
 /*------ logo -------------------------*/
 a#siteLogo img {
-    display: block;
     max-width: 361px;
     min-width: 170px;
-    width: 70%;
+    width: 60%;
     margin: -20px 0 1em -15px;
 }
 
@@ -154,8 +180,8 @@ ul#memoryWalls li ul {
 }
 
 .borderradius ul#memoryWalls li ul {
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 
 ul#memoryWalls li ul a {
@@ -172,11 +198,27 @@ ul#memoryWalls li ul a {
 /*------- log in panel --------------*/
 div#loginPanel {
     margin: 0.5em 0;
-}
-
-div#loginPanel a.button {
-    display: block;
+    float: right;
 }
 
 
 /********** CONTENT ***********/
+
+div#content h1,
+div#content h2 {
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid #E5961D;
+    margin-bottom: 0.5em;
+}
+
+div#introPanel li img {
+    float: left;
+    width: 48%;
+    max-width: 143px;
+}
+
+div#introPanel h2 {
+    border: none;
+    padding: 0;
+    margin-bottom: 0.2em;
+}
