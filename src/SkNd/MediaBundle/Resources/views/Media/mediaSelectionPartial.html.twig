@@ -15,12 +15,11 @@
     </div>
     <div id="mediaSelectionKeywords">
         {{ form_row(form.keywords) }}
-            <span class="note">(leave blank to search without keywords)</span>
     </div>
 
     {{ form_rest(form) }}
     
-<input class="button" type="submit" value="Search noodleDig" />
+<input class="button" type="submit" value="{{ 'media_selection.submit'|trans({}, 'SkNdMediaBundle') }}" />
     
 </form>
 

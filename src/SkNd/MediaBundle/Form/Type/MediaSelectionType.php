@@ -21,7 +21,7 @@ class MediaSelectionType extends AbstractType{
         
         //entity field mapped to the decade class displaying the id and decadeName properties
         $builder->add('decade', 'entity', array(
-            'label'         => 'Decade',
+            'label'         => 'Choose a decade',
             'property'      => 'decadeName',
             'class'         => 'SkNdMediaBundle:Decade',
             'empty_value'   => 'All Decades',
@@ -33,12 +33,12 @@ class MediaSelectionType extends AbstractType{
         //entity field mapped to the mediatype class displaying the id and mediaName properties
         $builder->add('mediaType', 'entity', array(
             'property'      => 'mediaName',
-            'label'         => 'Media',
+            'label'         => 'Choose the category',
             'class'         => 'SkNdMediaBundle:MediaType',
         ));
         
         $builder->add('selectedMediaGenre','entity', array(
-            'label'             =>  'Genre',
+            'label'             =>  'Choose a genre',
             'property'          =>  'genreName',
             'class'             =>  'SkNdMediaBundle:Genre',
             'empty_value'       =>  'All Genres',
@@ -50,7 +50,7 @@ class MediaSelectionType extends AbstractType{
         ));
         
         $builder->add('keywords', 'text', array(
-            'label'     => 'Keywords (optional)',
+            'label'     => 'Enter some keywords (if you like)',
             'required'  => false,
             'trim'      => true,
    

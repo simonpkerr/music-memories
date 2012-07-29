@@ -25,20 +25,20 @@
     </ul>
 </div>
 
-
 {# media selection partial #}
-<div id="contentSearches" class="half-width cf">
+<div id="contentSearches" class="cf">
     <ul>
-        <li><a href="">Find it now</a>
-        <div id="mediaSelection">
-            <p>Just choose the options you want from below, and away you go.</p>
-            {% render "SkNdMediaBundle:Media:mediaSelection" %}
-        </div>
+        <li class="selected">
+            <h2><a href="">Find it now</a></h2>
+            <div id="mediaSelection">
+                <p>Just choose the options you want from below, and away you go.</p>
+                {% render "SkNdMediaBundle:Media:mediaSelection" %}
+            </div>
         </li>
         <li>
-            <a href="">Search by age</a>
-            <div id="ageSearch"></div>
-                <p>Now dont&rsquo;t be offended, but tell us your age and we&rsquo;ll find some stuff we know you&rsquo;ll love!</p>
+            <h2><a href="">Search by age</a></h2>
+            <div id="ageSearch">
+                <p>Now don&rsquo;t be offended, but tell us your age and we&rsquo;ll find some stuff we know you&rsquo;ll love!</p>
                 {# age based search partial #}
             </div>
         </li>
