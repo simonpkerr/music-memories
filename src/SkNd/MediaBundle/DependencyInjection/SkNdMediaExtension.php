@@ -8,11 +8,14 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-/**
- * This is the class that loads and manages your bundle configuration
- *
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * @author Simon Kerr
+ * @version 1.0
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ * Loads and managese configuration of the SkNdMedia bundle. 
  */
+
 class SkNdMediaExtension extends Extension
 {
     /**
@@ -32,27 +35,14 @@ class SkNdMediaExtension extends Extension
         //mediaapi params
         $container->setParameter('mediaapi.debug_mode', $config['mediaapi']['debug_mode']);
         $container->setParameter('mediaapi.apis', $config['mediaapi']['apis']);
-        //$container->setParameter('mediaapi.doctrine', $config['mediaapi']['doctrine']);
-        
+
         $apis = $config['mediaapi']['apis'];
         //amazon params
         $container->setParameter('amazonapi.access_params', $apis['amazonapi']['access_params']);
         $container->setParameter ('amazonapi.amazon_signed_request.class', $apis['amazonapi']['amazon_signed_request']['class']);
-        //$container->setParameter('amazonapi.params', $config['amazonapi']['params']);
-        
         
         //youtube params
-        /*if(isset($config['youtubeapi']['youtube_request_object'])){
-            $yro = $config['youtubeapi']['youtube_request_object'];
-            $container->getDefinition('sk_nd_media.youtubeapi')->replaceArgument(0, $yro);
-        }*/
         $container->setParameter('youtubeapi.youtube_request_object.class', $apis['youtubeapi']['youtube_request_object']['class']);
-
-        /*if(isset($config['youtubeapi']['youtube_request_object'])){
-            $container->setParameter('youtubeapi.youtube_request_object.class', $config['youtubeapi']['youtube_request_object']['class']);
-            //$container->setParameter('youtubeapi.youtube_request_object', $config['youtubeapi']['youtube_request_object']);
-        }*/
-        
         
     }
 }

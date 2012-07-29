@@ -11,10 +11,11 @@
 namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
+//\PHPUnit_Framework_TestCase;
 
 //require_once 'Zend/Loader.php';
 
-class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
+class YouTubeAPITest extends PHPUnit_Framework_TestCase {
 
     private $params;
     private $ms;
@@ -53,6 +54,12 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
                 ->will($this->returnValue('slug'));
                 
         $this->ms->setMediaType($mt);
+    }
+    
+    public function tearDown(){
+        unset($this->ytObj);
+        unset($this->params);
+        unset($this->ms);
     }
     
     /**
@@ -152,8 +159,8 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
     }
     
     /**
-     * @expectedException LengthException 
-     * @expectedExceptionMessage No results were returned
+     * @expectedException RuntimeException 
+     * @expectedExceptionMessage Could not parse response
      */
     public function testGetBatchNoResultsThrowsException(){
         $ytObj = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\TestYouTubeRequest')
@@ -161,51 +168,65 @@ class YouTubeAPITest extends \PHPUnit_Framework_TestCase {
                     'post'
                 ))
                 ->getMock();
+        
+        $mockResponse = $this->getMockBuilder('\Zend_Http_Response')
+                ->disableOriginalConstructor()             
+                ->setMethods(array(
+                    'getStatus',
+                    'getBody'
+                ))
+                ->getMock();
+        $mockResponse->expects($this->any())
+                ->method('getStatus')
+                ->will($this->returnValue(200));//indicating valid response
+        
+        $mockResponse->expects($this->any())
+                ->method('getBody')
+                ->will($this->returnValue(array()));//indicating valid response
 
         $ytObj->expects($this->any())
                 ->method('post')
-                ->will($this->returnValue(array()));
+                ->will($this->returnValue($mockResponse));
         
         $yt = new YouTubeAPI();
         $yt->setRequestObject($ytObj);
         $yt->getBatch(array('ItemId' => '1'));
     }
     
-    
-    public function testGetRecommendationsForListingsReturnsValidMediaResources(){
-        
-    }
-    
     /**
      * @expectedException RuntimeException 
-     * @expectedExceptionMessage Problem loading results from YouTube
+     * @expectedExceptionMessage A problem occurred with the response
      */
-    /*public function testGetBatchReturnsUnsuccessfulResponseThrowsException(){
-        $response = $this->getMockBuilder('\Zend_Http_Response')
-                ->setMethods(array(
-                    'getStatus'
-                ))
-                ->getMock();
-        
-        $response->expects($this->any())
-                ->method('getStatus')
-                ->will($this->returnValue(100));
-                
+    public function testGetBatchReturnsNoSuccessStatusThrowsException(){
         $ytObj = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\TestYouTubeRequest')
                 ->setMethods(array(
                     'post'
                 ))
                 ->getMock();
+        
+        $mockResponse = $this->getMockBuilder('\Zend_Http_Response')
+                ->disableOriginalConstructor()             
+                ->setMethods(array(
+                    'getStatus',
+                    'getBody'
+                ))
+                ->getMock();
+        $mockResponse->expects($this->any())
+                ->method('getStatus')
+                ->will($this->returnValue(400));//indicating bad request
+        
+        $mockResponse->expects($this->any())
+                ->method('getBody')
+                ->will($this->returnValue(array()));//indicating valid response
 
         $ytObj->expects($this->any())
                 ->method('post')
-                ->will($this->returnValue($response));
+                ->will($this->returnValue($mockResponse));
         
         $yt = new YouTubeAPI();
         $yt->setRequestObject($ytObj);
         $yt->getBatch(array('ItemId' => '1'));
-    }*/
-    
+    }
     
 
 }

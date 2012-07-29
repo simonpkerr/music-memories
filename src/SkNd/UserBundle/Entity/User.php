@@ -1,5 +1,5 @@
 <?php
-namespace SkNd\UserBundle\Entity {
+namespace SkNd\UserBundle\Entity;
     
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
@@ -116,5 +116,5 @@ class User extends BaseUser {
     {
         return $this->dateofbirth;
     }
-}
+
 }

@@ -11,6 +11,7 @@ use SkNd\MediaBundle\Entity\MediaResource;
  * Original code Copyright (c) 2011 Simon Kerr
  * MWCMediaResourcesTest for all operations of memory walls related to mediaresources
  * the DataFixtures/ORM/LoadUsers fixtures file should be loaded first
+ * php app/console doctrine:fixtures:load --fixtures=src/SkNd/UserBundle/DataFixtures/ORM --append
  * @author Simon Kerr
  * @version 1.0
  * debug cmd: set XDEBUG_CONFIG=idekey=netbeans-xdebug 
@@ -19,51 +20,56 @@ use SkNd\MediaBundle\Entity\MediaResource;
 
 class MWCMediaResourcesTest extends WebTestCase
 {
-    private $client;
-    private $router;
-    private $em;
-    private $mediaapi;
-    private $session;
-    private $mediaSelection;
-    /*private $cachedXMLResponse;
-    private $liveXMLResponse;
-    private $cachedYouTubeXMLResponse;
-    private $liveYouTubeXMLResponse;
-    private $testAmazonAPI;
-    private $testYouTubeAPI;
-    */
-    
-    
-    public function setup(){
-        $this->client = static::createClient();
-        $this->client->followRedirects(true);
-        $kernel = static::createKernel();
-        $kernel->boot();
-        $this->router = $kernel->getContainer()->get('router');
-        $this->mediaapi = $kernel->getContainer()->get('sk_nd_media.mediaapi');
-        $this->session = $this->mediaapi->getSession();
-        $this->em = $this->mediaapi->getEntityManager();
+    protected static $kernel;
+    protected $client;
+    protected static $router;
+    protected static $em;
+    protected static $mediaapi;
+    protected static $session;
+    protected static $container;
+
+    public static function setUpBeforeClass(){
+        self::$kernel = static::createKernel();
+        self::$kernel->boot();
+        
+        self::$router = self::$kernel->getContainer()->get('router');
+        self::$mediaapi = self::$kernel->getContainer()->get('sk_nd_media.mediaapi');
+        self::$em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        self::$session = self::$kernel->getContainer()->get('session');
+        self::$container = self::$kernel->getContainer();
+        
+        $loadUsers = new \SkNd\UserBundle\DataFixtures\ORM\LoadUsers();
+        $loadUsers->setContainer(self::$container);
+        $loadUsers->load(self::$em);
     }
     
-    private function getMediaSelection(){
-        $crawler = $this->client->request('GET', '/index');
-        $form = $crawler->selectButton('Search noodleDig')->form();
-        $form['mediaSelection[decades]']->select('1');//all decades
-        $form['mediaSelection[mediaTypes]']->select('1');//Film
-        $form['mediaSelection[SelectedMediaGenre]']->select('1');//All Genres
-        $crawler = $this->client->submit($form);     
+    public static function tearDownAfterClass(){
+        self::$router = null;
+        self::$mediaapi = null;
+        self::$em = null;
+        self::$session = null;
+        self::$container = null;
+                
+    }
+    
+    public function setUp(){
+        $this->client = static::createClient();
+        $this->client->followRedirects(true);
+    }
+    public function tearDown(){
+        unset($this->client);
     }
     
     private function getNewMediaResource($id = 'testMR'){
         $mr = new MediaResource();
         $mr->setId($id);
-        $mr->setAPI($this->em->getRepository('SkNdMediaBundle:API')->find(1));
-        $mr->setMediaType($this->em->getRepository('SkNdMediaBundle:MediaType')->find(1));
+        $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->find(1));
+        $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->find(1));
         return $mr;
     }
     
     public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLogin(){
-        $url = $this->router->generate('memoryWallAddMediaResource', array(
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
             'slug'  => 'my-memory-wall',
             'api'   => 'amazonapi',
             'id'    => '12345',
@@ -71,10 +77,8 @@ class MWCMediaResourcesTest extends WebTestCase
         $crawler = $this->client->request('GET', $url);
         $this->assertTrue($crawler->selectButton('Login')->count() > 0);
     }
-    
-    public function testAddMediaResourceAddsResourceIfOnlyOneWallExists(){
-        $this->getMediaSelection();
-        
+
+    public function testAddMediaResourceToInvalidAPIThrowsException(){
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $params = array(
@@ -83,19 +87,37 @@ class MWCMediaResourcesTest extends WebTestCase
         );
         $crawler = $this->client->submit($form, $params);
         
-        $url = $this->router->generate('memoryWallAddMediaResource', array(
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
+            'slug'  => 'my-memory-wall-2',
+            'api'   => 'invalid-api',
+            'id'    => 'testMR',
+        ));
+        $crawler = $this->client->request('GET', $url);
+        //indicates runtime error
+        $this->assertEquals(500, $this->client->getResponse()->getStatusCode());
+    }
+    
+    public function testAddMediaResourceAddsResourceIfOnlyOneWallExists(){
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+        );
+        $crawler = $this->client->submit($form, $params);
+        
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
             'slug'  => 'my-memory-wall-2',
             'api'   => 'amazonapi',
             'id'    => 'testMR',
         ));
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('div.mediaResource')->count() > 0);
+        $this->assertTrue($crawler->filter('div.mediaResource:contains("Elf [DVD] [2003]")')->count() > 0);
     }
   
     public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLoginThenToSelectWallViewIfMoreThanOneWallExists(){
-        $this->getMediaSelection();
-        
-        $url = $this->router->generate('memoryWallAddMediaResource', array(
+                
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
             'api'   => 'amazonapi',
             'id'    => '111',
         ));
@@ -114,7 +136,6 @@ class MWCMediaResourcesTest extends WebTestCase
     }
     
     public function testAddMediaResourceToNonExistentWallThrowsException(){
-        $this->getMediaSelection();
         
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
@@ -124,7 +145,7 @@ class MWCMediaResourcesTest extends WebTestCase
         );
         $crawler = $this->client->submit($form, $params);
         
-        $url = $this->router->generate('memoryWallAddMediaResource', array(
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
             'slug'  => 'non-existent-wall',
             'api'   => 'amazonapi',
             'id'    => 'testMR',
@@ -134,7 +155,6 @@ class MWCMediaResourcesTest extends WebTestCase
     }
     
     public function testAddMediaResourceToOthersWallThrowsException(){
-        $this->getMediaSelection();
         
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
@@ -144,7 +164,7 @@ class MWCMediaResourcesTest extends WebTestCase
         );
         $crawler = $this->client->submit($form, $params);
         
-        $url = $this->router->generate('memoryWallAddMediaResource', array(
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
             'slug'  => 'my-memory-wall-1',
             'api'   => 'amazonapi',
             'id'    => 'testMR',
@@ -153,22 +173,8 @@ class MWCMediaResourcesTest extends WebTestCase
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
     
-    /*public function testAddInvalidMediaResourceToValidMemoryWallThrowsException(){
-        $testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array(
-                    'getDetails',
-                ))
-                ->getMock();
-        $testAmazonAPI->expects($this->any())
-                ->method('getDetails')
-                ->will($this->returnValue(simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\invalidSampleAmazonDetails.xml')));
-  
-    }*/
-
     public function testAddIdenticalMediaResourceTwiceToMemoryWallThrowsException(){
-        $this->getMediaSelection();
-        
+ 
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $params = array(
@@ -177,19 +183,18 @@ class MWCMediaResourcesTest extends WebTestCase
         );
         $crawler = $this->client->submit($form, $params);
         
-        $url = $this->router->generate('memoryWallAddMediaResource', array(
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
             'slug'  => 'my-memory-wall-2',
             'api'   => 'amazonapi',
             'id'    => 'testMR',
         ));
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('div#flashMessages li.notice')->count() > 0);
+        $this->assertTrue($crawler->filter('body > div.flashMessages li.notice')->count() > 0);
  
     }
     
-    public function testMultipleUsersCanAddTheSameMediaResourceToTheirWalls(){
-        $this->getMediaSelection();
-        
+    //this test simulates the function of getting records from the live api, caching them and then showing
+    public function testAddYouTubeThenAmazonItemCorrectlyAddsItemsToWall(){
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $params = array(
@@ -198,19 +203,48 @@ class MWCMediaResourcesTest extends WebTestCase
         );
         $crawler = $this->client->submit($form, $params);
         
-        $url = $this->router->generate('memoryWallAddMediaResource', array(
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
+            'slug'  => 'my-memory-wall-2',
+            'api'   => 'youtubeapi',
+            'id'    => 'testYTMR1',
+        ));
+        $crawler = $this->client->request('GET', $url);
+        
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
+            'slug'  => 'my-memory-wall-2',
+            'api'   => 'amazonapi',
+            'id'    => 'testAMR1',
+        ));
+        $crawler = $this->client->request('GET', $url);
+        
+        $this->assertTrue($crawler->filter('div.mediaResource:contains("Elf [DVD] [2003]")')->count() > 0);
+        $this->assertTrue($crawler->filter('div.mediaResource:contains("The Running Man (pt 1)")')->count() > 0);
+    }
+    
+    //testuser-mr1 is a cached record in the db
+    public function testMultipleUsersCanAddTheSameMediaResourceToTheirWalls(){
+
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+        );
+        $crawler = $this->client->submit($form, $params);
+        
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
             'slug'  => 'my-memory-wall-2',
             'api'   => 'amazonapi',
             'id'    => 'testuser-mr1',
         ));
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('div.mediaResource')->count() > 0);
+        $this->assertTrue($crawler->filter('div.mediaResource:contains("testuser-mr1")')->count() > 0);
         
     }
     
+    //from fixtures, the media resource testuser-mr1 has already been added to one wall of the user
     public function testIdenticalMediaResourcesCanBeAddedToDifferentWallsOfSameUser(){
-        $this->getMediaSelection();
-        
+ 
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $params = array(
@@ -219,18 +253,18 @@ class MWCMediaResourcesTest extends WebTestCase
         );
         $crawler = $this->client->submit($form, $params);
         
-        $url = $this->router->generate('memoryWallAddMediaResource', array(
+        $url = self::$router->generate('memoryWallAddMediaResource', array(
             'slug'  => 'private-wall',
             'api'   => 'amazonapi',
             'id'    => 'testuser-mr1',
         ));
+        
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('div.mediaResource')->count() > 0);
+        $this->assertTrue($crawler->filter('div.mediaResource:contains("testuser-mr1")')->count() > 0);
         
     }
 
     public function testRemoveMediaResourceFromMemoryWallShowsConfirmation(){
-        $this->getMediaSelection();
         
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
@@ -240,39 +274,37 @@ class MWCMediaResourcesTest extends WebTestCase
         );
         $crawler = $this->client->submit($form, $params);
         
-        $url = $this->router->generate('memoryWallDeleteMediaResource', array(
+        $url = self::$router->generate('memoryWallDeleteMediaResource', array(
             'slug'  => 'my-memory-wall-2',
-            'id'    => 'testMR',
+            'id'    => 'testuser-mr3',
         ));
         $crawler = $this->client->request('GET', $url);
         $this->assertTrue(strtolower($crawler->filter('h1')->text()) == 'delete an item from your memory wall');
     }
     
     public function testConfirmRemoveLastMediaResourceFromMemoryWallShowsWall(){
-        $this->getMediaSelection();
         
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $params = array(
-            '_username' => 'testuser3',
-            '_password' => 'testuser3',
+            '_username' => 'testuser2',
+            '_password' => 'testuser2',
         );
         $crawler = $this->client->submit($form, $params);
         
-        $url = $this->router->generate('memoryWallDeleteMediaResourceConfirm', array(
-            'slug'  => 'my-memory-wall-2',
-            'id'    => 'testMR',
+        $url = self::$router->generate('memoryWallDeleteMediaResourceConfirm', array(
+            'slug'  => 'my-memory-wall-1',
+            'id'    => 'testuser-mr2',
             'confirmed' => true,
         ));
         $crawler = $this->client->request('GET', $url);
         
-        $this->assertTrue($crawler->filter('div#flashMessages li.notice')->count() > 0, 'flash messages');
-        $this->assertTrue($crawler->filter('ul.userMemoryWalls li')->count() == 0, 'no media resources');
-        $this->assertTrue($crawler->filter('h2:contains("Contents")')->siblings('p')->count() > 0, 'contents div is empty');
+        $this->assertTrue($crawler->filter('div.flashMessages li.notice')->count() > 0, 'flash messages not shown');
+        $this->assertTrue($crawler->filter('ul.userMemoryWalls li')->count() == 0, 'media resources not all removed');
+        $this->assertTrue($crawler->filter('h2:contains("Contents")')->siblings('p')->count() > 0, 'Contents div not empty');
     }
     
     public function testRemoveOtherUsersMediaResourceFromMemoryWallThrowsException(){
-        $this->getMediaSelection();
         
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
@@ -282,7 +314,7 @@ class MWCMediaResourcesTest extends WebTestCase
         );
         $crawler = $this->client->submit($form, $params);
         
-        $url = $this->router->generate('memoryWallDeleteMediaResourceConfirm', array(
+        $url = self::$router->generate('memoryWallDeleteMediaResourceConfirm', array(
             'slug'  => 'my-memory-wall',
             'id'    => 'testuser-mr2',
             'confirmed' => true,
@@ -293,7 +325,7 @@ class MWCMediaResourcesTest extends WebTestCase
     }
     
     public function testRemoveMediaResourceWhenNotLoggedInRedirectsToLogin(){
-        $url = $this->router->generate('memoryWallDeleteMediaResource', array(
+        $url = self::$router->generate('memoryWallDeleteMediaResource', array(
             'slug'  => 'my-memory-wall',
             'id'    => 'testuser-mr2',
         ));
@@ -301,38 +333,12 @@ class MWCMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->selectButton('Login')->count() > 0);
     }
     
-    public function testRemoveMultipleReferencedMediaResourceFromWallOnlyRemovesSingleReference(){
+    /*public function testRemoveMultipleReferencedMediaResourceFromWallOnlyRemovesSingleReference(){
         //if two users have the same media resource on their walls and one is removed, the other reference should remain in tact
         
-    }
+    }*/
     
-    public function testDeleteMemoryWallAlsoRemovesAssociatedMediaResources(){
-        $this->getMediaSelection();
-        
-        $crawler = $this->client->request('GET', '/login');
-        $form = $crawler->selectButton('Login')->form();
-        $params = array(
-            '_username' => 'testuser3',
-            '_password' => 'testuser3',
-            
-        ); 
-        $crawler = $this->client->submit($form, $params);
-        
-        $url = $this->router->generate('memoryWallAddMediaResource', array(
-            'slug'  => 'my-memory-wall-2',
-            'api'   => 'amazonapi',
-            'id'    => 'newMR'
-        ));
-        $crawler = $this->client->request('GET', $url);
-        
-        $url = $this->router->generate('memoryWallDelete', array('slug' => 'my-memory-wall-2'));
-        $crawler = $this->client->request('GET', $url);
-
-        $url = $this->router->generate('memoryWallDeleteConfirm', array('slug' => 'my-memory-wall-2'));
-        $crawler = $this->client->request('GET', $url);
-        
-        $this->assertTrue($crawler->filter('ul#memoryWallGallery dd')->eq(4)->text() == '0');
-    }
+    
     
     
     

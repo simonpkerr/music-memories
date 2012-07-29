@@ -15,15 +15,16 @@ use SkNd\UserBundle\Entity\User;
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
+use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInjection\ContainerAwareInterface {
+class LoadUsers implements FixtureInterface, ContainerAwareInterface {
     
     private $container; 
     private $em;
     private $userManager;
     
     //in order to get access to methods controlled by the container, it can be automatically injected using this method
-    public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null){
+    public function setContainer(ContainerInterface $container = null){
         $this->container = $container;
         $this->em = $this->container->get('doctrine')->getEntityManager();
         $this->userManager = $this->container->get('fos_user.user_manager');
@@ -31,13 +32,15 @@ class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInject
     }
     
     public function load(ObjectManager $manager){
-        //$this->em->createQuery('DELETE from SkNd\MediaBundle\Entity\MediaResource')->execute();
-        $mrs = $this->em->getRepository('SkNdMediaBundle:MediaResource')->findAll();
+        //$manager->createQuery('DELETE from SkNd\MediaBundle\Entity\MediaResource')->execute();
+        $mrs = $manager->getRepository('SkNdMediaBundle:MediaResource')->findAll();
         foreach($mrs as $mr){
-            $this->em->remove($mr);
+            $manager->remove($mr);
         }
-        
-        $this->em->flush();
+        foreach($mrs = $manager->getRepository('SkNdMediaBundle:MediaResourceCache')->findAll() as $mrc)
+            $manager->remove($mrc);
+            
+        $manager->flush();
         
         $users = $this->userManager->findUsers();
         foreach($users as $user){
@@ -93,8 +96,8 @@ class LoadUsers implements FixtureInterface, \Symfony\Component\DependencyInject
     private function getNewMediaResource($id, $manager){
         $mr = new MediaResource();
         $mr->setId($id);
-        $mr->setAPI($this->em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
-        $mr->setMediaType($this->em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        $mr->setAPI($manager->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType($manager->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
         $mr->setMediaResourceCache($this->getCache($id));
         $manager->persist($mr);
         $manager->flush();

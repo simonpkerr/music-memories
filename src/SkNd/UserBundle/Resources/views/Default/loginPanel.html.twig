@@ -3,11 +3,11 @@
     <span id="logged-in-user">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</span>
     <div id="accountOptions">
         <ul>
-            <li><a href="{{ path('fos_user_profile_edit') }}">
+            <li><a class="button" href="{{ path('fos_user_profile_edit') }}">
             {{ 'layout.edit_profile'|trans({}, 'FOSUserBundle') }}
                         </a>
             </li>
-            <li><a href="{{ path('fos_user_security_logout') }}">
+            <li><a class="button" href="{{ path('fos_user_security_logout') }}">
             {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                         </a>
             </li>
@@ -15,8 +15,8 @@
     </div>
     
     {% else %}
-        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-        <span>&hellip;or <a href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></span>
+        <a class="button" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+        <a class="button orange" href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></span>
     {% endif %}
 
      

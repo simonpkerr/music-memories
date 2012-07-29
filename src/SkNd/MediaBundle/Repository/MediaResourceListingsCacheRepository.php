@@ -8,12 +8,12 @@ use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
-/*
+/**
  * Original code Copyright (c) 2011 Simon Kerr
- * MediaController controls all aspects of connecting to and displaying media
+ * controls access and retrieval of cached listings based on media selection
  * @author Simon Kerr
  * @version 1.0
- */
+ **/
 
 class MediaResourceListingsCacheRepository extends EntityRepository
 {
@@ -24,8 +24,6 @@ class MediaResourceListingsCacheRepository extends EntityRepository
     */
     public function getCachedListings(MediaSelection $mediaSelection, IAPIStrategy $api){
   
-        //initial selection parameters
-        
         $q = $this->createQueryBuilder('cl')
                 ->select('cl.xmlData, cl.dateCreated, cl.id')
                 ->where('cl.mediaType = :mediaType')

@@ -3,35 +3,47 @@
 {% block stylesheets %}
 {{ parent() }}
 {% endblock %}
-{% block body %}
-
-<div id="what-is-this">
-    <h1>What&rsquo;s noodleDig?</h1>
-    <div class="fl third-width left">
-        <h2>Re&ndash;discover it</h2>
-        <p>noodleDig helps you find all those cool old Films and TV Programmes you thought you&rsquo;d forgotten.</p>
-    </div>
-    <div class="fl third-width centre">
-        <h2>Grab it</h2>
-        <p>Once you&rsquo;ve found some cool stuff, bung it down on your own personalised memory wall.</p>
-    </div>
-    <div class="fl third-width right">
-        <h2>Share it</h2>
-        <p>noodleDig makes it easy to share those great memories with all your pals.</p>
-    </div>
+{% block content %}
+<h1>Helping you find stuff you loved&hellip;</h1>
+<div id="introPanel" class="cf">
+    <ul>
+        <li class="third-width left cf">
+            <img src="{{ asset('bundles/SkNd/images/rediscoverIt.jpg') }}" alt="rediscover it with noodleDig" />
+            <h2>Discover it</h2>
+            <p>Find all those ace Films and TV episodes you thought you&rsquo;d forgotten.</p>
+        </li>
+        <li class="third-width centre cf">
+            <img src="{{ asset('bundles/SkNd/images/grabIt.jpg') }}" alt="grab it with noodleDig" />
+            <h2>Grab it</h2>
+            <p>Once you&rsquo;ve found some cool stuff, stick it on your <a href="{{path('memoryWallsIndex')}}" title="whats a memory wall?">memory wall</a>.</p>
+        </li>
+        <li class="third-width right cf">
+            <img src="{{ asset('bundles/SkNd/images/shareIt.jpg') }}" alt="share it with noodleDig" />
+            <h2>Share it</h2>
+            <p>With noodleDig, its easy to show your pals what you&rsquo;ve found.</p>
+        </li>
+    </ul>
 </div>
 
 
 {# media selection partial #}
-<div id="contentSearches">
-<div id="mediaSelection">
-    {% render "SkNdMediaBundle:Media:mediaSelection" %}
+<div id="contentSearches" class="half-width cf">
+    <ul>
+        <li><a href="">Find it now</a>
+        <div id="mediaSelection">
+            <p>Just choose the options you want from below, and away you go.</p>
+            {% render "SkNdMediaBundle:Media:mediaSelection" %}
+        </div>
+        </li>
+        <li>
+            <a href="">Search by age</a>
+            <div id="ageSearch"></div>
+                <p>Now dont&rsquo;t be offended, but tell us your age and we&rsquo;ll find some stuff we know you&rsquo;ll love!</p>
+                {# age based search partial #}
+            </div>
+        </li>
+    </ul>    
 </div>
-<div id="ageSearch"></div>
-    {# age based search partial #}
-</div>
-</div>
-
 {% endblock %}
 {% block javascripts %} 
 {{ parent() }}

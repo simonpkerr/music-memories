@@ -9,6 +9,7 @@
 namespace SkNd\MediaBundle\MediaAPI;
 require_once 'SimpleXmlRequest.php';
 use SkNd\MediaBundle\Entity\MediaSelection;
+use \SimpleXMLElement;
 
 class SevenDigitalAPI implements IAPIStrategy{
     const API_NAME = 'sevendigital';
@@ -46,10 +47,11 @@ class SevenDigitalAPI implements IAPIStrategy{
      */
     public function getDetails(array $params){}
     public function getBatch(array $ids){}
+    public function getBatchProcessThreshold() {}
     
-    public function getId(\SimpleXMLElement $xmlData){}
-    public function getImageUrlFromXML(\SimpleXMLElement $xmlData) {}
-    public function getItemTitleFromXML(\SimpleXMLElement $xmlData){}
+    public function getId(SimpleXMLElement $xmlData){}
+    public function getImageUrlFromXML(SimpleXMLElement $xmlData) {}
+    public function getItemTitleFromXML(SimpleXMLElement $xmlData){}
     public function getListings(MediaSelection $mediaSelection){}
     
 }

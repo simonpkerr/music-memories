@@ -55,7 +55,6 @@ class MediaResource
         $this->selectedCount = 0;
         $this->memoryWalls = new ArrayCollection();
         $this->memoryWallMediaResources = new ArrayCollection();
-        //$this->relatedMediaResources = new ArrayCollection();
         $this->memoryWalls = $this->getMemoryWalls();
         
     }
@@ -71,8 +70,6 @@ class MediaResource
     }
     
     public function setRelatedMediaResources(array $mediaResources){
-        //$this->relatedMediaResources->set('exactMatches', $mediaResources['exactMatches']);
-        //$this->relatedMediaResources->set('genericMatches', $mediaResources['genericMatches']);
         $this->relatedMediaResources = $mediaResources;
     }
     
@@ -95,17 +92,6 @@ class MediaResource
         
         return $params;
     }
-    /*public function addMemoryWall(MemoryWall $mw){
-        //if the memory wall doesn't already contain the media resource
-        if(!$this->memoryWalls->contains($mw)){
-            $this->incrementSelectedCount();
-            $this->incrementViewCount();
-            $this->memoryWalls->add($mw);
-            $mw->addMediaResource($this);
-        } else {
-            throw new \RuntimeException('Media Resource already exists in selected memory wall');
-        }
-    }*/
     
     public function setMediaResourceCache(MediaResourceCache $mediaResourceCache = null){
         $this->mediaResourceCache = $mediaResourceCache;

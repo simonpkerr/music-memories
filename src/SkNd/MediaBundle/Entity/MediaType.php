@@ -5,6 +5,8 @@ namespace SkNd\MediaBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SkNd\MediaBundle\Entity\Genre;
+
 /**
  * SkNd\MediaBundle\Entity\MediaType
  */
@@ -104,7 +106,7 @@ class MediaType
      *
      * @param SkNd\MediaBundle\Entity\Genre $genres
      */
-    public function addGenre(\SkNd\MediaBundle\Entity\Genre $genres)
+    public function addGenre(Genre $genres)
     {
         $this->genres[] = $genres;
     }

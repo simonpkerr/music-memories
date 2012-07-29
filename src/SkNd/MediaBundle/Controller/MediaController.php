@@ -91,7 +91,10 @@ class MediaController extends Controller
             $form->bindRequest($request);
             if($form->isValid()){
                 
-                $session->set('mediaSelection', $form->getData());
+                //$session->set('mediaSelection', $form->getData());
+                $mediaSelection = $form->getData();
+                $this->mediaapi->setMediaSelection($mediaSelection);
+                
                 return $this->redirect($this->generateUrl('search', $this->mediaapi->getMediaSelectionParams()));
             }else{
                 /*return $this->render('SkNdMediaBundle:Default:error.html.twig', array(
@@ -143,7 +146,7 @@ class MediaController extends Controller
            'genre'          => $genre,
            'media'          => $media,
            'keywords'       => $keywords != '-' ? $keywords : null,
-           'api'            => $this->mediaapi->getCurrentAPI()->getName(),
+           'api'            => 'amazonapi',
        ));
        
        if($media == "music"){

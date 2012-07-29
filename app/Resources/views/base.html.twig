@@ -1,49 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+        
         <title>noodleDig &ndash; {% block title %}Home{% endblock %}</title>
         {#<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />#}
         {% block stylesheets %}
             <link href="{{asset('bundles/SkNd/css/reset.css') }}" type="text/css" rel="stylesheet" />
-            <link href="{{asset('bundles/SkNd/css/main.css') }}" type="text/css" rel="stylesheet" />
             <link href="{{asset('bundles/SkNd/css/typography.css') }}" type="text/css" rel="stylesheet" />
+            
+            <link href="{{asset('bundles/SkNd/css/base.css') }}" type="text/css" rel="stylesheet" />
+            <link media="only screen and (min-width: 600px)" href="{{asset('bundles/SkNd/css/wide.css') }}" type="text/css" rel="stylesheet" />
         {% endblock %}
             
         {% block javascripts %}
+            <script src="{{ asset('bundles/SkNd/scripts/modernizr.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/SkNd/scripts/jquery-1.7.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/SkNd/scripts/tb-scripts.js') }}" type="text/javascript"></script>
         {% endblock %}
     </head>
     <body>
-        <div id="header">
-            {# the 'path' function can be used to target any particular route defined in the routing config file #}
-            <a href="{{path('index')}}" title="Go back to noodleDig home page">noodleDig</a>
-            {#<a href="{{path('setMedia', {'mediaType' : 'film'})}}" title="Go to noodleDig Films">Films</a>
-            <a href="{{path('setMedia', {'mediaType' : 'tv'})}}" title="Go to noodleDig TV">TV</a>
-            <a href="{{path('setMedia', {'mediaType' : 'music'})}}" title="Go to noodleDig Music">Music</a>#}
-            {% block topNavLinks %}
-            <ul id="memoryWalls">
-                <a href="{{path('memoryWallsIndex')}}">Memory Walls</a>
-                <a href="{{path('memoryWallsPersonalIndex') }}">My Memory Walls</a>
-                <a href="{{path('memoryWallCreate')}}">Add a new Memory Wall</a>
-            </ul>
-            {% include 'SkNdUserBundle:Default:loginPanel.html.twig' %}
-            {% endblock %}
-        </div>
-        {% if app.session.getFlashes() %}    
-        <div class="flashMessages">
-            <ul>
-            {% for key, message in app.session.getFlashes() %}
-            <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle')|raw|trans({}, 'SkNdMediaBundle')|raw }}</li>
-            {% endfor %}   
-            </ul>
-        </div>
-        {% endif %}
-    {% block body %}
+        <div id="wrapper" class="grid-on">
+            <div id="header">
+                {# the 'path' function can be used to target any particular route defined in the routing config file #}
+                <a id="siteLogo" href="{{path('index')}}" title="Go back to noodleDig home page">
+                    <img src="{{ asset('bundles/SkNd/images/site-logo.png') }}" />
+                </a>
+                {% block topNavLinks %}
+                {% include 'SkNdUserBundle:Default:loginPanel.html.twig' %}
+                <ul id="memoryWalls">
+                    <li><a class="button" href="{{path('memoryWallsIndex')}}">Memory Walls</a>
+                        <ul>
+                            <li><a href="{{path('memoryWallsPersonalIndex') }}">My Walls</a></li>
+                            <li><a href="{{path('memoryWallCreate')}}">Add a new wall</a></li>
+                        </ul>
+                    </li>
+                    
+                </ul>
 
-    {% endblock %}
-        
+                {% endblock %}
+            </div>
+            {% if app.session.getFlashes() %}    
+            <div class="flashMessages fl">
+                <ul>
+                {% for key, message in app.session.getFlashes() %}
+                <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle')|raw|trans({}, 'SkNdMediaBundle')|raw }}</li>
+                {% endfor %}   
+                </ul>
+            </div>
+            {% endif %}
+            <div id="content" class="cf">
+            {% block content %}
+
+            {% endblock %}
+            </div>
+        </div>
     </body>
 </html>
 

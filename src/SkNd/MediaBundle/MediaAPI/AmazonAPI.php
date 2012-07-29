@@ -13,6 +13,7 @@ use \SimpleXMLElement;
 class AmazonAPI implements IAPIStrategy {
     const FRIENDLY_NAME = 'Amazon';
     const API_NAME = 'amazonapi';
+    const BATCH_PROCESS_THRESHOLD = 10;
     private $amazonParameters;
     private $public_key;                           
     private $private_key;
@@ -20,7 +21,6 @@ class AmazonAPI implements IAPIStrategy {
     protected $asr;
     private $ITEM_SEARCH = 'ItemSearch';
     private $ITEM_LOOKUP = 'ItemLookup';
-    private $em;
  
     public function __construct(array $access_params, $amazon_signed_request){
             
@@ -29,8 +29,6 @@ class AmazonAPI implements IAPIStrategy {
         $this->associate_tag = $access_params['amazon_associate_tag'];
         
         $this->asr = $amazon_signed_request; 
-        
-        //$this->em = $em;
         
         $this->amazonParameters = array(
                 "Operation"     => $this->ITEM_SEARCH,
@@ -119,11 +117,6 @@ class AmazonAPI implements IAPIStrategy {
             throw $le;
         }
         
-        //$recommendations = $this->getRecommendations($mediaSelection, 'listings');
-        /*return array(
-            'response'          =>  $xml_response,
-            'recommendations'   =>  $recommendations,
-        );*/
         return $xml_response;
     }
     
@@ -149,15 +142,6 @@ class AmazonAPI implements IAPIStrategy {
             throw $le;
         }
         
-        
-        /*if($mediaSelection != null){
-            $recommendations = $this->getRecommendations($mediaSelection, 'details');
-            return array(
-                'response'          =>  $verifiedResponse->Items->Item,
-                'recommendations'   =>  $recommendations,
-            );
-        }*/
-        
         //certain operations like batch processing only pass ids and do not require recommendations
         return $verifiedResponse->Items->Item;
         
@@ -170,11 +154,16 @@ class AmazonAPI implements IAPIStrategy {
      * 
      */
     public function getBatch(array $ids){
+        if(count($ids) > self::BATCH_PROCESS_THRESHOLD)
+            $ids = array_slice ($ids, 0, self::BATCH_PROCESS_THRESHOLD);
+            
         $params = array(
             'ItemId'  => implode(',', $ids),
         );
         return $this->getDetails($params);
     }
+    
+   
    
     /**
      * Check if the xml received from Amazon is valid

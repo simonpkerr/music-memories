@@ -12,14 +12,15 @@ namespace SkNd\MediaBundle\DataFixtures\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use SkNd\MediaBundle\Entity\MediaResourceListingsCache;
+use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-class LoadCachedListings implements FixtureInterface, \Symfony\Component\DependencyInjection\ContainerAwareInterface {
+class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
     
     private $container; 
     private $em;
     
     //in order to get access to methods controlled by the container, it can be automatically injected using this method
-    public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null){
+    public function setContainer(ContainerInterface $container = null){
         $this->container = $container;
         $this->em = $this->container->get('doctrine')->getEntityManager();
     }
