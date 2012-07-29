@@ -1,0 +1,237 @@
+/********** TEST ***********/
+.grid-on {
+    background: url("../images/960-grid.png") left top repeat-y;
+}
+
+
+/********** GENERICS ***********/
+
+.fl {
+    float: left;    
+}
+.fr {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+.half-width {
+    width: 48%;
+}
+
+.third-width {
+    width: 31%;
+}
+
+.two-thirds-width {
+    width: 64%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.left,
+.right,
+.centre{ 
+    margin: 0 20px;
+}
+
+.left {
+    margin-left: 0;
+}
+.right {
+    margin-right: 0;
+}
+.centre {
+    margin: 0;    
+}
+
+/********** WIDER SCREEN STYLES ***********/
+
+body {
+    background: #CEDEE8 url("../images/bg-v2.jpg") 50% top no-repeat;    
+    min-height: 623px;
+    padding: 0 3em;
+}
+
+.multiplebgs body {
+    background-color: #CEDEE8;
+    background-image: url("../images/bg-footer.png"), url("../images/bg-v2.jpg");
+    background-position: 50% 100%, 50% top;
+    background-repeat: repeat-x, no-repeat;
+}
+
+div#wrapper {
+    position: relative;
+    margin: 5em auto 1em;
+    min-width: 700px;
+    max-width: 940px;
+    padding: 20px;
+    border: 2px solid #E5961D;
+    background-color: #fff;
+    
+}
+
+.borderradius div#wrapper {
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.boxshadow div#wrapper {
+    -moz-box-shadow: -5px -5px rgba(0,0,0,0.1);
+    -webkit-box-shadow: -5px -5px rgba(0,0,0,0.1);
+    box-shadow: -5px -5px rgba(0,0,0,0.1);
+}
+
+/********** HEADER ***********/
+div#header {
+    position: absolute;
+    margin: -81px 0 0 -20px;
+    width: 100%;
+    height: 6em;
+}
+
+
+/*------ logo -------------------------*/
+a#siteLogo img {
+    float: left;
+    width: 361px;
+    margin: -37px 2em 2em -34px;
+}
+
+/*------ login -------------------------*/
+div#loginPanel {
+    float: right;
+    margin: 0;
+}
+
+div#loginPanel a {
+    float: left;
+    margin-left: 1em;
+}
+
+
+div#loginPanel span,
+div#loginPanel span a {
+    color: #fff;
+    font-weight: bold;
+    text-transform: lowercase;
+       
+}
+
+/*------ memory wall links ------------*/
+ul#memoryWalls {
+    float: right;
+}
+
+ul#memoryWalls li a {
+    float: left;
+    padding: 5px;
+    width: 9em;
+}
+
+
+/********** CONTENT ***********/
+
+div#content h1 {
+    margin-left: 320px;
+}
+
+div#introPanel {
+    margin-bottom: 1em;
+}
+
+div#introPanel li {
+    float: left;
+}
+
+
+div#contentSearches {
+    float: left;
+}
+
+/*---------- content searches --------*/
+
+div#contentSearches ul {
+    position: relative;
+}
+
+div#contentSearches li {
+    float: left;
+    width: 50%;
+}
+
+div#contentSearches li a,
+div#contentSearches li a:hover {
+   text-decoration: none;
+   color: inherit;
+}
+
+div#contentSearches li h2 {
+    border: none;
+    text-align: center;
+    padding: 5px 0;
+    background-color: #E5961D;
+    color: #fff;
+}
+.borderradius div#contentSearches li h2 {
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+
+div#contentSearches li:hover h2,
+div#contentSearches li.selected h2 {
+    background-color: #fff;
+    color: #E5961D;
+}
+
+div#contentSearches li > div {
+    position: absolute;
+    top: -9999em;
+    left: -9999em;
+    padding: 20px;
+    background-color: #fff;
+    height: 16em;
+}
+
+div#contentSearches li:hover div,
+div#contentSearches li.selected div
+{
+    top: 3.2em;
+    left: 0;
+}
+
+/*--- forms ---*/
+div#contentSearches form label {
+    float: left;
+    text-align: right;
+    width: 10.5em;
+}
+
+div#contentSearches form select {
+    width: 16.6em;
+}
+
+div#contentSearches form input[type="text"] {
+    width: 15.7em;
+    padding: 7px 5px;
+    margin-bottom: 0.5em;
+}
+
+div#contentSearches input[type="submit"],
+div#contentSearches .button {
+    width: 13.8em;
+}
+
+/*----------- listings ---------*/
+
+li.listing {
+    margin: 0.5em;
+    border-bottom: 1px solid #ddd;
+    padding: 0.5em;
+}
+

@@ -1,0 +1,254 @@
+/********** GENERICS FOR ALL STYLES ***********/
+
+/*----- clearfix -----*/
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+body {
+    background-color: #CEDEE8;
+}
+
+div#wrapper {
+    min-width: 150px;
+    border: 2px solid #E5961D;
+    background-color: #fff;
+    margin: 10px;
+    padding: 10px;
+}
+
+.borderradius div#wrapper {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.search-form-label {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+}
+
+div.errors {
+    color: #CC514F;
+    font-size: 0.9em;
+}
+
+/********** FONT STYLES ***********/
+a {
+    color: #29478D;
+    text-decoration: none;
+}
+a:visited {
+    color: #3967AC;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+
+/********** BUTTON ELEMENTS ***********/
+.button {
+    background-color: #7AA4E2;
+    border: 2px solid #fff;
+    cursor: pointer;
+    color: #fff;
+    font-weight: normal;
+    padding: 5px 7px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.orange {
+    background-color: #F57621;
+}
+
+a.button:link,
+a.button:visited,
+a.button:hover,
+a.button:active {
+   color: #fff;
+   text-decoration: none;
+    
+}
+
+.cssgradients .button,
+.cssgradients .blue{
+    background-image: linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: -o-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: -moz-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: -ms-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            left bottom,
+            color-stop(0, rgb(177,201,237)),
+            color-stop(1, rgb(122,164,226))
+    );
+}
+
+.cssgradients .orange{
+    background-image: linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+    background-image: -o-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+    background-image: -moz-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+    background-image: -ms-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33)  100%);
+
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            left bottom,
+            color-stop(0, rgb(245,146,54)),
+            color-stop(1, rgb(245,118,33))
+    );
+}
+
+.boxshadow .button {
+    -moz-box-shadow: 0 0 5px #888;
+    -webkit-box-shadow: 0 0 5px#888;
+    box-shadow: 0 0 5px #888;
+}
+
+.borderradius .button {
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.button:hover,
+.cssgradients .button:hover
+{
+    background-color: #6A99DF;
+    background-image: none;
+}
+
+.orange:hover,
+.cssgradients .orange:hover
+{
+    background-color: #F57621;
+    background-image: none;
+}
+
+.boxshadow .button:hover {
+    -moz-box-shadow: 0 0 0px #888;
+    -webkit-box-shadow: 0 0 0px#888;
+    box-shadow: 0 0 0px #888;
+}
+
+
+/********** HEADER ***********/
+
+/*------ logo -------------------------*/
+a#siteLogo img {
+    max-width: 361px;
+    min-width: 170px;
+    width: 60%;
+    margin: -20px 0 1em -15px;
+}
+
+/*------ memory wall links ------------*/
+ul#memoryWalls {
+   margin: 0;
+}
+
+ul#memoryWalls li a {
+    display: block;
+    margin-bottom: 0.5em;
+    color: #fff;
+}
+
+ul#memoryWalls li ul {
+    display: none;
+}
+
+ul#memoryWalls li:hover ul {
+    display: block;
+        
+}
+
+ul#memoryWalls li ul {
+    background-color: #9AB9E8;
+    border: 2px solid #fff;
+    border-top: none;
+}
+
+.borderradius ul#memoryWalls li ul {
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+ul#memoryWalls li ul a {
+    float: none;
+    padding: 5px;
+    margin: 0.3 0 0.3em 0;
+    text-align: center;
+    width: auto;
+    border-bottom: 1px solid #fff;
+}
+
+
+
+/*------- log in panel --------------*/
+div#loginPanel {
+    margin: 0.5em 0;
+    float: right;
+}
+
+/********** CONTENT ***********/
+
+div#content h1,
+div#content h2 {
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid #E5961D;
+    margin-bottom: 0.5em;
+}
+
+div#introPanel li img {
+    float: left;
+    width: 48%;
+    max-width: 143px;
+}
+
+div#introPanel h2 {
+    border: none;
+    padding: 0;
+    margin-bottom: 0.2em;
+}
+
+/*---------- content searches --------*/
+div#contentSearches {
+    border: 2px solid #E5961D;
+    width: 28.6em;
+    height: 23em;
+    background-color: #fff;
+}
+
+.borderradius div#contentSearches {
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+/*--- forms ---*/
+div#contentSearches form label {
+    font-size: 0.7em;
+    line-height: 1.2em;
+    margin-right: 20px;
+    font-style: italic;
+}
+
+div#contentSearches form select {
+    margin-bottom: 0.5em;
+    padding: 7px 5px;
+}
+
+div#contentSearches input[type="submit"],
+div#contentSearches .button {
+    font-size: 1em;
+    margin-top: 0.2em;
+}
