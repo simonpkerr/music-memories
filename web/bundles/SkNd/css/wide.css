@@ -30,7 +30,7 @@
 }
 
 .full-width {
-    width: 100%;
+    width: 98%;
 }
 
 .left,
@@ -66,10 +66,11 @@ body {
 
 div#wrapper {
     position: relative;
-    margin: 5em auto 1em;
-    min-width: 700px;
-    max-width: 940px;
-    padding: 20px;
+    margin: 5em auto;
+    width: 61.3em; /* equiv of 980px */
+    min-width: 740px;
+    max-width: 980px;
+    padding: 0;
     border: 2px solid #E5961D;
     background-color: #fff;
     
@@ -89,7 +90,7 @@ div#wrapper {
 /********** HEADER ***********/
 div#header {
     position: absolute;
-    margin: -81px 0 0 -20px;
+    margin: -61px 0 0 0;
     width: 100%;
     height: 6em;
 }
@@ -103,19 +104,22 @@ a#siteLogo img {
 }
 
 /*------ login -------------------------*/
-div#loginPanel {
+ul#loginPanel {
     float: right;
     margin: 0;
 }
 
-div#loginPanel a {
+ul#loginPanel li {
     float: left;
     margin-left: 1em;
 }
 
+ul#loginPanel li a {
+    display: block;
+}
 
-div#loginPanel span,
-div#loginPanel span a {
+ul#loginPanel span,
+ul#loginPanel span a {
     color: #fff;
     font-weight: bold;
     text-transform: lowercase;
@@ -136,6 +140,11 @@ ul#memoryWalls li a {
 
 /********** CONTENT ***********/
 
+div#content {
+    width: 95.9%;
+    margin: 20px;
+}
+
 div#content h1 {
     margin-left: 320px;
 }
@@ -148,9 +157,8 @@ div#introPanel li {
     float: left;
 }
 
-
-div#contentSearches {
-    float: left;
+div#introPanel li p{
+    margin-left: 7em;
 }
 
 /*---------- content searches --------*/
@@ -162,6 +170,12 @@ div#contentSearches ul {
 div#contentSearches li {
     float: left;
     width: 50%;
+    background-color: #E5961D;
+}
+
+div#contentSearches li:hover,
+div#contentSearches li.selected {
+    background-color: transparent;
 }
 
 div#contentSearches li a,
@@ -174,32 +188,35 @@ div#contentSearches li h2 {
     border: none;
     text-align: center;
     padding: 5px 0;
-    background-color: #E5961D;
     color: #fff;
-}
-.borderradius div#contentSearches li h2 {
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+    margin: 0;
 }
 
+.borderradius div#contentSearches li#tab1 {
+    -moz-border-radius: 10px 0 0 0;
+    border-radius: 10px 0 0 0;
+}
+.borderradius div#contentSearches li#tab2 {
+    -moz-border-radius: 0 10px 0 0;
+    border-radius: 0 10px 0 0;
+}
 
 div#contentSearches li:hover h2,
 div#contentSearches li.selected h2 {
-    background-color: #fff;
     color: #E5961D;
 }
 
-div#contentSearches li > div {
+div#contentSearches ul:first-child li > div {
     position: absolute;
     top: -9999em;
     left: -9999em;
     padding: 20px;
     background-color: #fff;
-    height: 16em;
+    height: 16.5em;
 }
 
-div#contentSearches li:hover div,
-div#contentSearches li.selected div
+div#contentSearches ul:first-child li:hover > div,
+div#contentSearches ul:first-child li.selected > div
 {
     top: 3.2em;
     left: 0;
@@ -212,20 +229,41 @@ div#contentSearches form label {
     width: 10.5em;
 }
 
+
+
 div#contentSearches form select {
     width: 16.6em;
 }
 
 div#contentSearches form input[type="text"] {
     width: 15.7em;
-    padding: 7px 5px;
-    margin-bottom: 0.5em;
 }
 
 div#contentSearches input[type="submit"],
 div#contentSearches .button {
     width: 13.8em;
+    margin-left: 8.7em;
+    font-weight: bold;
 }
+/*----------- news ---------*/
+div#news {
+    width: 48.7%;
+    margin-top: 0.5em;
+}
+
+div#news li {
+    clear: left;
+}
+
+div#news li span {
+    font-size: 0.85em;
+}
+
+div#news p {
+    float: left;
+    
+}
+
 
 /*----------- listings ---------*/
 
@@ -235,3 +273,16 @@ li.listing {
     padding: 0.5em;
 }
 
+/********** FOOTER ***********/
+.borderradius div#footer {
+    -moz-border-radius: 0 0 10px 10px;
+    border-radius: 0 0 10px 10px;
+}
+
+div#footer ul:first-child > li {
+    float: left;
+}
+
+div#footer .right p {
+    margin-left: 4.5em;
+}

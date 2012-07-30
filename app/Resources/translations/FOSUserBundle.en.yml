@@ -62,7 +62,7 @@ resetting.email: |
 layout.edit_profile: Manage your account
 layout.logout: Logout
 layout.login: Login
-layout.register: Sign Up
+layout.register: Sign up
 layout.logged_in_as: %username%
 
 # Form field labels

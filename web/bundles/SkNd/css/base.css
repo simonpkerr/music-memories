@@ -11,6 +11,19 @@
     clear: both;
 }
 
+ul.bullet-list,
+ol.bullet-list {
+    margin-left: 1em;
+}
+
+ul.bullet-list li {
+    list-style-type: circle;
+}
+ol.bullet-list li {
+    list-style-type: decimal;
+}
+
+
 body {
     background-color: #CEDEE8;
 }
@@ -195,7 +208,7 @@ ul#memoryWalls li ul a {
 
 
 /*------- log in panel --------------*/
-div#loginPanel {
+ul#loginPanel {
     margin: 0.5em 0;
     float: right;
 }
@@ -203,7 +216,9 @@ div#loginPanel {
 /********** CONTENT ***********/
 
 div#content h1,
-div#content h2 {
+div#content h2,
+div#wrapper h3
+{
     padding-bottom: 0.5em;
     border-bottom: 2px solid #E5961D;
     margin-bottom: 0.5em;
@@ -242,13 +257,57 @@ div#contentSearches form label {
     font-style: italic;
 }
 
+div#contentSearches form select,
+div#contentSearches form input[type="text"] {
+    border: 1px solid #808DA0;
+}
+
 div#contentSearches form select {
     margin-bottom: 0.5em;
     padding: 7px 5px;
+}
+
+div#contentSearches form input[type="text"] {
+    padding: 7px 5px;
+    margin-bottom: 0.5em;
 }
 
 div#contentSearches input[type="submit"],
 div#contentSearches .button {
     font-size: 1em;
     margin-top: 0.2em;
+}
+
+
+/********** FOOTER ***********/
+div#footer {
+    padding: 20px;
+    background-color: #E5961D;
+}
+
+.borderradius div#footer {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+div#footer h3,
+div#footer p,
+div#footer a
+{
+    color: #fff;
+    word-wrap: break-word;
+}
+
+div#footer a.button {
+    display: block;
+    width: 50%;
+}
+
+div#footer img {
+    float: left;
+}
+
+div#footer ul.bullet-list li {
+    font-weight: bold;
+    color: #fff;
 }

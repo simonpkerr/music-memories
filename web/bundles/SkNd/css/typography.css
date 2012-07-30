@@ -42,7 +42,7 @@ p, a, li{
 }
 
 p {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 p+p {
@@ -74,3 +74,4 @@ h5, h6 {
    font-size: 1.125em; 
    line-height: 1.35em;
 }
+

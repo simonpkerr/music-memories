@@ -1,9 +1,13 @@
 memoryWall_name: Name
 memoryWall_description: Description
-memoryWall_associatedDecade: Associated Decade
+memoryWall_associatedDecade: Associated decade
 memoryWall_isPublic: Memory Wall is public
 
 memoryWall:
+  links:
+    public_index: Memory Walls
+    personal_index: My walls
+    add_wall: Add a new wall
   create:
     submit: Create a new Memory Wall
     flash:
