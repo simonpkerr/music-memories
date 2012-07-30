@@ -11,9 +11,18 @@
     clear: both;
 }
 
+.fl, .fr {
+    margin-bottom: 0.5em;
+}
+
 ul.bullet-list,
 ol.bullet-list {
     margin-left: 1em;
+}
+
+ul.bullet-list li,
+ol.bullet-list li {
+    margin-bottom: 0.5em;
 }
 
 ul.bullet-list li {
@@ -23,13 +32,12 @@ ol.bullet-list li {
     list-style-type: decimal;
 }
 
-
 body {
     background-color: #CEDEE8;
 }
 
 div#wrapper {
-    min-width: 150px;
+    min-width: 250px;
     border: 2px solid #E5961D;
     background-color: #fff;
     margin: 10px;
@@ -64,9 +72,59 @@ a:hover {
     text-decoration: underline;
 }
 
+/********** FORM ELEMENT GENERICS ***********/
+div#content form fieldset {
+    border: 1px solid #7AA4E2;
+    padding: 1.5em 1em;
+}
+
+div#content form fieldset legend {
+    font-size: 0.7em;
+    font-style: italic;
+    margin: 0 0.5em;
+    padding: 0 0.5em;
+    color: #3A6289;
+}
+
+div#content form label {
+    font-size: 0.7em;
+    line-height: 1.2em;
+    font-style: italic;
+}
+
+div#content form select,
+div#content form input {
+    border: 1px solid #808DA0;
+    margin-bottom: 0.5em;
+    padding: 7px 5px;
+}
+
+.borderradius div#content form select,
+.borderradius div#content form input,
+.borderradius div#content form fieldset {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+
+
+div#content form select:focus,
+div#content form input:focus {
+    border: 1px solid #E5961D;
+}
+
+div#content input[type="submit"]
+{
+    font-size: 1em;
+    margin-top: 0.2em;
+    border: 2px solid #fff;
+}
+
 
 /********** BUTTON ELEMENTS ***********/
-.button {
+.button,
+input#_submit,
+input[type="submit"] {
     background-color: #7AA4E2;
     border: 2px solid #fff;
     cursor: pointer;
@@ -91,7 +149,8 @@ a.button:active {
 }
 
 .cssgradients .button,
-.cssgradients .blue{
+.cssgradients .blue,
+div#content input#_submit {
     background-image: linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
     background-image: -o-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
     background-image: -moz-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
@@ -123,19 +182,22 @@ a.button:active {
     );
 }
 
-.boxshadow .button {
+.boxshadow .button,
+.boxshadow div#content input#_submit {
     -moz-box-shadow: 0 0 5px #888;
     -webkit-box-shadow: 0 0 5px#888;
     box-shadow: 0 0 5px #888;
 }
 
-.borderradius .button {
+.borderradius .button,
+.boxshadow div#content input#_submit {
     -moz-border-radius: 10px;
     border-radius: 10px;
 }
 
 .button:hover,
-.cssgradients .button:hover
+.cssgradients .button:hover,
+.boxshadow div#content input#_submit:hover 
 {
     background-color: #6A99DF;
     background-image: none;
@@ -148,7 +210,8 @@ a.button:active {
     background-image: none;
 }
 
-.boxshadow .button:hover {
+.boxshadow .button:hover,
+.boxshadow div#content input#_submit:hover {
     -moz-box-shadow: 0 0 0px #888;
     -webkit-box-shadow: 0 0 0px#888;
     box-shadow: 0 0 0px #888;
@@ -167,51 +230,39 @@ a#siteLogo img {
 
 /*------ memory wall links ------------*/
 ul#memoryWalls {
-   margin: 0;
+   margin: 0 0 1em 0;
 }
 
-ul#memoryWalls li a {
+ul#memoryWalls li a  {
     display: block;
     margin-bottom: 0.5em;
+    position: relative;
+    z-index: 2;
     color: #fff;
-}
-
-ul#memoryWalls li ul {
-    display: none;
-}
-
-ul#memoryWalls li:hover ul {
+    text-transform: lowercase;
     display: block;
-        
 }
 
-ul#memoryWalls li ul {
-    background-color: #9AB9E8;
-    border: 2px solid #fff;
-    border-top: none;
+ul#memoryWalls li ul a  {
+    color: inherit;
 }
-
-.borderradius ul#memoryWalls li ul {
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-}
-
-ul#memoryWalls li ul a {
-    float: none;
-    padding: 5px;
-    margin: 0.3 0 0.3em 0;
-    text-align: center;
-    width: auto;
-    border-bottom: 1px solid #fff;
-}
-
 
 
 /*------- log in panel --------------*/
 ul#loginPanel {
-    margin: 0.5em 0;
     float: right;
 }
+
+ul#loginPanel li a {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+ul#loginPanel li ul a {
+    text-align: center;
+    margin: 0.5em 0 0 0;
+}
+
 
 /********** CONTENT ***********/
 
@@ -237,45 +288,30 @@ div#introPanel h2 {
 }
 
 /*---------- content searches --------*/
-div#contentSearches {
-    border: 2px solid #E5961D;
-    width: 28.6em;
-    height: 23em;
-    background-color: #fff;
-}
-
-.borderradius div#contentSearches {
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+.borderradius div#contentSearches ul:first-child li {
+    margin-bottom: 1em;
 }
 
 /*--- forms ---*/
-div#contentSearches form label {
-    font-size: 0.7em;
-    line-height: 1.2em;
-    margin-right: 20px;
-    font-style: italic;
+div#content form label {
+    display: block;
+    margin: 0 0 3px 0;
+    width: 100%;
 }
 
-div#contentSearches form select,
-div#contentSearches form input[type="text"] {
-    border: 1px solid #808DA0;
+div#content form select {
+    width: 100%;
 }
 
-div#contentSearches form select {
-    margin-bottom: 0.5em;
-    padding: 7px 5px;
+/*all other inputs - text, password etc */
+div#content form input {
+    width: 97.6%;
 }
 
-div#contentSearches form input[type="text"] {
-    padding: 7px 5px;
-    margin-bottom: 0.5em;
-}
-
-div#contentSearches input[type="submit"],
-div#contentSearches .button {
-    font-size: 1em;
-    margin-top: 0.2em;
+div#content input[type="submit"],
+div#content input#_submit,
+div#content .button {
+    width: 100%;
 }
 
 
@@ -288,6 +324,10 @@ div#footer {
 .borderradius div#footer {
     -moz-border-radius: 5px;
     border-radius: 5px;
+}
+
+div#footer ul:first-child > li {
+    margin-bottom: 1em;
 }
 
 div#footer h3,

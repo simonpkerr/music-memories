@@ -7,8 +7,8 @@ group.flash.created: The group has been created
 group.flash.deleted: The group has been deleted
 
 # Security
-security.login.username: "Username:"
-security.login.password: "Password:"
+security.login.username: "Username"
+security.login.password: "Password"
 security.login.remember_me: Remember me
 security.login.submit: Login
 
@@ -59,7 +59,7 @@ resetting.email: |
     the noodleDig Team.
 
 # Global strings
-layout.edit_profile: Manage your account
+layout.edit_profile: Profile
 layout.logout: Logout
 layout.login: Login
 layout.register: Sign up
@@ -68,24 +68,24 @@ layout.logged_in_as: %username%
 # Form field labels
 fos_user_group_form_name: "Group name:"
 
-fos_user_profile_form_user_username: "Username:"
-fos_user_profile_form_user_email: "Email:"
-fos_user_profile_form_current: "Current Password:"
-fos_user_profile_form_user_firstname: "First Name:"
-fos_user_profile_form_user_surname: "Surname:"
+fos_user_profile_form_user_username: "Username"
+fos_user_profile_form_user_email: "Email"
+fos_user_profile_form_current: "Current Password"
+fos_user_profile_form_user_firstname: "First Name"
+fos_user_profile_form_user_surname: "Surname"
 
-fos_user_registration_form_username: "Username:"
-fos_user_registration_form_email: "Email:"
-fos_user_registration_form_plainPassword_first: "Password:"
-fos_user_registration_form_plainPassword_second: "Re-type password:"
+fos_user_registration_form_username: "Username"
+fos_user_registration_form_email: "Email"
+fos_user_registration_form_plainPassword_first: "Password"
+fos_user_registration_form_plainPassword_second: "Re-type password"
 
 #my settings
-fos_user_registration_form_firstname: "First Name:"
-fos_user_registration_form_surname: "Surname:"
+fos_user_registration_form_firstname: "First Name"
+fos_user_registration_form_surname: "Surname"
 
-fos_user_resetting_form_new_first: "New password:"
-fos_user_resetting_form_new_second: "Re-type password:"
+fos_user_resetting_form_new_first: "New password"
+fos_user_resetting_form_new_second: "Re-type password"
 
-fos_user_change_password_form_new_first: "New password:"
-fos_user_change_password_form_new_second: "Re-type password:"
-fos_user_change_password_form_current: "Current password:"
+fos_user_change_password_form_new_first: "New password"
+fos_user_change_password_form_new_second: "Re-type password"
+fos_user_change_password_form_current: "Current password"

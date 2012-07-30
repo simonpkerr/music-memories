@@ -1,6 +1,6 @@
 <ul id="loginPanel">
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        <li><span class="button" id="logged-in-user">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</span>
+        <li><span class="button orange" id="logged-in-user">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</span>
             <ul>
                 <li>
                     <a href="{{ path('fos_user_profile_edit') }}">

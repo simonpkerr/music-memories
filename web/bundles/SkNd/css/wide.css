@@ -17,12 +17,18 @@
     clear: both;
 }
 
-.half-width {
-    width: 48%;
+.half-width,
+.half-width-centralise {
+    width: 48.9%;
 }
 
+.half-width-centralise {
+    margin-left: 15.3em;
+}
+
+
 .third-width {
-    width: 31%;
+    width: 31.9%;
 }
 
 .two-thirds-width {
@@ -48,6 +54,7 @@
 .centre {
     margin: 0;    
 }
+
 
 /********** WIDER SCREEN STYLES ***********/
 
@@ -105,30 +112,74 @@ a#siteLogo img {
 
 /*------ login -------------------------*/
 ul#loginPanel {
-    float: right;
-    margin: 0;
+    position: relative;
+    /*margin-left: 1em;*/
 }
 
-ul#loginPanel li {
+ul#loginPanel > li {
     float: left;
     margin-left: 1em;
 }
 
 ul#loginPanel li a {
-    display: block;
+    margin: 0;
+    color: #fff;
 }
 
-ul#loginPanel span,
-ul#loginPanel span a {
+
+ul#loginPanel span {
+    position: relative;
+    z-index: 2;
     color: #fff;
     font-weight: bold;
     text-transform: lowercase;
-       
+    min-width: 6em;
+    display: block;
+}
+
+ul#loginPanel li ul {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+    padding-top: 2em;
+    z-index: 1;
+   
+}
+
+ul#loginPanel li:hover ul {
+    left: 0;
+    top: 0;
+        
+}
+
+ul#loginPanel li ul {
+    background-color: #9AB9E8;
+    border: 2px solid #fff;
+    border-top: none;
+}
+
+.borderradius ul#loginPanel li ul {
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+ul#loginPanel li ul a {
+    float: none;
+    padding: 5px 7px;
+    margin: 0.3em 0 0.3em 0;
+    text-align: center;
+    min-width: 6em;
+}
+
+ul#loginPanel li ul li:first-child a {
+    border-bottom: 1px solid #fff;
 }
 
 /*------ memory wall links ------------*/
 ul#memoryWalls {
     float: right;
+    position: relative;
+    margin: 0;
 }
 
 ul#memoryWalls li a {
@@ -137,6 +188,43 @@ ul#memoryWalls li a {
     width: 9em;
 }
 
+ul#memoryWalls li ul {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+    padding-top: 2em;
+    z-index: 1;
+    
+}
+
+ul#memoryWalls li:hover ul {
+    left: 0;
+    top: 0;
+        
+}
+
+ul#memoryWalls li ul {
+    background-color: #9AB9E8;
+    border: 2px solid #fff;
+    border-top: none;
+}
+
+.borderradius ul#memoryWalls li ul {
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+ul#memoryWalls li ul a {
+    float: none;
+    padding: 5px;
+    margin: 0.3em 0 0.3em 0;
+    text-align: center;
+    color: #fff;
+}
+
+ul#memoryWalls li ul li:first-child a {
+    border-bottom: 1px solid #fff;
+}
 
 /********** CONTENT ***********/
 
@@ -146,7 +234,7 @@ div#content {
 }
 
 div#content h1 {
-    margin-left: 320px;
+    margin: 0.2em 0 1em 10em;
 }
 
 div#introPanel {
@@ -162,6 +250,17 @@ div#introPanel li p{
 }
 
 /*---------- content searches --------*/
+div#contentSearches {
+    border: 2px solid #E5961D;
+    width: 28.6em;
+    height: 23em;
+    background-color: #fff;
+}
+
+.borderradius div#contentSearches {
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
 
 div#contentSearches ul {
     position: relative;
@@ -190,6 +289,10 @@ div#contentSearches li h2 {
     padding: 5px 0;
     color: #fff;
     margin: 0;
+}
+
+.borderradius div#contentSearches ul:first-child li {
+    margin-bottom: 0;
 }
 
 .borderradius div#contentSearches li#tab1 {
@@ -222,46 +325,38 @@ div#contentSearches ul:first-child li.selected > div
     left: 0;
 }
 
-/*--- forms ---*/
-div#contentSearches form label {
+/*--- ALL FORMS ---*/
+div#content form label {
     float: left;
     text-align: right;
     width: 10.5em;
+    margin: 0 20px 0 0;
 }
 
-
-
-div#contentSearches form select {
+div#content form select {
     width: 16.6em;
 }
 
-div#contentSearches form input[type="text"] {
+div#content form input {
     width: 15.7em;
 }
 
-div#contentSearches input[type="submit"],
-div#contentSearches .button {
+div#content input[type="submit"],
+div#content input#_submit,
+div#content .button {
     width: 13.8em;
     margin-left: 8.7em;
     font-weight: bold;
 }
+
 /*----------- news ---------*/
 div#news {
     width: 48.7%;
     margin-top: 0.5em;
 }
 
-div#news li {
-    clear: left;
-}
-
 div#news li span {
     font-size: 0.85em;
-}
-
-div#news p {
-    float: left;
-    
 }
 
 
@@ -281,6 +376,7 @@ li.listing {
 
 div#footer ul:first-child > li {
     float: left;
+    margin-bottom: 0;
 }
 
 div#footer .right p {
