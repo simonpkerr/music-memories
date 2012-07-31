@@ -1,9 +1,6 @@
 
 {% block field_label %}
 {% spaceless %}
-    {% if required %}
-    <span class="required" title="This field is required">*</span>
-    {% endif %}
     <label for="{{ id }}">{{ id|trans([], 'FOSUserBundle') }}</label>
 {% endspaceless %}
 {% endblock field_label %}
@@ -21,10 +18,14 @@
     
 {% block field_row %}
 {% spaceless %}
-    <div class="form-row">
+    <div class="form-row {% if errors %}error{% endif %}">
         {{ form_errors(form) }}    
         {{ form_label(form, label|default(null)) }}
         {{ form_widget(form) }}
+        {% if required %}
+            <span class="required" title="This field is required">*</span>
+        {% endif %}
+        
     </div>
 {% endspaceless %}
 {% endblock field_row %}
@@ -32,11 +33,48 @@
 {% block field_errors %}
 {% spaceless %}
     {% if errors|length > 0 %}
+    {#<ul class="form-errors">
+    {% for formPart in form|keys %}
+        {% if (formPart.vars is defined and formPart.vars.errors|length) %}
+            {% for error in formPart.vars.errors %}
+                <li>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</li>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    </ul>#}
+    
     <ul class="form-errors">
         {% for error in errors %}
             <li>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</li>
+            {#<span class="form-errors">{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</span>#}
         {% endfor %}
     </ul>
     {% endif %}
 {% endspaceless %}
 {% endblock field_errors %}
+        
+{% block field_widget %}
+{% spaceless %}
+    {% set type = type|default('text') %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% if help is defined %}
+        <span class="help">{{ help }}</span>
+    {% endif %}
+{% endspaceless %}
+{% endblock field_widget %}
+        
+{% block date_widget %}
+{% spaceless %}
+    {% if widget == 'single_text' %}
+        {{ block('field_widget') }}
+    {% else %}
+        <div class="date_widget" {{ block('widget_container_attributes') }}>
+            {{ date_pattern|replace({
+                '{{ year }}':  form_widget(form.year),
+                '{{ month }}': form_widget(form.month),
+                '{{ day }}':   form_widget(form.day),
+            })|raw }}
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock date_widget %}

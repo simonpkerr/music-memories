@@ -44,6 +44,7 @@ class ProfileFormType extends BaseType
         $builder->add('dateofbirth', 'birthday', array(
             'years' => $yearRange,
             'label' => 'Date of Birth',
+            'error_bubbling' => true,
             ));
         
         $builder->add('firstname', 'text', array(
