@@ -413,9 +413,14 @@ div#content div.pagingControls a {
     margin: 0 5px 0 0;
 }
 
-div#searchResults div#listings {
-    
+div#searchResults ul#listings {
+    margin-top: 20px;
 }
+
+div#searchResults ul#listings li {
+
+}
+
 
 /********** FOOTER ***********/
 div#footer {

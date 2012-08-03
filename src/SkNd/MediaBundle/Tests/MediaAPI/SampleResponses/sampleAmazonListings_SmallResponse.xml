@@ -1,0 +1,491 @@
+<?xml version="1.0" ?>
+<ItemSearchResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">
+  <OperationRequest>
+    <RequestId>6724e5b5-0d22-4e8a-9a38-4c51bd809773</RequestId>
+    <Arguments>
+      <Argument Name="Condition" Value="All"></Argument>
+      <Argument Name="Operation" Value="ItemSearch"></Argument>
+      <Argument Name="Service" Value="AWSECommerceService"></Argument>
+      <Argument Name="ItemPage" Value="1"></Argument>
+      <Argument Name="AssociateTag" Value="noodledig-21"></Argument>
+      <Argument Name="BrowseNode" Value="342350011,542163011,501960"></Argument>
+      <Argument Name="Version" Value="2009-03-31"></Argument>
+      <Argument Name="Sort" Value="salesrank"></Argument>
+      <Argument Name="Validate" Value="True"></Argument>
+      <Argument Name="SearchIndex" Value="Video"></Argument>
+      <Argument Name="Signature" Value="WqejFYQghfMjfOMeadFEinCNh5HNGDOe0RZpLKvbbhk="></Argument>
+      <Argument Name="MerchantId" Value="All"></Argument>
+      <Argument Name="AWSAccessKeyId" Value="AKIAJVJZWBLIJ353LQ2Q"></Argument>
+      <Argument Name="Timestamp" Value="2012-08-03T17:40:26Z"></Argument>
+      <Argument Name="ResponseGroup" Value="Small,EditorialReview,Request"></Argument>
+    </Arguments>
+    <RequestProcessingTime>0.2133160000000000</RequestProcessingTime>
+  </OperationRequest>
+  <Items>
+    <Request>
+      <IsValid>True</IsValid>
+      <ItemSearchRequest>
+        <BrowseNode>342350011,542163011,501960</BrowseNode>
+        <Condition>All</Condition>
+        <ItemPage>1</ItemPage>
+        <MerchantId>Deprecated</MerchantId>
+        <ResponseGroup>Small</ResponseGroup>
+        <ResponseGroup>EditorialReview</ResponseGroup>
+        <ResponseGroup>Request</ResponseGroup>
+        <SearchIndex>Video</SearchIndex>
+        <Sort>salesrank</Sort>
+      </ItemSearchRequest>
+    </Request>
+    <TotalResults>117</TotalResults>
+    <TotalPages>12</TotalPages>
+    <MoreSearchResultsUrl>http://www.amazon.co.uk/gp/redirect.html?camp=2025&amp;creative=12734&amp;location=http%3A%2F%2Fwww.amazon.co.uk%2Fgp%2Fsearch%3Fnode%3D342350011%252C542163011%252C501960%26url%3Dsearch-alias%253Ddvd&amp;linkCode=xm2&amp;tag=noodledig-21&amp;SubscriptionId=AKIAJVJZWBLIJ353LQ2Q</MoreSearchResultsUrl>
+    <Item>
+    <ASIN>B00028HCGU</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Thunderbirds-Are-Thunderbird-Collectors-Edition/dp/B00028HCGU%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB00028HCGU</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB00028HCGU%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00028HCGU</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B00028HCGU%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00028HCGU</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B00028HCGU%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00028HCGU</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B00028HCGU%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00028HCGU</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Actor>Peter Dyneley</Actor>
+      <Actor>Sylvia Anderson</Actor>
+      <Actor>Shane Rimmer</Actor>
+      <Actor>Jeremy Wilkin</Actor>
+      <Actor>Matt Zimmerman</Actor>
+      <Creator Role="Primary Contributor">Peter Dyneley</Creator>
+      <Creator Role="Primary Contributor">Sylvia Anderson</Creator>
+      <Creator Role="Producer">Sylvia Anderson</Creator>
+      <Creator Role="Writer">Sylvia Anderson</Creator>
+      <Creator Role="Cinematographer">Harry Oakes</Creator>
+      <Creator Role="Editor">Len Walter</Creator>
+      <Creator Role="Producer">Gerry Anderson</Creator>
+      <Creator Role="Writer">Gerry Anderson</Creator>
+      <Creator Role="Producer">John Read</Creator>
+      <Director>David Lane</Director>
+      <Manufacturer>Twentieth Century Fox</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>Thunderbirds Are Go/Thunderbird Six (Collectors Edition) [DVD] [1966]</Title>
+    </ItemAttributes>
+    <EditorialReviews>
+      <EditorialReview>
+        <Source>Amazon.co.uk Review</Source>
+        <Content>&lt;I&gt;Thunderbird 6&lt;/I&gt; was the second feature spin-off from the hit Gerry Anderson puppet-animation TV series &lt;I&gt;Thunderbirds&lt;/I&gt;, and revolved around a new addition to the line-up of International Rescue's five emergency craft. The plot sees Lady Penelope, Alan, Tin-Tin and Parker as the only passengers on the maiden, round-the-world flight of a futuristic airship, which is hijacked in a bid to capture Thunderbirds 1 and 2. From the moment Alan arrives on a Bond-style jetpack, the film veers away from the TV show into espionage adventure territory, and while the only people International Rescue rescue are their own members, they kill a fair number of baddies. The global tour means there are more locations than ever, and though the story takes a long time developing, the &lt;I&gt;Die Hard&lt;/I&gt;-on-an-airship finale delivers the most explosive set piece of Gerry Anderson's career. As for &lt;I&gt;Thunderbird 6&lt;/I&gt;, opinion remains divided as to whether it's an ingenious twist or a disappointing gimmick, but the movie's blend of model and live-action footage results in two superbly staged stunt sequences. Predecessor &lt;I&gt;Thunderbirds Are Go&lt;/I&gt; (1968) is also available, and the Andersons would make one further feature film, &lt;I&gt;Journey to the Far Side of the Sun&lt;/I&gt; (1969). &lt;p&gt; &lt;B&gt;On the DVD&lt;/B&gt;: The anamorphically enhanced 2.35:1 ratio image is sharp, full of detail and boasting well-saturated colours, only the briefest moments of damage and some graininess revealing the age of the print. The film was shot in ultra-wide Techniscope, and there are moments were it is very obvious that parts of the original 2.74:1 picture have been cropped at the sides. The mono sound is powerful with no hint of distortion. Extras are the original trailer, galleries of behind the scenes photos and promotional artwork, though the highlight is the highly informative commentary by Sylvia Anderson and director David Lane where they note how they made this film and worked on &lt;I&gt;Captain Scarlet&lt;/I&gt; simultaneously.&lt;I&gt;--Gary S Dalkin&lt;/I&gt; </Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+    </EditorialReviews>
+    </Item><Item>
+    <ASIN>B00006FI5Z</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Joe-90-Complete-Boxset-DVD/dp/B00006FI5Z%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB00006FI5Z</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB00006FI5Z%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00006FI5Z</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B00006FI5Z%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00006FI5Z</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B00006FI5Z%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00006FI5Z</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B00006FI5Z%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00006FI5Z</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Actor>Len Jones</Actor>
+      <Actor>Rupert Davies</Actor>
+      <Actor>Keith Alexander</Actor>
+      <Actor>David Healy</Actor>
+      <Actor>Gary Files</Actor>
+      <Creator Role="Primary Contributor">Len Jones</Creator>
+      <Creator Role="Primary Contributor">Rupert Davies</Creator>
+      <Creator Role="Writer">Sylvia Anderson</Creator>
+      <Creator Role="Editor">Alan Killick</Creator>
+      <Creator Role="Editor">Harry MacDonald</Creator>
+      <Creator Role="Editor">Len Cleal</Creator>
+      <Creator Role="Editor">Norman A. Cole</Creator>
+      <Creator Role="Editor">Robert C. Dearberg</Creator>
+      <Creator Role="Producer">Reg Hill</Creator>
+      <Creator Role="Writer">Gerry Anderson</Creator>
+      <Manufacturer>ITV Studios Home Entertainment</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>Joe 90 - Complete Boxset [DVD] [1968]</Title>
+    </ItemAttributes>
+    <EditorialReviews>
+      <EditorialReview>
+        <Source>Product Description</Source>
+        <Content>great DVD's, disc 2 has light surface mark but everything else great, 748 minutes running time approx, fast delivery, UK SELLER</Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+      <EditorialReview>
+        <Source>Amazon.co.uk Review</Source>
+        <Content>&lt;I&gt;Joe 90&lt;/I&gt; was Gerry Anderson's penultimate puppet show of the 1960s, following &lt;I&gt;Captain Scarlet&lt;/I&gt; (1968) and preceding the little-known &lt;I&gt;The Secret Service&lt;/I&gt; (1969). In 2112 professor Ian McClaine has invented the BIG RAT (Brain Impulse Galvanoscope, Record And Transfer), a machine for copying knowledge and experiences from person to person. WIN (World Intelligence Organisation) uses this to prime their top undercover agent before sending him into the field on missions which range from foiling international terrorists to recovering a nuclear weapon from beneath the polar ice. So far so good, but in perhaps the most mind-boggling concept ever to reach children's TV, that agent is McClaine's nine-year-old adopted son, Joe. &lt;p&gt; Somehow even as it stays true to the Gerry Anderson techno-fantasy formula of secret organisations, gadgetry, and action-packed adventure full of spectacular explosions and violent death, &lt;I&gt;Joe 90&lt;/I&gt; remains blithely unconscious of its own implications. The missions are as globe-trotting as anything in Anderson's classic &lt;I&gt;Thunderbirds&lt;/I&gt; series, and sometimes Joe does save lives, performing a risky brain operation or rescuing trapped astronauts. Yet even then his criminally irresponsible father brainwashes the lad each episode before placing him in a highly dangerous adult situation. Though the production values remain way ahead of anything else being done on British TV at the time, the question remains how did this ever seem like a good idea? &lt;p&gt; &lt;B&gt;On the DVD:&lt;/B&gt; &lt;I&gt;Joe 90&lt;/I&gt; comes complete in a five-disc box set of the entire 30-episode series. Each disc contains six 25-minute episodes presented, as usual with Gerry Anderson DVDs, behind a lovingly crafted menu. As expected the 4:3 picture quality is superb and the mono sound is full, detailed and without a trace of distortion. Each disc contains several pages of character biography and background information on the show, a photo gallery and varied extras such as location stills or a gallery of promotional images. --&lt;I&gt;Gary S Dalkin&lt;/I&gt;</Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+    </EditorialReviews>
+    </Item><Item>
+    <ASIN>B000059L8B</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Thunderbirds-Are-DVD-Peter-Dyneley/dp/B000059L8B%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB000059L8B</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB000059L8B%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000059L8B</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B000059L8B%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000059L8B</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B000059L8B%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000059L8B</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B000059L8B%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000059L8B</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Actor>Peter Dyneley</Actor>
+      <Actor>Sylvia Anderson</Actor>
+      <Actor>Shane Rimmer</Actor>
+      <Actor>Jeremy Wilkin</Actor>
+      <Actor>Matt Zimmerman</Actor>
+      <Creator Role="Primary Contributor">Peter Dyneley</Creator>
+      <Creator Role="Primary Contributor">Sylvia Anderson</Creator>
+      <Creator Role="Producer">Sylvia Anderson</Creator>
+      <Creator Role="Writer">Sylvia Anderson</Creator>
+      <Creator Role="Editor">Len Walter</Creator>
+      <Creator Role="Producer">Gerry Anderson</Creator>
+      <Creator Role="Writer">Gerry Anderson</Creator>
+      <Creator Role="Producer">John Read</Creator>
+      <Director>David Lane</Director>
+      <Manufacturer>Twentieth Century Fox</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>Thunderbirds Are Go [DVD] [1966]</Title>
+    </ItemAttributes>
+    <EditorialReviews>
+      <EditorialReview>
+        <Source>Amazon.co.uk Review</Source>
+        <Content>&lt;I&gt;Thunderbirds Are Go&lt;/I&gt; followed the remarkable success of the &lt;I&gt;Thunderbirds&lt;/I&gt; television series, bringing the three-dimensional puppet animation adventures of International Rescue to the big screen. Set in the 21st century, there is no attempt to explain the background story: as in the TV show International Rescue is a private family organisation who use hi-tech craft to rescue anyone in peril. Here it is the first manned flight to Mars which is in danger, as International Rescue foils a sabotage attempt at the launch, then race to avert disaster when the spaceship returns to earth. What could have made a 50-minute TV episode is expanded to feature length with Martian "rock monsters" and a surreal dream-sequence involving Alan Tracy, Lady Penelope and "Cliff Richard Jnr" &amp; the Shadows, with a new song performed by the real Cliff and the Shadows. In the cinemas this was competing against another British children's TV SF spin-off, the equally colourful &lt;I&gt;Daleks' Invasion Earth 2150AD&lt;/I&gt;, and would be followed by &lt;I&gt;Thunderbird 6&lt;/I&gt; (1968). Yet apart from more complex model work, a bigger orchestra and even bigger explosions, on TV this plays like a widescreen double-length episode.&lt;p&gt; &lt;B&gt;On the DVD&lt;/B&gt;: The mono sound is powerful, with Barry Gray's stirring music suffering intermittent distortion. Presented in anamorphic widescreen the picture is very good, with strong colours and only minimal grain, though the print does show occasional damage. Unfortunately the original extremely wide 2.74:1 Techniscope image is cropped to more conventional 2.35:1, to the extent that the careful compositions are noticeably damaged, which director David Lane refers to in his joint commentary with producer Sylvia Anderson (who also played Lady Penelope). 35 years after the event their commentary is packed with details of the filming process and full of information about the many problems of and solutions to making an animated feature. Both Anderson fans and budding animators will find this a real education. The original, rather battered, trailer is included, as are galleries of behind the scenes photos, promotional artwork and posters. Altogether it's rather FABulous. &lt;I&gt;--Gary S Dalkin&lt;/I&gt; </Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+    </EditorialReviews>
+    </Item><Item>
+    <ASIN>B001C4QLA6</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Thunderbirds-Complete-Collection-Blu-ray/dp/B001C4QLA6%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB001C4QLA6</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB001C4QLA6%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB001C4QLA6</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B001C4QLA6%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB001C4QLA6</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B001C4QLA6%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB001C4QLA6</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B001C4QLA6%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB001C4QLA6</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Artist>Thunderbirds</Artist>
+      <Manufacturer>ITV Studios Home Entertainment</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>Thunderbirds Complete Collection [Blu-ray]</Title>
+    </ItemAttributes>
+    </Item><Item>
+    <ASIN>B000EMI5CY</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Trumpton-Limited-Edition-Brian-Cant/dp/B000EMI5CY%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB000EMI5CY</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB000EMI5CY%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000EMI5CY</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B000EMI5CY%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000EMI5CY</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B000EMI5CY%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000EMI5CY</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B000EMI5CY%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000EMI5CY</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Actor>Brian Cant</Actor>
+      <Creator Role="Primary Contributor">Brian Cant</Creator>
+      <Creator Role="Writer">Gordon Murray</Creator>
+      <Manufacturer>UCA</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>Trumpton Limited Edition [DVD] [1967]</Title>
+    </ItemAttributes>
+    </Item><Item>
+    <ASIN>B00004WCN7</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Thunderbirds-Volume-DVD-Peter-Dyneley/dp/B00004WCN7%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB00004WCN7</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB00004WCN7%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00004WCN7</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B00004WCN7%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00004WCN7</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B00004WCN7%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00004WCN7</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B00004WCN7%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00004WCN7</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Actor>Peter Dyneley</Actor>
+      <Actor>Shane Rimmer</Actor>
+      <Actor>David Graham</Actor>
+      <Actor>Ray Barrett</Actor>
+      <Actor>Christine Finn</Actor>
+      <Creator Role="Primary Contributor">Peter Dyneley</Creator>
+      <Creator Role="Primary Contributor">Shane Rimmer</Creator>
+      <Creator Role="Writer">Sylvia Anderson</Creator>
+      <Creator Role="Cinematographer">John Read</Creator>
+      <Creator Role="Writer">Gerry Anderson</Creator>
+      <Manufacturer>ITV Studios</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>Thunderbirds: Volume 2 [DVD] [1965]</Title>
+    </ItemAttributes>
+    <EditorialReviews>
+      <EditorialReview>
+        <Source>Product Description</Source>
+        <Content>Thunderbirds Vol 2 DVD
+          Peter Dyneley, Shane Rimmer, David Graham, Ray Barrett, Christine Finn</Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+      <EditorialReview>
+        <Source>Amazon.co.uk Review</Source>
+        <Content>"Filmed in VIDECOLOR [explosions, drum roll, music builds to a climax] and SUPERMARIONATION"! The opening sequence of &lt;I&gt;Thunderbirds&lt;/I&gt; is itself a masterclass in Gerry Anderson's marionette hyperbole: who else would dare to make a virtue out of the fact that (a) the show is in colour and (b) it's got puppets in it? But everything about this series really is epic: &lt;I&gt;Thunderbirds&lt;/I&gt; is action on the grandest scale, pre-dating such high-concept Hollywood vehicles as &lt;I&gt;Armaggedon&lt;/I&gt; by 30 years and more (the acting is better, too), and fetishising gadgets in a way that even the most excessive Bond movies could never hope to rival. Unsurprisingly, it transpires that the visual effects are by Derek Meddings, whose later contributions to Bond movies like &lt;I&gt;The Spy Who Loved Me&lt;/I&gt; and &lt;I&gt;Moonraker&lt;/I&gt; echo his pioneering model work here.&lt;p&gt;As to the characters, the clean-cut Tracey boys take second place in the audiences' affections to their cool machines--the real stars of the show--while comic relief is to be found in the charming company of Lady Penelope and her pink Rolls (number plate FAB1), driven by lugubrious chauffeur Parker, whose "Yes, milady" catch phrase resonated around school playgrounds for decades. (Spare a thought for poor old John Tracey, stuck up in space on Thunderbird 5 with only the radio for company.) The puppet stunt-work is breathtakingly audacious, and every week's death-defying escapade is nail-bitingly choreographed in the very best tradition of disaster movies. First shown in 1964 and now digitally remastered, &lt;I&gt;Thunderbirds&lt;/I&gt; is children's TV that still looks and sounds like big-budget Hollywood.&lt;p&gt;&lt;B&gt;On this DVD&lt;/B&gt;: The four episodes are: "Edge of Impact", "Day of Disaster", Thirty Minutes After Noon" and "Desperate Intruder".</Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+    </EditorialReviews>
+    </Item><Item>
+    <ASIN>B0000CDUWQ</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Gerry-Anderson-Classics-Supermarionation-Stingray/dp/B0000CDUWQ%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB0000CDUWQ</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB0000CDUWQ%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0000CDUWQ</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B0000CDUWQ%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0000CDUWQ</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B0000CDUWQ%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0000CDUWQ</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B0000CDUWQ%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0000CDUWQ</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Actor>Don Mason</Actor>
+      <Actor>Robert Easton</Actor>
+      <Actor>Ray Barrett</Actor>
+      <Actor>Lois Maxwell</Actor>
+      <Actor>David Graham</Actor>
+      <Creator Role="Primary Contributor">Don Mason</Creator>
+      <Creator Role="Primary Contributor">Robert Easton</Creator>
+      <Creator Role="Producer">Sylvia Anderson</Creator>
+      <Manufacturer>ITV Studios</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>3 Gerry Anderson Classics - Supermarionation - Joe 90 / Captain Scarlet / Stingray [DVD] [1964]</Title>
+    </ItemAttributes>
+    </Item><Item>
+    <ASIN>B00004WCN6</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Thunderbirds-Volume-DVD-Peter-Dyneley/dp/B00004WCN6%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB00004WCN6</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB00004WCN6%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00004WCN6</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B00004WCN6%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00004WCN6</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B00004WCN6%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00004WCN6</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B00004WCN6%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB00004WCN6</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Actor>Peter Dyneley</Actor>
+      <Actor>Shane Rimmer</Actor>
+      <Actor>David Graham</Actor>
+      <Actor>Ray Barrett</Actor>
+      <Actor>Christine Finn</Actor>
+      <Creator Role="Primary Contributor">Peter Dyneley</Creator>
+      <Creator Role="Primary Contributor">Shane Rimmer</Creator>
+      <Creator Role="Writer">Sylvia Anderson</Creator>
+      <Creator Role="Cinematographer">John Read</Creator>
+      <Creator Role="Writer">Gerry Anderson</Creator>
+      <Manufacturer>ITV Studios Home Entertainment</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>Thunderbirds: Volume 1 [DVD] [1965]</Title>
+    </ItemAttributes>
+    <EditorialReviews>
+      <EditorialReview>
+        <Source>Product Description</Source>
+        <Content>Thunderbirds Vol 1 DVD
+          U Cert</Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+      <EditorialReview>
+        <Source>Amazon.co.uk Review</Source>
+        <Content>"Filmed in VIDECOLOR [explosions, drum roll, music builds to a climax] and SUPERMARIONATION"! The opening sequence of &lt;I&gt;Thunderbirds&lt;/I&gt; is itself a masterclass in Gerry Anderson's marionette hyperbole: who else would dare to make a virtue out of the fact that (a) the show is in colour and (b) it's got puppets in it? But everything about this series really is epic: &lt;I&gt;Thunderbirds&lt;/I&gt; is action on the grandest scale, pre-dating such high-concept Hollywood vehicles as &lt;I&gt;Armaggedon&lt;/I&gt; by 30 years and more (the acting is better, too), and fetishising gadgets in a way that even the most excessive Bond movies could never hope to rival. Unsurprisingly, it transpires that the visual effects are by Derek Meddings, whose later contributions to Bond movies like &lt;I&gt;The Spy Who Loved Me&lt;/I&gt; and &lt;I&gt;Moonraker&lt;/I&gt; echo his pioneering model work here. &lt;p&gt;As to the characters, the clean-cut Tracey boys take second place in the audiences' affections to their cool machines--the  real stars of the show--while comic relief is to be found in the charming company of Lady Penelope and her pink Rolls (number plate FAB1), driven by lugubrious chauffeur Parker, whose "Yes, milady" catchphrase resonated around school playgrounds for decades. (Spare a thought for poor old John Tracey, stuck up in space on Thunderbird 5 with only the radio for company.) The puppet stunt-work is breathtakingly audacious, and every week's death-defying escapade is nailbitingly choreographed in the very best tradition of disaster movies. First shown in 1964 and now digitally remastered, &lt;I&gt;Thunderbirds&lt;/I&gt; is children's TV that still looks and sounds like big-budget Hollywood.&lt;p&gt; &lt;B&gt;On this DVD&lt;/B&gt;: International Rescue's very first adventure provides a template for all the rest: in "Trapped in the Sky" an experimental new aircraft becomes the target of an evil Bond-style megalomaniac who wants to get his hands on all the neat pieces of kit operated by the Tracey siblings. The show introduces, in fetishistic detail, the recurring set-pieces: Thunderbird 1 taking off from the roll-back swimming pool, which pod will Thunderbird 2 use this week--the mole or the submarine perhaps?--and so on. Nostalgia fans will be pleased to learn that despite digital remastering the puppet strings are still in evidence, and no amount of high-tech restoration could remove the clunky expository dialogue:&lt;p&gt;  &lt;blockquote&gt; Stewardess: "It's the maiden flight of the new atomic-powered Fireflash." &lt;br&gt; Passenger: "Isn't that the new aircraft that flies six times the speed of sound?" &lt;br&gt; Stewardess: "That's right, but don't worry: it's perfectly safe."&lt;br&gt; [Cut to: interior, Fireflash landing gear, a device clearly labelled "Auto-Bomb Detonator Unit"]&lt;br&gt; Sinister bad guy (talking to himself for no readily apparent reason): "Perfect. Enough explosives to smash the Atomic Reactor." &lt;/blockquote&gt;&lt;p&gt;In the second episode, "Pit of Peril", an absurdly impractical US Army vehicle falls into the eponymous pit, necessitating use of pod five, the mole. Joy! Lady Penelope indulges in some James-Bond-style counter-espionage measures in the third episode, "The Perils of Penelope", while Parker indulges some of his famous Eliza Dolittle-isms; although he is trumped by the Cary Grant sound-a-like character Sir Jeremy Hodge (or 'odge as Parker would have it), whose response to a crisis is, "I say, open the door, we're British!". Then it's back to the action for the fourth episode, "Terror in New York City", in which poor Virgil is shot down by the US Navy in Thunderbird 2 before the boys must rescue an unscrupulous newshound from the wreckage of the Empire State Building (featuring the first appearance of their very own yellow submarine, Thunderbird 4) --&lt;I&gt;Mark Walker&lt;/I&gt;</Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+    </EditorialReviews>
+    </Item><Item>
+    <ASIN>B000059L8C</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Thunderbird-6-The-Movie-DVD/dp/B000059L8C%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB000059L8C</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB000059L8C%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000059L8C</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B000059L8C%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000059L8C</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B000059L8C%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000059L8C</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B000059L8C%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000059L8C</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Actor>Peter Dyneley</Actor>
+      <Actor>Sylvia Anderson</Actor>
+      <Actor>Shane Rimmer</Actor>
+      <Actor>Jeremy Wilkin</Actor>
+      <Actor>Matt Zimmerman</Actor>
+      <Creator Role="Primary Contributor">Peter Dyneley</Creator>
+      <Creator Role="Primary Contributor">Sylvia Anderson</Creator>
+      <Creator Role="Producer">Sylvia Anderson</Creator>
+      <Creator Role="Writer">Sylvia Anderson</Creator>
+      <Creator Role="Cinematographer">Harry Oakes</Creator>
+      <Creator Role="Editor">Len Walter</Creator>
+      <Creator Role="Producer">Gerry Anderson</Creator>
+      <Creator Role="Writer">Gerry Anderson</Creator>
+      <Director>David Lane</Director>
+      <Manufacturer>Twentieth Century Fox</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>Thunderbird 6: The Movie [DVD]</Title>
+    </ItemAttributes>
+    <EditorialReviews>
+      <EditorialReview>
+        <Source>Product Description</Source>
+        <Content>Gerry Anderson's
+          -	Thunderbird 6
+          -	The Movie
+          -	Benelux Version
+          
+          -	Maak je klaar voor wederom een actievol avontuur van het verbazingwekkende internationale reddingsteam: opwinding, mysterie en spanning dienen zich aan wanneer de wereldberoemde elektronische poppen geconfronteerd worden met een complot tot het stelen van hun fantastische vloot van reddingstoestellen.
+          
+          -	De ellende begint wanneer reddingsteamlid Alan Tracy het plan heeft opgepakt om op vakantie te gaan met Lady Penelope Creighton-Ward, haar chauffeur Parker en hun vriend Tin-Tin. Eenmaal aan boord van luchtschip One komen zij tot de ontdekking dat hun hoofdkwartier wordt afgeluisterd. Operatie 'Ambush' is van start gegaan en al spoedig ontdekt Alan dat een vals bericht Thunderbirds One en Two, bestuurd door zijn broers Scott en Virgil, recht op een hinderlaag afstuurt in Casablanca! Op het internationale oofdkwartier moeten de miljonair en ex-astronaut Gordon Tracy en zijn assistent Brains een plan bedenken om een ramp te voorkomen en snel! Hoe kunnen zij de gijzelaars aan boord van het luchtschip One bevrijden, de Thunderbirds redden en de criminelen voor het gerecht laten brengen? Je zult van iedere actievolle minuut genieten om hier achter te komen in dit spannende avontuur. Dus riemen vast en klaar voor de start -- met Thunderbirds 6!
+          
+          -	Extra's / Bonus
+          o	Interactieve Menu's
+          o	Directe scenetoegang
+          o	Originele Bioscooptrailer
+          o	Audio Commentaar van regisseur
+          o	Photo Gallery
+          
+          -	Regie: David Lane
+          -	Screenplay: Gerry Anderson,Sylvia Anderson
+          -	Producent: Sylvia Anderson
+          -	Distributie: Blokkes V.O.F.
+          
+          -	Format: DVD 5
+          -	Studio/Label: MGM Home
+          -	DVD-Erscheinungstermin/Realeased: 2004
+          -	Laufzeit/Running Time: ca. 86 Min.
+          -	Bild/Picture Format: 2.35:1
+          -	Ton/Sound: Mono
+          -	Versie/Version: Benelux
+          -	Sprache/Language: English (Anglais)
+          -	Untertitel/Subtitle: English, Netherlands, Deutsch (German), Francais, Italien, Espagnol, u.a.
+          -	Untertitel für Hörgeschädigte: English, DeutschLändercode/Regional Code: 2</Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+      <EditorialReview>
+        <Source>Amazon.co.uk Review</Source>
+        <Content>&lt;I&gt;Thunderbird 6&lt;/I&gt; was the second feature spin-off from the hit Gerry Anderson puppet-animation TV series &lt;I&gt;Thunderbirds&lt;/I&gt;, and revolved around a new addition to the line-up of International Rescue's five emergency craft. The plot sees Lady Penelope, Alan, Tin-Tin and Parker as the only passengers on the maiden, round-the-world flight of a futuristic airship, which is hijacked in a bid to capture Thunderbirds 1 and 2. From the moment Alan arrives on a Bond-style jetpack, the film veers away from the TV show into espionage adventure territory, and while the only people International Rescue rescue are their own members, they kill a fair number of baddies. The global tour means there are more locations than ever, and though the story takes a long time developing, the &lt;I&gt;Die Hard&lt;/I&gt;-on-an-airship finale delivers the most explosive set piece of Gerry Anderson's career. As for &lt;I&gt;Thunderbird 6&lt;/I&gt;, opinion remains divided as to whether it's an ingenious twist or a disappointing gimmick, but the movie's blend of model and live-action footage results in two superbly staged stunt sequences. Predecessor &lt;I&gt;Thunderbirds Are Go&lt;/I&gt; (1968) is also available, and the Andersons would make one further feature film, &lt;I&gt;Journey to the Far Side of the Sun&lt;/I&gt; (1969). &lt;p&gt; &lt;B&gt;On the DVD&lt;/B&gt;: The anamorphically enhanced 2.35:1 ratio image is sharp, full of detail and boasting well-saturated colours, only the briefest moments of damage and some graininess revealing the age of the print. The film was shot in ultra-wide Techniscope, and there are moments were it is very obvious that parts of the original 2.74:1 picture have been cropped at the sides. The mono sound is powerful with no hint of distortion. Extras are the original trailer, galleries of behind the scenes photos and promotional artwork, though the highlight is the highly informative commentary by Sylvia Anderson and director David Lane where they note how they made this film and worked on &lt;I&gt;Captain Scarlet&lt;/I&gt; simultaneously.&lt;I&gt;--Gary S Dalkin&lt;/I&gt; </Content>
+        <IsLinkSuppressed>0</IsLinkSuppressed>
+      </EditorialReview>
+    </EditorialReviews>
+    </Item><Item>
+    <ASIN>B000063BMR</ASIN>
+    <DetailPageURL>http://www.amazon.co.uk/Trumpton-Stories-DVD-Brian-Cant/dp/B000063BMR%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB000063BMR</DetailPageURL>
+    <ItemLinks>
+      <ItemLink>
+        <Description>Add To Wishlist</Description>
+        <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB000063BMR%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000063BMR</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>Tell A Friend</Description>
+        <URL>http://www.amazon.co.uk/gp/pdp/taf/B000063BMR%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000063BMR</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Customer Reviews</Description>
+        <URL>http://www.amazon.co.uk/review/product/B000063BMR%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000063BMR</URL>
+      </ItemLink>
+      <ItemLink>
+        <Description>All Offers</Description>
+        <URL>http://www.amazon.co.uk/gp/offer-listing/B000063BMR%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB000063BMR</URL>
+      </ItemLink>
+    </ItemLinks>
+    <ItemAttributes>
+      <Actor>Brian Cant</Actor>
+      <Creator Role="Primary Contributor">Brian Cant</Creator>
+      <Creator Role="Writer">Gordon Murray</Creator>
+      <Manufacturer>Firefly</Manufacturer>
+      <ProductGroup>DVD</ProductGroup>
+      <Title>Trumpton - Stories from Trumpton [DVD] [1967]</Title>
+    </ItemAttributes>
+    </Item></Items>
+</ItemSearchResponse>
+<?xml version="1.0" encoding="utf-8"?>

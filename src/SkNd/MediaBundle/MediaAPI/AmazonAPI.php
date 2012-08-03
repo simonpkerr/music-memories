@@ -30,10 +30,44 @@ class AmazonAPI implements IAPIStrategy {
         
         $this->asr = $amazon_signed_request; 
         
+        /* valid responses are -
+         * Valid values include [
+    		'Tags', 'Help', 'ListMinimum', 'VariationSummary', 'VariationMatrix',
+    		'TransactionDetails', 'VariationMinimum', 'VariationImages',
+    		'PartBrandBinsSummary', 'CustomerFull', 'CartNewReleases',
+    		'ItemIds', 'SalesRank', 'TagsSummary', 'Fitments',
+    		'Subjects', 'Medium', 'ListmaniaLists',
+    		'PartBrowseNodeBinsSummary', 'TopSellers', 'Request',
+    		'HasPartCompatibility', 'PromotionDetails', 'ListFull',
+    		'Small', 'Seller', 'OfferFull', 'Accessories',
+    		'VehicleMakes', 'MerchantItemAttributes', 'TaggedItems',
+    		'VehicleParts', 'BrowseNodeInfo', 'ItemAttributes',
+    		'PromotionalTag', 'VehicleOptions', 'ListItems', 'Offers',
+    		'TaggedGuides', 'NewReleases', 'VehiclePartFit',
+    		'OfferSummary', 'VariationOffers', 'CartSimilarities',
+    		'Reviews', 'ShippingCharges', 'ShippingOptions', 'EditorialReview',
+    		'CustomerInfo', 'PromotionSummary', 'BrowseNodes',
+    		'PartnerTransactionDetails', 'VehicleYears', 'SearchBins',
+    		'VehicleTrims', 'Similarities', 'AlternateVersions',
+    		'SearchInside', 'CustomerReviews', 'SellerListing',
+    		'OfferListings', 'Cart', 'TaggedListmaniaLists',
+    		'VehicleModels', 'ListInfo', 'Large', 'CustomerLists',
+    		'Tracks', 'CartTopSellers', 'Images', 'Variations',
+    	'RelatedItems','Collections'
+    	].
+         * 
+         *  ['Request',
+         * * 'Small',
+         * 'Medium',
+         * 'Large',
+         * '
+         * 'VariationMinimum','EditorialReview',].
+         */
+        
         $this->amazonParameters = array(
                 "Operation"     => $this->ITEM_SEARCH,
-                //"ResponseGroup" => "ItemAttributes,SalesRank,Similarities,Request",
-                "ResponseGroup" => "Images,ItemAttributes,SalesRank,Request",
+                //"ResponseGroup" => "Images,ItemAttributes,SalesRank,Request",
+                "ResponseGroup" => "Images,Small,EditorialReview,Request",
                 "Condition"     => "All",
                 //"ProductGroup"  => "Music",
                 "MerchantId"    => "All",

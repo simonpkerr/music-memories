@@ -273,6 +273,7 @@ div#headerMediaSelection a.button {
     position: relative;
     display: block;
     z-index: 3;
+    width: 11.4em;
 }
 
 div#headerMediaSelection ul li form {
@@ -449,17 +450,13 @@ div#content dt {
     width: 22em;
 }
 
-
-
-
-
 /*----------- listings ---------*/
 
-li.listing {
-    margin: 0.5em;
-    border-bottom: 1px solid #ddd;
-    padding: 0.5em;
+div.full-width ul#listings > li {
+    float: left;
+    width: 31.9%;
 }
+
 
 /********** FOOTER ***********/
 .borderradius div#footer {

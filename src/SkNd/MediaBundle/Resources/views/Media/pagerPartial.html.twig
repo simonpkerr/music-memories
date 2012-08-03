@@ -1,5 +1,5 @@
 <p>Page {{currentPage}} of {{pagerParams['totalPages']}}</p>
-<ul class="pager">
+<ul class="pager cf">
 {% if currentPage != 1 %}      
         {# the merge filter merges 2 arrays together #}
         <li><a class="button" href="{{path('search', pagerParams['pagerRouteParams']|merge({'page':1}))}}">Page 1</a></li>
