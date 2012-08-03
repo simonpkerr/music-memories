@@ -2,15 +2,15 @@
 <ul class="pager">
 {% if currentPage != 1 %}      
         {# the merge filter merges 2 arrays together #}
-        <li><a href="{{path('search', pagerParams['pagerRouteParams']|merge({'page':1}))}}">Page 1</a></li>
-        <li><a href="{{path('search', pagerParams['pagerRouteParams']|merge({'page':currentPage-1}))}}">Previous Page</a></li>
+        <li><a class="button" href="{{path('search', pagerParams['pagerRouteParams']|merge({'page':1}))}}">Page 1</a></li>
+        <li><a class="button" href="{{path('search', pagerParams['pagerRouteParams']|merge({'page':currentPage-1}))}}">Previous Page</a></li>
 {% endif %}   
 {# .. is short hand for the range function that loops from a lower to upper bound #}        
 {% for pagerLink in pagerParams['pagerLowerBound']..pagerParams['pagerUpperBound']  %}
-    <li {% if pagerLink == currentPage %} class="selected" {%endif%}><a href="{{path('search', pagerParams['pagerRouteParams']|merge({'page':pagerLink}))}}">{{pagerLink}}</a></li></li>
+    <li><a class="button {% if pagerLink == currentPage %}selected{%endif%}" href="{{path('search', pagerParams['pagerRouteParams']|merge({'page':pagerLink}))}}">{{pagerLink}}</a></li></li>
 {% endfor %}
 {% if not(currentPage / pagerParams['totalPages'] == 1) %}
-        <li><a href="{{path('search', pagerParams['pagerRouteParams']|merge({'page':currentPage+1}))}}">Next Page</a></li>
+        <li><a class="button" href="{{path('search', pagerParams['pagerRouteParams']|merge({'page':currentPage+1}))}}">Next Page</a></li>
 {% endif %}  
         
 </ul>

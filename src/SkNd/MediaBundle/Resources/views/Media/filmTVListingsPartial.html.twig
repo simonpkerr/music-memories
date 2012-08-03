@@ -9,9 +9,9 @@ with
 %}
 </div>    
 
-<ul>
+<ul id="listings">
 {% for item in response.Item %}
-<li class="listing">
+<li>
     <dl>
         <dt><a title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">{{item.ItemAttributes.Title}}</a></dt>
         <dd>

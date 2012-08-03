@@ -9,7 +9,20 @@
     {% endif %}
 </h1>
 {% if response is defined %}
-<div id="searchResults" class="two-thirds-width fl">
+
+{% if recommendations is not null %}
+<div id="recommendations" class="third-width fr">
+    <h2>Recommendations</h2>
+    <p>We&rsquo;ve found some Memory Walls that are associated with the decade you chose. Here they are &hellip;</p>
+    {% include 'SkNdUserBundle:MemoryWall:memoryWallGalleryPartial.html.twig' with {
+        'mws' : recommendations,
+        'pageTitle': 'All Public'
+        }
+    %}
+</div>
+{% endif %}
+
+<div id="searchResults" class="{% if recommendations is not null %}two-thirds-width{% else %}full-width{% endif %} fl">
     
     {% if media == 'music' %}
         {% include 'SkNdMediaBundle:Media:musicListingsPartial.html.twig'%}
@@ -31,17 +44,7 @@
         
 </div>
 
-{% if recommendations is not null %}
-<div id="recommendations" class="third-width fl">
-    <h2>Recommendations</h2>
-    <p>We&rsquo;ve found some Memory Walls that are associated with the decade you chose. Here they are &hellip;</p>
-    {% include 'SkNdUserBundle:MemoryWall:memoryWallGalleryPartial.html.twig' with {
-        'mws' : recommendations,
-        'pageTitle': 'All Public'
-        }
-    %}
-</div>
-{% endif %}
+
 {% endif %}
 
 {% endblock %}

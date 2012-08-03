@@ -32,7 +32,7 @@
 }
 
 .two-thirds-width {
-    width: 64%;
+    width: 65.9%;
 }
 
 .full-width {
@@ -102,30 +102,142 @@ div#header {
     height: 6em;
 }
 
+/*------ sm sharing -----*/
+div#sm-sharing {
+    position: relative;
+    margin: 5em auto;
+    width: 61.3em; /* equiv of 980px */
+    min-width: 740px;
+    max-width: 980px; 
+}
+
+div#sm-sharing > ul {
+    position: absolute;
+    margin: 7.4em 0 0 -3em;
+}
+
+div#sm-sharing li {
+    display: list-item;
+    background-color: #D5E1E4;
+    border: 2px solid #FFFFFF;
+    margin-bottom: 0.3em;
+    padding: 0.3em;
+    width: 4em;
+}
+
+.borderradius div#sm-sharing li {
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.cssgradients div#sm-sharing li {
+    background-image: linear-gradient(top, rgb(213,225,228) 0%, rgb(237,242,242) 100%);
+    background-image: -o-linear-gradient(top, rgb(213,225,228) 0%, rgb(237,242,242) 100%);
+    background-image: -moz-linear-gradient(top, rgb(213,225,228) 0%, rgb(237,242,242) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(213,225,228) 0%, rgb(237,242,242) 100%);
+    background-image: -ms-linear-gradient(top, rgb(213,225,228) 0%, rgb(237,242,242) 100%);
+
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            left bottom,
+            color-stop(0, rgb(213,225,228)),
+            color-stop(1, rgb(237,242,242))
+    );
+}
+
+.boxshadow div#sm-sharing li {
+    -moz-box-shadow: 0 0 3px rgba(5, 5, 5, 0.3);
+    -webkit-box-shadow: 0 0 3px rgba(5, 5, 5, 0.3);
+    box-shadow: 0 0 3px rgba(5, 5, 5, 0.3);
+}
+
+div#sm-sharing li:hover {
+    margin-left: -0.5em;
+}
+
+div#sm-sharing li img {
+    display: block;
+    width: auto;
+}
 
 /*------ logo -------------------------*/
 a#siteLogo img {
     float: left;
-    width: 361px;
-    margin: -37px 2em 2em -34px;
+    /*width: 361px;*/
+    width: 354px;
+    /*margin: -37px 2em 2em -34px;*/
+    margin: -22px 2em 2em -27px;
+}
+
+/*----- header drop down panels ------*/
+ul#loginPanel li ul,
+ul#memoryWalls li ul,
+div#headerMediaSelection ul li form
+{
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+    padding-top: 2em;
+    z-index: 1;
+}
+
+ul#loginPanel li:hover ul,
+ul#memoryWalls li:hover ul,
+div#headerMediaSelection ul li:hover form {
+    left: 0;
+    top: 0;
+}
+
+ul#loginPanel li ul,
+ul#memoryWalls li ul,
+div#headerMediaSelection ul li form {
+    background-color: #9AB9E8;
+    border: 2px solid #fff;
+}
+
+.borderradius ul#loginPanel li ul,
+.borderradius ul#memoryWalls li ul,
+.borderradius div#headerMediaSelection ul li form {
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.boxshadow div#header li ul,
+.boxshadow div#header li form {
+    box-shadow: 0 0 5px rgba(15, 15, 15, 0.52);
+    -moz-box-shadow: 0 0 5px rgba(15, 15, 15, 0.52);
+    -webkit-box-shadow: 0 0 5px rgba(15, 15, 15, 0.52);
+}
+
+ul#loginPanel li ul a,
+ul#memoryWalls li ul a {
+    float: none;
+    padding: 5px 7px;
+    margin: 0.3em 0 0.3em 0;
+    text-align: center;
+    min-width: 6em;
+}
+
+ul#loginPanel li ul li:first-child a,
+ul#memoryWalls li ul li:first-child a {
+    border-bottom: 1px solid #fff;
 }
 
 /*------ login -------------------------*/
 ul#loginPanel {
     position: relative;
-    /*margin-left: 1em;*/
+    margin-left: 1em;
 }
 
 ul#loginPanel > li {
     float: left;
-    margin-left: 1em;
 }
 
 ul#loginPanel li a {
     margin: 0;
-    color: #fff;
+    color: inherit;
 }
-
 
 ul#loginPanel span {
     position: relative;
@@ -137,93 +249,43 @@ ul#loginPanel span {
     display: block;
 }
 
-ul#loginPanel li ul {
-    position: absolute;
-    left: -9999em;
-    top: -9999em;
-    padding-top: 2em;
-    z-index: 1;
-   
-}
-
-ul#loginPanel li:hover ul {
-    left: 1em;
-    top: 0;
-        
-}
-
-ul#loginPanel li ul {
-    background-color: #9AB9E8;
-    border: 2px solid #fff;
-    border-top: none;
-}
-
-.borderradius ul#loginPanel li ul {
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-}
-
-ul#loginPanel li ul a {
-    float: none;
-    padding: 5px 7px;
-    margin: 0.3em 0 0.3em 0;
-    text-align: center;
-    min-width: 6em;
-}
-
-ul#loginPanel li ul li:first-child a {
-    border-bottom: 1px solid #fff;
-}
-
 /*------ memory wall links ------------*/
 ul#memoryWalls {
     float: right;
     position: relative;
-    margin: 0;
+    margin: 0 0 0 1em;
+    z-index: 1;
 }
 
 ul#memoryWalls li a {
     float: left;
-    padding: 5px;
+    padding: 5px 7px;
     width: 9em;
 }
 
-ul#memoryWalls li ul {
-    position: absolute;
-    left: -9999em;
-    top: -9999em;
-    padding-top: 2em;
-    z-index: 1;
-    
+/*----------- quick search ----------*/
+div#headerMediaSelection {
+    position: relative;
+    z-index: 2;
 }
 
-ul#memoryWalls li:hover ul {
-    left: 0;
-    top: 0;
-        
+div#headerMediaSelection a.button {
+    position: relative;
+    display: block;
+    z-index: 3;
 }
 
-ul#memoryWalls li ul {
-    background-color: #9AB9E8;
-    border: 2px solid #fff;
-    border-top: none;
+div#headerMediaSelection ul li form {
+    padding: 3em 10px 1em 10px;
+    width: 11em;
 }
 
-.borderradius ul#memoryWalls li ul {
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-}
 
-ul#memoryWalls li ul a {
-    float: none;
-    padding: 5px;
-    margin: 0.3em 0 0.3em 0;
-    text-align: center;
-    color: #fff;
-}
+/********** FLASH MESSAGES ***********/
 
-ul#memoryWalls li ul li:first-child a {
-    border-bottom: 1px solid #fff;
+div.flashMessages {
+    margin: -10px 0;
+    width: 65.2%;
 }
 
 /********** CONTENT ***********/
@@ -325,7 +387,11 @@ div#contentSearches ul:first-child li.selected > div
     left: 0;
 }
 
-/*--- ALL FORMS ---*/
+/*--- ALL CONTENT FORMS ---*/
+form input[type="text"] {
+    width: 95%;
+}
+
 div#content form label {
     float: left;
     text-align: right;
@@ -367,6 +433,24 @@ div#news {
 div#news li span {
     font-size: 0.85em;
 }
+
+/*---------- profile page --------*/
+
+/*----------- admins dl's ---------*/
+div#content dt,
+div#content dd {
+    margin-bottom: 1em;
+}
+
+div#content dt {
+    float: left;
+    margin-right: 20px;
+    text-align: right;
+    width: 22em;
+}
+
+
+
 
 
 /*----------- listings ---------*/
