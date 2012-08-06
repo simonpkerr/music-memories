@@ -32,23 +32,6 @@ ol.bullet-list li {
     list-style-type: decimal;
 }
 
-body {
-    background-color: #CEDEE8;
-}
-
-div#wrapper {
-    min-width: 250px;
-    border: 2px solid #E5961D;
-    background-color: #fff;
-    margin: 10px;
-    padding: 10px;
-}
-
-.borderradius div#wrapper {
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-}
-
 .search-form-label {
     position: absolute;
     left: -9999em;
@@ -60,7 +43,12 @@ div.errors {
     font-size: 0.9em;
 }
 
-/********** FONT STYLES ***********/
+strong {
+    font-weight: bold;
+}
+
+
+/********** LINK FONT STYLES ***********/
 a {
     color: #29478D;
     text-decoration: none;
@@ -165,7 +153,7 @@ input[type="submit"] {
     border: 2px solid #fff;
     cursor: pointer;
     color: #fff;
-    font-weight: normal;
+    font-weight: bold;
     padding: 5px 7px;
     text-decoration: none;
     text-align: center;
@@ -259,6 +247,24 @@ div#content input#_submit {
     -webkit-box-shadow: 0 0 5px rgba(15,15,15,0);
     box-shadow: 0 0 5px rgba(15,15,15,0);
 }
+/********** CONTAINERS *********/
+
+body {
+    background-color: #CEDEE8;
+}
+
+div#wrapper {
+    min-width: 250px;
+    border: 2px solid #E5961D;
+    background-color: #fff;
+    margin: 10px;
+    padding: 10px;
+}
+
+.borderradius div#wrapper {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
 
 
 /********** HEADER ***********/
@@ -285,6 +291,7 @@ a#siteLogo img {
     min-width: 177px;
     width: 60%;
     margin: -20px 0 1em -15px;
+    display: none;
 }
 
 /*------ memory wall links ------------*/
@@ -298,14 +305,9 @@ ul#memoryWalls li a  {
     position: relative;
     z-index: 2;
     color: #fff;
-    text-transform: lowercase;
     display: block;
+    font-weight: bold;
 }
-
-ul#memoryWalls li ul a  {
-    color: inherit;
-}
-
 
 /*------- log in panel --------------*/
 ul#loginPanel {
@@ -413,12 +415,27 @@ div#content div.pagingControls a {
     margin: 0 5px 0 0;
 }
 
-div#searchResults ul#listings {
+ul#listings {
     margin-top: 20px;
 }
 
-div#searchResults ul#listings li {
+ul#listings > li {
+    border: 2px solid #ACC5EC;
+    background: #fff;
+}
 
+.borderradius ul#listings > li {
+    -moz-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+}
+
+ul#listings > li > div {
+    padding: 20px;
+}
+
+ul#listings > li img {
+    float: left;
+    margin-right: 20px;
 }
 
 

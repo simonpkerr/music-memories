@@ -36,7 +36,7 @@
 }
 
 .full-width {
-    width: 98%;
+    width: 100%;
 }
 
 .left,
@@ -225,18 +225,16 @@ ul#memoryWalls li ul li:first-child a {
 }
 
 /*------ login -------------------------*/
-ul#loginPanel {
-    position: relative;
-    margin-left: 1em;
-}
-
 ul#loginPanel > li {
     float: left;
+    margin-left: 20px;
+    position: relative;
 }
 
 ul#loginPanel li a {
     margin: 0;
-    color: inherit;
+   color: #fff;
+   font-weight: bold;
 }
 
 ul#loginPanel span {
@@ -452,10 +450,72 @@ div#content dt {
 
 /*----------- listings ---------*/
 
-div.full-width ul#listings > li {
-    float: left;
-    width: 31.9%;
+div#searchResults ul#listings {
+    margin: 20px 0 0 -20px;
 }
+
+ul#listings > li {
+    float: left;
+    height: 12.5em;
+    margin: 0 0 20px 20px;
+}
+
+ul#listings > li > div {
+    float: left;
+    width: 75%;  
+    
+}
+
+ul#listings > li > ul.actions {
+    height: 12.5em;
+    float: right;
+    width: 3.6em;
+    text-align: center;
+    background-color: #ACC5EC;
+}
+
+
+.borderradius ul#listings > li > ul.actions {
+    -moz-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+}
+
+ul.actions > li {
+    border-top: 1px solid #FFFFFF;
+    padding: 2.3em 0 5px 0;
+    position: relative;       
+}
+
+ul.actions > li:first-child {
+    border-top: none;
+}
+
+ul.actions > li > a {
+    font-weight: bold;
+    color: #fff;
+    font-size: 0.7em;
+    text-transform: lowercase;
+       
+}
+
+ul.actions li ul {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+}
+
+
+/* if no recommendations exist display each listing as half-width */
+div.full-width ul#listings > li {
+    width: 47.5%;
+}
+
+/* if recommendations exist display each listing as 2/3 width */
+div.two-thirds-width ul#listings > li {
+    width: 98.9%;
+}
+
+
 
 
 /********** FOOTER ***********/

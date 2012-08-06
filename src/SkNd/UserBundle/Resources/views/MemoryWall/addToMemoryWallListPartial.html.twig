@@ -1,11 +1,16 @@
-{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-<li>
-    <ul class="userMemoryWalls">
-    {% for mw in app.user.memoryWalls %}
-    <li><a href="{{path('memoryWallAddMediaResource', {'slug': mw.slug, 'api': api, 'id':itemId })}}" title="add &ldquo;{{itemTitle}}&rdquo; to your memory wall"><span>Add this to</span> <span><strong>&ldquo;{{ mw.name }}&rdquo;</strong></span></a></li>
-    {% endfor %}
+<li class="add-it">
+    <a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId })}}" class="add-it" title="Add this to a Memory wall">Add</a>
+    <ul class="userMemoryWalls">    
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% for mw in app.user.memoryWalls %}
+        <li>
+            <a href="{{path('memoryWallAddMediaResource', {'slug': mw.slug, 'api': api, 'id':itemId })}}" title="add &ldquo;{{itemTitle}}&rdquo; to your memory wall"><span>Add this to</span> <span><strong>&ldquo;{{ mw.name }}&rdquo;</strong></span></a>
+        </li>
+        {% endfor %}
+    {% else %}
+        <li>
+            <a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId })}}" title="add &ldquo;{{itemTitle}}&rdquo; to your memory wall">Add this to your Memory Wall</a>
+        </li>
+    {% endif %}
     </ul>
 </li>
-{% else %}
-    <li><a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId })}}" title="add &ldquo;{{itemTitle}}&rdquo; to your memory wall">Add this to your Memory Wall</a></li>
-{% endif %}

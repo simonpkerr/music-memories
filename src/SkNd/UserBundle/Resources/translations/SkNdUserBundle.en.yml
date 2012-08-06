@@ -1,15 +1,15 @@
 memoryWall_name: Name
 memoryWall_description: Description
 memoryWall_associatedDecade: Associated decade
-memoryWall_isPublic: Memory Wall is public
+memoryWall_isPublic: Memory wall is public
 
 memoryWall:
   links:
-    public_index: Memory Walls
+    public_index: Memory walls
     personal_index: My walls
     add_wall: Add a new wall
   create:
-    submit: Create a new Memory Wall
+    submit: Create a new Memory wall
     flash:
       success: Success! Now, get started adding loads of cool stuff to your new Memory Wall
       fail: Oh dear...A bit of a problem. Please fix it and try again 
