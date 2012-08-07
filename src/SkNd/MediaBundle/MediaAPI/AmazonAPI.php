@@ -67,7 +67,8 @@ class AmazonAPI implements IAPIStrategy {
         $this->amazonParameters = array(
                 "Operation"     => $this->ITEM_SEARCH,
                 //"ResponseGroup" => "Images,ItemAttributes,SalesRank,Request",
-                "ResponseGroup" => "Images,Small,EditorialReview,Request",
+                //"ResponseGroup" => "Images,Small,EditorialReview,Request",
+                "ResponseGroup" => "Images,ItemAttributes,Request",
                 "Condition"     => "All",
                 //"ProductGroup"  => "Music",
                 "MerchantId"    => "All",
@@ -161,7 +162,8 @@ class AmazonAPI implements IAPIStrategy {
     public function getDetails(array $params){
         $this->amazonParameters = array_merge($params, array(
                'Operation'          =>      $this->ITEM_LOOKUP,
-               'ResponseGroup'      =>      'Images,ItemAttributes,SalesRank,Request,Similarities',
+               //'ResponseGroup'      =>      'Images,ItemAttributes,Request,Similarities,EditorialReview',
+               'ResponseGroup'      =>      'Images,ItemAttributes,Request,Similarities',
  
         ));
 

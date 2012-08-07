@@ -9,7 +9,7 @@
         {% endfor %}
     {% else %}
         <li>
-            <a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId })}}" title="add &ldquo;{{itemTitle}}&rdquo; to your memory wall">Add this to your Memory Wall</a>
+            <strong><a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId })}}" title="add &ldquo;{{itemTitle}}&rdquo; to your memory wall">Add this to your Memory Wall</a></strong>
         </li>
     {% endif %}
     </ul>

@@ -455,6 +455,7 @@ div#searchResults ul#listings {
 }
 
 ul#listings > li {
+    position: relative;
     float: left;
     height: 12.5em;
     margin: 0 0 20px 20px;
@@ -471,40 +472,66 @@ ul#listings > li > ul.actions {
     float: right;
     width: 3.6em;
     text-align: center;
-    background-color: #ACC5EC;
-}
-
-
-.borderradius ul#listings > li > ul.actions {
-    -moz-border-radius: 0 5px 5px 0;
-    border-radius: 0 5px 5px 0;
 }
 
 ul.actions > li {
     border-top: 1px solid #FFFFFF;
-    padding: 2.3em 0 5px 0;
-    position: relative;       
+    padding: 10px 0 0 0;
+}
+
+ul.actions > li:hover {
+    background-color: #6A99DF;
 }
 
 ul.actions > li:first-child {
     border-top: none;
 }
 
-ul.actions > li > a {
-    font-weight: bold;
-    color: #fff;
-    font-size: 0.7em;
-    text-transform: lowercase;
-       
+.borderradius ul.actions > li.top-action {
+    -moz-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+}
+.borderradius ul.actions > li.bottom-action {
+    -moz-border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 0;
 }
 
-ul.actions li ul {
+ul.actions > li > a {
+    background-position: 50% top;
+    background-repeat: no-repeat;
+    display: block;
+    height: 2.5em;
+    margin-top: 0;
+    padding: 2.5em 0 0;
+    width: 5em;
+}
+
+ul.actions > li ul {
     position: absolute;
     left: -9999em;
     top: -9999em;
+    padding: 20px;
+    background-color: #6A99DF;
+    width: 78.8%;
+    height: 80%;
+    text-align: left;
+}
+
+ul.actions > li ul a {
+    color: #fff;
+}
+
+ul.actions > li:hover ul {
+    left: 0;
+    top: 0;
 }
 
 
+ul.actions > li ul .note {
+   display: block;
+   color: #fff;
+       
+}
 /* if no recommendations exist display each listing as half-width */
 div.full-width ul#listings > li {
     width: 47.5%;

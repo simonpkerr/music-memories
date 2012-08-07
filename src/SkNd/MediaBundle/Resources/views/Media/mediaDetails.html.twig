@@ -4,26 +4,26 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>    
 {% endblock %}
 
-{% block title %}Details {% if mediaResource is defined %}for {{mediaResource.mediaResourceCache.title}}{% endif %}{% endblock %}
+{% block title %}Details{% if mediaResource is defined %} for {{mediaResource.mediaResourceCache.title}}{% endif %}{% endblock %}
 
 {% block content %}
-{#<a href="{{path('search', returnRouteParams)}}">back to listings</a>#}
-<a href="{{referrer}}">go back to the previous page</a>
-{%if mediaResource is defined %}
-<h1>{{mediaResource.mediaResourceCache.title}}</h1>
-{% endif %}
+    {#<a href="{{path('search', returnRouteParams)}}">back to listings</a>#}
+    {%if mediaResource is defined %}
+        <h1>{{mediaResource.mediaResourceCache.title}}</h1>
+    {% endif %}
+    <a href="{{referrer}}">go back to the previous page</a>
 
-{% if media != 'music' %}
-    {% include 'SkNdMediaBundle:Media:filmTVDetailsPartial.html.twig' %}
+    {% if media != 'music' %}
+        {% include 'SkNdMediaBundle:Media:filmTVDetailsPartial.html.twig' %}
 
-{#with
-    {
-        'media'         : media,
-        'decade'        : decade,
-        'genre'         : genre,
-        mainResponse is defined ? 'mainResponse' : mainResponse
-    }#}
+    {#with
+        {
+            'media'         : media,
+            'decade'        : decade,
+            'genre'         : genre,
+            mainResponse is defined ? 'mainResponse' : mainResponse
+        }#}
 
-{% endif %}
+    {% endif %}
 
 {% endblock %}

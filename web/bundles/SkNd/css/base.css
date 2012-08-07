@@ -47,6 +47,10 @@ strong {
     font-weight: bold;
 }
 
+.note {
+    font-size: 0.7em;
+    line-height: 1.1em;
+}
 
 /********** LINK FONT STYLES ***********/
 a {
@@ -424,9 +428,21 @@ ul#listings > li {
     background: #fff;
 }
 
-.borderradius ul#listings > li {
+ul#listings > li:hover {
+    background-color: #E4EAF1;
+    border: 2px solid #6A99DF;
+}
+
+
+.borderradius ul#listings > li
+ {
     -moz-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
+}
+
+.borderradius ul.actions > li ul {
+    -moz-border-radius: 6px 0 0 6px;
+    border-radius: 6px 0 0 6px;
 }
 
 ul#listings > li > div {
@@ -438,6 +454,30 @@ ul#listings > li img {
     margin-right: 20px;
 }
 
+ul.actions > li {
+    background-color: #ACC5EC;
+}
+
+ul.actions > li > a {
+    font-weight: bold;
+    color: #fff;
+    font-size: 0.7em;
+    text-transform: lowercase;
+    background-repeat: no-repeat;
+    background-position: left 50%;
+}
+
+ul.actions > li.explore-it > a {
+    background-image: url('../images/actions-explore-it.png');
+}
+
+ul.actions > li.add-it > a {
+    background-image: url('../images/actions-add-it.png');
+}
+
+ul.actions > li.buy-it > a {
+    background-image: url('../images/actions-buy-it.png');
+}
 
 /********** FOOTER ***********/
 div#footer {
