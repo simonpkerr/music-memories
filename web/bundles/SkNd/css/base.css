@@ -178,7 +178,7 @@ a.button:active {
 
 .cssgradients .button,
 .cssgradients .blue,
-div#content input#_submit {
+input#_submit {
     background-image: linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
     background-image: -o-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
     background-image: -moz-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
@@ -211,16 +211,16 @@ div#content input#_submit {
 }
 
 .boxshadow .button,
-.boxshadow div#content input#_submit,
-.boxshadow div#content input[type="submit"]{
+.boxshadow input#_submit,
+.boxshadow input[type="submit"]{
     -moz-box-shadow: 0 0 5px rgba(15,15,15,0.5);
     -webkit-box-shadow: 0 0 5px rgba(15,15,15,0.5);
     box-shadow: 0 0 5px rgba(15,15,15,0.5);
 }
 
 .borderradius .button,
-.borderradius div#content input#_submit,
-.boxshadow div#content input[type="submit"]{
+.borderradius input#_submit,
+.boxshadow input[type="submit"]{
     -moz-border-radius: 10px;
     border-radius: 10px;
 }
@@ -229,11 +229,11 @@ div#content input#_submit {
 .selected,
 .cssgradients .selected
 .cssgradients .button:hover,
-.cssgradents div#content input#_submit:hover,
-.cssgradients div#content input[type="submit"]:hover
+.cssgradents input#_submit:hover,
+.cssgradients input[type="submit"]:hover
 {
     background-color: #6A99DF;
-    background-image: none!important;
+    background-image: none;
 }
 
 .orange:hover,
@@ -245,8 +245,8 @@ div#content input#_submit {
 
 .boxshadow .button:hover,
 .boxshadow .selected,
-.boxshadow div#content input#_submit:hover,
-.boxshadow div#content input[type="submit"]:hover{
+.boxshadow input#_submit:hover,
+.boxshadow input[type="submit"]:hover{
     -moz-box-shadow: 0 0 5px rgba(15,15,15,0);
     -webkit-box-shadow: 0 0 5px rgba(15,15,15,0);
     box-shadow: 0 0 5px rgba(15,15,15,0);
@@ -295,7 +295,7 @@ a#siteLogo img {
     min-width: 177px;
     width: 60%;
     margin: -20px 0 1em -15px;
-    display: none;
+    /*display: none;*/
 }
 
 /*------ memory wall links ------------*/
@@ -402,17 +402,17 @@ div#content dd {
 
 
 /*----------- listings ---------*/
-div#content div.pagingControls p {
+div.pagingControls p {
     margin-bottom: 0.5em;
     font-weight: bold;
     font-size: 0.7em;
 }
 
-div#content div.pagingControls li {
+div.pagingControls li {
     display: inline;
 }
 
-div#content div.pagingControls a {
+div.pagingControls a {
     float: left;
     width: auto;
     padding: 3px 8px;
@@ -454,7 +454,7 @@ ul#listings > li img {
     margin-right: 20px;
 }
 
-ul.actions > li {
+ul#listings ul.actions > li {
     background-color: #ACC5EC;
 }
 
@@ -467,17 +467,70 @@ ul.actions > li > a {
     background-position: left 50%;
 }
 
-ul.actions > li.explore-it > a {
+ul.actions > li.explore-it > a,
+ul.actions > li.explore-it > a:hover{
     background-image: url('../images/actions-explore-it.png');
 }
 
-ul.actions > li.add-it > a {
+ul.actions > li.add-it > a,
+ul.actions > li.add-it > a:hover
+{
     background-image: url('../images/actions-add-it.png');
 }
 
-ul.actions > li.buy-it > a {
+ul.actions > li.buy-it > a,
+ul.actions > li.buy-it > a:hover {
     background-image: url('../images/actions-buy-it.png');
 }
+
+/********** DETAILS **********/
+
+#itemOverview {
+    margin-top: 10px;
+}
+
+#similarItems,
+#youtubeVideos {
+    margin-top: 20px;
+}
+
+
+#itemOverview > img {
+    background-color: #E1E8F0;
+    padding: 20px;
+}
+
+.borderradius #itemOverview > img {
+     border-radius: 10px;
+     -moz-border-radius: 10px;
+}
+
+#itemOverview ul.actions li {
+    position: relative;
+    margin-bottom: 20px;
+    background: none;
+    z-index: 2;
+}
+
+#itemOverview ul.actions a{ 
+    display: block;
+    width: 100%;
+    background-position: 10px 50%;
+    text-align: left;
+    font-size: 1em;
+    padding-left: 50px;
+    
+}
+
+a.go-back {
+    display: block;
+    font-size: 0.8em;
+    /*background: url("../images/actions.png") left 50% no-repeat;
+    padding-left: 20px;*/
+}
+
+
+
 
 /********** FOOTER ***********/
 div#footer {

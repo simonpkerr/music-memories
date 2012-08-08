@@ -1,5 +1,5 @@
 <li class="add-it">
-    <a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId })}}" class="add-it" title="Add this to a Memory wall">Add</a>
+    <a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId })}}" class="add-it {% if linkType is defined and linkType == 'button' %}button{% endif %}" title="Add this to a Memory wall">Add</a>
     <ul class="userMemoryWalls">    
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         {% for mw in app.user.memoryWalls %}

@@ -68,7 +68,7 @@ class AmazonAPI implements IAPIStrategy {
                 "Operation"     => $this->ITEM_SEARCH,
                 //"ResponseGroup" => "Images,ItemAttributes,SalesRank,Request",
                 //"ResponseGroup" => "Images,Small,EditorialReview,Request",
-                "ResponseGroup" => "Images,ItemAttributes,Request",
+                "ResponseGroup" => "Images,Small,Request",
                 "Condition"     => "All",
                 //"ProductGroup"  => "Music",
                 "MerchantId"    => "All",
