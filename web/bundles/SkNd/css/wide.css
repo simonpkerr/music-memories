@@ -397,7 +397,7 @@ form input[type="text"] {
 div#content form label {
     float: left;
     text-align: right;
-    width: 11em;
+    width: 9em;
     margin: 0 20px 0 0;
 }
 
@@ -554,24 +554,26 @@ div.two-thirds-width ul#listings > li {
     position: relative;
 }
 
-#itemOverview > img {
+#itemOverview > img,
+#recommendations img {  
     margin-right: 20px;
     float: left;
 }
 
-#itemOverview ul.actions a{ 
-    width: auto;
+#itemOverview ul.actions li > a{ 
+    width: 80%;
 }
 
 #itemOverview ul.actions > li ul {
     position: absolute;
     left: -9999em;
     top: -9999em;
-    padding: 20px;
+    padding: 50px 10px 10px 10px;
     background-color: #6A99DF;
-    width: 100%;
+    width: 89.2%;
     text-align: left;
     z-index: 1;
+    height: auto;
 }
 
 .borderradius #itemOverview ul.actions > li ul {
@@ -582,8 +584,30 @@ div.two-thirds-width ul#listings > li {
 #itemOverview ul.actions > li:hover ul {
     left: 0;
     top: 0;
-    padding: 20px;
 }
+
+/*#recommendations li > div {
+    float: left;
+    margin-left: 3em;
+}*/
+
+#recommendations ul.actions li a {
+    float: left;
+    margin-top: 10px;
+    width: 40%;
+}
+
+/*----- youtube player -----*/
+div#ytapiplayerContainer {
+    padding: 20px 6em;
+    background-color: #E1E8F0;
+}
+
+.borderradius div#ytapiplayerContainer {
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
 
 /********** FOOTER ***********/
 .borderradius div#footer {

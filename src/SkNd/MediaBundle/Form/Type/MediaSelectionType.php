@@ -50,7 +50,7 @@ class MediaSelectionType extends AbstractType{
         ));
         
         $builder->add('keywords', 'text', array(
-            'label'     => 'Enter some keywords (if you like)',
+            'label'     => 'Keywords (optional)',
             'required'  => false,
             'trim'      => true,
    

@@ -79,7 +79,7 @@ form fieldset legend {
 }
 
 form label {
-    font-size: 0.7em;
+    font-size: 0.85em;
     line-height: 1.2em;
     font-style: italic;
     display: block;
@@ -476,6 +476,8 @@ ul.actions > li.add-it > a,
 ul.actions > li.add-it > a:hover
 {
     background-image: url('../images/actions-add-it.png');
+    z-index: 2;
+    position: relative;
 }
 
 ul.actions > li.buy-it > a,
@@ -495,9 +497,10 @@ ul.actions > li.buy-it > a:hover {
 }
 
 
-#itemOverview > img {
+#itemOverview > img,
+#recommendations img {
     background-color: #E1E8F0;
-    padding: 20px;
+    padding: 12px;
 }
 
 .borderradius #itemOverview > img {
@@ -507,12 +510,12 @@ ul.actions > li.buy-it > a:hover {
 
 #itemOverview ul.actions li {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     background: none;
-    z-index: 2;
+    
 }
 
-#itemOverview ul.actions a{ 
+#itemOverview ul.actions li > a{ 
     display: block;
     width: 100%;
     background-position: 10px 50%;
@@ -520,6 +523,19 @@ ul.actions > li.buy-it > a:hover {
     font-size: 1em;
     padding-left: 50px;
     
+}
+
+#itemOverview ul.actions li ul li > a{ 
+    display: block;
+    width: auto;
+    padding-left: 0;
+    
+}
+
+#recommendations ul.actions li a {
+    display: block;
+    margin-top: 10px;
+    width: 50%;
 }
 
 a.go-back {

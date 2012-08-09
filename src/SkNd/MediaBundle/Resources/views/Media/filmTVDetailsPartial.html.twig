@@ -3,14 +3,15 @@
     <a title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}" class="fl">
         <img src="{{item.MediumImage is defined ? item.MediumImage.URL : asset('bundles/SkNd/images/image-placeholder.jpg') }}" alt="{{item.ItemAttributes.Title}}" />
     </a>
-    <a href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">
-        <strong>{{item.ItemAttributes.Title}}</strong>
-    </a>
-    
-    <ul class="actions">
-        <li><a class="button" title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">Explore</a></li>
-        <li><a class="orange button" title="buy this from Amazon" target="_blank" href="{{item.DetailPageURL}}">Buy</a></li>
-    </ul>
+    <div>
+        <a href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">
+            <strong>{{item.ItemAttributes.Title}}</strong>
+        </a>
+        <ul class="actions">
+            <li><a class="button" title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">Explore</a></li>
+            <li><a class="orange button" title="buy this from Amazon" target="_blank" href="{{item.DetailPageURL}}">Buy</a></li>
+        </ul>
+    </div>
 </li>
 {% endmacro %}
 

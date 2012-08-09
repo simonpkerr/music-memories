@@ -1,5 +1,6 @@
 media_selection:
   submit: Noodle it!
+  media_type: Choose the category
 
 media:
   amazon:
