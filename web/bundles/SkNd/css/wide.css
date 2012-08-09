@@ -118,11 +118,12 @@ div#sm-sharing > ul {
 }
 
 div#sm-sharing li {
-    display: list-item;
     background-color: #D5E1E4;
     border: 2px solid #FFFFFF;
+    display: block;
+    height: 2.3em;
     margin-bottom: 0.3em;
-    padding: 0.3em;
+    padding: 5px;
     width: 4em;
 }
 
@@ -470,11 +471,6 @@ ul#listings > li > div {
     
 }
 
-
-/*---- actions panel -----*/
-
-
-
 ul#listings > li > ul.actions {
     height: 12.5em;
     float: right;
@@ -484,7 +480,7 @@ ul#listings > li > ul.actions {
 
 ul#listings ul.actions > li {
     border-top: 1px solid #FFFFFF;
-    padding: 10px 0 0 0;
+    padding: 13px 0 10px 0;
 }
 
 ul#listings ul.actions > li:hover {
@@ -504,13 +500,13 @@ ul#listings ul.actions > li:first-child {
     border-radius: 0 0 6px 0;
 }
 
-ul#listings ul.actions > li > a {
+ul.actions > li > a {
     background-position: 50% top;
     background-repeat: no-repeat;
     display: block;
-    height: 2.5em;
+    height: 1.6em;
     margin-top: 0;
-    padding: 2.5em 0 0;
+    padding: 25px 0 0;
     width: 5em;
 }
 
@@ -586,28 +582,70 @@ div.two-thirds-width ul#listings > li {
     top: 0;
 }
 
-/*#recommendations li > div {
-    float: left;
-    margin-left: 3em;
-}*/
+#recommendations li > a {
+    width: 10em;
+}
 
-#recommendations ul.actions li a {
+#recommendations li div {
+    width: 8.5em;
     float: left;
-    margin-top: 10px;
-    width: 40%;
+}
+
+#recommendations > div > ul > li {
+    margin-bottom: 20px;
 }
 
 /*----- youtube player -----*/
 div#ytapiplayerContainer {
-    padding: 20px 6em;
+    padding: 10px 6em;
     background-color: #E1E8F0;
 }
 
-.borderradius div#ytapiplayerContainer {
+.borderradius div#ytapiplayerContainer,
+.borderradius #youTubeCarousel > li,
+.borderradius #recommendations img {
     border-radius: 10px;
     -moz-border-radius: 10px;
 }
 
+.js #youtubeVideos > ul {
+    margin-left: 3em;
+    height: 19.3em;
+}
+
+#youTubeCarousel > li {
+    background-color: #E1E8F0;
+    float: left;
+    height: 8em;
+    margin: 12px 10px 5px 0;
+    padding: 5px;
+    position: relative;
+    width: 7em;
+}
+
+#youTubeCarousel img {
+    height: 6.5em;
+}
+
+#youTubeCarousel a {
+    display: block;
+    font-size: 0.8em;
+    line-height: 1.1em;
+    word-wrap: break-word;
+}
+
+#youTubeCarousel ul.actions {
+    position: absolute;
+    right: -0.5em;
+    top: -0.5em;
+}
+
+#youTubeCarousel ul.actions a {
+    background-position: 5px 50%;
+    padding: 7px;
+    text-indent: -9999em;
+    width: 1.6em;
+}
 
 /********** FOOTER ***********/
 .borderradius div#footer {

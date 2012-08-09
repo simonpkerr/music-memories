@@ -283,8 +283,29 @@ div#sm-sharing li {
     display: inline;
 }
 
-div#sm-sharing li img {
-    width: 25px;
+div#sm-sharing li a {
+    background-image: url("../images/nd-icons.png");
+    background-repeat: no-repeat;
+    display: block;
+    float: left;
+    height: 35px;
+    text-indent: 15em;
+}
+
+div#sm-sharing li a#facebookShare {
+    background-position: 0 0;
+} 
+
+div#sm-sharing li a#twitterShare {
+    background-position: 0 -36px;
+}
+
+div#sm-sharing li a#pinterestShare {
+    background-position: 0 -72px;
+}
+
+div#sm-sharing li a#emailShare {
+    background-position: 0 -113px;
 }
 
 /*------ logo -------------------------*/
@@ -458,7 +479,7 @@ ul#listings ul.actions > li {
     background-color: #ACC5EC;
 }
 
-ul.actions > li > a {
+ul#listings ul.actions > li > a {
     font-weight: bold;
     color: #fff;
     font-size: 0.7em;
@@ -467,22 +488,27 @@ ul.actions > li > a {
     background-position: left 50%;
 }
 
+ul.actions > li > a,
+ul.actions > li > a:hover {
+    background-image: url('../images/nd-icons.png');
+}
+
 ul.actions > li.explore-it > a,
 ul.actions > li.explore-it > a:hover{
-    background-image: url('../images/actions-explore-it.png');
+    background-position: 10px -145px;
 }
 
 ul.actions > li.add-it > a,
 ul.actions > li.add-it > a:hover
 {
-    background-image: url('../images/actions-add-it.png');
     z-index: 2;
     position: relative;
+    background-position: 10px -187px;
 }
 
 ul.actions > li.buy-it > a,
 ul.actions > li.buy-it > a:hover {
-    background-image: url('../images/actions-buy-it.png');
+     background-position: 10px -232px;
 }
 
 /********** DETAILS **********/
@@ -518,10 +544,12 @@ ul.actions > li.buy-it > a:hover {
 #itemOverview ul.actions li > a{ 
     display: block;
     width: 100%;
-    background-position: 10px 50%;
+    background-position: 0 -172px;
     text-align: left;
     font-size: 1em;
-    padding-left: 50px;
+    padding: 5px 0 5px 50px;
+    height: auto;
+    
     
 }
 

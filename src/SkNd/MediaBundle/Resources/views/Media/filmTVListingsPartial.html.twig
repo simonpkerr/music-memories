@@ -19,9 +19,8 @@ with
         <strong><a title="See more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">{{item.ItemAttributes.Title}}</a></strong>
     </div>
     <ul class="actions">
-        
         <li class="explore-it top-action">
-            <a href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}" title="explore this item">Explore</a>
+            <a href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}" title="explore this item"><span>Explore</span></a>
         </li>
         {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
         with {

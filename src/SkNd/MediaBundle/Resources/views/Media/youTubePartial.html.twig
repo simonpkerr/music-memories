@@ -5,30 +5,25 @@
     } 
 %}
     {%if response.url is defined %}<strong>{{ response.url }}</strong>{%endif%}
-    <ul>
+    <ul id="youTubeCarousel">
     {% for ytResult in response.entry %}
-                <li class="listing">
-                <dl>
-                <dt><a href="javascript:void(0)" onclick="play('{{ytResult.id}}')">{{ ytResult.title }}</a></dt>
-                    <dd>    
+                <li>
                     <a href="javascript:void(0)" onclick="play('{{ytResult.id}}')"><img src="{{ ytResult.thumbnail }}" alt="{{ ytResult.title }}" /></a>
-            {#used for debugging a variable#}
-            {#%  debug ytResult %#}  
-                    <ul>
+                    <a href="javascript:void(0)" onclick="play('{{ytResult.id}}')" title="{{ ytResult.title }}">{{ ytResult.title|title|slice(0,35) }}{% if ytResult.title|title|length > 35 %}&hellip;{%endif%}</a>
+                    <ul class="actions">
                     {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
                     with {
                     'api'       : api,
                     'itemId'    : ytResult.id,
-                    'itemTitle' : ytResult.title
+                    'itemTitle' : ytResult.title,
+                    'linkType'  : 'button',
                     } 
                     %}    
                     </ul>
-                    </dd>
-               </dl>
-               </li>     
+              </li>     
     {% endfor %}
         </ul>
-        <h3>Videos not right?</h3>
+        {#<h3>Videos not right?</h3>
         <p>Please enter a more relevant search for this item</p>
     {# add a form to allow users to put a more relevant search #}
 
