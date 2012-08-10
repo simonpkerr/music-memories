@@ -608,17 +608,20 @@ div#ytapiplayerContainer {
     -moz-border-radius: 10px;
 }
 
-.js #youtubeVideos > ul {
-    margin-left: 3em;
+#youtubeVideos > ul {
+    padding: 0;
     height: 19.3em;
+    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #youTubeCarousel > li {
     background-color: #E1E8F0;
     float: left;
     height: 8em;
-    margin: 12px 10px 5px 0;
-    padding: 5px;
+    margin: 12px 15px 5px 0;
+    padding: 5px 10px;
     position: relative;
     width: 7em;
 }

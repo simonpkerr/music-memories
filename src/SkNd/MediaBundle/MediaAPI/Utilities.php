@@ -32,9 +32,11 @@ class Utilities {
         $media = $params['media'];
         
         //this version removes any references to disc set, box set etc
-        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\d*)(\[\D*\]|\(\D*\)|(\d{1}\s+|dvd|complete|the complete|series|box set|bbc|special edition|blu-ray|disc set|3d)|(\[|\]|\(|\)|\+|\&|\d{1}\-))/i','$1$2', $keywords)));
+        $yearPart = preg_replace('/.*(\[(\d*)\]).*/i', '$2', $keywords);
+        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\s?((\-\s)?Remastered|\[|:|\d?\sdvd|complete|the complete|series|box set|bbc|special edition|blu-ray|\d?(\s|\-)?disc set|3d|region free).*)/i','$1', $keywords)));
         
         //older regexs
+        //'/(\w*)(\d*)(\[\D*\]|\(\D*\)|(\d{1}\s+|dvd|complete|the complete|series|box set|bbc|special edition|blu-ray|disc set|3d)|(\[|\]|\(|\)|\+|\&|\d{1}\-))/i'
         //'/(\w*)(\d*)(\s{0}(the complete|series|box set|complete|bbc|dvd)\s{0}|(\s??\[(dvd|blu\-ray)\]\s??)|(\d{1}(\s??|\-??)disc set)|(\[)|(\])|(\s??\:\s+?)|(\s??(\&)\s??)|(\s+?\d{1}\s+?))/i'
         //'/(\w*)(\d*)(\s{0}(the complete|series|box set|complete|bbc|dvd)\s{0}|(\s??\[(dvd|blu\-ray)\]\s??)|(\d{1}(\s??|\-??)disc set)|(\[)|(\])|(\s??\:\s+?)|(\s??(\&)\s??)|(\s+?\d{1}\s+?))/i'
         //'/(\w*)(\d*)((\s??\[(dvd|blu\-ray)\]\s??)|(\s??the complete\s??)|(\s??series\s??)|(\s??box set\s??)|\s??(complete\s??)|\s??(\d{1}(\s??|\-??)disc set\s??)|(\s??bbc\s??)|(\s??dvd\s??)|(\[)|(\])|(\s??(\-|\:|\&)\s??)|(\s??\d{1}\s??))/i'
@@ -57,8 +59,10 @@ class Utilities {
          * this doesn't appear to help for certain results
          * as videos aren't tagged with all the tags (title decade, media)
          */
+        $keywordQuery .= ' ' . $yearPart;
+        
         $year = date('Y');
-        if(isset($params['decade'])){
+        if(isset($params['decade']) && !is_numeric($yearPart)){
             $decade = $params['decade'];
             if($year - $decade > 20)
                 $keywordQuery .= '|' . 'original';

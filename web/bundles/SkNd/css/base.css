@@ -389,6 +389,7 @@ div#introPanel li img {
     float: left;
     width: 48%;
     max-width: 143px;
+    margin-right: 20px;
 }
 
 div#introPanel h2 {
