@@ -1,23 +1,26 @@
 <div id="ytapiplayerContainer">
+    <h4>{{firstVideo.title}}</h4>
     <div id="ytapiplayer">
         <p>You need Flash player 8+ and JavaScript enabled to view this video.</p>
     </div>
-    <script type="text/javascript">
-    function onYouTubePlayerReady(playerId) {
-        ytplayer = document.getElementById("noodledig-ytplayer");
-    }
-    function play(videoId) {
-        if (ytplayer) 
-            ytplayer.loadVideoById(videoId);
-    }
-
-    var params = { allowScriptAccess: "always" };
-    var atts = { id: "noodledig-ytplayer" };
-    </script>
 </div>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>  
 <script type="text/javascript">
+    function onYouTubePlayerReady(playerId) {
+        ytplayer = document.getElementById("noodledig-ytplayer");
+        ytPlayerTitle = document.getElementById("ytapiplayerContainer").children[0];
+    }
+    function play(videoId, videoTitle) {
+        if (ytplayer) {
+            ytplayer.loadVideoById(videoId);
+            ytPlayerTitle.textContent = videoTitle;
+        }
+    }
+
+    var params = { allowScriptAccess: "always" };
+    var atts = { id: "noodledig-ytplayer" };
+    
     swfobject.embedSWF("http://www.youtube.com/e/{{firstVideo.id}}?enablejsapi=1&playerapiid=ytplayer",
                    "ytapiplayer", "425", "356", "8", null, null, params, atts);
 </script>

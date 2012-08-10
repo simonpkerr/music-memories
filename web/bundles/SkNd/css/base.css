@@ -479,7 +479,7 @@ ul#listings ul.actions > li {
     background-color: #ACC5EC;
 }
 
-ul#listings ul.actions > li > a {
+ul.actions > li > a {
     font-weight: bold;
     color: #fff;
     font-size: 0.7em;
@@ -503,12 +503,12 @@ ul.actions > li.add-it > a:hover
 {
     z-index: 2;
     position: relative;
-    background-position: 10px -187px;
+    background-position: 10px -178px;
 }
 
 ul.actions > li.buy-it > a,
 ul.actions > li.buy-it > a:hover {
-     background-position: 10px -232px;
+    background-position: 10px -210px;
 }
 
 /********** DETAILS **********/
@@ -541,29 +541,58 @@ ul.actions > li.buy-it > a:hover {
     
 }
 
-#itemOverview ul.actions li > a{ 
+ul.actions li a > span {
+    background-image: url("../images/nd-icons.png");
+    background-repeat: no-repeat;
     display: block;
-    width: 100%;
-    background-position: 0 -172px;
-    text-align: left;
-    font-size: 1em;
-    padding: 5px 0 5px 50px;
-    height: auto;
-    
-    
+    height: 24px;
+    padding-left: 40px;
 }
 
-#itemOverview ul.actions li ul li > a{ 
+ul.actions li.explore-it a > span {
+    background-position: 0 -147px;
+}
+
+ul.actions li.add-it a > span {
+    background-position: 0 -178px;
+}
+ul.actions li.buy-it a > span {
+    background-position: 0 -210px;
+}
+
+#itemOverview ul.actions li > a { 
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    padding: 5px 0 5px 0;
+    height: auto;
+}
+
+#itemOverview ul.actions li > a:hover,
+#youTubeCarousel ul.actions li > a:hover,
+#recommendations ul.actions li > a:hover {
+    background-image: none;
+}
+
+#itemOverview ul.actions li ul li > a { 
     display: block;
     width: auto;
     padding-left: 0;
     
 }
 
-#recommendations ul.actions li a {
+#recommendations ul.actions li > a {
     display: block;
     margin-top: 10px;
-    width: 50%;
+    padding: 5px 0 25px 0;
+    width: 80%;
+    text-align: left;
+    font-size: 0.9em;
+}
+
+#recommendations ul.actions li > a span {
+    
 }
 
 a.go-back {

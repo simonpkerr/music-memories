@@ -480,7 +480,7 @@ ul#listings > li > ul.actions {
 
 ul#listings ul.actions > li {
     border-top: 1px solid #FFFFFF;
-    padding: 13px 0 10px 0;
+    padding: 13px 0 23px 0;
 }
 
 ul#listings ul.actions > li:hover {
@@ -504,7 +504,7 @@ ul.actions > li > a {
     background-position: 50% top;
     background-repeat: no-repeat;
     display: block;
-    height: 1.6em;
+    height: 0.45em;
     margin-top: 0;
     padding: 25px 0 0;
     width: 5em;
@@ -597,7 +597,7 @@ div.two-thirds-width ul#listings > li {
 
 /*----- youtube player -----*/
 div#ytapiplayerContainer {
-    padding: 10px 6em;
+    padding: 20px;
     background-color: #E1E8F0;
 }
 
@@ -640,11 +640,18 @@ div#ytapiplayerContainer {
     top: -0.5em;
 }
 
-#youTubeCarousel ul.actions a {
-    background-position: 5px 50%;
-    padding: 7px;
+#youTubeCarousel ul.actions li > a {
+    background-position: 0 center;
+    height: 2.2em;
+    padding: 3px 0 0;
     text-indent: -9999em;
-    width: 1.6em;
+    width: 2.7em;
+}
+
+div#ytapiplayerContainer h4 {
+    float: right;
+    width: 7em;
+    margin-left: 10px;
 }
 
 /********** FOOTER ***********/

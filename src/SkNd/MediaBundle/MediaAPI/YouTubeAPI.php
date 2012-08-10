@@ -15,7 +15,7 @@ use \SimpleXMLElement;
 class YouTubeAPI implements IAPIStrategy {
     const FRIENDLY_NAME = 'YouTube';
     const API_NAME = 'youtubeapi';
-    const BATCH_PROCESS_THRESHOLD = 25;
+    const BATCH_PROCESS_THRESHOLD = 24;
     
     protected $youTube;
     private $query;
@@ -191,7 +191,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         //$query->setOrderBy('viewCount');
         //default ordering is relevance
         //$query->setSafeSearch('none'); //not supported when using setCategory
-        $query->setMaxResults('25');
+        $query->setMaxResults(self::BATCH_PROCESS_THRESHOLD);
         
         switch($mediaSelection->getMediaType()->getSlug()){
             case 'film':

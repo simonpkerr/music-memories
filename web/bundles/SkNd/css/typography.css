@@ -29,7 +29,7 @@ Ideal line-height for this is 1.5em
 
 
 
-h1,h2,h3,h4,.heading {
+h1,h2,h3,.heading {
     font-family: 'Segoe Print', sans-serif, cursive, arial;
     font-style: italic;
     color: #2B1B4C;

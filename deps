@@ -4,7 +4,7 @@
 
 [twig]
     git=http://github.com/fabpot/Twig.git
-    version=v1.6.0
+    version=v1.9.0
 
 [monolog]
     git=http://github.com/Seldaek/monolog.git
@@ -27,8 +27,7 @@
 
 [DoctrineFixturesBundle]
     git=http://github.com/doctrine/DoctrineFixturesBundle.git
-    target=/bundles/Symfony/Bundle/DoctrineFixturesBundle
-
+    target=/bundles/Doctrine/Bundle/FixturesBundle
 
 [swiftmailer]
     git=http://github.com/swiftmailer/swiftmailer.git

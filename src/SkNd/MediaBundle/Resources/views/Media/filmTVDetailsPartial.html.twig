@@ -8,8 +8,8 @@
             <strong>{{item.ItemAttributes.Title}}</strong>
         </a>
         <ul class="actions">
-            <li><a class="button" title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">Explore</a></li>
-            <li><a class="orange button" title="buy this from Amazon" target="_blank" href="{{item.DetailPageURL}}">Buy</a></li>
+            <li class="explore-it"><a class="button" title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}"><span>Explore</span></a></li>
+            <li class="buy-it"><a class="orange button" title="buy this from Amazon" target="_blank" href="{{item.DetailPageURL}}"><span>Buy</span></a></li>
         </ul>
     </div>
 </li>
@@ -45,7 +45,7 @@
                 } 
             %}
             <li class="buy-it">
-                <a class="orange button" target="_blank" href="{{item.DetailPageURL}}">Buy this from Amazon{% if item.ItemAttributes.ListPrice is defined %} for {{ item.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a>
+                <a class="orange button" target="_blank" href="{{item.DetailPageURL}}"><span>Buy this from Amazon{% if item.ItemAttributes.ListPrice is defined %} for {{ item.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</span></a>
                 <span class="note">For some reason these prices aren&rsquo;t always the same as Amazon, so click on the buy button to check prices on Amazon.</span>
                 
             </li>
