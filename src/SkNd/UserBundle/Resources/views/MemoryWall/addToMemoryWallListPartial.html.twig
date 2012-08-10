@@ -8,7 +8,7 @@
     <ul class="userMemoryWalls {% if linkType is defined and linkType == 'button' %}button{% endif %}">    
         {% for mw in app.user.memoryWalls %}
         <li>
-            <a href="{{path('memoryWallAddMediaResource', {'slug': mw.slug, 'api': api, 'id':itemId })}}" title="add &ldquo;{{itemTitle}}&rdquo; to your memory wall"><span>Add this to</span> <span><strong>&ldquo;{{ mw.name }}&rdquo;</strong></span></a>
+            <a href="{{path('memoryWallAddMediaResource', {'slug': mw.slug, 'api': api, 'id':itemId })}}" title="add &ldquo;{{itemTitle}}&rdquo; to your memory wall">Add this to <strong>&ldquo;{{ mw.name }}&rdquo;</strong></a>
         </li>
         {% endfor %}
     </ul>

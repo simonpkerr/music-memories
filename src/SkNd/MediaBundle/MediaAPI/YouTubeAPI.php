@@ -127,54 +127,11 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
     }
     
     public function getListings(MediaSelection $mediaSelection){
-        //------to send a simple query to youtube       
-        //$query->setVideoQuery($keywordQuery);
-        
-        //------to set up a category and keyword search
-        
-        /*$categories = '/Music|';
-        if($params['media'] == 'film')
-            $categories .= 'Film|Entertainment';
-        else
-            $categories .= '|Entertainment';
-       */
-        
-        //$keywordQuery = str_replace(' ', '/', $keywordQuery) . $categories;
-        //$query->setCategory($keywordQuery);
-        
-        //$query->setCategory("Film/Entertainment/" . $keywordQuery);
-        /*$searchTermsArray =  $params['keywords']
-        foreach ($searchTermsArray as $searchTerm) {
-          $keywordQuery .= strtolower($searchTerm) . '/';
-        }*/
-        //$query->setCategory($keywordQuery);
-        
-        
-        /*
-         * what happens if the search still returns no videos. 
-         * for example, the moomins 1970s tv returns no results 
-         * but the moomins does.However, certain searches need more specific
-         * keywords to specify the decade and media type
-         */
-        
-        //$this->getVideoFeed($query->getQueryUrl(2));
-                
+                       
         $videoFeed = $this->getVideoFeed($mediaSelection);
 
         if($videoFeed === false)
             throw new \RuntimeException("Could not connect to YouTube");
-        
-        //try a secondary search only if this is the first time only a few results were returned
-        
-        //the inclusion from MediaAPI of decade and genre in the youtube search string seems to be irrelevant in many cases
-        //so this part has been removed
-        /*if(count($videoFeed) < 3){
-            //setting the secondarySearch param causes a different keyword search to be used
-            $params['secondarySearch'] = true;
-            $videoFeed = $this->getVideoFeed($params);
-            if($videoFeed === false)
-                throw new \RuntimeException("Could not connect to YouTube");
-        }*/
         
         if(count($videoFeed) < 1){
             throw new \LengthException("No results were returned");

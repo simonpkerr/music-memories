@@ -566,7 +566,7 @@ div.two-thirds-width ul#listings > li {
     top: -9999em;
     padding: 50px 10px 10px 10px;
     background-color: #6A99DF;
-    width: 89.2%;
+    width: 75.2%;
     text-align: left;
     z-index: 1;
     height: auto;
@@ -641,6 +641,10 @@ div#ytapiplayerContainer {
     position: absolute;
     right: -0.5em;
     top: -0.5em;
+}
+
+#youtubeVideos ul.userMemoryWalls {
+    display: none;
 }
 
 #youTubeCarousel ul.actions li > a {

@@ -32,8 +32,9 @@ class Utilities {
         $media = $params['media'];
         
         //this version removes any references to disc set, box set etc
-        $yearPart = preg_replace('/.*(\[(\d*)\]).*/i', '$2', $keywords);
-        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\s?((\-\s)?Remastered|\[|:|\d?\sdvd|complete|the complete|series|box set|bbc|special edition|blu-ray|\d?(\s|\-)?disc set|3d|region free).*)/i','$1', $keywords)));
+        preg_match('/[\[|\(](\d{4})[\]|\)]/i', $keywords, $yearParts);
+        $yearPart = isset($yearParts[1]) ? $yearParts[1] : null;
+        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\s?(double pack|(\-\s)?Remastered|\[|:|\d?\sdvd|(\-\s)?complete|the complete|series|box set|bbc|special edition|blu-ray|\d?(\s|\-)?disc set|3d|region free).*)/i','$1', $keywords)));
         
         //older regexs
         //'/(\w*)(\d*)(\[\D*\]|\(\D*\)|(\d{1}\s+|dvd|complete|the complete|series|box set|bbc|special edition|blu-ray|disc set|3d)|(\[|\]|\(|\)|\+|\&|\d{1}\-))/i'
@@ -62,10 +63,10 @@ class Utilities {
         $keywordQuery .= ' ' . $yearPart;
         
         $year = date('Y');
-        if(isset($params['decade']) && !is_numeric($yearPart)){
+        if(isset($params['decade']) && is_null($yearPart)){
             $decade = $params['decade'];
             if($year - $decade > 20)
-                $keywordQuery .= '|' . 'original';
+                $keywordQuery .= '|' .$decade .'s';
             
             //this still doesn't bring relevant results for moomins (the moomins 1970s tv)
             //need a way to decide relevant results (maybe successive calls to youtube if no results found?)
@@ -73,16 +74,13 @@ class Utilities {
         }
         
         //only add genre if applies to children
-        if(isset($params['genre'])){
+        /*if(isset($params['genre'])){
             $genre = $params['genre'];
             if($genre == 'Childrens')
                 $keywordQuery .= '|' . $genre;
-        }
+        }*/
                 
-        //---- MAYBE look at the bracketed part of a title and check to see if a year is supplied and use that in the search.
-        
-        //$keywordQuery = urlencode($keywordQuery);
-        
+       
         return $keywordQuery;
     }
     

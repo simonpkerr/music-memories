@@ -512,6 +512,10 @@ ul.actions > li.buy-it > a:hover {
     background-position: 10px -210px;
 }
 
+ul.userMemoryWalls li a span {
+    background-image: none;
+}
+
 /********** DETAILS **********/
 
 #itemOverview {
