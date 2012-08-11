@@ -51,6 +51,14 @@ strong {
     font-size: 0.7em;
     line-height: 1.1em;
 }
+p.note {
+    margin-bottom: 5px;
+}
+
+.strapline {
+    font-style: italic;
+    font-weight: bold;
+}
 
 /********** LINK FONT STYLES ***********/
 a {
@@ -71,7 +79,7 @@ form fieldset {
 }
 
 form fieldset legend {
-    font-size: 0.7em;
+    font-size: 0.8em;
     font-style: italic;
     margin: 0 0.5em 0 3.3em;
     padding: 0 0.5em;
@@ -88,7 +96,8 @@ form label {
 }
 
 form select,
-form input {
+form input,
+form textarea {
     border: 1px solid #808DA0;
     margin-bottom: 0.5em;
     padding: 7px 5px;
@@ -102,13 +111,17 @@ form input[type="text"] {
 
 .borderradius form select,
 .borderradius form input,
-.borderradius form fieldset {
+.borderradius form fieldset,
+.borderradius form textarea
+{
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
 
 form select:focus,
-form input:focus {
+form input:focus,
+form textarea:focus
+{
     border: 1px solid #E5961D;
 }
 
@@ -289,7 +302,12 @@ div#sm-sharing li a {
     display: block;
     float: left;
     height: 35px;
-    text-indent: 15em;
+    width: 35px;
+}
+div#sm-sharing li a span {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
 }
 
 div#sm-sharing li a#facebookShare {
@@ -355,7 +373,7 @@ ul#loginPanel li ul a {
     background-color: #C9E9A9;
     border: 1px solid #86B121;
     color: #336600;
-    font-size: 0.7em;
+    font-size: 0.8em;
     padding: 0.3em 0.7em;
 }
 
@@ -380,9 +398,9 @@ div#content h1,
 div#content h2,
 div#wrapper h3
 {
-    padding-bottom: 0.5em;
+    padding-bottom: 0.3em;
     border-bottom: 2px solid #E5961D;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.3em;
 }
 
 div#introPanel li img {
@@ -418,7 +436,7 @@ div#content dt {
     margin-bottom: 3px;
 }
 div#content dd {
-    font-weight: bold;
+   /* font-weight: bold;*/
     margin-bottom: 1em;
 }
 
@@ -455,8 +473,8 @@ ul#listings > li:hover {
     border: 2px solid #6A99DF;
 }
 
-
-.borderradius ul#listings > li
+.borderradius ul#listings > li,
+.borderradius ul#memoryWallGallery li
  {
     -moz-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
@@ -489,6 +507,20 @@ ul.actions > li > a {
     background-position: left 50%;
 }
 
+ul.actions > li > a.button {
+    display: block;
+    /*height: auto;*/
+    margin-top: 0;
+    padding: 5px;
+    width: auto;
+    text-align: left;
+}
+
+ul.actions > li > a.button:hover {
+    background-image: none;
+}
+
+
 ul.actions > li > a,
 ul.actions > li > a:hover {
     background-image: url('../images/nd-icons.png');
@@ -512,6 +544,39 @@ ul.actions > li.buy-it > a:hover {
     background-position: 10px -210px;
 }
 
+ul.actions li a > span {
+    background-image: url("../images/nd-icons.png");
+    background-repeat: no-repeat;
+    display: block;
+    height: 24px;
+    padding-left: 40px;
+}
+
+ul.actions li.explore-it a > span,
+ul.actions li.explore-it a:hover > span
+{
+    background-position: 0 -147px;
+}
+
+ul.actions li.add-it a > span,
+ul.actions li.add-it a:hover > span{
+    background-position: 0 -178px;
+}
+ul.actions li.buy-it a > span,
+ul.actions li.buy-it a:hover > span{
+    background-position: 0 -210px;
+}
+
+ul.actions > li.edit-it > a span,
+ul.actions > li.edit-it > a:hover span{
+    background-position: 0 -309px;    
+}
+
+ul.actions > li.delete-it > a span,
+ul.actions > li.delete-it > a:hover span {
+    background-position: 0 -345px;    
+}
+
 ul.userMemoryWalls li a span {
     background-image: none;
 }
@@ -529,12 +594,15 @@ ul.userMemoryWalls li a span {
 
 
 #itemOverview > img,
-#recommendations img {
+#recommendations img,
+.mw-MediaResource img{
     background-color: #E1E8F0;
     padding: 12px;
 }
 
-.borderradius #itemOverview > img {
+.borderradius #itemOverview > img,
+.borderradius #recommendations img,
+.mw-MediaResource img {
      border-radius: 10px;
      -moz-border-radius: 10px;
 }
@@ -544,25 +612,6 @@ ul.userMemoryWalls li a span {
     margin-bottom: 10px;
     background: none;
     
-}
-
-ul.actions li a > span {
-    background-image: url("../images/nd-icons.png");
-    background-repeat: no-repeat;
-    display: block;
-    height: 24px;
-    padding-left: 40px;
-}
-
-ul.actions li.explore-it a > span {
-    background-position: 0 -147px;
-}
-
-ul.actions li.add-it a > span {
-    background-position: 0 -178px;
-}
-ul.actions li.buy-it a > span {
-    background-position: 0 -210px;
 }
 
 #itemOverview ul.actions li > a { 
@@ -576,15 +625,16 @@ ul.actions li.buy-it a > span {
 
 #itemOverview ul.actions li > a:hover,
 #youTubeCarousel ul.actions li > a:hover,
-#recommendations ul.actions li > a:hover {
+#recommendations ul.actions li > a:hover,
+#memoryWallGallery ul.actions li > a:hover
+{
     background-image: none;
 }
 
 #itemOverview ul.actions li ul li > a { 
     display: block;
     width: auto;
-    padding-left: 0;
-    
+    padding-left: 0;   
 }
 
 #recommendations ul.actions li > a {
@@ -596,19 +646,118 @@ ul.actions li.buy-it a > span {
     font-size: 0.9em;
 }
 
-#recommendations ul.actions li > a span {
-    
+#recommendations > div > ul > li:first-child {
+    border: none;
+}
+
+#recommendations > div > ul > li {
+    border-top: 1px solid #E1E8F0;
+    padding: 10px 0;
 }
 
 a.go-back {
     display: block;
     font-size: 0.8em;
-    /*background: url("../images/actions.png") left 50% no-repeat;
-    padding-left: 20px;*/
+    background: url("../images/nd-icons.png") left -200px no-repeat;
+    padding-left: 20px;
 }
 
+/*----------- memory walls -----------*/
+ul#memoryWallGallery > li {
+    border: 2px solid #ACC5EC;
+    background-color: #fff;
+}
 
+ul#memoryWallGallery > li:hover {
+    background-color: #E4EAF1;
+    border: 2px solid #6A99DF;
+}
 
+ul#memoryWallGallery > li
+{
+    position: relative;
+    margin: 0 0 20px 0;
+    padding: 10px 15px;
+    width: 100%;
+}
+
+ul#memoryWallGallery img.mw-image {
+   float: left; 
+   margin-right: 20px;
+}
+
+#memoryWallGallery > li ul {
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+ul#memoryWallGallery ul.actions li > a {
+    height: auto;
+    padding: 3px 10px 3px 0;
+    width: auto;
+    font-size: 1em;
+}
+
+ul#memoryWallGallery > li div {
+    width: auto;
+    float: none;
+}
+
+ul#memoryWallGallery > li div p {
+    margin: 0 0 10px 0;
+    text-indent: 0;
+}
+
+/*--- memory wall recommendations ----*/
+div#recommendations ul#memoryWallGallery {
+    margin: 0 0 20px 0;
+}
+
+div#recommendations ul#memoryWallGallery > li {
+    display: block;
+    height: auto;
+    margin: 0 0 20px;
+    padding: 10px 15px;
+    width: auto;
+}
+
+/*------- memory wall details page --------*/
+
+dl#memoryWallDetails dt {
+    float: none;
+    font-size: 0.8em;
+    margin: 10px 0 5px 0;
+    text-align: left;
+    width: auto;
+}
+
+dl#memoryWallDetails dd {
+    line-height: 1.3em;
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+div#memoryWallActions {
+    margin-top: 20px;
+}
+
+div#memoryWallActions ul.actions a {
+    font-size: 1em;
+    display: block;
+    height: auto;
+    margin: 20px 0 10px;
+    padding: 5px;
+}
+
+div.mw-MediaResource {
+    float: left;
+    width: 30%;
+    padding: 20px;
+}
+
+div.mw-MediaResource img {
+    
+}
 
 /********** FOOTER ***********/
 div#footer {

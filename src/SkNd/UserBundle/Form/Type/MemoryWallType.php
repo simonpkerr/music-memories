@@ -19,13 +19,15 @@ class MemoryWallType extends AbstractType{
         
         //entity field mapped to the decade class displaying the id and decadeName properties
         $builder->add('name', 'text', array(
-            'trim'     => true
+            'trim'     => true,
+            'max_length'=> 35,
         ));
         
         //entity field mapped to the mediatype class displaying the id and mediaName properties
-        $builder->add('description', 'text', array(
+        $builder->add('description', 'textarea', array(
             'trim'      => true,
             'required'  => false,
+            'max_length'=> 100,
         ));
         
         $builder->add('associatedDecade', 'entity', array(

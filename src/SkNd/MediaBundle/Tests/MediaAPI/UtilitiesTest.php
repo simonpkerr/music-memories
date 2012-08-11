@@ -26,11 +26,12 @@ class UtilitiesTests extends PHPUnit_Framework_TestCase {
             'Trap Door Series 1 & 2 [DVD] [1984]'   => 'Trap Door 1984',
             'Stig Of The Dump : Complete BBC Series [1981] [DVD]' => 'Stig Of The Dump 1981',
             'The Chronicles Of Narnia 4 DVD Box Set' => 'The Chronicles Of Narnia',
-            'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy The Matrix, Matrix Reloaded and Matrix Revolutions',
+            'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy',
             'Ripping Yarns - The Complete Series[DVD] [1976]' => 'Ripping Yarns 1976',
             'Alien Anthology [Blu-ray] [1979] [6 Disc Set]' => 'Alien Anthology 1979',
-            'Saturday Night Fever:25th Anniversary Se [DVD]' => 'Saturday Night Fever:25th Anniversary Se',
-            'Prometheus - Special Edition (Blu-ray 3D + Blu-ray + Digital Copy)', 'Prometheus'
+            'Saturday Night Fever:25th Anniversary Se [DVD]' => 'Saturday Night Fever',
+            'Prometheus - Special Edition (Blu-ray 3D + Blu-ray + Digital Copy)', 'Prometheus',
+            'Chitty Chitty Bang Bang (2 Disc Special Edition) [1968] [DVD]', 'Chitty Chitty Bang Bang 1968',
         );
     }
     

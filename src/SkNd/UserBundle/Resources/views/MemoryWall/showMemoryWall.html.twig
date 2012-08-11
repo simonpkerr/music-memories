@@ -1,15 +1,19 @@
 {% extends 'SkNdUserBundle::memoryWallLayout.html.twig' %}
-{% block javascripts %}
-    {{parent()}}
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>    
-{% endblock %}
     
-{% block title %}Memory Wall &hellip; {{ mw.name }}{% endblock %}
+{% block title %}{{ mw.name }} &ndash; a Memory wall){% endblock %}
 {% block content %}
 {% set wallBelongsToThisUser = app.user is not null and mw.user.username == app.user.username %}
-<h1><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}" title="edit this wall">{{ mw.name|capitalize }}</a></h1>
-<div>
-    <h2>Details</h2>
+<h1>{{ mw.name|capitalize }}</h1>
+{% include "SkNdUserBundle:MemoryWall:memoryWallMediaResourcesPartial.html.twig" 
+    with {
+        'wallBelongsToThisUser' : wallBelongsToThisUser,
+        'mw'    : mw,
+        'apis'  : apis
+    } 
+%}
+
+<div class="third-width fr">
+    <h3>Details</h3>
     <dl id="memoryWallDetails">
         <dt>Description</dt>
         <dd>{{mw.description is not null ? mw.description : 'No description available'}}</dd>
@@ -23,24 +27,15 @@
         <dd><span>{{mw.user.username}}</span><span> &ndash; (<a href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">view all of {{mw.user.username}}&rsquo;s Memory Walls)</a></span></dd>
         {% endif %}
     </dl> 
+    {# if the memory wall being shown belongs to the current user, show further actions #}
+    {% if wallBelongsToThisUser %}
+    <div id="memoryWallActions">
+        <h3>Actions</h3>
+        <ul class="actions">
+            <li class="edit-it"><a title="edit this wall" class="button" href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}"><span>Edit this wall</span></a> &ndash; Update the details of this wall, go nuts.</li>
+            <li class="delete-it"><a title="delete this wall" class="button" href="{{ path('memoryWallDelete', {'slug':mw.slug}) }}"><span>Delete this wall</span></a> &ndash; If you really want to, you can delete it, but where&rsquo;s the fun in that?</li>
+        </ul>
+    </div>
+    {% endif %}
 </div>
-{% include "SkNdUserBundle:MemoryWall:memoryWallMediaResourcesPartial.html.twig" 
-    with {
-        'wallBelongsToThisUser' : wallBelongsToThisUser,
-        'mw'    : mw,
-        'apis'  : apis
-    } 
-%}
-{# if the memory wall being shown belongs to the current user, show further actions #}
-{% if wallBelongsToThisUser %}
-<div>
-    <h2>Actions</h2>
-    <ul>
-        <li><a href="{{ path('index') }}">Add some stuff</a> &ndash; Use noodleDig to find something and then just select &lsquo;add to my Memory Wall&rsquo; wherever you see it.</li>
-        <li><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}">Edit this wall</a> &ndash; Update the details of this wall, go nuts.</li>
-        <li><a href="{{ path('memoryWallDelete', {'slug':mw.slug}) }}">Delete the wall</a> &ndash; If you really want to, you can delete it, but where&rsquo;s the fun in that?</li>
-    </ul>
-</div>
-{% endif %}
-
 {% endblock content %}

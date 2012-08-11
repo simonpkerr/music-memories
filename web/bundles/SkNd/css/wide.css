@@ -178,7 +178,6 @@ ul#memoryWalls li ul,
 div#headerMediaSelection ul li form
 {
     position: absolute;
-    left: -9999em;
     top: -9999em;
     padding-top: 2em;
     z-index: 1;
@@ -188,6 +187,7 @@ ul#loginPanel li:hover ul,
 ul#memoryWalls li:hover ul,
 div#headerMediaSelection ul li:hover form {
     left: 0;
+    right: 0;
     top: 0;
 }
 
@@ -403,7 +403,7 @@ div#content form label {
 }
 
 div#content form select {
-    width: 13.8em;
+    width: 13.75em;
 }
 
 div#content form div.date_widget {
@@ -415,7 +415,8 @@ div#content form div.date_widget select {
     margin-right: 1px;
 }
 
-div#content form input {
+div#content form input,
+div#content form textarea{
     width: 13em;
 }
 
@@ -452,13 +453,14 @@ dt {
     width: 22em;
 }
 
-/*----------- listings ---------*/
+/*----------- listings and memory wall index ---------*/
 
 div#searchResults ul#listings {
     margin: 20px 0 0 -20px;
 }
 
-ul#listings > li {
+ul#listings > li
+{
     position: relative;
     float: left;
     height: 12.5em;
@@ -542,8 +544,14 @@ div.full-width ul#listings > li {
 
 /* if recommendations exist display each listing as 2/3 width */
 div.two-thirds-width ul#listings > li {
-    width: 98.9%;
+    width: 96.6%;
 }
+
+/* submenus on the 2/3s width listings panels */
+div.two-thirds-width ul#listings > li ul li ul {
+    width: 84.1%;
+}
+    
 
 /********** DETAILS **********/
 #itemOverview {
@@ -551,7 +559,8 @@ div.two-thirds-width ul#listings > li {
 }
 
 #itemOverview > img,
-#recommendations img {  
+#recommendations img,
+.mw-MediaResource img {  
     margin-right: 20px;
     float: left;
 }
@@ -591,9 +600,6 @@ div.two-thirds-width ul#listings > li {
     float: left;
 }
 
-#recommendations > div > ul > li {
-    margin-bottom: 20px;
-}
 
 /*----- youtube player -----*/
 div#ytapiplayerContainer {
@@ -660,6 +666,26 @@ div#ytapiplayerContainer h4 {
     width: 7em;
     margin-left: 10px;
 }
+
+/*---------- MEMORY WALLS ---------*/
+ul#memoryWallGallery {
+    margin: 20px 0 0 -20px;
+}
+
+ul#memoryWallGallery > li {
+    float: left;
+    height: 12.5em;
+    margin: 0 0 20px 20px;
+    padding: 10px 15px;
+    width: 27.7%;
+}
+
+ul#memoryWallGallery li ul.actions li {
+    float: left;
+    margin-right: 0.5em;
+}
+
+
 
 /********** FOOTER ***********/
 .borderradius div#footer {

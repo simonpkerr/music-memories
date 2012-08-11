@@ -105,7 +105,7 @@ class MemoryWall
         if($apiId != null){
             return $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
                 return $mwmr->getApi_id() == $apiId;
-            });
+            })->toArray();
         }
         
         return $this->memoryWallMediaResources->toArray();                

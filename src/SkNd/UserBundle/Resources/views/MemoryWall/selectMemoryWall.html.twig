@@ -5,20 +5,26 @@
 <h1>Select a Memory Wall</h1>
 <p class="strapline">Choose a wall from below to add to&hellip;</p>
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-<li>
-    <ul class="userMemoryWalls">
-    {% for mw in mws %}
-            <li><dl>
-                    <dt><a href="{{path('memoryWallAddMediaResource', {'slug': mw.slug, 'api': api, 'id':id })}}" title="Add to &ldquo;{{ mw.name }}&rdquo;"><strong>{{ mw.name }}</strong></a></dt>
-                    {% if mw.description is not null %}<dt>Description</dt><dd>({{mw.description}})</dd>{% endif %}
-                    {% if mw.associatedDecade is not null %}<dt>Associated decade</dt><dd>({{mw.associatedDecade.decadeName}})</dd>{% endif %}
-                    <dt>Date Created</dt><dd>{{mw.dateCreated|date("d/m/y")}}</dd>
-                    <dt>Items on this wall</dt><dd>{{ mw.memoryWallMediaResources|length }}</dd>
-                </dl>
-            </li>
-    {% endfor %}
-    </ul>
-</li>
+<ul class="bullet-list">
+{% for mw in mws %}
+        <li>
+            <div>
+                <strong><a href="{{path('memoryWallAddMediaResource', {'slug': mw.slug, 'api': api, 'id':id })}}" title="Add to &ldquo;{{ mw.name }}&rdquo;">{{ mw.name }}</a></strong>
+                <span class="note"> ({{ mw.memoryWallMediaResources|length }} {{ mw.memoryWallMediaResources|length == 1 ? "item" : "items" }})</span>
+                <p class="note">
+                {% if pageTitle == 'All Public' %}
+                    by <strong><a title="See all of {{mw.user.username}}&rsquo;s Memory walls" href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">{{mw.user.username}}</a></strong>
+                {% endif %}
+                    <span> created on <strong>{{mw.dateCreated|date("d/m/y")}}</strong></span>
+                </p>
+            </div>
+            {% if mw.description is not null %}
+            <p>{{mw.description|slice(0,100)}}{%if mw.description|length > 100 %}&hellip;{% endif %}</p>
+            {% endif %}
+        </li>
+{% endfor %}
+</ul>
+
 {% endif %}
 
 {% endblock content %}

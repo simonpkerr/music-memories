@@ -1,9 +1,18 @@
 <?php
+require __DIR__.'/../vendor/symfony/src/Symfony/Component/ClassLoader/ApcUniversalClassLoader.php';
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Symfony\Component\ClassLoader\ApcUniversalClassLoader;
 
-$loader = new UniversalClassLoader();
+
+//$loader = new UniversalClassLoader();
+$loader = new ApcUniversalClassLoader('SkNd');
+/*
+ * (from Symfony website)
+ * if you change the location of a particular namespace or prefix, you'll need to flush your APC cache. 
+ * Otherwise, the autoloader will still be looking at the old location for all classes inside that namespace.
+ */
 
 $loader->registerNamespaces(array(
     'Symfony'          => array(__DIR__.'/../vendor/symfony/src', __DIR__.'/../vendor/bundles'),

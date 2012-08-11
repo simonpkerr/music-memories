@@ -35,7 +35,11 @@ h1,h2,h3,.heading {
     color: #2B1B4C;
 }
 
-p, a, li{
+dt {
+    color: #2B1B4C;
+}
+
+p, a, li, dd {
     font-size: 1em;
     line-height: 1.5em;
     color: #101939;
@@ -75,3 +79,10 @@ h5, h6 {
    line-height: 1.35em;
 }
 
+
+
+form select,
+form input,
+form textarea {
+    font-family: Tahoma, sans-serif, Arial;
+}

@@ -1,17 +1,21 @@
-{% form_theme form 'SkNdUserBundle:MemoryWall:form.html.twig' %}
+{% form_theme form 'SkNdUserBundle::form.html.twig' %}
     
 <h1>Create a new Memory Wall</h1>
-<p class="strapline">Memory walls are ace. Here&rsquo;s why.</p>
-<ul>
-    <li>You get to save all your favourite things here, including Amazon products, YouTube clips and photos.</li>
+<div class="half-width fr">
+<p class="strapline">Memory walls are ace. Here&rsquo;s why&hellip;</p>
+<ul class="bullet-list">
+    <li>You get to save all your favourite things here, including Amazon products and YouTube clips.</li>
     <li>Your Memory Walls act like shopping baskets so you can save stuff in them that you might like to buy later.</li>
-    <li>You can create a snap&ndash;shot of a great time in your life and then share it with your pals, either by sending it to your Facebook page or emailing them directly.</li>
+    <li>You can create a snap&ndash;shot of a great time in your life and then share it with your pals, either by sharing it with social media or emailing them directly.</li>
 </ul>
+</div>
 
-<form action="{{ path('memoryWallCreate') }}" {{ form_enctype(form) }} method="POST">
-
+<form class="half-width" action="{{ path('memoryWallCreate') }}" {{ form_enctype(form) }} method="POST">
+    <fieldset>
+    <legend>Wally details</legend>
 {{ form_widget(form) }}
     <div>
         <input type="submit" value="{{ 'memoryWall.create.submit'|trans({}, 'SkNdUserBundle') }}" />
     </div>
+    </fieldset>
 </form>

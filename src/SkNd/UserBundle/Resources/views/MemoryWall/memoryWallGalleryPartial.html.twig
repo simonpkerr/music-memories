@@ -1,25 +1,27 @@
 <ul id="memoryWallGallery">
 {% for mw in mws %}
-        <li><dl>
-                <dt>Name</dt>
-                <dd><a href="{{ path('memoryWallShow', {'slug': mw.slug }) }}">{{mw.name}}</a></dd>
-                <dt>Description</dt>
-                <dd>{{mw.description is not null ? mw.description : 'No description available'}}</dd>
-                <dt>Associated Decade</dt>
-                <dd>{{mw.associatedDecade is not null ? mw.associatedDecade.decadeName : 'All decades'}}</dd>
-                <dt>Date Created</dt>
-                <dd>{{mw.dateCreated|date("d/m/y")}}</dd>
-                <dt>Items on this wall</dt>
-                <dd>{{ mw.memoryWallMediaResources|length }}</dd>
-                {% if pageTitle == 'All Public' %}
-                <dt>Created by</dt>
-                <dd><span>{{mw.user.username}}</span><span> &ndash; (<a href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">view all of {{mw.user.username}}&rsquo;s Memory Walls)</a></span></dd>
-                {% endif %}
-                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and mw.user.username == app.user.username %}
-                <dt>Actions</dt>
-                <dd><a href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}">Edit</a></dd>
-                <dd><a href="{{ path('memoryWallDelete', {'slug':mw.slug}) }}">Delete</a></dd>
-                {% endif %}
-            </dl></li>        
+    <li>
+        <div>
+        <strong><a href="{{ path('memoryWallShow', {'slug': mw.slug }) }}">{{mw.name}}</a></strong>
+        <span class="note"> ({{ mw.memoryWallMediaResources|length }} {{ mw.memoryWallMediaResources|length == 1 ? "item" : "items")}})</span>
+        <p class="note">
+        {% if pageTitle == 'All Public' %}
+            by <strong><a title="See all of {{mw.user.username}}&rsquo;s Memory walls" href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">{{mw.user.username}}</a></strong>
+        {% endif %}
+            <span> created on <strong>{{mw.dateCreated|date("d/m/y")}}</strong></span>
+        </p>
+        <img class="mw-image" src="{{ asset('bundles/SkNd/images/mw-default.png') }}" alt="Memory wall image" />
+        {% if mw.description is not null %}
+           <p>{{mw.description|slice(0,100)}}{%if mw.description|length > 100 %}&hellip;{% endif %}</p>
+        {% endif %}
+            <p>Related to &ndash; <strong>{{mw.associatedDecade is not null ? mw.associatedDecade.slug : 'all decades'}}</strong></p>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and mw.user.username == app.user.username %}
+            <ul class="actions cf">
+                <li class="edit-it"><a title="you can edit this wall!" class="button" href="{{ path('memoryWallEdit',{'slug':mw.slug}) }}"><span>Edit</span></a></li>
+                <li class="delete-it"><a title="delete the wall (if you really want)" class="button" href="{{ path('memoryWallDelete', {'slug':mw.slug}) }}"><span>Delete</span></a></li>
+            </ul>
+            {% endif %}
+        </div>
+    </li>        
 {% endfor %}
 </ul>

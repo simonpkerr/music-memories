@@ -98,8 +98,9 @@
     <div id="exact-recommendations">
         <h2>Recommended</h2>
         <p class="strapline">Here are some items just like the one you chose.</p>
+        <ul>
         {% for mr in recommendations.exactMatches %}
-            {{ _self.m_mediaResource(mr.mediaResourceCache.xmlData, media, decade, genre) }}
+             {{ _self.m_mediaResource(mr.mediaResourceCache.xmlData, media, decade, genre) }}
         {% endfor %}
         </ul>
     </div>

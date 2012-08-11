@@ -6,20 +6,21 @@
 {% block title %}Memory Walls Gallery{% endblock %}
 
 {% block topNavLinks %}
-{% block mediaSelect %}
-    <div id="headerMediaSelection">
-        {% render "SkNdMediaBundle:Media:mediaSelection" %}
-    </div>
-{% endblock %}
-
 {{ parent() }}
+
+{% block mediaSelect %}
+<div id="headerMediaSelection" class="fr">
+    <ul>
+        <li>
+            <a href="#" class="button drop-down">search</a>
+            {% render "SkNdMediaBundle:Media:mediaSelection" %}
+        </li>
+    </ul>
+</div>
+{% endblock %}
 {% endblock %}
 
-{% block body %}
 {% block content %}
-{% endblock %}
-
-    
 {% endblock %}
 
 

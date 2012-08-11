@@ -1,7 +1,7 @@
 
 {% block field_label %}
 {% spaceless %}
-    <label for="{{ id }}">{{ id|trans([], 'FOSUserBundle') }}</label>
+    <label for="{{ id }}">{{ id|trans([], 'FOSUserBundle')|trans([], 'SkNdUserBundle') }}</label>
 {% endspaceless %}
 {% endblock field_label %}
 
@@ -32,21 +32,10 @@
     
 {% block field_errors %}
 {% spaceless %}
-    {% if errors|length > 0 %}
-    {#<ul class="form-errors">
-    {% for formPart in form|keys %}
-        {% if (formPart.vars is defined and formPart.vars.errors|length) %}
-            {% for error in formPart.vars.errors %}
-                <li>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</li>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-    </ul>#}
-    
+    {% if errors|length > 0 %}   
     <ul class="form-errors">
         {% for error in errors %}
             <li>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</li>
-            {#<span class="form-errors">{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</span>#}
         {% endfor %}
     </ul>
     {% endif %}
