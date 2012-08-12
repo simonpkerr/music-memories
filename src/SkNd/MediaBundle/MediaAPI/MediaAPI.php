@@ -88,6 +88,15 @@ class MediaAPI {
     public function setAPIStrategy($apiStrategyKey){
         if(array_key_exists($apiStrategyKey, $this->apis)){
             $this->apiStrategy = $this->apis[$apiStrategyKey];
+            
+            if($this->mediaSelection != null && $this->mediaSelection->getAPI()->getName() != $apiStrategyKey){
+                $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiSlug);
+                if($api == null)
+                    throw new \RuntimeException("There was a problem with that api value");
+                
+                $api = $this->em->merge($api);
+                $this->mediaSelection->setAPI($api);
+            }
         }
         else
             throw new RuntimeException("api key not found");

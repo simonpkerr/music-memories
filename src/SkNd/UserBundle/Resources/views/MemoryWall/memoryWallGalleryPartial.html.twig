@@ -3,7 +3,7 @@
     <li>
         <div>
         <strong><a href="{{ path('memoryWallShow', {'slug': mw.slug }) }}">{{mw.name}}</a></strong>
-        <span class="note"> ({{ mw.memoryWallMediaResources|length }} {{ mw.memoryWallMediaResources|length == 1 ? "item" : "items")}})</span>
+        <span class="note"> ({{ mw.memoryWallMediaResources|length }} {{ mw.memoryWallMediaResources|length == 1 ? "item" : "items"}})</span>
         <p class="note">
         {% if pageTitle == 'All Public' %}
             by <strong><a title="See all of {{mw.user.username}}&rsquo;s Memory walls" href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">{{mw.user.username}}</a></strong>

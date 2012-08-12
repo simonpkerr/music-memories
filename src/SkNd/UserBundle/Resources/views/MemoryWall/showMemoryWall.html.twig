@@ -24,7 +24,7 @@
         {# if the wall is public and belongs to someone else, give a link to show all their memory walls #}
         {% if mw.isPublic and not wallBelongsToThisUser %}
         <dt>Created by</dt>
-        <dd><span>{{mw.user.username}}</span><span> &ndash; (<a href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">view all of {{mw.user.username}}&rsquo;s Memory Walls)</a></span></dd>
+        <dd><a title="view all of {{mw.user.username}}&rsquo;s Memory Walls)" href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">{{mw.user.username}}</a></dd>
         {% endif %}
     </dl> 
     {# if the memory wall being shown belongs to the current user, show further actions #}

@@ -3,16 +3,17 @@
 {% block stylesheets %}
 {{ parent() }}
 {% endblock %}
-{% block body %}
         
 {% block fos_user_content %}
 <h1>You&rsquo;re all signed up</h1>
-    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
-    <p>{{ 'registration.memoryWallReminder'|trans({}, 'SkNdUserBundle') }}</p>
+<div class="half-width fl">
+    <p class="strapline">{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
+    <p>{{ 'registration.memoryWallReminder'|trans({}, 'SkNdUserBundle')|raw }}</p>
     {% if app.session is not empty %}
         {% set targetUrl = app.session.get('_security.target_path') %}
-        {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}
+        {% if targetUrl is not empty %}<a class="button" href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a>{% endif %}
     {% endif %}
-    <a href="{{path('index')}}">Start noodleDigging now</a>
+    <a class="button" href="{{path('index')}}">Start noodleDigging now</a>
+</div>
 {% endblock fos_user_content %}
-{% endblock %}        
+       

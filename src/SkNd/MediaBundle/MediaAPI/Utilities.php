@@ -34,9 +34,10 @@ class Utilities {
         //this version removes any references to disc set, box set etc
         preg_match('/[\[|\(](\d{4})[\]|\)]/i', $keywords, $yearParts);
         $yearPart = isset($yearParts[1]) ? $yearParts[1] : null;
-        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\s?(\(|double pack|(\-\s)?Remastered|\[|:|\d?\sdvd|(\-\s)?complete|the complete|series|box set|bbc|special edition|blu-ray|\d?(\s|\-)?disc set|3d|region free).*)/i','$1', $keywords)));
+        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\s?(\(|\[|\d?\sdvd|[\-|\:]?\s?((the\s)?complete|series|box set|bbc|special edition|blu-ray|double pack|Remastered|\d?(\s|\-)?disc set|3d|region free)).*)/i','$1', $keywords)));
         
         //older regexs
+        //'/(\w*)(\s?(\(|double pack|(\-\s)?Remastered|\[|\:|\d?\sdvd|(\-\s)?(the\s)?complete|series|box set|bbc|special edition|blu-ray|\d?(\s|\-)?disc set|3d|region free).*)/i'
         //'/(\w*)(\d*)(\[\D*\]|\(\D*\)|(\d{1}\s+|dvd|complete|the complete|series|box set|bbc|special edition|blu-ray|disc set|3d)|(\[|\]|\(|\)|\+|\&|\d{1}\-))/i'
         //'/(\w*)(\d*)(\s{0}(the complete|series|box set|complete|bbc|dvd)\s{0}|(\s??\[(dvd|blu\-ray)\]\s??)|(\d{1}(\s??|\-??)disc set)|(\[)|(\])|(\s??\:\s+?)|(\s??(\&)\s??)|(\s+?\d{1}\s+?))/i'
         //'/(\w*)(\d*)(\s{0}(the complete|series|box set|complete|bbc|dvd)\s{0}|(\s??\[(dvd|blu\-ray)\]\s??)|(\d{1}(\s??|\-??)disc set)|(\[)|(\])|(\s??\:\s+?)|(\s??(\&)\s??)|(\s+?\d{1}\s+?))/i'

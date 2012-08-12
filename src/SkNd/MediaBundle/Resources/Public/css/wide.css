@@ -1,4 +1,4 @@
-/*@media screen and (min-width: 600px){*/
+@media screen and (min-width: 600px){
 
 /********** TEST ***********/
 .grid-on {
@@ -301,8 +301,7 @@ div#content {
 }
 
 div#content h1 {
-    line-height: 1.3em;
-    margin: 5px 0 15px 10em;
+    margin: 0.2em 0 0.5em 10em;
 }
 
 div#introPanel {
@@ -336,25 +335,25 @@ div#contentSearches ul {
 
 div#contentSearches li {
     float: left;
-    width: 100%;
+    width: 50%;
     background-color: #E5961D;
 }
 
-/*div#contentSearches li:hover,
+div#contentSearches li:hover,
 div#contentSearches li.selected {
     background-color: transparent;
-}*/
+}
 
-/*div#contentSearches li a,
+div#contentSearches li a,
 div#contentSearches li a:hover {
    text-decoration: none;
    color: inherit;
-}*/
+}
 
 div#contentSearches li h2 {
     border: none;
     text-align: center;
-    padding: 7px 0 12px 0;
+    padding: 5px 0;
     color: #fff;
     margin: 0;
 }
@@ -364,10 +363,8 @@ div#contentSearches li h2 {
 }
 
 .borderradius div#contentSearches li#tab1 {
-    /*-moz-border-radius: 10px 0 0 0;
-    border-radius: 10px 0 0 0;*/
-    -moz-border-radius: 10px 10px 0 0;
-    border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 0 0 0;
+    border-radius: 10px 0 0 0;
 }
 .borderradius div#contentSearches li#tab2 {
     -moz-border-radius: 0 10px 0 0;
@@ -376,8 +373,7 @@ div#contentSearches li h2 {
 
 div#contentSearches li:hover h2,
 div#contentSearches li.selected h2 {
-    /*color: #E5961D;*/
-    color: #fff;
+    color: #E5961D;
 }
 
 div#contentSearches ul:first-child li > div {
@@ -748,4 +744,4 @@ div#footer .right p {
     margin-left: 4.5em;
 }
 
-/*}*/
+}

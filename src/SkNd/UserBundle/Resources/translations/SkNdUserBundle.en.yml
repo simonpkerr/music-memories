@@ -16,11 +16,11 @@ memoryWall:
       accessDenied: A new Memory Wall eh? Nice. Just log in first and then you&rsquo;re away!
   delete:
     confirm: I&rsquo;m sure. Go ahead and delete it
-    cancel: Whoa! Close one. I didn&rsquo;t want to do that
+    cancel: Whoa! Close one. I don&rsquo;t want to do that
     flash:
       success: Memory wall deleted. I hope you&rsquo;re happy
       accessDenied: Oy! You can&rsquo;t just go deleting anybodys Memory Walls!
-      successCreatedDefault: That was your last Memory Wall, so we&rsquo;ve created a fresh one for you. You&rsquo;ve got to have at least one, sorry
+      successCreatedDefault: That was your last Memory Wall, so we&rsquo;ve created a fresh one for you. Aren&rsquo;t we nice?
   edit:
     submit: Update this wall
     flash:
@@ -42,7 +42,7 @@ mediaResource:
       success: Yay. Your item was added successfully
   delete:
     confirm: I&rsquo;m sure. Delete it
-    cancel: No. On second thoughts, I don&rsquo;t think I will.
+    cancel: No, I don&rsquo;t think I will.
     flash:
       accessDenied: Oh behave! You have to log in first, then you can delete stuff
       success: The item was successfully deleted. 

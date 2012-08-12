@@ -8,37 +8,48 @@
     <a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">
         <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
     </a>
-    <strong><a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></strong>
+    <strong><a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></strong>    
 {% endif %}
+       
 {% endmacro %}
 
-<div class="two-thirds-width fl">
+<div id="memoryWallContents" class="two-thirds-width fl">
 {% if mw.memoryWallMediaResources|length > 0 %}
 {% for api in apis %}
     {% set mwmrs = mw.getMemoryWallMediaResources(api.id) %}
     {% if mwmrs|length > 0 %}
-        <p class="strapline cf">Added from {{ api.friendlyName }}</p>
-        {% for mwmr in mwmrs %}
-        {% set mr = mwmr.mediaResource %}
-        {% if api.name == 'youtubeapi' and loop.first %}
-            {% include "SkNdMediaBundle:Media:youTubePlayerPartial.html.twig" 
-                with {
-                    'firstVideo' : mr.mediaResourceCache
-                } 
-            %}
-        {% endif %}
-        <div class="mw-MediaResource">
-            {{ _self.mrLinkAndPic(mr, api) }}
-            <p class="note">Added on {{ mwmr.dateAdded|date("F jS \\a\\t g:ia") }}</p>
+       <div id="{{api.name}}Items" class="cf">
+            <p class="strapline cf">Added from {{ api.friendlyName }}</p>
+            <ul>
+            {% for mwmr in mwmrs %}
+            {% set mr = mwmr.mediaResource %}
+            {% if api.name == 'youtubeapi' and loop.first %}
+            <li id="ytPlayer">
             
-            {% if wallBelongsToThisUser %}
-            <ul class="actions">
-                {#<li class="edit-it">Edit</li>#}
-                <li class="delete-it"><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span>Remove this item</span></a></li>
-            </ul>
+                {% include "SkNdMediaBundle:Media:youTubePlayerPartial.html.twig" 
+                    with {
+                        'firstVideo' : mr.mediaResourceCache
+                    } 
+                %}
+            </li>
             {% endif %}
+            
+            <li class="mw-MediaResource">
+                <p class="note">Added on {{ mwmr.dateAdded|date("d/m/y \\a\\t g:ia") }}</p>    
+                {{ _self.mrLinkAndPic(mr, api) }}
+                <ul class="actions fl full-width">
+                    {% if api.name == 'amazonapi' %}
+                    <li class="buy-it"><a class="orange button" title="buy this from Amazon" target="_blank" href="{{mr.mediaResourceCache.xmlData.DetailPageURL}}"><span>Buy</span></a></li>    
+                    {% endif %}
+                    {% if wallBelongsToThisUser %}
+                    {#<li class="edit-it">Edit</li>#}
+                    <li class="delete-it"><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span>Remove</span></a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% endfor %}
+            </ul>
         </div>
-        {% endfor %}
     {% endif %}
 {% endfor %}
 {% else %}

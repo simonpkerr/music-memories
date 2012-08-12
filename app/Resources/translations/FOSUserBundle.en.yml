@@ -29,7 +29,7 @@ change_password.flash.success: The password has been changed
 registration.check_email: An email has been sent to %email%. It contains an activation link you must click to activate your account.
 registration.confirmed: Nice one %username%! Your account is now active.
 registration.back: Go back to the original page.
-registration.submit: Register
+registration.submit: Get noodling
 registration.flash.user_created: You&rsquo;re now an official noodleDigger! Yay.
 
 registration.email: |

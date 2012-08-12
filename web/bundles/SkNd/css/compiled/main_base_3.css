@@ -43,11 +43,6 @@ div.errors {
     font-size: 0.9em;
 }
 
-div.errors p {
-    margin-bottom: 15px;
-    color: inherit;
-}
-
 strong {
     font-weight: bold;
 }
@@ -177,7 +172,6 @@ form div.error input {
 
 /********** BUTTON ELEMENTS ***********/
 .button,
-.basic-button,
 input#_submit,
 input[type="submit"] {
     background-color: #7AA4E2;
@@ -188,11 +182,6 @@ input[type="submit"] {
     padding: 5px 7px;
     text-decoration: none;
     text-align: center;
-}
-
-.basic-button {
-    border: 3px solid #ACC5EC;
-    color: #fff;
 }
 
 .orange {
@@ -251,7 +240,6 @@ input#_submit {
 }
 
 .borderradius .button,
-.borderradius .basic-button,
 .borderradius input#_submit,
 .boxshadow input[type="submit"]{
     -moz-border-radius: 10px;
@@ -259,7 +247,6 @@ input#_submit {
 }
 
 .button:hover,
-.basic-button:hover,
 .selected,
 .cssgradients .selected
 .cssgradients .button:hover,
@@ -435,10 +422,6 @@ div#introPanel h2 {
     border: none;
     padding: 0;
     margin-bottom: 0.2em;
-}
-
-#news p {
-    font-size: 0.9em;
 }
 
 /*---------- content searches --------*/

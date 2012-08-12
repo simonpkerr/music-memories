@@ -29,9 +29,10 @@ class UtilitiesTests extends PHPUnit_Framework_TestCase {
             'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy',
             'Ripping Yarns - The Complete Series[DVD] [1976]' => 'Ripping Yarns 1976',
             'Alien Anthology [Blu-ray] [1979] [6 Disc Set]' => 'Alien Anthology 1979',
-            'Saturday Night Fever:25th Anniversary Se [DVD]' => 'Saturday Night Fever',
+            'Saturday Night Fever:25th Anniversary Se [DVD]' => 'Saturday Night Fever:25th Anniversary Se',
             'Prometheus - Special Edition (Blu-ray 3D + Blu-ray + Digital Copy)', 'Prometheus',
             'Chitty Chitty Bang Bang (2 Disc Special Edition) [1968] [DVD]', 'Chitty Chitty Bang Bang 1968',
+            'Doctor Who: The Ambassadors of Death [DVD]', 'Doctor Who: The Ambassadors of Death',
         );
     }
     

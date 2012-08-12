@@ -4,14 +4,19 @@
 
 {% block fos_user_content %}
 <h1>Get yourself logged in</h1>
-{% if error %}
-    <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
-{% endif %}
 
 <form class="half-width fl left" action="{{ path("fos_user_security_check") }}" method="post">
     <fieldset>
         <legend>Enter your stuff</legend>
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    
+        {% if error %}
+        <div class="errors">
+            
+            <p>{{ error|trans({}, 'FOSUserBundle') }}</p>
+        </div>
+        {% endif %}
+        
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
     <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
     <input type="text" id="username" name="_username" value="{{ last_username }}" />
