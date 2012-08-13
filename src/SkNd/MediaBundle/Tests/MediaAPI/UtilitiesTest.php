@@ -33,6 +33,7 @@ class UtilitiesTests extends PHPUnit_Framework_TestCase {
             'Prometheus - Special Edition (Blu-ray 3D + Blu-ray + Digital Copy)', 'Prometheus',
             'Chitty Chitty Bang Bang (2 Disc Special Edition) [1968] [DVD]', 'Chitty Chitty Bang Bang 1968',
             'Doctor Who: The Ambassadors of Death [DVD]', 'Doctor Who: The Ambassadors of Death',
+            'The Complete Open All Hours - Series One-Four [1976]', 'The Complete Open All Hours' //still doesn't work properly for titles with 'the complete' at the beginning
         );
     }
     

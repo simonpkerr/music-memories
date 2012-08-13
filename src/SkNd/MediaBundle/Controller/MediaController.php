@@ -200,11 +200,10 @@ class MediaController extends Controller
         $referrer = $this->getRequest()->headers->get('referer');
         
         $responseParams = array(
-            //'returnRouteParams' => $this->mediaapi->getMediaSelectionParams(),
             'media'             => $media,
             'decade'            => $decade,
             'genre'             => $genre,
-            'api'               => $this->mediaapi->getCurrentAPI()->getName(),
+            'api'               => 'amazonapi',
             'referrer'          => $referrer,
         );
         
@@ -212,23 +211,14 @@ class MediaController extends Controller
             $params = array(
                'ItemId' =>  $id,
             );
-            $this->mediaapi->setAPIStrategy('amazonapi');
+            //$this->mediaapi->setAPIStrategy('amazonapi');
             
-            try{
-                //$recommendations = $this->mediaapi->getRecommendations($mediaSelection);
-                //$mediaResource = $this->mediaapi->getMediaResource($id);
-                
+            try{               
                 $responseParams['mediaResource'] = $this->mediaapi->getDetails($params, MediaAPI::MEDIA_RESOURCE_RECOMMENDATION);
-                // = $details['response']->ItemAttributes->Title;                
-                //$responseParams['title'] = $details['response']->ItemAttributes->Title;
-                //merge the response and recommendations with the responseParams array
-                //$responseParams = array_merge($responseParams, $details);
-                
+                                
             }catch(\RunTimeException $re){
-                //$exception = $re->getMessage();
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
             }catch(\LengthException $le){
-                //$exception = $le->getMessage();
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
             }
         }
@@ -242,7 +232,7 @@ class MediaController extends Controller
         
         //get the youtube service
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
-        $this->mediaapi->setAPIStrategy('youtubeapi');
+        //$this->mediaapi->setAPIStrategy('youtubeapi');
         $responseParams['api'] = $this->mediaapi->getCurrentAPI()->getName();
         $mediaSelection = $this->mediaapi->getMediaSelection(array(
             'api'               => 'youtubeapi',
@@ -258,69 +248,13 @@ class MediaController extends Controller
             //merge the listings and responseParams and remove null entries
             $responseParams = Utilities::removeNullEntries(array_merge($responseParams, $listings));
         }catch(\RuntimeException $re){
-            //$ytException = $re->getMessage();
             $this->get('session')->setFlash('yt-notice', 'media.youtube.runtime_exception');
         }catch(\LengthException $le){
-            //$ytException = $le->getMessage();
             $this->get('session')->setFlash('yt-notice', 'media.youtube.length_exception');
         }
 
         return $this->render('SkNdMediaBundle:Media:youTubePartial.html.twig', $responseParams);        
     }
-    
-    /*public function setSlugsAction($table){
-        $em = $this->getEntityManager();
-        switch($table){
-            case "genre":
-                $entities = $em->getRepository('SkNdMediaBundle:Genre')->findAll();
-                foreach ($entities as $entity) {
-                    $slug = strtolower($entity->getGenreName());
-                    $slug = str_replace(',', '', $slug);
-                    $slug = str_replace(' ', '-', $slug);
-                    $entity->setSlug($slug);
-                    $em->persist($entity);
-                    $em->flush();
-                }
-                
-                break;
-            case "mediaType":
-                $entities = $em->getRepository('SkNdMediaBundle:MediaType')->findAll();
-                foreach ($entities as $entity) {
-                    $slug = strtolower($entity->getMediaName());
-                    $slug = str_replace(',', '', $slug);
-                    $slug = str_replace(' ', '-', $slug);
-                    $entity->setSlug($slug);
-                    $em->persist($entity);
-                    $em->flush();
-                }
-                break;
-            case "decade":
-                $entities = $em->getRepository('SkNdMediaBundle:Decade')->findAll();
-                foreach ($entities as $entity) {
-                    $slug = strtolower($entity->getDecadeName());
-                    $slug = str_replace(',', '', $slug);
-                    $slug = str_replace(' ', '-', $slug);
-                    $entity->setSlug($slug);
-                    $em->persist($entity);
-                    $em->flush();
-                }
-                break;
-        }
-        
-        return new Response('success');
-        
-    }*/
-    
-      static public function slugify($text)
-      {
-        // replace all non letters or digits by -
-        $text = preg_replace('/\W+/', '-', $text);
-
-        // trim and lowercase
-        $text = strtolower(trim($text, '-'));
-
-        return $text;
-      }
     
 }
 

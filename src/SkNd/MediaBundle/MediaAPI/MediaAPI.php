@@ -56,13 +56,12 @@ class MediaAPI {
         $this->debugMode = $debug_mode;
         $this->em = $em;
         $this->session = $session;
-        //this needs changing to accomodate different APIs
-        $this->setAPIStrategy('amazonapi');
-        
+        //$this->setAPIStrategy('amazonapi');
         //if($this->session->has('mediaSelection'))
         //    $this->mediaSelection = $this->session->get('mediaSelection');
         //else 
         $this->mediaSelection = $this->getMediaSelection();
+        
     }
  
     public function getEntityManager(){
@@ -87,16 +86,15 @@ class MediaAPI {
     
     public function setAPIStrategy($apiStrategyKey){
         if(array_key_exists($apiStrategyKey, $this->apis)){
-            $this->apiStrategy = $this->apis[$apiStrategyKey];
-            
-            if($this->mediaSelection != null && $this->mediaSelection->getAPI()->getName() != $apiStrategyKey){
-                $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiSlug);
+            $this->apiStrategy = $this->apis[$apiStrategyKey]; 
+            /*if($this->mediaSelection != null && $this->mediaSelection->getAPI() != null && $this->mediaSelection->getAPI()->getName() != $apiStrategyKey){
+                $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiStrategyKey);
                 if($api == null)
-                    throw new \RuntimeException("There was a problem with that api value");
+                    throw new \RuntimeException("There was a problem with that api value"); 
                 
                 $api = $this->em->merge($api);
                 $this->mediaSelection->setAPI($api);
-            }
+            }*/
         }
         else
             throw new RuntimeException("api key not found");
@@ -196,12 +194,10 @@ class MediaAPI {
              * if the keywords are set from a search then removed and another search performed
              * they should be removed from the MediaSelection object. 
              */
-            //if($keywords != null){// && $this->mediaSelection->getKeywords() == null){
             if($this->mediaSelection->getKeywords() != $keywords){
                 $this->mediaSelection->setKeywords($keywords);
             }
             
-            //$computedKeywords != null || 
             if($this->mediaSelection->getComputedKeywords() != $computedKeywords){
                 $this->mediaSelection->setComputedKeywords($computedKeywords);
             }
@@ -294,7 +290,7 @@ class MediaAPI {
      * but first gets recommendations from the db about that api
      * @param params - contains the relevant parameters to call the api. for amazon this is things
      * like ItemId. For youtube it contains things like keywords, decade, media etc
-     * @param $getRecommendations - for details called from media controller, recommendations are required
+     * @param $recType - for details called from media controller, recommendations are required
      * however from the memory wall controller, when adding a resource to a memory wall, the item does 
      * not require recommendations to be looked up
      * 
@@ -330,17 +326,17 @@ class MediaAPI {
         
         return $this->mediaResource;
         
-        /*----------- maybe put a flush right at the end -----------*/
-
     }
     
-    /*
+    
+    /**
      * getListings calls the api of the current strategy
      * but first checks to see if the query is in the listings cache table along with results
-     * @param params - contains the media,decade,genre,keywords,page used to find results
+     * @param recType - recommendation type for listings, can be either memory walls returned for amazon listings
+     * or null for youtube listings.
      * @return array(response, recommendations)
      * 
-     */
+     **/
     public function getListings($recType = null){
         $this->response = null;
            
