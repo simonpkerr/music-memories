@@ -107,6 +107,7 @@ div#header {
 
 /*------ sm sharing -----*/
 div#sm-sharing {
+    float: none;
     position: relative;
     margin: 5em auto;
     width: 61.3em; /* equiv of 980px */
@@ -229,6 +230,10 @@ ul#memoryWalls li ul li:first-child a {
 }
 
 /*------ login -------------------------*/
+ul#loginPanel {
+    float: right;
+}
+
 ul#loginPanel > li {
     float: left;
     margin-left: 20px;
@@ -263,6 +268,7 @@ ul#memoryWalls li a {
     float: left;
     padding: 5px 7px;
     width: 9em;
+    color: #fff;
 }
 
 /*----------- quick search ----------*/

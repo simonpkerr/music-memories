@@ -308,9 +308,13 @@ div#wrapper {
 /********** HEADER ***********/
 
 /*------ sm sharing -----------*/
+div#sm-sharing {
+    float: right;
+    margin: 8px;
+}
+
 div#sm-sharing ul {
     margin: 5px 15px 0 0;
-    text-align: right;
 }
 
 div#sm-sharing li {
@@ -324,6 +328,7 @@ div#sm-sharing li a {
     float: left;
     height: 35px;
     width: 35px;
+    margin-right: 3px;
 }
 div#sm-sharing li a span {
     position: absolute;
@@ -354,7 +359,7 @@ a#siteLogo img {
     max-width: 354px;
     min-width: 177px;
     width: 60%;
-    margin: -20px 0 1em -15px;
+    margin: -25px 0 1em -15px;
     /*display: none;*/
 }
 
@@ -368,14 +373,13 @@ ul#memoryWalls li a  {
     margin-bottom: 0.5em;
     position: relative;
     z-index: 2;
-    color: #fff;
     display: block;
     font-weight: bold;
 }
 
 /*------- log in panel --------------*/
 ul#loginPanel {
-    float: right;
+    display: block;
 }
 
 ul#loginPanel li a {
