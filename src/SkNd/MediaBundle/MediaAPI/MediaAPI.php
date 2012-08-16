@@ -56,7 +56,9 @@ class MediaAPI {
         $this->debugMode = $debug_mode;
         $this->em = $em;
         $this->session = $session;
-        //$this->setAPIStrategy('amazonapi');
+        if(is_null($this->apiStrategy))
+            $this->setAPIStrategy('amazonapi');
+        
         //if($this->session->has('mediaSelection'))
         //    $this->mediaSelection = $this->session->get('mediaSelection');
         //else 
@@ -475,6 +477,7 @@ class MediaAPI {
             $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($xmlData));
             $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($xmlData));
             $cachedResource->setXmlData($xmlData->asXML());
+            $cachedResource->setDateCreated(new \DateTime("now"));
             $this->mediaResource->setMediaResourceCache($cachedResource);
         }
 

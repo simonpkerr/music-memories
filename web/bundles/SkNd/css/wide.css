@@ -241,9 +241,13 @@ ul#loginPanel > li {
 }
 
 ul#loginPanel li a {
-    margin: 0;
+   margin: 0;
    color: #fff;
-   font-weight: bold;
+}
+
+ul#loginPanel li ul a {
+    text-align: center;
+    margin: 0.5em 0 0 0;
 }
 
 ul#loginPanel span {
@@ -321,6 +325,11 @@ div#introPanel li {
 
 div#introPanel li p{
     margin-left: 7em;
+}
+
+.drop-down {
+    position: static;
+    left: auto;
 }
 
 /*---------- content searches --------*/
@@ -403,6 +412,10 @@ div#contentSearches ul:first-child li.selected > div
 }
 
 /*--- ALL CONTENT FORMS ---*/
+ul.form-errors {
+    margin: 0 0 3px 10.5em;
+}
+
 form input[type="text"] {
     width: 95%;
 }
@@ -490,11 +503,13 @@ ul#listings > li > ul.actions {
     float: right;
     width: 3.6em;
     text-align: center;
+    clear: none;
 }
 
 ul#listings ul.actions > li {
     border-top: 1px solid #FFFFFF;
     padding: 13px 0 23px 0;
+    margin: 0;
 }
 
 ul#listings ul.actions > li:hover {
@@ -515,13 +530,11 @@ ul#listings ul.actions > li:first-child {
 }
 
 ul.actions > li > a {
-    background-position: 50% top;
-    background-repeat: no-repeat;
-    display: block;
     height: 0.45em;
     margin-top: 0;
     padding: 25px 0 0;
     width: 5em;
+    font-size: 0.7em;
 }
 
 ul.actions > li ul {
@@ -538,6 +551,25 @@ ul.actions > li ul {
 ul.actions > li ul a {
     color: #fff;
 }
+
+ul#listings ul.actions > li.explore-it > a,
+ul#listings ul.actions > li.explore-it > a:hover{
+    background-position: 10px -145px;
+}
+
+ul#listings ul.actions > li.add-it > a,
+ul#listings ul.actions > li.add-it > a:hover
+{
+    z-index: 2;
+    position: relative;
+    background-position: 10px -178px;
+}
+
+ul#listings ul.actions > li.buy-it > a,
+ul#listings ul.actions > li.buy-it > a:hover {
+    background-position: 10px -210px;
+}
+
 
 ul.actions > li:hover ul {
     left: 0;
@@ -574,6 +606,7 @@ div.two-thirds-width ul#listings > li ul li ul {
 #recommendations img {  
     margin-right: 20px;
     float: left;
+    max-width: 120px;
 }
 
 #itemOverview ul.actions li > a{ 
@@ -618,13 +651,6 @@ div#ytapiplayerContainer {
     background-color: #E1E8F0;
 }
 
-.borderradius div#ytapiplayerContainer,
-.borderradius #youTubeCarousel > li,
-.borderradius #recommendations img {
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-}
-
 #youtubeVideos > ul {
     padding: 0;
     height: 19.3em;
@@ -634,12 +660,10 @@ div#ytapiplayerContainer {
 }
 
 #youTubeCarousel > li {
-    background-color: #E1E8F0;
     float: left;
     height: 8em;
     margin: 12px 15px 5px 0;
     padding: 5px 10px;
-    position: relative;
     width: 7em;
 }
 
@@ -690,6 +714,10 @@ div#ytapiplayerContainer h4 {
     margin-left: 10px;
 }
 
+#ytPlayer object {
+    width: 420px;
+}
+
 /*---------- MEMORY WALLS ---------*/
 ul#memoryWallGallery {
     margin: 20px 0 0 -20px;
@@ -735,7 +763,6 @@ div#memoryWallContents li#ytPlayer {
 li.mw-MediaResource img,
 img.mw-MediaResource {
     float: left;
-    margin-right: 10px;
 }
 
 

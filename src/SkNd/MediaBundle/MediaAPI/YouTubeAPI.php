@@ -114,7 +114,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         
         $response = $response->getBody();//gets the raw response as Zend_Http_Response
         $feed = new \Zend_Gdata_YouTube_VideoFeed();
-        
+        $feed->setMajorProtocolVersion(2);
         try{
             $feed->transferFromXML($response);
         }catch(\Exception $ex){

@@ -1,4 +1,15 @@
+//check for media queries
+/*Modernizr.load([
+    {
+        test: Modernizr.mq('only screen and (min-width: 600px)'),
+        nope: ['/SkNd/web/bundles/SkNd/js/respond.min.js']
+    }
+]);*/
+//console.log(Modernizr.mq('only screen and (min-width: 600px)'));
+
+
 $(document).ready(function(){
+
 var $allGenres = eval($("#mediaSelection_genres").val());
 var $selectedMediaGenre = $("select#mediaSelection_selectedMediaGenre");
 var $selectedGenre = $selectedMediaGenre.val();
