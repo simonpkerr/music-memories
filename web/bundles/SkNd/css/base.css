@@ -223,18 +223,18 @@ a.button:active {
 .cssgradients .button,
 .cssgradients .blue,
 input#_submit {
-    background-image: linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
-    background-image: -o-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
-    background-image: -moz-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
-    background-image: -webkit-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
-    background-image: -ms-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
+    background-image: -o-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
+    background-image: -moz-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
+    background-image: -ms-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
 
     background-image: -webkit-gradient(
             linear,
             left top,
             left bottom,
-            color-stop(0, rgb(177,201,237)),
-            color-stop(1, rgb(122,164,226))
+            color-stop(0, rgb(173,197,231)),
+            color-stop(1, rgb(117,160,221))
     );
 }
 
