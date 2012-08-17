@@ -1,12 +1,3 @@
-//check for media queries
-/*Modernizr.load([
-    {
-        test: Modernizr.mq('only screen and (min-width: 600px)'),
-        nope: ['/SkNd/web/bundles/SkNd/js/respond.min.js']
-    }
-]);*/
-//console.log(Modernizr.mq('only screen and (min-width: 600px)'));
-
 
 $(document).ready(function(){
 

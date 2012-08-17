@@ -548,9 +548,7 @@ ul.actions > li ul {
     text-align: left;
 }
 
-ul.actions > li ul a {
-    color: #fff;
-}
+
 
 ul#listings ul.actions > li.explore-it > a,
 ul#listings ul.actions > li.explore-it > a:hover{
@@ -708,13 +706,18 @@ div#ytapiplayerContainer {
     width: 2.7em;
 }
 
+/*#youTubeCarousel ul.actions > li > a span {
+    background-image: none;
+}*/
+
 div#ytapiplayerContainer h4 {
     float: right;
     width: 7em;
     margin-left: 10px;
 }
 
-#ytPlayer object {
+#ytPlayer object,
+#ytapiplayerContainer object {
     width: 420px;
 }
 

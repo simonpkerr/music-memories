@@ -590,8 +590,8 @@ ul.actions > li > a.button:hover {
 }
 
 
-ul.actions > li > a,
-ul.actions > li > a:hover {
+ul#listings ul.actions > li > a,
+ul#listings ul.actions > li > a:hover {
     background-image: url('../images/nd-icons.png');
 }
 
@@ -619,6 +619,10 @@ ul.actions li a > span {
     display: block;
     height: 24px;
     padding-left: 40px;
+}
+
+ul.actions > li ul a {
+    color: #fff;
 }
 
 ul.actions li.explore-it a > span,
@@ -761,6 +765,11 @@ a.go-back {
     width: 95%;
 }
 
+#ytPlayer object,
+#ytapiplayerContainer object{
+    width: 100%;
+}
+
 /*----------- memory walls -----------*/
 ul#memoryWallGallery > li {
     border: 2px solid #ACC5EC;
@@ -876,10 +885,6 @@ img.mw-MediaResource {
 div#memoryWallContents li#ytPlayer {
     margin-bottom: 20px;
     
-}
-
-#ytPlayer object {
-    width: 100%;
 }
 
 li.mw-MediaResource:hover {
