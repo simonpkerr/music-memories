@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * MemoryWall gets and sets memory walls
+ * @author Simon Kerr
+ * @version 1.0
+ */
 namespace SkNd\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,55 +15,21 @@ use SkNd\MediaBundle\Entity\MediaResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpKernel\Exception;
 
-/**
- * SkNd\UserBundle\Entity\MemoryWall
- */
 class MemoryWall
 {
     const PRIVATE_WALLS = '0';
     const PUBLIC_WALLS = '1';
     const ALL_WALLS = '2';
-    /**
-     * @var integer $id
-     */
     protected $id;
-
     protected $user;
-
-    /**
-     * @var string $name
-     */
     protected $name;
-
-    /**
-     * @var string $slug
-     */
     protected $slug;
-
-    /**
-     * @var string $description
-     */
     protected $description;
-
-    /**
-     * @var datetime $dateCreated
-     */
     protected $dateCreated;
-
-    /**
-     * @var boolean $isPublic
-     */
     protected $isPublic;
-
-    /**
-     * @var datetime $lastUpdated
-     */
     protected $lastUpdated;
-    
     protected $associatedDecade;
-    
     protected $mediaResources;
-    
     protected $memoryWallMediaResources;
 
     public function __construct(User $user = null){
@@ -70,12 +42,6 @@ class MemoryWall
             $this->setUser($user);
     }
  
-  
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
@@ -141,66 +107,35 @@ class MemoryWall
         return $this->user;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
-    /**
-     * Get name
-     *
-     * @return string 
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     */
     public function setSlug($slug)
     {
         $this->slug = $slug;
     }
 
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
     public function getSlug()
     {
         return $this->slug;
     }
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     */
     public function setDescription($description)
     {
         $this->description = $description;
     }
 
-    /**
-     * Get description
-     *
-     * @return string 
-     */
     public function getDescription()
     {
         return $this->description;
     }
-
     
     public function setDateCreated($dateCreated)
     {
@@ -212,7 +147,6 @@ class MemoryWall
         return $this->dateCreated;
     }
     
-    
     public function setAssociatedDecade(Decade $associatedDecade)
     {
         $this->associatedDecade = $associatedDecade;
@@ -222,43 +156,22 @@ class MemoryWall
     {
         return $this->associatedDecade;
     }
-    
 
-    /**
-     * Set isPublic
-     *
-     * @param boolean $isPublic
-     */
     public function setIsPublic($isPublic)
     {
         $this->isPublic = $isPublic;
     }
 
-    /**
-     * Get isPublic
-     *
-     * @return boolean 
-     */
     public function getIsPublic()
     {
         return $this->isPublic;
     }
 
-    /**
-     * Set lastUpdated
-     *
-     * @param datetime $lastUpdated
-     */
     public function setLastUpdated($lastUpdated)
     {
         $this->lastUpdated = $lastUpdated;
     }
 
-    /**
-     * Get lastUpdated
-     *
-     * @return datetime 
-     */
     public function getLastUpdated()
     {
         return $this->lastUpdated;

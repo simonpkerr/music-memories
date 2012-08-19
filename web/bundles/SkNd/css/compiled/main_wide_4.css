@@ -1,8 +1,8 @@
-@media screen and (min-width: 600px){
+/*@media screen and (min-width: 600px){*/
 
 /********** TEST ***********/
 .grid-on {
-    background: url("../images/960-grid.png") left top repeat-y;
+    background: url("../../../../../Resources/Public/images/960-grid.png") left top repeat-y;
 }
 
 
@@ -61,14 +61,14 @@
 /********** WIDER SCREEN STYLES ***********/
 
 body {
-    background: #CEDEE8 url("../images/bg-v2.jpg") 50% top no-repeat;    
+    background: #CEDEE8 url("../../../../../Resources/Public/images/bg-v2.jpg") 50% top no-repeat;    
     min-height: 623px;
     padding: 0 3em;
 }
 
 .multiplebgs body {
     background-color: #CEDEE8;
-    background-image: url("../images/bg-footer.png"), url("../images/bg-v2.jpg");
+    background-image: url("../../../../../Resources/Public/images/bg-footer.png"), url("../../../../../Resources/Public/images/bg-v2.jpg");
     background-position: 50% 100%, 50% top;
     background-repeat: repeat-x, no-repeat;
 }
@@ -107,6 +107,7 @@ div#header {
 
 /*------ sm sharing -----*/
 div#sm-sharing {
+    float: none;
     position: relative;
     margin: 5em auto;
     width: 61.3em; /* equiv of 980px */
@@ -229,6 +230,10 @@ ul#memoryWalls li ul li:first-child a {
 }
 
 /*------ login -------------------------*/
+ul#loginPanel {
+    float: right;
+}
+
 ul#loginPanel > li {
     float: left;
     margin-left: 20px;
@@ -236,9 +241,13 @@ ul#loginPanel > li {
 }
 
 ul#loginPanel li a {
-    margin: 0;
+   margin: 0;
    color: #fff;
-   font-weight: bold;
+}
+
+ul#loginPanel li ul a {
+    text-align: center;
+    margin: 0.5em 0 0 0;
 }
 
 ul#loginPanel span {
@@ -263,6 +272,7 @@ ul#memoryWalls li a {
     float: left;
     padding: 5px 7px;
     width: 9em;
+    color: #fff;
 }
 
 /*----------- quick search ----------*/
@@ -301,7 +311,8 @@ div#content {
 }
 
 div#content h1 {
-    margin: 0.2em 0 0.5em 10em;
+    line-height: 1.3em;
+    margin: 5px 0 15px 10em;
 }
 
 div#introPanel {
@@ -314,6 +325,11 @@ div#introPanel li {
 
 div#introPanel li p{
     margin-left: 7em;
+}
+
+.drop-down {
+    position: static;
+    left: auto;
 }
 
 /*---------- content searches --------*/
@@ -335,25 +351,25 @@ div#contentSearches ul {
 
 div#contentSearches li {
     float: left;
-    width: 50%;
+    width: 100%;
     background-color: #E5961D;
 }
 
-div#contentSearches li:hover,
+/*div#contentSearches li:hover,
 div#contentSearches li.selected {
     background-color: transparent;
-}
+}*/
 
-div#contentSearches li a,
+/*div#contentSearches li a,
 div#contentSearches li a:hover {
    text-decoration: none;
    color: inherit;
-}
+}*/
 
 div#contentSearches li h2 {
     border: none;
     text-align: center;
-    padding: 5px 0;
+    padding: 7px 0 12px 0;
     color: #fff;
     margin: 0;
 }
@@ -363,8 +379,10 @@ div#contentSearches li h2 {
 }
 
 .borderradius div#contentSearches li#tab1 {
-    -moz-border-radius: 10px 0 0 0;
-    border-radius: 10px 0 0 0;
+    /*-moz-border-radius: 10px 0 0 0;
+    border-radius: 10px 0 0 0;*/
+    -moz-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
 }
 .borderradius div#contentSearches li#tab2 {
     -moz-border-radius: 0 10px 0 0;
@@ -373,7 +391,8 @@ div#contentSearches li h2 {
 
 div#contentSearches li:hover h2,
 div#contentSearches li.selected h2 {
-    color: #E5961D;
+    /*color: #E5961D;*/
+    color: #fff;
 }
 
 div#contentSearches ul:first-child li > div {
@@ -393,6 +412,10 @@ div#contentSearches ul:first-child li.selected > div
 }
 
 /*--- ALL CONTENT FORMS ---*/
+ul.form-errors {
+    margin: 0 0 3px 10.5em;
+}
+
 form input[type="text"] {
     width: 95%;
 }
@@ -480,11 +503,13 @@ ul#listings > li > ul.actions {
     float: right;
     width: 3.6em;
     text-align: center;
+    clear: none;
 }
 
 ul#listings ul.actions > li {
     border-top: 1px solid #FFFFFF;
     padding: 13px 0 23px 0;
+    margin: 0;
 }
 
 ul#listings ul.actions > li:hover {
@@ -505,13 +530,11 @@ ul#listings ul.actions > li:first-child {
 }
 
 ul.actions > li > a {
-    background-position: 50% top;
-    background-repeat: no-repeat;
-    display: block;
     height: 0.45em;
     margin-top: 0;
     padding: 25px 0 0;
     width: 5em;
+    font-size: 0.7em;
 }
 
 ul.actions > li ul {
@@ -525,9 +548,26 @@ ul.actions > li ul {
     text-align: left;
 }
 
-ul.actions > li ul a {
-    color: #fff;
+
+
+ul#listings ul.actions > li.explore-it > a,
+ul#listings ul.actions > li.explore-it > a:hover{
+    background-position: 10px -145px;
 }
+
+ul#listings ul.actions > li.add-it > a,
+ul#listings ul.actions > li.add-it > a:hover
+{
+    z-index: 2;
+    position: relative;
+    background-position: 10px -178px;
+}
+
+ul#listings ul.actions > li.buy-it > a,
+ul#listings ul.actions > li.buy-it > a:hover {
+    background-position: 10px -210px;
+}
+
 
 ul.actions > li:hover ul {
     left: 0;
@@ -564,6 +604,7 @@ div.two-thirds-width ul#listings > li ul li ul {
 #recommendations img {  
     margin-right: 20px;
     float: left;
+    max-width: 120px;
 }
 
 #itemOverview ul.actions li > a{ 
@@ -608,13 +649,6 @@ div#ytapiplayerContainer {
     background-color: #E1E8F0;
 }
 
-.borderradius div#ytapiplayerContainer,
-.borderradius #youTubeCarousel > li,
-.borderradius #recommendations img {
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-}
-
 #youtubeVideos > ul {
     padding: 0;
     height: 19.3em;
@@ -624,12 +658,10 @@ div#ytapiplayerContainer {
 }
 
 #youTubeCarousel > li {
-    background-color: #E1E8F0;
     float: left;
     height: 8em;
     margin: 12px 15px 5px 0;
     padding: 5px 10px;
-    position: relative;
     width: 7em;
 }
 
@@ -674,10 +706,19 @@ div#ytapiplayerContainer {
     width: 2.7em;
 }
 
+/*#youTubeCarousel ul.actions > li > a span {
+    background-image: none;
+}*/
+
 div#ytapiplayerContainer h4 {
     float: right;
     width: 7em;
     margin-left: 10px;
+}
+
+#ytPlayer object,
+#ytapiplayerContainer object {
+    width: 420px;
 }
 
 /*---------- MEMORY WALLS ---------*/
@@ -714,7 +755,7 @@ li.mw-MediaResource {
 }
 
 div#youtubeapiItems .mw-MediaResource {
-    height: 11.5em;
+    height: 12.5em;
 }
 
 div#memoryWallContents li#ytPlayer {
@@ -725,7 +766,6 @@ div#memoryWallContents li#ytPlayer {
 li.mw-MediaResource img,
 img.mw-MediaResource {
     float: left;
-    margin-right: 10px;
 }
 
 
@@ -744,4 +784,4 @@ div#footer .right p {
     margin-left: 4.5em;
 }
 
-}
+/*}*/

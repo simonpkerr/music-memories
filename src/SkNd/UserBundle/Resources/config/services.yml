@@ -1,5 +1,4 @@
 parameters:
-#    SkNd_user.example.class: SkNd\UserBundle\Example
 
 services:
   SkNd_user.registration.form.type:

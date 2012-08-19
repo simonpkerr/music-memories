@@ -1,4 +1,12 @@
 <?php
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * MediaAPI controls access to the various apis and their operations,
+ * checking for cached versions of details or listings
+ * @author Simon Kerr
+ * @version 1.0
+ */
+
 namespace SkNd\MediaBundle\MediaAPI;
 
 use Symfony\Bundle\DoctrineBundle\Registry;
@@ -20,18 +28,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use \RuntimeException;
 use \SimpleXMLElement;
 
-/*
- * Original code Copyright (c) 2011 Simon Kerr
- * MediaAPI controls access to the various apis and their operations,
- * checking for cached versions of details or listings
- * @author Simon Kerr
- * @version 1.0
- */
-
 class MediaAPI {
     const MEDIA_RESOURCE_RECOMMENDATION = 1;
     const MEMORY_WALL_RECOMMENDATION = 2;
-    //const GENERAL_RECOMMENDATION = 3;
     
     protected $session;
     protected $apiStrategy;
@@ -59,9 +58,6 @@ class MediaAPI {
         if(is_null($this->apiStrategy))
             $this->setAPIStrategy('amazonapi');
         
-        //if($this->session->has('mediaSelection'))
-        //    $this->mediaSelection = $this->session->get('mediaSelection');
-        //else 
         $this->mediaSelection = $this->getMediaSelection();
         
     }
@@ -89,14 +85,6 @@ class MediaAPI {
     public function setAPIStrategy($apiStrategyKey){
         if(array_key_exists($apiStrategyKey, $this->apis)){
             $this->apiStrategy = $this->apis[$apiStrategyKey]; 
-            /*if($this->mediaSelection != null && $this->mediaSelection->getAPI() != null && $this->mediaSelection->getAPI()->getName() != $apiStrategyKey){
-                $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiStrategyKey);
-                if($api == null)
-                    throw new \RuntimeException("There was a problem with that api value"); 
-                
-                $api = $this->em->merge($api);
-                $this->mediaSelection->setAPI($api);
-            }*/
         }
         else
             throw new RuntimeException("api key not found");
@@ -316,7 +304,7 @@ class MediaAPI {
 
             //get the media resource recommendations based on the media selection, returns 2 arrays for generic and exact matches
             $recommendations = $this->getRecommendations($recType, $itemId);
-
+            
             //get all media resources into one array for processing
             $allMediaResources = array_merge(array($itemId => $this->mediaResource), $recommendations['genericMatches'], $recommendations['exactMatches']);
 

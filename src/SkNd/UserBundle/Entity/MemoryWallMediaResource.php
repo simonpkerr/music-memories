@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * MemoryWallMediaResource gets and sets the named entity, managing the associations between media resources
+ * and memory walls
+ * @author Simon Kerr
+ * @version 1.0
+ */
 namespace SkNd\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,16 +18,11 @@ class MemoryWallMediaResource
 {
     protected $api_id;
     protected $memoryWall;
-
     protected $mediaResource_id;
     protected $mediaResource;
-
     protected $userTitle;
-
     protected $slug;
-    
     protected $dateAdded;
-    
     
     public function getMemoryWallId()
     {
@@ -69,21 +71,11 @@ class MemoryWallMediaResource
         return $this->mediaResource;
     }
 
-    /**
-     * Set userTitle
-     *
-     * @param string $userTitle
-     */
     public function setUserTitle($userTitle = null)
     {
         $this->userTitle = $userTitle;
     }
 
-    /**
-     * Get userTitle
-     *
-     * @return string 
-     */
     public function getUserTitle()
     {
         return $this->userTitle;
@@ -93,22 +85,12 @@ class MemoryWallMediaResource
     {
         return $this->slug;
     }
-    
-    /**
-     * Set dateAdded
-     *
-     * @param datetime $dateAdded
-     */
+ 
     public function setDateAdded($dateAdded)
     {
         $this->dateAdded = $dateAdded;
     }
 
-    /**
-     * Get dateAdded
-     *
-     * @return datetime 
-     */
     public function getDateAdded()
     {
         return $this->dateAdded;

@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * @author Simon Kerr
+ * @version 1.0
+ * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ * SkNdMediaExtension Loads and manages configuration of the SkNdMedia bundle. 
+ */
+
 namespace SkNd\MediaBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -8,13 +16,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-/*
- * Original code Copyright (c) 2011 Simon Kerr
- * @author Simon Kerr
- * @version 1.0
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
- * Loads and managese configuration of the SkNdMedia bundle. 
- */
+
 
 class SkNdMediaExtension extends Extension
 {

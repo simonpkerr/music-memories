@@ -53,7 +53,7 @@ class SevenDigitalAPI implements IAPIStrategy{
     public function getImageUrlFromXML(SimpleXMLElement $xmlData) {}
     public function getItemTitleFromXML(SimpleXMLElement $xmlData){}
     public function getListings(MediaSelection $mediaSelection){}
-    
+    public function getValidCreationTime(){}
 }
 
 

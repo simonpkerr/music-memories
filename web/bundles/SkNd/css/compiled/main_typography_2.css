@@ -10,11 +10,11 @@ Ideal line-height for this is 1.5em
 
 @font-face {
     font-family: 'KGStrawberryLimeadeRegular';
-    src: url('../fonts/kgstrawberrylimeade-webfont.eot');
-    src: url('../fonts/kgstrawberrylimeade-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/kgstrawberrylimeade-webfont.woff') format('woff'),
-         url('../fonts/kgstrawberrylimeade-webfont.ttf') format('truetype'),
-         url('../fonts/kgstrawberrylimeade-webfont.svg#KGStrawberryLimeadeRegular') format('svg');
+    src: url('../../../../../Resources/Public/fonts/kgstrawberrylimeade-webfont.eot');
+    src: url('../../../../../Resources/Public/fonts/kgstrawberrylimeade-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../../../../Resources/Public/fonts/kgstrawberrylimeade-webfont.woff') format('woff'),
+         url('../../../../../Resources/Public/fonts/kgstrawberrylimeade-webfont.ttf') format('truetype'),
+         url('../../../../../Resources/Public/fonts/kgstrawberrylimeade-webfont.svg#KGStrawberryLimeadeRegular') format('svg');
     font-weight: normal;
     font-style: normal;
  
@@ -51,7 +51,7 @@ p {
 
 p+p {
     text-indent: 1em;
-    margin-top: -24px;
+    margin-top: -20px;
 }
 
 h1 {

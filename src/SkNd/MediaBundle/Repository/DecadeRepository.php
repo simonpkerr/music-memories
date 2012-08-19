@@ -1,12 +1,15 @@
 <?php
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * DecadeRepository gets decades from the db by slug or returns all decades
+ * @author Simon Kerr
+ * @version 1.0
+ */
 
 namespace SkNd\MediaBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-/**
- * DecadesRepository
- */
 class DecadeRepository extends EntityRepository
 {
     public function getDecades(){

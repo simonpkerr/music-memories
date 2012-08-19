@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * GenreRepository gets all genres, or by slug or returns them as json data for use by the front end scripts
+ * @author Simon Kerr
+ * @version 1.0
+ */
+
 namespace SkNd\MediaBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;

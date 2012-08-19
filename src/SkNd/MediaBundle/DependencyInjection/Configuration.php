@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * Configuration ensures that the configuration passed for the given environment is valid 
+ * and supplies defaults where appropriate
+ * @author Simon Kerr
+ * @version 1.0
+ */
+
 namespace SkNd\MediaBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

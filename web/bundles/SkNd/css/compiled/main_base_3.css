@@ -43,6 +43,11 @@ div.errors {
     font-size: 0.9em;
 }
 
+div.errors p {
+    margin-bottom: 15px;
+    color: inherit;
+}
+
 strong {
     font-weight: bold;
 }
@@ -83,13 +88,17 @@ a:hover {
 /********** FORM ELEMENT GENERICS ***********/
 form fieldset {
     border: 1px solid #7AA4E2;
-    padding: 1.5em 1em;
+    padding: 1em;
+}
+
+form fieldset > div {
+    padding-top: 1em;
 }
 
 form fieldset legend {
     font-size: 0.8em;
     font-style: italic;
-    margin: 0 0.5em 0 3.3em;
+    margin: 0 0.5em 0.5em 3.3em;
     padding: 0 0.5em;
     color: #3A6289;
 }
@@ -113,7 +122,10 @@ form textarea {
     width: 100%;
 }
 
-form input[type="text"] {
+form input[type="text"],
+form input[type="email"],
+form input[type="password"]
+{
     width: 97.6%;
 }
 
@@ -142,6 +154,11 @@ input#_submit
     width: 100%;
 }
 
+form div.date_widget select {
+    margin-right: 1px;
+    width: 30%;
+}
+
 span.required {
     margin-left: 0.5em;
     color: #ff0000;
@@ -150,8 +167,8 @@ span.required {
 
 ul.form-errors {
     clear: both;
-    font-size: 0.7em;
-    margin: 0 0 3px 12.5em;
+    font-size: 0.85em;
+    margin: 0 0 5px;
 }
 
 ul.form-errors li {
@@ -172,9 +189,10 @@ form div.error input {
 
 /********** BUTTON ELEMENTS ***********/
 .button,
+.basic-button,
 input#_submit,
 input[type="submit"] {
-    background-color: #7AA4E2;
+    background-color: #6B94CE;
     border: 2px solid #fff;
     cursor: pointer;
     color: #fff;
@@ -182,6 +200,11 @@ input[type="submit"] {
     padding: 5px 7px;
     text-decoration: none;
     text-align: center;
+}
+
+.basic-button {
+    border: 3px solid #ACC5EC;
+    color: #fff;
 }
 
 .orange {
@@ -200,18 +223,18 @@ a.button:active {
 .cssgradients .button,
 .cssgradients .blue,
 input#_submit {
-    background-image: linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
-    background-image: -o-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
-    background-image: -moz-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
-    background-image: -webkit-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
-    background-image: -ms-linear-gradient(top, rgb(177,201,237) 0%, rgb(122,164,226) 100%);
+    background-image: linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
+    background-image: -o-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
+    background-image: -moz-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
+    background-image: -ms-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
 
     background-image: -webkit-gradient(
             linear,
             left top,
             left bottom,
-            color-stop(0, rgb(177,201,237)),
-            color-stop(1, rgb(122,164,226))
+            color-stop(0, rgb(173,197,231)),
+            color-stop(1, rgb(117,160,221))
     );
 }
 
@@ -240,6 +263,7 @@ input#_submit {
 }
 
 .borderradius .button,
+.borderradius .basic-button,
 .borderradius input#_submit,
 .boxshadow input[type="submit"]{
     -moz-border-radius: 10px;
@@ -247,20 +271,21 @@ input#_submit {
 }
 
 .button:hover,
+.basic-button:hover,
 .selected,
 .cssgradients .selected
 .cssgradients .button:hover,
 .cssgradents input#_submit:hover,
 .cssgradients input[type="submit"]:hover
 {
-    background-color: #6A99DF;
+    background-color: #5174A5;
     background-image: none;
 }
 
 .orange:hover,
 .cssgradients .orange:hover
 {
-    background-color: #F57621;
+    background-color: #E05316;
     background-image: none;
 }
 
@@ -295,9 +320,13 @@ div#wrapper {
 /********** HEADER ***********/
 
 /*------ sm sharing -----------*/
+div#sm-sharing {
+    position: absolute;
+    right: 0;
+}
+
 div#sm-sharing ul {
     margin: 5px 15px 0 0;
-    text-align: right;
 }
 
 div#sm-sharing li {
@@ -305,12 +334,13 @@ div#sm-sharing li {
 }
 
 div#sm-sharing li a {
-    background-image: url("../images/nd-icons.png");
+    background-image: url("../../../../../Resources/Public/images/nd-icons.png");
     background-repeat: no-repeat;
     display: block;
     float: left;
     height: 35px;
     width: 35px;
+    margin-right: 3px;
 }
 div#sm-sharing li a span {
     position: absolute;
@@ -341,7 +371,7 @@ a#siteLogo img {
     max-width: 354px;
     min-width: 177px;
     width: 60%;
-    margin: -20px 0 1em -15px;
+    margin: -25px 0 1em -15px;
     /*display: none;*/
 }
 
@@ -355,24 +385,24 @@ ul#memoryWalls li a  {
     margin-bottom: 0.5em;
     position: relative;
     z-index: 2;
-    color: #fff;
     display: block;
     font-weight: bold;
 }
 
 /*------- log in panel --------------*/
 ul#loginPanel {
-    float: right;
+    display: block;
 }
 
 ul#loginPanel li a {
     display: block;
     margin-bottom: 0.5em;
+    font-weight: bold;
 }
 
 ul#loginPanel li ul a {
-    text-align: center;
-    margin: 0.5em 0 0 0;
+    text-align: left;
+    margin: 0.5em 0 0.5em 0;
 }
 
 /********** FLASH MESSAGES ***********/
@@ -424,7 +454,20 @@ div#introPanel h2 {
     margin-bottom: 0.2em;
 }
 
+#news p {
+    font-size: 0.9em;
+}
+
+.drop-down {
+    position: absolute;
+    left: -9999em;
+}
+
 /*---------- content searches --------*/
+div#contentSearches li {
+    background-color: #fff;
+}
+
 .borderradius div#contentSearches ul:first-child li {
     margin-bottom: 1em;
 }
@@ -474,6 +517,7 @@ ul#listings {
 ul#listings > li {
     border: 2px solid #ACC5EC;
     background: #fff;
+    margin-bottom: 10px;
 }
 
 ul#listings > li:hover {
@@ -488,6 +532,10 @@ ul#listings > li:hover {
     border-radius: 10px 10px 10px 10px;
 }
 
+ul.actions > li ul {
+    padding: 10px
+}
+
 .borderradius ul.actions > li ul {
     -moz-border-radius: 6px 0 0 6px;
     border-radius: 6px 0 0 6px;
@@ -499,26 +547,38 @@ ul#listings > li > div {
 
 ul#listings > li img {
     float: left;
-    margin-right: 20px;
+    margin: 0 20px 20px 0;
+}
+
+ul#listings > li > ul.actions {
+    clear: both;
 }
 
 ul#listings ul.actions > li {
     background-color: #ACC5EC;
+    margin-bottom: 5px;
+    padding: 5px 10px;
 }
 
 ul.actions > li > a {
+    display: block;
     font-weight: bold;
     color: #fff;
-    font-size: 0.7em;
+    font-size: 1em;
+    padding: 5px 0 5px 40px;
     text-transform: lowercase;
+    background-position: -9999px top;
     background-repeat: no-repeat;
+}
+
+.cssgradients ul.actions > li > a {
     background-position: left 50%;
 }
 
 ul.actions > li > a.button {
     display: block;
     height: auto;
-    margin-top: 0;
+    margin: 0 0 10px 0;
     padding: 3px 5px;
     width: auto;
     text-align: left;
@@ -530,35 +590,39 @@ ul.actions > li > a.button:hover {
 }
 
 
-ul.actions > li > a,
-ul.actions > li > a:hover {
-    background-image: url('../images/nd-icons.png');
+ul#listings ul.actions > li > a,
+ul#listings ul.actions > li > a:hover {
+    background-image: url('../../../../../Resources/Public/images/nd-icons.png');
 }
 
-ul.actions > li.explore-it > a,
-ul.actions > li.explore-it > a:hover{
-    background-position: 10px -145px;
+ul#listings ul.actions > li.explore-it > a,
+ul#listings ul.actions > li.explore-it > a:hover{
+    background-position: 0 -145px;
 }
 
-ul.actions > li.add-it > a,
-ul.actions > li.add-it > a:hover
+ul#listings ul.actions > li.add-it > a,
+ul#listings ul.actions > li.add-it > a:hover
 {
     z-index: 2;
     position: relative;
-    background-position: 10px -178px;
+    background-position: 0 -176px;
 }
 
-ul.actions > li.buy-it > a,
-ul.actions > li.buy-it > a:hover {
-    background-position: 10px -210px;
+ul#listings ul.actions > li.buy-it > a,
+ul#listings ul.actions > li.buy-it > a:hover {
+    background-position: 0 -208px;
 }
 
 ul.actions li a > span {
-    background-image: url("../images/nd-icons.png");
+    background-image: url("../../../../../Resources/Public/images/nd-icons.png");
     background-repeat: no-repeat;
     display: block;
     height: 24px;
     padding-left: 40px;
+}
+
+ul.actions > li ul a {
+    color: #fff;
 }
 
 ul.actions li.explore-it a > span,
@@ -627,11 +691,12 @@ img.mw-MediaResource {
 
 #itemOverview ul.actions li > a { 
     display: block;
-    width: 100%;
+    width: 99%;
     text-align: left;
     font-size: 1em;
     padding: 5px 0 5px 0;
     height: auto;
+    margin-top: 10px;
 }
 
 #itemOverview ul.actions li > a:hover,
@@ -663,7 +728,7 @@ img.mw-MediaResource {
 }
 
 a.go-back {
-    background: url("../images/nd-icons.png") no-repeat scroll -10px -242px transparent;
+    background: url("../../../../../Resources/Public/images/nd-icons.png") no-repeat scroll -10px -242px transparent;
     display: block;
     font-size: 0.9em;
     padding-left: 20px;
@@ -674,8 +739,35 @@ a.go-back {
     -moz-border-radius: 10px;
 }
 
+
+/*----- youtube player -----*/
+
+.borderradius div#ytapiplayerContainer,
+.borderradius #youTubeCarousel > li,
+.borderradius #recommendations img {
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
 #youtubeVideos ul.userMemoryWalls li {
     margin-bottom: 10px;
+}
+
+#youTubeCarousel img {
+    margin-right: 10px;
+}
+
+#youTubeCarousel > li {
+    background-color: #E1E8F0;
+    margin-top: 10px;
+    padding: 10px;
+    position: relative;
+    width: 95%;
+}
+
+#ytPlayer object,
+#ytapiplayerContainer object{
+    width: 100%;
 }
 
 /*----------- memory walls -----------*/
@@ -691,15 +783,21 @@ ul#memoryWallGallery > li:hover {
 
 ul#memoryWallGallery > li
 {
-    position: relative;
-    margin: 0 0 20px 0;
+    margin: 0 0 20px;
+    min-height: 7em;
     padding: 10px 15px;
-    width: 100%;
+    position: relative;
+    width: 92%;
 }
 
 ul#memoryWallGallery img.mw-image {
    float: left; 
    margin-right: 20px;
+}
+
+#memoryWallGallery ul.actions {
+    clear: both;
+    width: 50%;
 }
 
 #memoryWallGallery > li ul {
@@ -712,6 +810,7 @@ ul#memoryWallGallery ul.actions li > a {
     padding: 3px 10px 3px 0;
     width: auto;
     font-size: 1em;
+    margin-bottom: 5px;
 }
 
 ul#memoryWallGallery > li div {
@@ -741,7 +840,7 @@ div#recommendations ul#memoryWallGallery > li {
 
 dl#memoryWallDetails dt {
     float: none;
-    font-size: 0.8em;
+    font-size: 0.9em;
     margin: 10px 0 5px 0;
     text-align: left;
     width: auto;
@@ -751,6 +850,7 @@ dl#memoryWallDetails dd {
     line-height: 1.3em;
     margin-bottom: 10px;
     margin-left: 20px;
+    font-size: 1.1em;
 }
 
 div#memoryWallActions {
@@ -770,11 +870,16 @@ div#memoryWallContents > div {
 }
 
 li.mw-MediaResource {
-    width: 100%;
+    width: 94%;
     border: 2px solid #ACC5EC;
     background: #fff;
     padding: 10px;
     margin: 0 0 20px 0;
+}
+
+li.mw-MediaResource img,
+img.mw-MediaResource {
+    margin-right: 10px;
 }
 
 div#memoryWallContents li#ytPlayer {

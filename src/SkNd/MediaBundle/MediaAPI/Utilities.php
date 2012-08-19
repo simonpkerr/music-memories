@@ -68,17 +68,6 @@ class Utilities {
          }); 
     }
     
-    /*
-     * for media listings and media resource cached records
-     * they must be less than 24 hours old to be valid
-     * or else be deleted
-     */
-    public static function getValidCreationTime(){
-         $date = new \DateTime("now");
-         $date = $date->sub(new \DateInterval('PT24H'))->format("Y-m-d H:i:s");
-
-         return $date;
-    }
 }
 
 ?>

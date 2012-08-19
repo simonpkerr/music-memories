@@ -1,4 +1,11 @@
 <?php
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * AmazonAPI controls access to the live amazon api or the dummy amazon api 
+ * @author Simon Kerr
+ * @version 1.0
+ */
+
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\AmazonSignedRequest;
 use Symfony\Bundle\DoctrineBundle\Registry;
@@ -28,53 +35,14 @@ class AmazonAPI implements IAPIStrategy {
         $this->private_key = $access_params['amazon_private_key'];
         $this->associate_tag = $access_params['amazon_associate_tag'];
         
-        $this->asr = $amazon_signed_request; 
-        
-        /* valid responses are -
-         * Valid values include [
-    		'Tags', 'Help', 'ListMinimum', 'VariationSummary', 'VariationMatrix',
-    		'TransactionDetails', 'VariationMinimum', 'VariationImages',
-    		'PartBrandBinsSummary', 'CustomerFull', 'CartNewReleases',
-    		'ItemIds', 'SalesRank', 'TagsSummary', 'Fitments',
-    		'Subjects', 'Medium', 'ListmaniaLists',
-    		'PartBrowseNodeBinsSummary', 'TopSellers', 'Request',
-    		'HasPartCompatibility', 'PromotionDetails', 'ListFull',
-    		'Small', 'Seller', 'OfferFull', 'Accessories',
-    		'VehicleMakes', 'MerchantItemAttributes', 'TaggedItems',
-    		'VehicleParts', 'BrowseNodeInfo', 'ItemAttributes',
-    		'PromotionalTag', 'VehicleOptions', 'ListItems', 'Offers',
-    		'TaggedGuides', 'NewReleases', 'VehiclePartFit',
-    		'OfferSummary', 'VariationOffers', 'CartSimilarities',
-    		'Reviews', 'ShippingCharges', 'ShippingOptions', 'EditorialReview',
-    		'CustomerInfo', 'PromotionSummary', 'BrowseNodes',
-    		'PartnerTransactionDetails', 'VehicleYears', 'SearchBins',
-    		'VehicleTrims', 'Similarities', 'AlternateVersions',
-    		'SearchInside', 'CustomerReviews', 'SellerListing',
-    		'OfferListings', 'Cart', 'TaggedListmaniaLists',
-    		'VehicleModels', 'ListInfo', 'Large', 'CustomerLists',
-    		'Tracks', 'CartTopSellers', 'Images', 'Variations',
-    	'RelatedItems','Collections'
-    	].
-         * 
-         *  ['Request',
-         * * 'Small',
-         * 'Medium',
-         * 'Large',
-         * '
-         * 'VariationMinimum','EditorialReview',].
-         */
-        
+        $this->asr = $amazon_signed_request;     
         $this->amazonParameters = array(
                 "Operation"     => $this->ITEM_SEARCH,
-                //"ResponseGroup" => "Images,ItemAttributes,SalesRank,Request",
-                //"ResponseGroup" => "Images,Small,EditorialReview,Request",
                 "ResponseGroup" => "Images,Small,Request",
                 "Condition"     => "All",
-                //"ProductGroup"  => "Music",
                 "MerchantId"    => "All",
-                //"Format"        => "VHS",
                 "ItemPage"      => "1",
-                //"Sort"          => "salesrank",
+                //"Sort"          => "salesrank", //sorting functionality to be added later
                 //"Sort"          => "-releasedate", // release date oldest to newest
                 "Validate"      => "True",
          );

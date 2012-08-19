@@ -6,7 +6,6 @@
  * @version 1.0
  * MemoryWallType used for creating memory walls  
  */
-
 namespace SkNd\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;

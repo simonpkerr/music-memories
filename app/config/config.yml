@@ -29,8 +29,9 @@ assetic:
         cssrewrite: ~
         yui_css:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor.jar"         
-        yui_js:
-            jar: "%kernel.root_dir%/Resources/java/yuicompressor.jar"
+        #there's no point in compressing the js yet as it's only about 10 lines at the moment
+        #yui_js:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor.jar"
 
 # Doctrine Configuration
 doctrine:
@@ -45,7 +46,7 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
-#        auto_mapping: true
+#       auto_mapping: true
         default_entity_manager:   default
         entity_managers:
             default:
@@ -106,8 +107,3 @@ sk_nd_media:
           amazon_associate_tag: %amazon_associate_tag%
       youtubeapi: ~
 
-
-
-
-#jms_aop:
-#    cache_dir: %kernel.cache_dir%/jms_aop

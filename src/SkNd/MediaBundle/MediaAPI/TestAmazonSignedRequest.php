@@ -1,5 +1,11 @@
 <?php
-
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * TestAmazonSignedRequest simulates calls to the amazon api used for testing
+ * checking for cached versions of details or listings
+ * @author Simon Kerr
+ * @version 1.0
+ */
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\AmazonSignedRequest;
 

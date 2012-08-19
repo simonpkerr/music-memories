@@ -1,5 +1,6 @@
 <?php
 
+
 namespace SkNd\UserBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -1,9 +1,14 @@
 <?php
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * TestYouTubeRequest simulates calls to the live youtube api
+ * checking for cached versions of details or listings
+ * @author Simon Kerr
+ * @version 1.0
+ */
+
 namespace SkNd\MediaBundle\MediaAPI;
 require_once 'Zend/Loader.php';
-/*
- * empty class for the Zend_Gdata_YouTube class
- */
 class TestYouTubeRequest {
     
     public function setMajorProtocolVersion($version){

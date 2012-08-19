@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * MediaResourceListingsCache is responsible for getting and setting cached listings for amazon, youtube and other apis
+ * checking for cached versions of details 
+ * @author Simon Kerr
+ * @version 1.0
+ */
+
 namespace SkNd\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,9 +17,6 @@ use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\API;
 
-/**
- * SkNd\MediaBundle\Entity\MediaResourceListingsCache
- */
 class MediaResourceListingsCache
 {
     /**

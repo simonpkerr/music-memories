@@ -1,4 +1,11 @@
 <?php
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * Configuration not used by noodleDig but comes with the bundle
+ * checking for cached versions of details or listings
+ * @author Simon Kerr
+ * @version 1.0
+ */
 
 namespace SkNd\UserBundle\DependencyInjection;
 

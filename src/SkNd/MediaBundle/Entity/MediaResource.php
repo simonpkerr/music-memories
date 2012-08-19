@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * MediaResource saves and retrieves items from any api - amazon, youtube, google images, 7digital etc,
+ * checking for cached versions of details 
+ * @author Simon Kerr
+ * @version 1.0
+ */
+
 namespace SkNd\MediaBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,14 +18,6 @@ use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\API;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Symfony\Component\HttpKernel\Exception;
-
-/*
- * Original code Copyright (c) 2011 Simon Kerr
- * MediaResource saves and retrieves items from any api - amazon, youtube, google images, 7digital etc,
- * checking for cached versions of details 
- * @author Simon Kerr
- * @version 1.0
- */
 
 class MediaResource
 {
@@ -167,21 +167,11 @@ class MediaResource
         return $this->selectedCount;
     }
 
-    /**
-     * Set lastUpdated
-     *
-     * @param datetime $lastUpdated
-     */
     public function setLastUpdated($lastUpdated)
     {
         $this->lastUpdated = $lastUpdated;
     }
 
-    /**
-     * Get lastUpdated
-     *
-     * @return datetime 
-     */
     public function getLastUpdated()
     {
         return $this->lastUpdated;

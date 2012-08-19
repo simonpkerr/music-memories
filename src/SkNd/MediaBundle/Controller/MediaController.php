@@ -91,15 +91,11 @@ class MediaController extends Controller
             $form->bindRequest($request);
             if($form->isValid()){
                 
-                //$session->set('mediaSelection', $form->getData());
                 $mediaSelection = $form->getData();
                 $this->mediaapi->setMediaSelection($mediaSelection);
                 
                 return $this->redirect($this->generateUrl('search', $this->mediaapi->getMediaSelectionParams()));
             }else{
-                /*return $this->render('SkNdMediaBundle:Default:error.html.twig', array(
-                    'form' => $form->createView(),
-                ));*/
                 return $this->redirect($this->generateUrl('error'));
             }
         }
@@ -149,8 +145,9 @@ class MediaController extends Controller
            'api'            => 'amazonapi',
        ));
        
+       //todo
        if($media == "music"){
-            //todo
+            
             $this->mediaapi->setAPIStrategy('sevendigitalapi');
             try{
                 $response = $this->mediaapi->getListings();
@@ -211,8 +208,7 @@ class MediaController extends Controller
             $params = array(
                'ItemId' =>  $id,
             );
-            //$this->mediaapi->setAPIStrategy('amazonapi');
-            
+                       
             try{               
                 $responseParams['mediaResource'] = $this->mediaapi->getDetails($params, MediaAPI::MEDIA_RESOURCE_RECOMMENDATION);
                                 
@@ -232,7 +228,6 @@ class MediaController extends Controller
         
         //get the youtube service
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
-        //$this->mediaapi->setAPIStrategy('youtubeapi');
         $responseParams['api'] = $this->mediaapi->getCurrentAPI()->getName();
         $mediaSelection = $this->mediaapi->getMediaSelection(array(
             'api'               => 'youtubeapi',

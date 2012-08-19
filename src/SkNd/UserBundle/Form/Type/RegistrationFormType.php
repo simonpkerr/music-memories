@@ -1,4 +1,11 @@
 <?php
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * @author Simon Kerr
+ * @version 1.0
+ * RegistrationFormType extends the FOSUserBundle registration form, by adding
+ * first, last name and date of birth
+ */
 namespace SkNd\UserBundle\Form\Type;
     
 use Symfony\Component\Form\FormBuilder;

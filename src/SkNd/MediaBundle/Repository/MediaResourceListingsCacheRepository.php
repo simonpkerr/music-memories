@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Original code Copyright (c) 2011 Simon Kerr
+ * controls access and retrieval of cached listings based on media selection
+ * @author Simon Kerr
+ * @version 1.0
+ **/
+
 namespace SkNd\MediaBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -8,12 +15,7 @@ use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
-/**
- * Original code Copyright (c) 2011 Simon Kerr
- * controls access and retrieval of cached listings based on media selection
- * @author Simon Kerr
- * @version 1.0
- **/
+
 
 class MediaResourceListingsCacheRepository extends EntityRepository
 {

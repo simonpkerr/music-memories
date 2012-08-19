@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * User gets and sets data for the named entity.
+ * It extends the FOSUserBundle User entity but adds firstname, surname and date of birth
+ * @author Simon Kerr
+ * @version 1.0
+ */
 namespace SkNd\UserBundle\Entity;
     
 use FOS\UserBundle\Entity\User as BaseUser;
@@ -10,13 +18,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 class User extends BaseUser {
 
     protected $id;
-
     protected $firstname;
-
     protected $surname;
-
     protected $dateofbirth;
-    
     protected $memoryWalls;
 
     public function __construct(){
@@ -47,71 +51,36 @@ class User extends BaseUser {
         $this->memoryWalls->add($mw);
     }
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set firstname
-     *
-     * @param string $firstname
-     */
     public function setFirstname($firstname = null)
     {
         $this->firstname = $firstname;
     }
 
-    /**
-     * Get firstname
-     *
-     * @return string 
-     */
     public function getFirstname()
     {
         return $this->firstname;
     }
 
-    /**
-     * Set surname
-     *
-     * @param string $surname
-     */
     public function setSurname($surname = null)
     {
         $this->surname = $surname;
     }
 
-    /**
-     * Get surname
-     *
-     * @return string 
-     */
     public function getSurname()
     {
         return $this->surname;
     }
 
-    /**
-     * Set dateofbirth
-     *
-     * @param date $dateofbirth
-     */
     public function setDateofbirth($dateofbirth)
     {
         $this->dateofbirth = $dateofbirth;
     }
 
-    /**
-     * Get dateofbirth
-     *
-     * @return date 
-     */
     public function getDateofbirth()
     {
         return $this->dateofbirth;

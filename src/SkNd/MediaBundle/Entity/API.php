@@ -1,37 +1,24 @@
 <?php
 
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * API is the entity for setting and getting api attributes.
+ * @author Simon Kerr
+ * @version 1.0
+ */
+
 namespace SkNd\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * SkNd\MediaBundle\Entity\API
- */
 class API
 {
     public static $default = 'amazonapi';
-    /**
-     * @var integer $id
-     */
     protected $id;
-
-    /**
-     * @var string $name
-     */
     protected $name;
-
-    /**
-     * @var string $host
-     */
     protected $host;
-    
     protected $friendlyName;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
@@ -57,22 +44,11 @@ class API
         return $this->friendlyName;
     }
 
-    
-    /**
-     * Set host
-     *
-     * @param string $host
-     */
     public function setHost($host)
     {
         $this->host = $host;
     }
 
-    /**
-     * Get host
-     *
-     * @return string 
-     */
     public function getHost()
     {
         return $this->host;

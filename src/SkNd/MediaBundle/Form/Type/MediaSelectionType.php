@@ -25,9 +25,7 @@ class MediaSelectionType extends AbstractType{
             'property'      => 'decadeName',
             'class'         => 'SkNdMediaBundle:Decade',
             'empty_value'   => 'All Decades',
-            'required'      => false,
-            //'multiple'  =>  true,
-            
+            'required'      => false,        
         ));
         
         //entity field mapped to the mediatype class displaying the id and mediaName properties

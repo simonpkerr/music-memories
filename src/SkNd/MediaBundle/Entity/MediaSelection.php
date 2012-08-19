@@ -1,9 +1,14 @@
 <?php
 
-namespace SkNd\MediaBundle\Entity;
-/**
- * SkNd\MediaBundle\Entity\MediaSelection
+/*
+ * Original code Copyright (c) 2011 Simon Kerr
+ * MediaSelection gets and sets the currently selected media, decade, genre, keywords and page number
+ * checking for cached versions of details 
+ * @author Simon Kerr
+ * @version 1.0
  */
+
+namespace SkNd\MediaBundle\Entity;
 class MediaSelection
 {
     protected $api; 

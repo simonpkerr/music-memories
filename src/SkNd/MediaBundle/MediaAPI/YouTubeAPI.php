@@ -6,7 +6,6 @@
  * @version 1.0
  */
 namespace SkNd\MediaBundle\MediaAPI;
-//require_once 'Zend/Loader.php';
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use Doctrine\ORM\EntityManager;
@@ -21,16 +20,9 @@ class YouTubeAPI implements IAPIStrategy {
     private $query;
     
     public function __construct($youtube_request_object = null){
-        
-        //get access to the youtube methods
-        //\Zend_Loader::loadClass('Zend_Gdata_YouTube');
-        
         $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
         $this->youTube->setMajorProtocolVersion(2);
        
-        //$this->youTube = new \Zend_Gdata_YouTube();
-        //$vf = $this->youTube->getVideoFeed();
-        //$vf->getE
     }
     
     public function getName(){
@@ -147,7 +139,6 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         
         //$query->setOrderBy('viewCount');
         //default ordering is relevance
-        //$query->setSafeSearch('none'); //not supported when using setCategory
         $query->setMaxResults(self::BATCH_PROCESS_THRESHOLD);
         
         switch($mediaSelection->getMediaType()->getSlug()){
