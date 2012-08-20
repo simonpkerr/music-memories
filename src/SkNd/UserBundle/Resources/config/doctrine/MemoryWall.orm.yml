@@ -38,9 +38,6 @@ SkNd\UserBundle\Entity\MemoryWall:
         timestampable:
           on: update
   lifecycleCallbacks: {  }
-  oneToOne:
-    associatedDecade:
-      targetEntity: SkNd\MediaBundle\Entity\Decade
   oneToMany:
     memoryWallMediaResources:
       targetEntity: MemoryWallMediaResource
@@ -53,6 +50,13 @@ SkNd\UserBundle\Entity\MemoryWall:
       orderBy:
         dateAdded: desc
   manyToOne:
+    associatedDecade:
+      targetEntity: SkNd\MediaBundle\Entity\Decade
+      nullable: true
+      joinColumn:
+        name: associatedDecade_id
+        referencedColumnName: id
+        onDelete: set null
     user:
       targetEntity: User
       inversedBy: memoryWalls

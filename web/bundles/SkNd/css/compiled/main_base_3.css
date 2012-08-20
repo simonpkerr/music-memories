@@ -334,7 +334,7 @@ div#sm-sharing li {
 }
 
 div#sm-sharing li a {
-    background-image: url("../../../../../Resources/Public/images/nd-icons.png");
+    background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
     background-repeat: no-repeat;
     display: block;
     float: left;
@@ -592,7 +592,7 @@ ul.actions > li > a.button:hover {
 
 ul#listings ul.actions > li > a,
 ul#listings ul.actions > li > a:hover {
-    background-image: url('../../../../../Resources/Public/images/nd-icons.png');
+    background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
 }
 
 ul#listings ul.actions > li.explore-it > a,
@@ -614,7 +614,7 @@ ul#listings ul.actions > li.buy-it > a:hover {
 }
 
 ul.actions li a > span {
-    background-image: url("../../../../../Resources/Public/images/nd-icons.png");
+    background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
     background-repeat: no-repeat;
     display: block;
     height: 24px;
@@ -728,7 +728,7 @@ img.mw-MediaResource {
 }
 
 a.go-back {
-    background: url("../../../../../Resources/Public/images/nd-icons.png") no-repeat scroll -10px -242px transparent;
+    background: url("/SkNd/web/bundles/SkNd/images/nd-icons.png") no-repeat scroll -10px -242px transparent;
     display: block;
     font-size: 0.9em;
     padding-left: 20px;

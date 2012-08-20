@@ -1,8 +1,8 @@
-/*@media screen and (min-width: 600px){*/
+@media screen and (min-width: 600px){
 
 /********** TEST ***********/
 .grid-on {
-    background: url("../../../../../Resources/Public/images/960-grid.png") left top repeat-y;
+    background: url("/SkNd/web/bundles/SkNd/images/960-grid.png") left top repeat-y;
 }
 
 
@@ -61,14 +61,14 @@
 /********** WIDER SCREEN STYLES ***********/
 
 body {
-    background: #CEDEE8 url("../../../../../Resources/Public/images/bg-v2.jpg") 50% top no-repeat;    
+    background: #CEDEE8 url("/SkNd/web/bundles/SkNd/images/bg-v2.jpg") 50% top no-repeat;    
     min-height: 623px;
     padding: 0 3em;
 }
 
 .multiplebgs body {
     background-color: #CEDEE8;
-    background-image: url("../../../../../Resources/Public/images/bg-footer.png"), url("../../../../../Resources/Public/images/bg-v2.jpg");
+    background-image: url("/SkNd/web/bundles/SkNd/images/bg-footer.png"), url("/SkNd/web/bundles/SkNd/images/bg-v2.jpg");
     background-position: 50% 100%, 50% top;
     background-repeat: repeat-x, no-repeat;
 }
@@ -784,4 +784,4 @@ div#footer .right p {
     margin-left: 4.5em;
 }
 
-/*}*/
+}

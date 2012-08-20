@@ -5,7 +5,7 @@
 {% block content %}
 <h1>{{ pageTitle }} Memory Walls</h1>
 
-{% if mws is not null %}
+{% if mws|length > 0 %}
 {# put a sort control #}
 {% include 'SkNdUserBundle:MemoryWall:memoryWallGalleryPartial.html.twig' with {
     'mws' : mws,
@@ -13,7 +13,7 @@
     }
 %}
 {% else %}
-<p>There aren&rsquo;t any Memory Walls yet. Be the envy of all your friends and make one first!</p>
+<p class="strapline">There aren&rsquo;t any Memory Walls yet. Be the envy of all your friends and make one first!</p>
 <p>If you&rsquo;ve already registered, just <a href="{{path('fos_user_security_login')}}">log in</a> to start adding stuff to your memory wall.</p>
 
 {% endif %}

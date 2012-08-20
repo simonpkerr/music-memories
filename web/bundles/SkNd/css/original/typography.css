@@ -10,11 +10,11 @@ Ideal line-height for this is 1.5em
 
 @font-face {
     font-family: 'KGStrawberryLimeadeRegular';
-    src: url('../fonts/kgstrawberrylimeade-webfont.eot');
-    src: url('../fonts/kgstrawberrylimeade-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/kgstrawberrylimeade-webfont.woff') format('woff'),
-         url('../fonts/kgstrawberrylimeade-webfont.ttf') format('truetype'),
-         url('../fonts/kgstrawberrylimeade-webfont.svg#KGStrawberryLimeadeRegular') format('svg');
+    src: url('/SkNd/web/bundles/SkNd/fonts/kgstrawberrylimeade-webfont.eot');
+    src: url('/SkNd/web/bundles/SkNd/fonts/kgstrawberrylimeade-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/SkNd/web/bundles/SkNd/fonts/kgstrawberrylimeade-webfont.woff') format('woff'),
+         url('/SkNd/web/bundles/SkNd/fonts/kgstrawberrylimeade-webfont.ttf') format('truetype'),
+         url('/SkNd/web/bundles/SkNd/fonts/kgstrawberrylimeade-webfont.svg#KGStrawberryLimeadeRegular') format('svg');
     font-weight: normal;
     font-style: normal;
  

@@ -172,7 +172,6 @@ class MemoryWallController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
-        $sesssion->clearFlashes();
         $form = $this->createForm(new MemoryWallType(), $mw); 
         
         if("POST" === $request->getMethod()){

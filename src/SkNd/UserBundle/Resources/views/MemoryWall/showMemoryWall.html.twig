@@ -1,6 +1,6 @@
 {% extends 'SkNdUserBundle::memoryWallLayout.html.twig' %}
     
-{% block title %}{{ mw.name }} &ndash; a Memory wall){% endblock %}
+{% block title %}{{ mw.name }} &ndash; (a Memory wall){% endblock %}
 {% block content %}
 {% set wallBelongsToThisUser = app.user is not null and mw.user.username == app.user.username %}
 <h1>{{ mw.name|capitalize }}</h1>

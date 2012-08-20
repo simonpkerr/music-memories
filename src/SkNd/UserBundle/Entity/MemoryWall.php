@@ -147,7 +147,7 @@ class MemoryWall
         return $this->dateCreated;
     }
     
-    public function setAssociatedDecade(Decade $associatedDecade)
+    public function setAssociatedDecade(Decade $associatedDecade = null)
     {
         $this->associatedDecade = $associatedDecade;
     }
