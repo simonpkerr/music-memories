@@ -38,8 +38,8 @@
                 <p class="note">Added on {{ mwmr.dateAdded|date("d/m/y \\a\\t g:ia") }}</p>    
                 {{ _self.mrLinkAndPic(mr, api) }}
                 <ul class="actions fl full-width">
-                    {% if api.name == 'amazonapi' %}
-                    <li class="buy-it"><a class="orange button" title="buy this from Amazon" target="_blank" href="{{mr.mediaResourceCache.xmlData.DetailPageURL}}"><span>Buy</span></a></li>    
+                    {% if api.name == 'amazonapi' and mr.mediaResourceCache.xmlData.DetailPageURL is defined %} 
+                        <li class="buy-it"><a class="orange button" title="buy this from Amazon" target="_blank" href="{{mr.mediaResourceCache.xmlData.DetailPageURL}}"><span>Buy</span></a></li>    
                     {% endif %}
                     {% if wallBelongsToThisUser %}
                     {#<li class="edit-it">Edit</li>#}
