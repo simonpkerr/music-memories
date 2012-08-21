@@ -223,18 +223,18 @@ a.button:active {
 .cssgradients .button,
 .cssgradients .blue,
 input#_submit {
-    background-image: linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
-    background-image: -o-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
-    background-image: -moz-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
-    background-image: -webkit-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
-    background-image: -ms-linear-gradient(top, rgb(173,197,231) 0%, rgb(117,160,221) 100%);
+    background-image: linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
+    background-image: -o-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
+    background-image: -moz-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
+    background-image: -ms-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
 
     background-image: -webkit-gradient(
             linear,
             left top,
             left bottom,
-            color-stop(0, rgb(173,197,231)),
-            color-stop(1, rgb(117,160,221))
+            color-stop(0, rgb(165,190,222)),
+            color-stop(1, rgb(110,152,215))
     );
 }
 
@@ -686,7 +686,6 @@ img.mw-MediaResource {
     position: relative;
     margin-bottom: 10px;
     background: none;
-    
 }
 
 #itemOverview ul.actions li > a { 
@@ -697,6 +696,12 @@ img.mw-MediaResource {
     padding: 5px 0 5px 0;
     height: auto;
     margin-top: 10px;
+}
+
+#itemOverview ul.actions li.add-it > a {
+    position: relative;
+    z-index: 2;
+    
 }
 
 #itemOverview ul.actions li > a:hover,

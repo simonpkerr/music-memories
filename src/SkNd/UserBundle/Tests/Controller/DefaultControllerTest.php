@@ -14,10 +14,26 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @version 1.0
  */
 
-
 class DefaultControllerTest extends WebTestCase
 {
     private $client;
+    protected static $kernel;
+    protected static $em;
+    
+    public static function setUpBeforeClass(){
+        self::$kernel = static::createKernel();
+        self::$kernel->boot();
+        self::$em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        
+        $loadUsers = new \SkNd\UserBundle\DataFixtures\ORM\LoadUsers();
+        $loadUsers->setContainer(self::$kernel->getContainer());
+        $loadUsers->load(self::$em);
+    }
+    
+    public static function tearDownAfterClass(){
+        self::$kernel = null;
+        self::$em = null;
+    }
     
     public function setup(){
         $this->client = static::createClient();
@@ -87,8 +103,8 @@ class DefaultControllerTest extends WebTestCase
     public function testRegisterPostWithMissingUsernameShowsErrors(){
         $crawler = $this->client->request('GET', '/register');
         //below line removes the html5 client side validation from the submit button to check server side validation
-        $crawler->selectButton('Register')->addContent('formnovalidate="formnovalidate"');
-        $form = $crawler->selectButton('Register')->form();
+        $crawler->selectButton('Get noodling')->addContent('formnovalidate="formnovalidate"');
+        $form = $crawler->selectButton('Get noodling')->form();
         $params = array(
             'fos_user_registration_form[username]' => '',
             'fos_user_registration_form[email]' => 'n@dig.com',
@@ -101,8 +117,8 @@ class DefaultControllerTest extends WebTestCase
     
     public function testRegisterPostWithUsernameTooShortAndMissingEmailShowsErrors(){
         $crawler = $this->client->request('GET', '/register');
-        $crawler->selectButton('Register')->addContent('formnovalidate="formnovalidate"');
-        $form = $crawler->selectButton('Register')->form();
+        $crawler->selectButton('Get noodling')->addContent('formnovalidate="formnovalidate"');
+        $form = $crawler->selectButton('Get noodling')->form();
         $params = array(
             'fos_user_registration_form[username]' => 'a',
             'fos_user_registration_form[email]'    => ''
@@ -135,7 +151,7 @@ class DefaultControllerTest extends WebTestCase
             
         );
         $crawler = $this->client->submit($form, $params);
-        $profileLink = $crawler->selectLink('Manage your account')->link();
+        $profileLink = $crawler->selectLink('Profile')->link();
         $crawler = $this->client->click($profileLink);
         
         $crawler->selectButton('Update your profile')->addContent('formnovalidate="formnovalidate"');
@@ -166,7 +182,7 @@ class DefaultControllerTest extends WebTestCase
             
         );
         $crawler = $this->client->submit($form, $params);
-        $profileLink = $crawler->selectLink('Manage your account')->link();
+        $profileLink = $crawler->selectLink('Profile')->link();
         $crawler = $this->client->click($profileLink);
         
         $crawler->selectButton('Update your profile')->addContent('formnovalidate="formnovalidate"');
@@ -202,7 +218,8 @@ class DefaultControllerTest extends WebTestCase
             
         );
         $crawler = $this->client->submit($form, $params);
-        $this->assertTrue($crawler->filter('html:contains("Please enter a new password")')->count() > 0);
+        //indicates a flash message saying password is not valid
+        $this->assertTrue($crawler->filter('html:contains("not valid")')->count() > 0);
         
     }
     

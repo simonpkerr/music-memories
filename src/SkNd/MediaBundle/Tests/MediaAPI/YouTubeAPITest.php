@@ -11,7 +11,7 @@
 namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
-//\PHPUnit_Framework_TestCase;
+use \PHPUnit_Framework_TestCase;
 
 //require_once 'Zend/Loader.php';
 

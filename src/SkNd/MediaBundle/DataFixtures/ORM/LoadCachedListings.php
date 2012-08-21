@@ -11,8 +11,10 @@ namespace SkNd\MediaBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use SkNd\MediaBundle\Entity\MediaResourceListingsCache;
-use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
+
 
 class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
     

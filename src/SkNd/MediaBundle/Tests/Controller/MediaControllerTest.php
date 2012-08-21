@@ -75,19 +75,19 @@ class MediaControllerTest extends WebTestCase
         
         $crawler = $this->client->request('GET', '/index');
         
-        $form = $crawler->selectButton('Search noodleDig')->form();
+        $form = $crawler->selectButton('Noodle it!')->form();
         $form['mediaSelection[decade]']->select('1');//all decades
         $form['mediaSelection[mediaType]']->select('1');//Film
         $form['mediaSelection[selectedMediaGenre]']->select('1');//All Genres
         
         $crawler = $this->client->submit($form);        
-        $this->assertTrue(trim($crawler->filter('body > h1')->text()) == 'Results for Film (1930s, Action and adventure)');
+        $this->assertTrue($crawler->filter('h1:contains("Results")')->count() > 0);
     }
        
     public function testMediaSelectionWithKeywordsGoesToListings(){
         $crawler = $this->client->request('GET', '/index');
         
-        $form = $crawler->selectButton('Search noodleDig')->form();
+        $form = $crawler->selectButton('Noodle it!')->form();
         $form['mediaSelection[decade]']->select('1');//all decades
         $form['mediaSelection[mediaType]']->select('1');//Film
         $form['mediaSelection[selectedMediaGenre]']->select('1');//All Genres
@@ -95,7 +95,7 @@ class MediaControllerTest extends WebTestCase
         
         $crawler = $this->client->submit($form);       
         
-        $this->assertTrue($crawler->filter('body > h1:contains("Results")')->count() > 0);
+        $this->assertTrue($crawler->filter('h1:contains("Results")')->count() > 0);
     }
     
     /*
@@ -135,7 +135,7 @@ class MediaControllerTest extends WebTestCase
         
         $crawler = $this->client->request('GET', '/search/film/all-decades/classics/-/12');
         
-        $this->assertTrue($crawler->filter('body > div.flashMessages ul li:contains("something went wrong with Amazon")')->count() > 0);
+        $this->assertTrue($crawler->filter('div.flashMessages ul li:contains("wrong with Amazon")')->count() > 0);
     }
     
     public function testMediaDetailsWithValidRouteGoesToDetailsPage(){

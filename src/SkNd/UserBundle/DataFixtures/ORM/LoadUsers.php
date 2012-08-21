@@ -11,11 +11,13 @@ namespace SkNd\UserBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use SkNd\UserBundle\Entity\User;
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
-use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
+
 
 class LoadUsers implements FixtureInterface, ContainerAwareInterface {
     

@@ -211,14 +211,14 @@ class MemoryWallController extends Controller
         if(!$session->get('tokens/SkNd-delete-token'))
             throw $this->createNotFoundException("Memory wall cannot be deleted");
         else{
-            $$session->remove('tokens/SkNd-delete-token');
+            $session->remove('tokens/SkNd-delete-token');
         }
         $mw = $this->getOwnWall($slug);
         $this->em->remove($mw);
         
         //if this was the last wall, delete but create a new default one
         if($this->getCurrentUser()->getMemoryWalls()->count() == 1){
-            $$session->setFlash('notice', 'memoryWall.delete.flash.successCreatedDefault');
+            $session->setFlash('notice', 'memoryWall.delete.flash.successCreatedDefault');
             $this->getCurrentUser()->createDefaultMemoryWall();
         }else{
             $session->setFlash('notice', 'memoryWall.delete.flash.success');

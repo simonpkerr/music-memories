@@ -10,7 +10,7 @@
 namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\MediaAPI\MediaAPI;
-//\PHPUnit_Framework_TestCase;
+use \PHPUnit_Framework_TestCase;
 
 class UtilitiesTests extends PHPUnit_Framework_TestCase {
     private $params;
@@ -25,7 +25,7 @@ class UtilitiesTests extends PHPUnit_Framework_TestCase {
         $this->searchKeywords = array(
             'Trap Door Series 1 & 2 [DVD] [1984]'   => 'Trap Door Series 1 & 2 1984',
             'Stig Of The Dump : Complete BBC Series [1981] [DVD]' => 'Stig Of The Dump 1981',
-            'The Chronicles Of Narnia 4 DVD Box Set' => 'The Chronicles Of Narnia',
+            'The Chronicles Of Narnia 4 DVD Box Set' => 'The Chronicles Of Narnia ',
             'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy',
             'Ripping Yarns - The Complete Series[DVD] [1976]' => 'Ripping Yarns 1976',
             'Alien Anthology [Blu-ray] [1979] [6 Disc Set]' => 'Alien Anthology 1979',

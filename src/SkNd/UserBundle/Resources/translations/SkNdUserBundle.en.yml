@@ -9,7 +9,7 @@ memoryWall:
     personal_index: My walls
     add_wall: Add a new wall
   create:
-    submit: Make it so, Mr.Worf
+    submit: Make it, baby!
     flash:
       success: Success! Now, get started adding loads of cool stuff to your new Memory Wall
       fail: Oh dear...A bit of a problem. Please fix it and try again 
