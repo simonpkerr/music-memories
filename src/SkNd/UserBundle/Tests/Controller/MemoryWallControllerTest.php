@@ -297,7 +297,8 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         );
        
         $crawler = $this->client->submit($form, $params);
-        $this->assertTrue($crawler->filter('h1:contains("My Memory Wall")')->count() > 0);
+        $this->assertTrue($crawler->filter('h1:contains("My memory wall")')->count() > 0);
+                          
     }
     
     public function testDeleteNonExistentWallThrowsException(){        

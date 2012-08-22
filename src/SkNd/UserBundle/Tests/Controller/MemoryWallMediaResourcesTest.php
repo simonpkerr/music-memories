@@ -112,7 +112,7 @@ class MWCMediaResourcesTest extends WebTestCase
             'id'    => 'testMR',
         ));
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('div.mediaResource:contains("Elf [DVD] [2003]")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("Elf")')->count() > 0);
     }
   
     public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLoginThenToSelectWallViewIfMoreThanOneWallExists(){
@@ -132,7 +132,7 @@ class MWCMediaResourcesTest extends WebTestCase
         $crawler = $this->client->submit($form, $params);
         
         $this->assertTrue($crawler->filter('h1')->text() == 'Select a Memory Wall');
-        $this->assertTrue($crawler->filter('ul.userMemoryWalls li')->count() > 1);
+        $this->assertTrue($crawler->filter('ul.bullet-list li')->count() > 1);
     }
     
     public function testAddMediaResourceToNonExistentWallThrowsException(){
@@ -189,7 +189,7 @@ class MWCMediaResourcesTest extends WebTestCase
             'id'    => 'testMR',
         ));
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('body > div.flashMessages li.notice')->count() > 0);
+        $this->assertTrue($crawler->filter('div.flashMessages li.notice')->count() > 0);
  
     }
     
@@ -217,8 +217,8 @@ class MWCMediaResourcesTest extends WebTestCase
         ));
         $crawler = $this->client->request('GET', $url);
         
-        $this->assertTrue($crawler->filter('div.mediaResource:contains("Elf [DVD] [2003]")')->count() > 0);
-        $this->assertTrue($crawler->filter('div.mediaResource:contains("The Running Man (pt 1)")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("Elf")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("The Running Man")')->count() > 0);
     }
     
     //testuser-mr1 is a cached record in the db
@@ -238,7 +238,7 @@ class MWCMediaResourcesTest extends WebTestCase
             'id'    => 'testuser-mr1',
         ));
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('div.mediaResource:contains("testuser-mr1")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("testuser-mr1")')->count() > 0);
         
     }
     
@@ -260,7 +260,7 @@ class MWCMediaResourcesTest extends WebTestCase
         ));
         
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('div.mediaResource:contains("testuser-mr1")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("testuser-mr1")')->count() > 0);
         
     }
 
@@ -287,21 +287,21 @@ class MWCMediaResourcesTest extends WebTestCase
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $params = array(
-            '_username' => 'testuser2',
-            '_password' => 'testuser2',
+            '_username' => 'testuser',
+            '_password' => 'testuser',
         );
         $crawler = $this->client->submit($form, $params);
         
         $url = self::$router->generate('memoryWallDeleteMediaResourceConfirm', array(
-            'slug'  => 'my-memory-wall-1',
-            'id'    => 'testuser-mr2',
+            'slug'  => 'my-memory-wall',
+            'id'    => 'testuser-mr1',
             'confirmed' => true,
         ));
         $crawler = $this->client->request('GET', $url);
         
         $this->assertTrue($crawler->filter('div.flashMessages li.notice')->count() > 0, 'flash messages not shown');
-        $this->assertTrue($crawler->filter('ul.userMemoryWalls li')->count() == 0, 'media resources not all removed');
-        $this->assertTrue($crawler->filter('h2:contains("Contents")')->siblings('p')->count() > 0, 'Contents div not empty');
+        $this->assertTrue($crawler->filter('li.mw-MediaResource')->count() == 0, 'media resources not all removed');
+        $this->assertTrue($crawler->filter('div#memoryWallContents p:contains("Sorry")')->count() > 0, 'Contents div not empty');
     }
     
     public function testRemoveOtherUsersMediaResourceFromMemoryWallThrowsException(){
