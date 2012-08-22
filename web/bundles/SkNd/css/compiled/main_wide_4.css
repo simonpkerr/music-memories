@@ -704,6 +704,8 @@ div#ytapiplayerContainer {
     padding: 3px 0 0;
     text-indent: -9999em;
     width: 2.7em;
+    position: relative;
+    z-index: 2;
 }
 
 /*#youTubeCarousel ul.actions > li > a span {
