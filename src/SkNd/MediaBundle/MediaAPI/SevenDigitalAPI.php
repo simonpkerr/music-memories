@@ -50,10 +50,12 @@ class SevenDigitalAPI implements IAPIStrategy{
     public function getBatchProcessThreshold() {}
     
     public function getId(SimpleXMLElement $xmlData){}
+    public function getIdFromXML(SimpleXMLElement $xmlData);
     public function getImageUrlFromXML(SimpleXMLElement $xmlData) {}
     public function getItemTitleFromXML(SimpleXMLElement $xmlData){}
     public function getListings(MediaSelection $mediaSelection){}
     public function getValidCreationTime(){}
+    public function getXML(SimpleXMLElement $xmlData);
 }
 
 
