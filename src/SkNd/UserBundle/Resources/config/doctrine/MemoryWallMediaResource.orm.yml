@@ -10,7 +10,6 @@ SkNd\UserBundle\Entity\MemoryWallMediaResource:
     #this has been made a unique field so it can be indexed by memory wall entity
     mediaResource_id:
       type: string
-      #unique: true
     api_id:
       type: integer
       nullable: false
@@ -35,12 +34,8 @@ SkNd\UserBundle\Entity\MemoryWallMediaResource:
     mediaResource:
       targetEntity: SkNd\MediaBundle\Entity\MediaResource
       inversedBy: memoryWallMediaResources
-#      cascade: ["persist", "remove"]
-#      orphanRemoval: true
     memoryWall:
       targetEntity: MemoryWall
       inversedBy: memoryWallMediaResources
-#      cascade: ["persist", "remove"]
-#      orphanRemoval: true
           
   lifecycleCallbacks: {  }

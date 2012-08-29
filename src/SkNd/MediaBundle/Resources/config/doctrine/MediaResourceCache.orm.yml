@@ -15,15 +15,6 @@ SkNd\MediaBundle\Entity\MediaResourceCache:
       gedmo:
         timestampable:
           on: create
-          #on: update
-          #on: change
-          #field: xmlData
-          #value: XmlData
-#    dateUpdated:
-#      type: datetime
-#      gedmo:
-#        timestampable:
-#          on: update
     slug:
       type: string
       length: 255

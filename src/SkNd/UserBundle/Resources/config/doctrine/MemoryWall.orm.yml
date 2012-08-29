@@ -64,6 +64,5 @@ SkNd\UserBundle\Entity\MemoryWall:
       joinColumn:
         name: user_id
         referencedColumnName: id
-        #onDelete: set null
 
      

@@ -26,7 +26,4 @@ SkNd\MediaBundle\Entity\Decade:
           fields:
             - decadeName
   lifecycleCallbacks: {  }
-#  manyToOne:
-#    mediaType:
-#      targetEntity: MediaType
-      
+
