@@ -9,7 +9,7 @@
         {#<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />#}
      
         {# use the stylesheets tag for when assetic is working, meaning that files can be minified
-        for production environment #}
+        for production environment. Use the '?' inside the filter to run the app in debug mode #}
         {% stylesheets output='bundles/SkNd/css/compiled/main.css' filter='?yui_css' 
         'bundles/SkNd/css/original/reset.css'
         'bundles/SkNd/css/original/typography.css'
