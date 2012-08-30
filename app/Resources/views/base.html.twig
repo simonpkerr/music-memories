@@ -10,7 +10,7 @@
      
         {# use the stylesheets tag for when assetic is working, meaning that files can be minified
         for production environment #}
-        {% stylesheets output='bundles/SkNd/css/compiled/main.css' filter='yui_css' 
+        {% stylesheets output='bundles/SkNd/css/compiled/main.css' filter='?yui_css' 
         'bundles/SkNd/css/original/reset.css'
         'bundles/SkNd/css/original/typography.css'
         'bundles/SkNd/css/original/base.css'  
@@ -19,12 +19,6 @@
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />    
         {% endstylesheets %}
                              
-        {#% block stylesheets %}
-            <link href="{{asset('bundles/SkNd/css/reset.css') }}" type="text/css" rel="stylesheet" />
-            <link href="{{asset('bundles/SkNd/css/typography.css') }}" type="text/css" rel="stylesheet" />
-            <link href="{{asset('bundles/SkNd/css/base.css') }}" type="text/css" rel="stylesheet" />
-            <link media="only screen and (min-width: 600px)" href="{{asset('bundles/SkNd/css/wide.css') }}" type="text/css" rel="stylesheet" />
-        {% endblock %#}
         <script src="{{ asset('bundles/SkNd/js/modernizr.js') }}" type="text/javascript"></script>    
         <script type="text/javascript">Modernizr.load([{test: Modernizr.mq('only screen and (min-width: 600px)'),nope: ['/SkNd/web/bundles/SkNd/js/respond.min.js']}]);</script>
     </head>
