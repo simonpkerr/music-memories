@@ -32,13 +32,9 @@ SkNd\MediaBundle\Entity\MediaResourceListingsCache:
       nullable: false
     mediaType:
       targetEntity: MediaType
-      nullable: false
-      #cascade: ["merge"] 
+      nullable: false 
     decade:
       targetEntity: Decade
-      #cascade: ["persist", "merge", "remove"] 
-      #nullable defaults to true for these columns
     genre:
       targetEntity: Genre
-      #cascade: ["persist", "merge", "remove"] 
   lifecycleCallbacks: {  }

@@ -8,11 +8,7 @@
         <!--mediaapi params-->
         <parameter key="mediaapi.class">SkNd\MediaBundle\MediaAPI\MediaAPI</parameter>
         <parameter key="mediaapi.debug_mode" />
-        <!--parameter key="mediaapi.apis" type="collection">
-            <parameter key="amazonapi" type="service" />
-            <parameter key="youtubeapi" type="service" />
-        </parameter-->
-        
+                
         <!--amazon params-->
         <parameter key="amazonapi.class">SkNd\MediaBundle\MediaAPI\AmazonAPI</parameter>
         <parameter key="amazonapi.access_params" type="collection" >
@@ -42,16 +38,13 @@
         <!--amazon services-->
         <service id="amazon_signed_request" class="%amazonapi.amazon_signed_request.class%" public="false" />
         <service id="amazonapi" class="%amazonapi.class%" public="false">
-            <!--argument type="service" id="doctrine.orm.entity_manager" /-->
             <argument>%amazonapi.access_params%</argument>
             <argument id="amazon_signed_request" type="service" />
-            <!--argument id="doctrine" type="service" /-->
         </service>
         
         <!--youtube services-->
         <service id="youtube_request_object" class="%youtubeapi.youtube_request_object.class%" public="false" />
         <service id="youtubeapi" class="%youtubeapi.class%" public="false">
-            <!--argument type="service" id="doctrine.orm.entity_manager" /-->
             <argument type="service" on-invalid="ignore" id="youtube_request_object" />
         </service>
          

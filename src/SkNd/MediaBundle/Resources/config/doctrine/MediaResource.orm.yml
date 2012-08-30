@@ -9,9 +9,6 @@ SkNd\MediaBundle\Entity\MediaResource:
       unique: true
       generator:
         strategy: NONE
-    #itemId:
-    #  type: string
-    #  length: '50'
     viewCount:
       type: integer
     selectedCount:
@@ -34,8 +31,6 @@ SkNd\MediaBundle\Entity\MediaResource:
   manyToOne:
     api:
       targetEntity: API
-#      orderBy:
-#        id: asc
     mediaType:
       targetEntity: MediaType
     decade:
@@ -57,15 +52,5 @@ SkNd\MediaBundle\Entity\MediaResource:
       mappedBy: mediaResource
       cascade: ["persist", "merge", "remove"]
       orphanRemoval: true
-      #orderBy:
-      #  dateCreated: desc
-    #relatedMediaResources:
-    #  targetEntity: MediaResource
-    #  mappedBy: relatedMediaResources
-      
-#  manyToMany:
-#    memoryWalls:
-#      targetEntity: SkNd\UserBundle\Entity\MemoryWall
-#      mappedBy: mediaResources
-#      #cascade: ["persist"]
+
       
