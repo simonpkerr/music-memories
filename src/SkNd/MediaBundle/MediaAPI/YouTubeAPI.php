@@ -1,7 +1,8 @@
 <?php
 /*
  * Copyright (c) 2011 Simon Kerr
- * Connects to YouTube api to return results for all media
+ * Connects to YouTube api to return results for all media,
+ * handles getting listings, details and batch processing of YouTube data
  * @author Simon Kerr
  * @version 1.0
  */
@@ -156,9 +157,6 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             'decade'    => $mediaSelection->getDecade() != null ? $mediaSelection->getDecade()->getDecadeName() : null,
             'genre'     => $mediaSelection->getSelectedMediaGenre() != null ? $mediaSelection->getSelectedMediaGenre()->getGenreName() : null
         ));
-        
-        //$keywordQuery = urlencode($keywordQuery);
-        //$query = new \Zend_Gdata_YouTube_VideoQuery();
         
         $query->setVideoQuery($keywordQuery);
         $query->setCategory(urlencode($categories));

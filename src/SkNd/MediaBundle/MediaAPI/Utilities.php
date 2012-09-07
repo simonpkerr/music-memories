@@ -1,10 +1,9 @@
 <?php
 
 /**
- * SearchStringFormatter is a simple class to format titles 
- * from Amazon products for use by YouTube and GDataImages
- *
- * @author meznsi
+ * Utilities formats titles from amazon ready for searching by YouTube or other APIs
+ * it also removes null entries from arrays
+ * @author Simon Kerr
  * @copyright Simon Kerr 2012
  *
  */
@@ -38,7 +37,8 @@ class Utilities {
         //older regexs
         //'/(\w*)(\s?(\(|\[|\d?\sdvd|[\-|\:]?\s?((the\s)?complete|series|box set|bbc|special edition|blu-ray|double pack|Remastered|\d?(\s|\-)?disc set|3d|region free)).*)/i'
          
-        $keywordQuery .= ' ' . $yearPart;
+        if(!is_null($yearPart))
+            $keywordQuery .= '|' . $yearPart;
         
         $year = date('Y');
         if(isset($params['decade']) && is_null($yearPart)){
