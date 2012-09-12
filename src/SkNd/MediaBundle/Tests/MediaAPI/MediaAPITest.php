@@ -234,7 +234,7 @@ class MediaAPITests extends WebTestCase {
                 ->will($this->returnValue(true));
         
         $listings = $this->mediaAPI->getListings();
-        $this->assertEquals($listings['response']->item->attributes()->id, 'liveData');
+        $this->assertEquals((string)$listings['response']->item->attributes()->id, 'liveData');
         
     }
     
@@ -253,7 +253,7 @@ class MediaAPITests extends WebTestCase {
                 ->will($this->returnValue($this->cachedXMLResponse));
 
         $listings = $this->mediaAPI->getListings();
-        $this->assertEquals($listings['response']->item->attributes()->id, 'cachedData');
+        $this->assertEquals((string)$listings['response']->item->attributes()->id, 'cachedData');
     }
     
     
@@ -335,7 +335,7 @@ class MediaAPITests extends WebTestCase {
         $mr = $this->mediaAPI->getDetails(
                 array('ItemId'  =>  '1'));
         
-        $this->assertEquals($mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData');
+        $this->assertEquals((string)$mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData');
     }
     
     public function testExistingMediaResourceAndNonexistentCachedResourceCallsLiveAPI(){
@@ -355,7 +355,7 @@ class MediaAPITests extends WebTestCase {
 
         $mr = $this->mediaAPI->getDetails(
                 array('ItemId'  =>  '1'));
-        $this->assertEquals($mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData');
+        $this->assertEquals((string)$mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData');
     }
     
     public function testExistingMediaResourceAndExistingValidCachedResourceReturnsCache(){
@@ -379,7 +379,7 @@ class MediaAPITests extends WebTestCase {
         
         $mr = $this->mediaAPI->getDetails(
                 array('ItemId'  =>  '1'));
-        $this->assertEquals($mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData');
+        $this->assertEquals((string)$mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData');
         
     }
     
