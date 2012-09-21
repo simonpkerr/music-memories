@@ -32,20 +32,21 @@ class Utilities {
         //this version removes any references to disc set, box set etc
         preg_match('/[\[|\(](\d{4})[\]|\)]/i', $keywords, $yearParts);
         $yearPart = isset($yearParts[1]) ? $yearParts[1] : null;
-        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\s?(\(|\[|\d?\sdvd|([\-|\:]\s?)((the\s)?complete|series|box set|bbc|special edition|blu-ray|double pack|Remastered|\d?(\s|\-)?disc set|3d|region free)).*|((the\s)?complete)\s?)/i','$1', $keywords)));
+        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\s?(\(|\[|\d?\sdvd|([\-|\:]\s?)?((the\s)?complete|series|box set|bbc|special edition|blu-ray|double pack|Remastered|\d?(\s|\-)?disc set|3d|region free)).*|((the\s)?complete)\s?)/i','$1', $keywords)));
         
         //older regexs
+        //'/(\w*)(\s?(\(|\[|\d?\sdvd|([\-|\:]\s?)((the\s)?complete|series|box set|bbc|special edition|blu-ray|double pack|Remastered|\d?(\s|\-)?disc set|3d|region free)).*|((the\s)?complete)\s?)/i'
         //'/(\w*)(\s?(\(|\[|\d?\sdvd|[\-|\:]?\s?((the\s)?complete|series|box set|bbc|special edition|blu-ray|double pack|Remastered|\d?(\s|\-)?disc set|3d|region free)).*)/i'
          
-        if(!is_null($yearPart))
-            $keywordQuery .= '|' . $yearPart;
+        //if(!is_null($yearPart))
+        //    $keywordQuery .= '|' . $yearPart;
         
-        $year = date('Y');
+        /*$year = date('Y');
         if(isset($params['decade']) && is_null($yearPart)){
             $decade = $params['decade'];
             if($year - $decade > 20)
                 $keywordQuery .= '|' .$decade .'s';
-        }
+        }*/
         
         //only add genre if applies to children
         /*if(isset($params['genre'])){
@@ -55,9 +56,13 @@ class Utilities {
         }*/
                 
        
-        return $keywordQuery;
+        //return $keywordQuery;
+        return array(
+            'keywords'  => $keywordQuery,
+            'year'      => $yearPart,
+        );
     }
-    
+        
     public static function is_NotNull($v){
         return !is_null($v);
     }

@@ -130,12 +130,12 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             throw new \LengthException("No results were returned");
         }
 
-        return $this->getSimpleXml($videoFeed);
+        return $this->getSimpleXml($videoFeed, true);
                 
     }
     
     private function getVideoFeed(MediaSelection $mediaSelection){
-        $categories = 'Film|Entertainment';
+        $categories = 'Entertainment';
         $query = $this->youTube->newVideoQuery();
         
         //$query->setOrderBy('viewCount');
@@ -144,25 +144,32 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         
         switch($mediaSelection->getMediaType()->getSlug()){
             case 'film':
-                $categories = 'Film|Entertainment';
+                $categories = 'Film';
                 break;
             case 'tv':
-                $categories = 'Film|Entertainment|Shows';
+                $categories = 'Entertainment';
                 break;
-            
+            case 'music':
+                $categories = 'Music';
+                break;
         }
-        $keywordQuery = Utilities::formatSearchString(array(
+        
+        $searchString = Utilities::formatSearchString(array(
             'keywords'  => $mediaSelection->getComputedKeywords(),
             'media'     => $mediaSelection->getMediaType()->getSlug(),
             'decade'    => $mediaSelection->getDecade() != null ? $mediaSelection->getDecade()->getDecadeName() : null,
             'genre'     => $mediaSelection->getSelectedMediaGenre() != null ? $mediaSelection->getSelectedMediaGenre()->getGenreName() : null
         ));
         
-        $query->setVideoQuery($keywordQuery);
-        $query->setCategory(urlencode($categories));
+        //$query->setVideoQuery(urlencode($keywordQuery));
+        $query->setVideoQuery($searchString['keywords']);
+        
+        //$categories .= '/' . str_replace(' ', '/', $searchString['keywords']);
+        
+        $query->setCategory($categories);
         $this->query = $query->getQueryUrl(2);
         
-        return $this->youTube->getVideoFeed($query->getQueryUrl(2));    
+        return $this->youTube->getVideoFeed($this->query);    
                 
     }
     

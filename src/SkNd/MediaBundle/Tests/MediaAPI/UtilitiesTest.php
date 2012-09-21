@@ -34,6 +34,7 @@ class UtilitiesTests extends PHPUnit_Framework_TestCase {
             'Chitty Chitty Bang Bang (2 Disc Special Edition) [1968] [DVD]' => 'Chitty Chitty Bang Bang|1968',
             'Doctor Who: The Ambassadors of Death [DVD]' => 'Doctor Who: The Ambassadors of Death',
             'The Complete Open All Hours - Series One-Four [1976]' => 'Open All Hours|1976',
+            'Only Fools and Horses Complete Series 1 - 7 Box Set [DVD] [1981]' => 'Only Fools and Horses|1981',
         );
     }
     
