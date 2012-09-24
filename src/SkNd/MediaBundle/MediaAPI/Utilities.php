@@ -32,7 +32,18 @@ class Utilities {
         //this version removes any references to disc set, box set etc
         preg_match('/[\[|\(](\d{4})[\]|\)]/i', $keywords, $yearParts);
         $yearPart = isset($yearParts[1]) ? $yearParts[1] : null;
-        $keywordQuery =  trim(strtolower(preg_replace('/(\w*)(\s?(\(|\[|\d?\sdvd|([\-|\:]\s?)?((the\s)?complete|series|box set|bbc|special edition|blu-ray|double pack|Remastered|\d?(\s|\-)?disc set|3d|region free)).*|((the\s)?complete)\s?)/i','$1', $keywords)));
+        $keywordsRegex = '/
+            (\w*)                                   # any number of words
+            (^the complete\s)|                      # strings that start with the phrase "the complete" OR
+            (\s?(\(|\[|\d?\sdvd                     # 0 or 1 space followed by brackets or square brackets or 0 or 1 digits followed by "dvd"
+            |([\-|\:]\s?)?                          # or 0 or 1 "-" or ":" followed by 0 or 1 spaces
+            ((the\s)?complete|series|box set|bbc    # followed by optional "the" followed by "complete" or "series" or "box set" or "bbc"
+            |special edition|blu-ray|double pack    # or "special edition" or "blu-ray" or "double pack"
+            |Remastered|\d?(\s|\-)?disc set|3d      # or "remastered" or 0 or 1 digit followed by a space or "-" character followed by "disc set" or "3d"
+            |region free))                          # or "region free"
+            .*)/i                                   # followed by any number of characters, globally case insensitive
+            ';
+        $keywordQuery =  trim(strtolower(preg_replace($keywordsRegex,'$1', $keywords)));
         
         //older regexs
         //'/(\w*)(\s?(\(|\[|\d?\sdvd|([\-|\:]\s?)((the\s)?complete|series|box set|bbc|special edition|blu-ray|double pack|Remastered|\d?(\s|\-)?disc set|3d|region free)).*|((the\s)?complete)\s?)/i'

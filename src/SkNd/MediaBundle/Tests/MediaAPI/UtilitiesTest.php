@@ -23,7 +23,7 @@ class UtilitiesTests extends PHPUnit_Framework_TestCase {
             'genre'     => 'all',
         );
         $this->searchKeywords = array(
-            'Trap Door Series 1 & 2 [DVD] [1984]'   => 'Trap Door Series 1 & 2|1984',
+            'Trap Door Series 1 & 2 [DVD] [1984]'   => 'Trap Door|1984',
             'Stig Of The Dump : Complete BBC Series [1981] [DVD]' => 'Stig Of The Dump|1981',
             'The Chronicles Of Narnia 4 DVD Box Set' => 'The Chronicles Of Narnia',
             'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy 3',
