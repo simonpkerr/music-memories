@@ -162,7 +162,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         ));
         
         //$query->setVideoQuery(urlencode($keywordQuery));
-        $query->setVideoQuery($searchString['keywords']);
+        $query->setVideoQuery(urlencode($searchString['keywords']));
         
         //$categories .= '/' . str_replace(' ', '/', $searchString['keywords']);
         

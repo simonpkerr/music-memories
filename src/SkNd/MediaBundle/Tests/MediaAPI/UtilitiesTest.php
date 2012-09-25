@@ -35,6 +35,7 @@ class UtilitiesTests extends PHPUnit_Framework_TestCase {
             'Doctor Who: The Ambassadors of Death [DVD]' => 'Doctor Who: The Ambassadors of Death',
             'The Complete Open All Hours - Series One-Four [1976]' => 'Open All Hours|1976',
             'Only Fools and Horses Complete Series 1 - 7 Box Set [DVD] [1981]' => 'Only Fools and Horses|1981',
+	    'Willy Wonka & the Chocolate Factory (1971) [DVD]' => 'Willy Wonka and the Chocolate Factory',
         );
     }
     
