@@ -1,4 +1,6 @@
 <?php
+ini_set("include_path", ".:/usr/lib/php:/usr/local/lib/php:/home/simonker/public_html/SkNd/app/Resources/ZendFramework/library");
+ini_set("memory_limit","32M");
 require __DIR__.'/../vendor/symfony/src/Symfony/Component/ClassLoader/ApcUniversalClassLoader.php';
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
@@ -6,8 +8,8 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\ClassLoader\ApcUniversalClassLoader;
 
 
-//$loader = new UniversalClassLoader();
-$loader = new ApcUniversalClassLoader('SkNd');
+$loader = new UniversalClassLoader();
+//$loader = new ApcUniversalClassLoader('SkNd');
 /*
  * (from Symfony website)
  * if you change the location of a particular namespace or prefix, you'll need to flush your APC cache. 
