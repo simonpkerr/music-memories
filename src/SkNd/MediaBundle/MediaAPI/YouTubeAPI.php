@@ -142,7 +142,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         //default ordering is relevance
         $query->setMaxResults(self::BATCH_PROCESS_THRESHOLD);
         
-        switch($mediaSelection->getMediaType()->getSlug()){
+        /*switch($mediaSelection->getMediaType()->getSlug()){
             case 'film':
                 $categories = 'Film';
                 break;
@@ -152,7 +152,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             case 'music':
                 $categories = 'Music';
                 break;
-        }
+        }*/
         
         $searchString = Utilities::formatSearchString(array(
             'keywords'  => $mediaSelection->getComputedKeywords(),
@@ -161,12 +161,18 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             'genre'     => $mediaSelection->getSelectedMediaGenre() != null ? $mediaSelection->getSelectedMediaGenre()->getGenreName() : null
         ));
         
-        //$query->setVideoQuery(urlencode($keywordQuery));
-        $query->setVideoQuery(urlencode($searchString['keywords']));
+        $searchQuery = $searchString['keywords'];
         
-        //$categories .= '/' . str_replace(' ', '/', $searchString['keywords']);
+        if(!is_null($searchString['year'])){
+            $searchQuery .= '|' . $searchString['year'];
+        }
+        $query->setVideoQuery(htmlentities($searchQuery));
         
-        $query->setCategory($categories);
+        if(!is_null($mediaSelection->getDecade())){
+            $categories .= '|' . $mediaSelection->getDecade()->getSlug();
+        }
+        $query->setCategory(urlencode($categories));
+        
         $this->query = $query->getQueryUrl(2);
         
         return $this->youTube->getVideoFeed($this->query);    
