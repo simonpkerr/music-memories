@@ -1,7 +1,7 @@
 SkNd\MediaBundle\Entity\Decade:
   type: entity
   repositoryClass: SkNd\MediaBundle\Repository\DecadeRepository
-  table: null
+  table: decade
   fields:
     id:
       type: integer

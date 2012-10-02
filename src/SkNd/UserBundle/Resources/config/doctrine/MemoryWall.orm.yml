@@ -1,7 +1,7 @@
 SkNd\UserBundle\Entity\MemoryWall:
   type: entity
   repositoryClass: SkNd\UserBundle\Repository\MemoryWallRepository
-  table: null
+  table: memorywall
   fields:
     id:
       type: integer

@@ -1,7 +1,7 @@
 SkNd\MediaBundle\Entity\MediaResource:
   type: entity
   repositoryClass: SkNd\MediaBundle\Repository\MediaResourceRepository
-  table: null
+  table: mediaresource
   fields:
     id:
       type: string

@@ -1,6 +1,6 @@
 SkNd\MediaBundle\Entity\MediaResourceCache:
   type: entity
-  table: null
+  table: mediaresourcecache
   fields:
     id:
       type: string

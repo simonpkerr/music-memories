@@ -6,10 +6,11 @@ require __DIR__.'/../vendor/symfony/src/Symfony/Component/ClassLoader/ApcUnivers
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\ClassLoader\ApcUniversalClassLoader;
-
+use Symfony\Component\ClassLoader\XcacheClassLoader;
 
 $loader = new UniversalClassLoader();
 //$loader = new ApcUniversalClassLoader('SkNd');
+//$loader = new XcacheClassLoader('SkNd');
 /*
  * (from Symfony website)
  * if you change the location of a particular namespace or prefix, you'll need to flush your APC cache. 

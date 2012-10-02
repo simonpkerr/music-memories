@@ -1,7 +1,7 @@
 SkNd\MediaBundle\Entity\Genre:
   type: entity
   repositoryClass: SkNd\MediaBundle\Repository\GenreRepository
-  table: null
+  table: genre
   fields:
     id:
       type: integer

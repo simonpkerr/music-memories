@@ -24,6 +24,7 @@ class RegistrationFormType extends BaseType {
         $builder->add('dateofbirth', 'birthday', array(
             'years' => $yearRange,
             'label' => 'Date of Birth',
+            'format'=> 'MMM-dd-yyyy',
             ));
         
         $builder->add('firstname', 'text', array(
