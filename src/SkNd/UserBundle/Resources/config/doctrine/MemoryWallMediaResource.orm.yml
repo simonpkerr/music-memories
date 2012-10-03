@@ -1,6 +1,6 @@
 SkNd\UserBundle\Entity\MemoryWallMediaResource:
   type: entity
-  table: null
+  table: memorywallmediaresource
   id:
     mediaResource:
       associationKey: true

@@ -1,7 +1,7 @@
 SkNd\MediaBundle\Entity\API:
   type: entity
   repositoryClass: SkNd\MediaBundle\Repository\APIRepository
-  table: null
+  table: api
   fields:
     id:
       type: integer

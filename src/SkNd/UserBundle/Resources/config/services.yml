@@ -1,5 +1,3 @@
-parameters:
-
 services:
   SkNd_user.registration.form.type:
     class: SkNd\UserBundle\Form\Type\RegistrationFormType
