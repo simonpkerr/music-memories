@@ -130,7 +130,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             throw new \LengthException("No results were returned");
         }
 
-        return $this->getSimpleXml($videoFeed, true);
+        return $this->getSimpleXml($videoFeed);
                 
     }
     

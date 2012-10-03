@@ -8,8 +8,8 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\ClassLoader\ApcUniversalClassLoader;
 use Symfony\Component\ClassLoader\XcacheClassLoader;
 
-$loader = new UniversalClassLoader();
-//$loader = new ApcUniversalClassLoader('SkNd');
+//$loader = new UniversalClassLoader();
+$loader = new ApcUniversalClassLoader('SkNd');
 //$loader = new XcacheClassLoader('SkNd');
 /*
  * (from Symfony website)
