@@ -27,7 +27,7 @@ assetic:
     #read_from:      %kernel.root_dir%/../web/bundles/SkNd/css/original/
     #write_to:       %kernel.root_dir%/../web/bundles/SkNd/css/compiled/
     use_controller: false
-    java:           c:\Program Files\Java\jre6\bin\java.exe
+    java:           "%kernel.root_dir%/Resources/java/java.exe" 
     filters:
         yui_css:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"         

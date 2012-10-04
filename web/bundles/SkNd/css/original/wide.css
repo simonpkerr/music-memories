@@ -529,6 +529,14 @@ ul#listings ul.actions > li:first-child {
     border-radius: 0 0 6px 0;
 }
 
+div#recommendations ul#memoryWallGallery > li {
+    display: block;
+    height: auto;
+    margin: 0 0 20px;
+    padding: 10px 15px;
+    width: 89%;
+}
+
 ul.actions > li > a {
     height: 0.45em;
     margin-top: 0;

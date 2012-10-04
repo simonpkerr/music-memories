@@ -12,7 +12,7 @@
 
 <form class="half-width" action="{{ path('memoryWallCreate') }}" {{ form_enctype(form) }} method="POST">
     <fieldset>
-    <legend>Wally details</legend>
+    <legend>Wall details</legend>
 {{ form_widget(form) }}
     <div>
         <input type="submit" value="{{ 'memoryWall.create.submit'|trans({}, 'SkNdUserBundle') }}" />
