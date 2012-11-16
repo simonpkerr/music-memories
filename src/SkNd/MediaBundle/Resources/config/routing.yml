@@ -26,15 +26,18 @@ search:
     page: 1    
     
 mediaDetails:
-  pattern: /mediadetails/{id}/{media}/{decade}/{genre}
+  pattern: /mediadetails/{id}/{media}/{decade}/{genre}/{keywords}
   defaults:
     _controller: SkNdMediaBundle:Media:mediaDetails
     decade: all-decades
     genre: all-genres
+    keywords: '-'
 
 youTubeRequest:
-  pattern: /youtuberequest/{title}/{media}/{decade}/{genre}
-  defaults: { _controller: SkNdMediaBundle:Media:youTubeRequest }
+  pattern: /youtuberequest/{title}/{media}/{decade}/{genre}/{keywords}
+  defaults:
+    _controller: SkNdMediaBundle:Media:youTubeRequest
+    keywords: '-'
 
 #flickrRequest:
 #  pattern: /flickrRequest/{title}/{media}/{decade}/{genre}

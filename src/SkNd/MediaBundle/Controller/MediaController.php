@@ -177,7 +177,7 @@ class MediaController extends Controller
        return $this->render('SkNdMediaBundle:Media:searchResults.html.twig', $responseParams);
     }
 
-    public function mediaDetailsAction($id, $media, $decade = 'all-decades', $genre = 'all-genres'){
+    public function mediaDetailsAction($id, $media, $decade = 'all-decades', $genre = 'all-genres', $keywords = '-'){
         /*
          * set the mediaSelection object if it doesn't exist - user may have gone straight to the page
          * without going through the selection process
@@ -189,6 +189,7 @@ class MediaController extends Controller
             'decade'            => $decade,
             'genre'             => $genre,
             'computedKeywords'  => null,
+            'keywords'          => $keywords,
         ));
         
         $details = null;
@@ -200,6 +201,7 @@ class MediaController extends Controller
             'media'             => $media,
             'decade'            => $decade,
             'genre'             => $genre,
+            'keywords'          => $keywords,
             'api'               => 'amazonapi',
             'referrer'          => $referrer,
         );
@@ -223,7 +225,7 @@ class MediaController extends Controller
         
     }
           
-    public function youTubeRequestAction($title, $media, $decade, $genre){
+    public function youTubeRequestAction($title, $media, $decade, $genre, $keywords = '-'){
         $responseParams = array();
         
         //get the youtube service
@@ -235,6 +237,7 @@ class MediaController extends Controller
             'decade'            => $decade,
             'genre'             => $genre,
             'computedKeywords'  => urldecode($title),
+            'keywords'          => $keywords,
         ));
         
         $listings = null;
