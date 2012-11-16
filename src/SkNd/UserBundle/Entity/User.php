@@ -24,9 +24,9 @@ class User extends BaseUser {
     protected $memoryWalls;
 
     public function __construct(){
+        parent::__construct();
         $this->memoryWalls = new ArrayCollection();
         $this->createDefaultMemoryWall();
-        parent::__construct();
     }
     
     public function getMemoryWalls($includePrivateWalls = true){
