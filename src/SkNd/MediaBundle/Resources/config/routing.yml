@@ -26,7 +26,7 @@ search:
     page: 1    
     
 mediaDetails:
-  pattern: /mediadetails/{id}/{media}/{decade}/{genre}/{keywords}
+  pattern: /mediadetails/{id}/{apiReferrer}
   defaults:
     _controller: SkNdMediaBundle:Media:mediaDetails
     decade: all-decades
@@ -39,9 +39,6 @@ youTubeRequest:
     _controller: SkNdMediaBundle:Media:youTubeRequest
     keywords: '-'
 
-#flickrRequest:
-#  pattern: /flickrRequest/{title}/{media}/{decade}/{genre}
-#  defaults: { _controller: SkNdMediaBundle:Media:flickrRequest }
   
 #setSlugs:
 #  pattern: /setSlugs/{table}

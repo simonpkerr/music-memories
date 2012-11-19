@@ -176,21 +176,24 @@ class MediaController extends Controller
        
        return $this->render('SkNdMediaBundle:Media:searchResults.html.twig', $responseParams);
     }
-
-    public function mediaDetailsAction($id, $media, $decade = 'all-decades', $genre = 'all-genres', $keywords = '-'){
+   
+    public function mediaDetailsAction($id, $apiReferrer){
         /*
          * set the mediaSelection object if it doesn't exist - user may have gone straight to the page
          * without going through the selection process
+         * 
+         * this is unnecessary since pages that are directly linked to should have a record in the db
+         * first and if they don't they can be looked up but not inserted, or looked up but without recommendations
          */
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
-        $mediaSelection = $this->mediaapi->getMediaSelection(array(
+        /*$mediaSelection = $this->mediaapi->getMediaSelection(array(
             'api'               => 'amazonapi',
             'media'             => $media,
             'decade'            => $decade,
             'genre'             => $genre,
             'computedKeywords'  => null,
             'keywords'          => $keywords,
-        ));
+        ));*/
         
         $details = null;
         $title = null;
@@ -202,17 +205,18 @@ class MediaController extends Controller
             'decade'            => $decade,
             'genre'             => $genre,
             'keywords'          => $keywords,
-            'api'               => 'amazonapi',
+            'api'               => $apiReferrer,
             'referrer'          => $referrer,
         );
         
         if($media != 'music'){
             $params = array(
-               'ItemId' =>  $id,
+               'ItemId'         =>  $id,
+               'apiReferrer'    =>  $apiReferrer,
             );
                        
-            try{               
-                $responseParams['mediaResource'] = $this->mediaapi->getDetails($params, MediaAPI::MEDIA_RESOURCE_RECOMMENDATION);
+            try{     
+                $responseParams['mediaResource'] = $this->mediaapi->getDetails($params);
                                 
             }catch(\RunTimeException $re){
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');

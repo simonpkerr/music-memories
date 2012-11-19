@@ -285,13 +285,22 @@ class MediaAPI {
      * not require recommendations to be looked up
      * 
      **/
-    public function getDetails(array $params, $recType = null){
-        $this->response = null;
+    public function getDetails(array $params, $getRecommendations = true){
+        //$this->response = null;
         $itemId = $params['ItemId'];
+        //set the correct api from the controller
+        $apiReferrer = $params['apiReferrer'];
+        $this->setAPIStrategy($apiReferrer);
+        $mediaDetails = new MediaDetails($this->em, $this->apiStrategy, $this->mediaSelection);
+        //if recommendations are required, decorate the mediadetails object
+        if($getRecommendations){
+            $mediaDetails = new MediaDetailsRecommendationDecorator($mediaDetails);
+        }
+        $this->mediaResource = $mediaDetails->getDetails($itemId);
         
-        //look up the mediaResource in the db and fetch associated cached object
+        
+        /*//look up the mediaResource in the db and fetch associated cached object
         $this->mediaResource = $this->getMediaResource($itemId);
-        
         //if no recommendations are required
         if(is_null($recType)){
             //look up the details from the api if not cached
@@ -300,19 +309,19 @@ class MediaAPI {
                 //cache the data
                 $this->cacheMediaResource($this->response, $itemId);
             } 
-        }else{
+        }else{*/
 
             //get the media resource recommendations based on the media selection, returns 2 arrays for generic and exact matches
-            $recommendations = $this->getRecommendations($recType, $itemId);
+            //$recommendations = $this->getRecommendations($recType, $itemId);
             
             //get all media resources into one array for processing
-            $allMediaResources = array_merge(array($itemId => $this->mediaResource), $recommendations['genericMatches'], $recommendations['exactMatches']);
+            //$allMediaResources = array_merge(array($itemId => $this->mediaResource), $recommendations['genericMatches'], $recommendations['exactMatches']);
 
             //process all the resources, which filters mr's based on uncached ones, then does a batch job
             $this->processMediaResources($allMediaResources);
             
             $this->mediaResource->setRelatedMediaResources($recommendations);
-        }
+        //}
         
         return $this->mediaResource;
         
@@ -395,31 +404,24 @@ class MediaAPI {
             }
         }
         
-        if($recType == self::MEDIA_RESOURCE_RECOMMENDATION){
-            /*
-             * details recommendations needs to look at the mediaselection and try to get media resources based on all params
-             * then just on decade, and then based on the users age
-             */
+        /*if($recType == self::MEDIA_RESOURCE_RECOMMENDATION){
+            
             $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($this->mediaSelection, $id);
             return $recommendationSet;
-        }
+        }*/
         
         return null;
         
     }
    
     //get an individual media resource based on item id and retrieve or delete associated cached resource
-    public function getMediaResource($itemId){
+    /*public function getMediaResource($itemId){
         $mediaResource = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceById($itemId);
         if($mediaResource == null)
             $mediaResource = $this->createNewMediaResource($itemId);
         else {
             $mediaResource = $this->processMediaResourceCache($mediaResource);
-            /**
-             * if the media resource exists but was discovered using more specific parameters (i.e. mediatype, decade and genre)
-             * set these parameters on the media resource. This means that items discovered using vague parameters become 
-             * more precise over time
-             **/ 
+          
             if($mediaResource->getDecade() == null && $this->mediaSelection->getDecade() != null)
                 $mediaResource->setDecade($this->mediaSelection->getDecade());
             
@@ -428,9 +430,9 @@ class MediaAPI {
         }
         
         return $mediaResource;
-    }
+    }*/
 
-    private function processMediaResourceCache($mediaResource){
+    /*private function processMediaResourceCache($mediaResource){
         if($mediaResource != null && $mediaResource->getMediaResourceCache() != null){
             //if a cached resource exists and is older than the threshold for the current api, delete it
             $dateCreated = $mediaResource->getMediaResourceCache()->getDateCreated();
@@ -440,9 +442,9 @@ class MediaAPI {
             }
         }
         return $mediaResource;
-    }
+    }*/
     
-    private function createNewMediaResource($itemId){
+    /*private function createNewMediaResource($itemId){
         $mediaResource = new MediaResource();
         $mediaResource->setId($itemId);
         $mediaResource->setAPI($this->mediaSelection->getAPI());
@@ -451,10 +453,10 @@ class MediaAPI {
         $mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());
         
         return $mediaResource;
-    }
+    }*/
     
     //once retrieved, if applicable, cache the resource
-    public function cacheMediaResource(SimpleXMLElement $xmlData, $itemId, $immediateFlush = true){
+    /*public function cacheMediaResource(SimpleXMLElement $xmlData, $itemId, $immediateFlush = true){
         if($this->mediaResource == null)
             $this->mediaResource = $this->createNewMediaResource($itemId);
         
@@ -476,14 +478,14 @@ class MediaAPI {
         if($immediateFlush)
             $this->flush();
         
-    }
+    }*/
     
-    private function persistMergeMediaResource($mediaResource){
+    /*private function persistMergeMediaResource($mediaResource){
         if($this->em->contains($mediaResource))
             $this->em->merge($mediaResource);
         else
             $this->em->persist($mediaResource);
-    }
+    }*/
     
     //from a batch operation, take the xml data and resources and re-cache them
     public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, array $mediaResources, $immediateFlush = true){
@@ -555,9 +557,9 @@ class MediaAPI {
     }
     
     
-    protected function flush(){
+    /*protected function flush(){
         $this->em->flush();
-    }
+    }*/
     
     
     
