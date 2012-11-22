@@ -15,29 +15,41 @@ use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
 use \SimpleXMLElement;
 
-class MediaDetails implements IMediaDetails{
+class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
     protected $apiStrategy;
     protected $mediaSelection;
     protected $mediaResource;
     protected $em;
+    protected $itemId;
     
-    public function __construct(EntityManager $em, IAPIStrategy $apiStrategy, MediaSelection $mediaSelection){
-        $this->em = $em;
-        $this->mediaSelection = $mediaSelection;
-        $this->apiStrategy = $apiStrategy;
+    /**
+     *
+     * @param $params includes EntityManager $em, 
+     * IAPIStrategy $apiStrategy, MediaSelection $mediaSelection,
+     * itemId
+     */
+    public function __construct(array $params){
+        $this->em = $params['em'];
+        $this->mediaSelection = $params['mediaSelection'];
+        $this->apiStrategy = $params['apiStrategy'];
+        $this->itemId = $params['itemId'];
     }
     
-    public function getDetails($itemId){
+    public function processMedia(){
         //look up the mediaResource in the db and fetch associated cached object
-        $this->mediaResource = $this->getMediaResource($itemId);
+        $this->mediaResource = $this->getMediaResource($this->itemId);
         
         if($this->mediaResource->getMediaResourceCache() == null){
             //look up the details from the api if not cached
-            $response = $this->apiStrategy->getDetails($itemId);
-            $this->cacheMediaResource($response, $itemId);
+            $response = $this->apiStrategy->getDetails($this->itemId);
+            /*$this->cacheMedia(array(
+                'response'  =>  $response, 
+                'itemId'    =>  $this->itemId));*/
         }
         
-        return $this->mediaResource;
+        return array(
+                'response'  =>  $response, 
+                'itemId'    =>  $this->itemId);
     }
     
     public function getMediaResource($itemId){
@@ -78,16 +90,18 @@ class MediaDetails implements IMediaDetails{
             $dateCreated = $mediaResource->getMediaResourceCache()->getDateCreated();
             if($dateCreated->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
                 $mediaResource->deleteMediaResourceCache();
-                $this->flush();
+                $this->em->flush();
             }
         }
         return $mediaResource;
     }
     
-    public function cacheMediaResource(SimpleXMLElement $response, $itemId){
+    public function cacheMedia(array $params){
+        $response = $params['response']; //may need to convert to simplexml
+        $itemId = $params['itemId'];
         // not needed as is in getDetails method
-        if($this->mediaResource == null)
-            $this->mediaResource = $this->createNewMediaResource($itemId);
+        //if($this->mediaResource == null)
+        //    $this->mediaResource = $this->createNewMediaResource($itemId);
         
         //if cached listings not exists create a new MediaResourceCache object and update the mediaResource    
         if($this->mediaResource->getMediaResourceCache() == null){
@@ -104,20 +118,17 @@ class MediaDetails implements IMediaDetails{
         
         $this->persistMergeMediaResource($this->mediaResource);
         
-        $this->flush();
+        $this->em->flush();
         
     }
         
-    public function persistMergeMediaResource($mediaResource){
+    public function persistMergeMediaResource(MediaResource $mediaResource){
         if($this->em->contains($mediaResource))
             $this->em->merge($mediaResource);
         else
             $this->em->persist($mediaResource);
     }
     
-    public function flush(){
-        $this->em->flush();
-    }
     
 }
 

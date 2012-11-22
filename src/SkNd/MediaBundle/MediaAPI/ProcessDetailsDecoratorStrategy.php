@@ -12,23 +12,43 @@ use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
 
-class MediaDetailsRecommendationDecorator implements IMediaDetails{
-    protected $mediaDetails;
+class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IProcessMediaStrategy {
+    protected $processDetailsStrategy;
+    protected $apiStrategy;
+    protected $mediaSelection;
+    protected $mediaResource;
+    protected $em;
+    protected $itemId;
     
-    public function __construct(MediaDetails $mediaDetails){
-        $this->mediaDetails = $mediaDetails;
+    /**
+     * @param array $params includes MediaDetails $mediaDetails,
+     * EntityManager $em, 
+     * IAPIStrategy $apiStrategy, 
+     * MediaSelection $mediaSelection,
+     * itemId
+     */
+    public function __construct(array $params){
+        $this->mediaDetails = $params['mediaDetails'];
+        $this->em = $params['em'];
+        $this->mediaSelection = $params['mediaSelection'];
+        $this->apiStrategy = $params['apiStrategy'];
+        $this->itemId = $params['itemId'];
     }
     
-    public function getDetails($itemId){
-        $this->mediaResource = $this->getMediaResource($itemId);
-        $recommendations = $this->getRecommendations($itemId);
+    public function processMedia(){
+        $this->mediaResource = $this->getMediaResource($this->itemId);
+        $recommendations = $this->getRecommendations($this->itemId);
         //get all media resources into one array for processing
-        $allMediaResources = array_merge(array($itemId => $this->mediaResource), $recommendations['genericMatches'], $recommendations['exactMatches']);
+        $allMediaResources = array_merge(array($this->itemId => $this->mediaResource), $recommendations['genericMatches'], $recommendations['exactMatches']);
         //process all the resources, which filters mr's based on uncached ones, then does a batch job
-        $this->processMediaResources($allMediaResources);
+        parent::processMedia($allMediaResources);
         $this->mediaResource->setRelatedMediaResources($recommendations);
         
         return $this->mediaResource;
+    }
+    
+    public function cacheMedia(array $params){
+        parent::cacheMedia($params);
     }
     
     /**
@@ -75,23 +95,20 @@ class MediaDetailsRecommendationDecorator implements IMediaDetails{
         }
         //only flush when finished going through all records.
         //flush will update all the older cached records from db 
-        $this->flush();
+        $this->em->flush();
         
         return $updatesMade;
     }
     
     public function getMediaResource($itemId){
-        $this->mediaResource = $this->mediaDetails->getMediaResource($itemId);
-        return $this->mediaResource;
+        return $this->mediaDetails->getMediaResource($itemId);
     }
     
     public function persistMergeMediaResource($mediaResource){
         $this->mediaDetails->persistMergeMediaResource($mediaResource);
     }
     
-    public function flush(){
-        $this->mediaDetails->flush();
-    }
+    
 }
 
 
