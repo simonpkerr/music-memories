@@ -121,10 +121,16 @@ class MediaController extends Controller
     /*
      * perform the search, then redirect to the listings action to show the results
      */
-    public function searchAction($media, $decade = "all-decades", $genre = "all-genres", $keywords = '-', $page = 1){
+    public function searchAction($media, 
+            $decade = "all-decades", 
+            $genre = "all-genres", 
+            $keywords = '-', 
+            $page = 1,
+            $apiKey = 'amazonapi'){
+        
        $this->mediaapi = $this->get('sk_nd_media.mediaapi');
        $mediaSelection = $this->mediaapi->getMediaSelection(array(
-           'api'       => 'amazonapi', 
+           'api'       => $apiKey, 
            'media'     => $media,
            'decade'    => $decade,
            'genre'     => $genre,
@@ -143,37 +149,46 @@ class MediaController extends Controller
            'genre'          => $genre,
            'media'          => $media,
            'keywords'       => $keywords != '-' ? $keywords : null,
-           'api'            => 'amazonapi',
+           'api'            => $apiKey,
        ));
        
+       $processStrategy = new ProcessListingsStrategy(array(
+           'em'             => $this->em,
+           'mediaSelection' => $mediaSelection,
+           'apiStrategy'    => $this->mediaapi->getAPIStrategy($apiKey),
+       ));
+       
+       $listings = $this->mediaapi->getMedia($processStrategy);
+       
        //todo
-       if($media == "music"){
-            
-            $this->mediaapi->setAPIStrategy('sevendigitalapi');
-            try{
-                $response = $this->mediaapi->getListings();
-            }catch(Exception $ex){
-                $exception = $ex;
-            }
-       }else{
-            $this->mediaapi->setAPIStrategy('amazonapi');
-            try{
-                $listings = $this->mediaapi->getListings(MediaAPI::MEMORY_WALL_RECOMMENDATION);
-                $response = $listings['response'];
-                $pagerParams['pagerUpperBound'] = $response->TotalPages > 10 ? 10 : $response->TotalPages;
-                $pagerParams['pagerLowerBound'] = 1;
-                $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
-                $pagerParams['pagerRouteParams'] = $this->mediaapi->getMediaSelectionParams();
-                $responseParams['pagerParams'] = $pagerParams;
-                
-                $responseParams = array_merge($responseParams, $listings);
-                //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
-            }catch(\RunTimeException $re){
-                $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
-            }catch(\LengthException $le){
-                $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
-            }
-       }
+//       if($media == "music"){
+//            
+//            //$this->mediaapi->setAPIStrategy('sevendigitalapi');
+//            try{
+//                //$response = $this->mediaapi->getListings();
+//                $listings = $this->mediaapi->getMedia($processStrategy);
+//            }catch(Exception $ex){
+//                $exception = $ex;
+//            }
+//       }else{
+            //$this->mediaapi->setAPIStrategy('amazonapi');
+        try{
+            //$listings = $this->mediaapi->getListings(MediaAPI::MEMORY_WALL_RECOMMENDATION);
+            $response = $listings['response'];
+            $pagerParams['pagerUpperBound'] = $response->TotalPages > 10 ? 10 : $response->TotalPages;
+            $pagerParams['pagerLowerBound'] = 1;
+            $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
+            $pagerParams['pagerRouteParams'] = $this->mediaapi->getMediaSelectionParams();
+            $responseParams['pagerParams'] = $pagerParams;
+
+            $responseParams = array_merge($responseParams, $listings);
+            //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
+        }catch(\RunTimeException $re){
+            $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
+        }catch(\LengthException $le){
+            $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
+        }
+       //}
        
        return $this->render('SkNdMediaBundle:Media:searchResults.html.twig', $responseParams);
     }

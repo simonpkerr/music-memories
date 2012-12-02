@@ -17,13 +17,14 @@ mediaSelection:
     _method: GET|POST
 
 search:
-  pattern: /search/{media}/{decade}/{genre}/{keywords}/{page}
+  pattern: /search/{media}/{decade}/{genre}/{keywords}/{page}/{apiKey}
   defaults:
     _controller: SkNdMediaBundle:Media:search
     decade: all-decades
     genre: all-genres
     keywords: '-'
     page: 1    
+    apiKey: amazonapi
     
 mediaDetails:
   pattern: /mediadetails/{id}/{apiKey}

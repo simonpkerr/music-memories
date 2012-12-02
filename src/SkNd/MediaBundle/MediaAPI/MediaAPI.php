@@ -352,28 +352,28 @@ class MediaAPI {
      * @return array(response, recommendations)
      * 
      **/
-    public function getListings($recType = null){
-        $this->response = null;
-           
-        $this->response = $this->getCachedListings();
-        $this->cachedDataExist = $this->response != null ? true : false;
-        
-        //look up the query from the db and return cached listings if available
-        if(!$this->cachedDataExist){
-            $this->response = $this->apiStrategy->getListings($this->mediaSelection);
-            
-            //once results are retrieved insert into cache
-            $this->cacheListings($this->response);
-        } 
-        
-        $recommendations = $this->getRecommendations($recType);
-        return array(
-            'response'          => $this->response,
-            'recommendations'   => $recommendations,
-        );
-        
-                
-    }
+//    public function getListings($recType = null){
+//        $this->response = null;
+//           
+//        $this->response = $this->getCachedListings();
+//        $this->cachedDataExist = $this->response != null ? true : false;
+//        
+//        //look up the query from the db and return cached listings if available
+//        if(!$this->cachedDataExist){
+//            $this->response = $this->apiStrategy->getListings($this->mediaSelection);
+//            
+//            //once results are retrieved insert into cache
+//            $this->cacheListings($this->response);
+//        } 
+//        
+//        $recommendations = $this->getRecommendations($recType);
+//        return array(
+//            'response'          => $this->response,
+//            'recommendations'   => $recommendations,
+//        );
+//        
+//                
+//    }
     
     //only results returned from the live api are cached
     public function cacheListings(SimpleXMLElement $response){
