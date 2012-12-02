@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\UserBundle\Form\Type\MemoryWallType;
-
+use SkNd\MediaBundle\MediaAPI\IProcessMediaStrategy;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -144,7 +144,15 @@ class MemoryWallController extends Controller
         //check the mediaresources related to this wall and refresh from api if necessary
         $mediaResources = $mw->getMediaResources();
         if(count($mediaResources) > 0){
-            $mediaapi->processMediaResources($mediaResources, $page);
+            $processStrategy = new ProcessBatchStrategy(array(
+                'em'                => $this->em,
+                'apis'              => $mediaapi->getAPIs(),
+                'mediaResources'    => $mediaResources,
+            ));
+            //$mediaapi->processMediaResources($mediaResources, $page);
+            //no need to return anything, just re-cache if necessary
+            //no need to create new resources.
+            $mediaapi->getMedia($processStrategy);
         }
         
         $returnUrl = null;
@@ -234,7 +242,7 @@ class MemoryWallController extends Controller
      * to add a resource, make sure the wall it's to be added to is valid and belongs to the current user
      * then look up the details based on the api and id and add it to the wall
      */
-    public function addMediaResourceAction($api, $id, $slug = 'personal'){
+    public function addMediaResourceAction($apiKey, $id, $slug = 'personal'){
         $session = $this->get('session');
         $this->em = $this->getEntityManager();
         $this->currentUser = $this->getCurrentUser();
@@ -262,9 +270,17 @@ class MemoryWallController extends Controller
         
         //look up the detail and add the resource, then show the memory wall
         $mediaapi = $this->get('sk_nd_media.mediaapi');
-        $mediaapi->setAPIStrategy($api);        
-               
-        $mediaResource = $mediaapi->getDetails(array('ItemId'   =>  $id));
+        //$mediaapi->setAPIStrategy($api);        
+        
+        $processStrategy = new ProcessDetailsStrategy(array(
+            'em'                => $this->em,
+            'mediaSelection'    => $mediaapi->getMediaSelection(),
+            'apiStrategy'       => $mediaapi->getAPIStrategy($apiKey),
+            'itemId'            => $id,          
+        ));
+        
+        //$mediaResource = $mediaapi->getDetails(array('ItemId'   =>  $id));
+        $mediaResource = $mediaapi->getMedia($processStrategy);
         
         //add the resource to the selected wall
         try{

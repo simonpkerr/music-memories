@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @abstract MediaDetailsRecommendationDecorator takes a MediaDetails object as a constructor param 
- * and decorates its functionality by looking up recommendations
+ * @abstract ProcessBatchStrategy
  * @copyright Simon Kerr 2012
  * @author Simon Kerr
+ * @version 1.0
  */
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
@@ -13,53 +13,36 @@ use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
 
 class ProcessBatchStrategy implements IProcessMediaStrategy {
-    protected $apiStrategyList;
-    protected $mediaResource;
+    protected $apis;
     protected $em;
-    protected $itemId;
+    protected $mediaResources;
+    private $apiResponses;
+    //need mediaResource?
     
     /**
-     * @param array $params includes MediaDetails $mediaDetails,
-     * EntityManager $em, 
-     * IAPIStrategy $apiStrategy, 
-     * MediaSelection $mediaSelection,
-     * itemId
+     * @param EntityManager $em, 
+     * @param array $apis, 
      */
     public function __construct(array $params){
-        $this->mediaDetails = $params['mediaDetails'];
         $this->em = $params['em'];
-        $this->mediaSelection = $params['mediaSelection'];
-        $this->apiStrategy = $params['apiStrategy'];
-        $this->itemId = $params['itemId'];
+        //$this->mediaSelection = $params['mediaSelection'];
+        $this->apis = $params['apis'];
+        $this->mediaResources = isset($params['mediaResources']) ? $params['mediaResources'] : null;
     }
     
-    public function processMedia(){
-        $this->mediaResource = $this->getMediaResource($this->itemId);
-        $recommendations = $this->getRecommendations($this->itemId);
-        //get all media resources into one array for processing
-        $allMediaResources = array_merge(array($this->itemId => $this->mediaResource), $recommendations['genericMatches'], $recommendations['exactMatches']);
-        //process all the resources, which filters mr's based on uncached ones, then does a batch job
-        parent::processMedia($allMediaResources);
-        $this->mediaResource->setRelatedMediaResources($recommendations);
+    public function getAPIData(){
+        return $this->apis;
+    }
+    
+    public function getMedia(){
+        //for show memory wall, nothing is required to be returned
         
-        return $this->mediaResource;
+        /*if(is_null($this->mediaResource))
+            throw new \RuntimeException("MediaResource is null");
+            
+        return $this->mediaResource;*/
     }
     
-    public function cacheMedia(array $params){
-        parent::cacheMedia($params);
-    }
-    
-    /**
-     * details recommendations needs to look at the mediaselection and try to get media resources based on all params
-     * then just on decade, and then based on the users age
-     * @param $itemId is used so that the selected item is not picked as a recommendation
-     * @return $recommendatations array
-     */
-    private function getRecommendations($itemId) {
-        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($this->mediaSelection, $itemId);
-        return $recommendationSet;
-    }
-
     /**
      * @param array $mediaResources 
      * @param int $page - optional page number to determine which results to process
@@ -69,43 +52,93 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
      * deletes older cached records and loads uncached mediaresources from live api, then caches it 
      * @uses show memory wall; the timeline; recommendations
      */
-    public function processMediaResources(array $mediaResources, $page = 1){
+    public function processMedia(){
         $updatesMade = false;
         //loop through each api, get the relevant media resources
         foreach($this->apis as $api){
-            $this->setAPIStrategy($api->getName());
+            //$this->setAPIStrategy($api->getName());
             
-            $resources = array_filter($mediaResources, function($mr) use ($api){
+            $resources = array_filter($this->mediaResources, function($mr) use ($api){
                 return $mr->getAPI()->getName() == $api->getName() && ($mr->getMediaResourceCache() == null || $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime());
             });
                         
             if(count($resources) > 0){
                 $ids = array_keys($resources);
                 
-                //do batch process of ids then store in cache
-                $this->response = $this->apiStrategy->getBatch($ids);
+                //do batch process of ids 
+                array_push($this->apiResponses, 
+                        array(
+                            'api'            => $api, 
+                            'xmlData'        => $api->getBatch($ids),
+                            'mediaResources' => $resources,
+                        ));
                 
                 //cache the data using the collection of uncached resources, but don't flush yet
-                $this->cacheMediaResourceBatch($this->response, $resources, false);
+                //$this->cacheMediaResourceBatch($this->response, $resources, false);
                 
                 $updatesMade = true;
             }
         }
         //only flush when finished going through all records.
         //flush will update all the older cached records from db 
-        $this->em->flush();
+        //$this->em->flush();
         
-        return $updatesMade;
+        //return $updatesMade;
     }
     
-    public function getMediaResource($itemId){
-        return $this->mediaDetails->getMediaResource($itemId);
+    //from a batch operation, take the xml data and resources and re-cache them
+    public function cacheMedia(){ 
+    //public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, array $mediaResources, $immediateFlush = true){
+        /* all elements in the arrays are either existing mediaresources 
+         * or the details mediaresource without cache
+         */
+        
+        foreach($this->apiReponses as $apiResponse){
+            $api = $apiResponse['api'];
+            $mediaResources = $apiResponse['mediaResources'];
+            
+            foreach($apiResponse['xmlData'] as $itemXml){
+                $id = $api->getIdFromXML($itemXml);
+                //if media resource exists, re-cache the data
+                if(isset($mediaResources[$id])){
+                    $mr = $mediaResources[$id];
+                    $cachedResource = new MediaResourceCache();
+                    $cachedResource->setId($id);
+                    $cachedResource->setImageUrl($api->getImageUrlFromXML($itemXml));
+                    $cachedResource->setTitle($api->getItemTitleFromXML($itemXml));
+                    $cachedResource->setXmlData($api->getXML($itemXml));
+                    $cachedResource->setDateCreated(new \DateTime("now"));
+                    try{
+                        $mr->setMediaResourceCache($cachedResource);
+                        $this->persistMergeMediaResource($mr);
+                    } catch(\Exception $ex){
+                        throw $ex;
+                    }
+                } 
+                //IS THIS NEEDED?
+                ////else{
+                    //otherwise create a new media resource and cache it
+                    //$this->mediaResource = null;
+                    
+                    //HOW TO CONNECT CACHE MEDIA RESOURCE WHICH EXISTS IN PROCESSDETAILSSTRATEGY
+                   // $this->cacheMediaResource($itemXml, $id, false);                
+                //}
+            }
+        }
+        
+        
+        
+        $this->em->flush();
+    
     }
     
-    public function persistMergeMediaResource($mediaResource){
-        $this->mediaDetails->persistMergeMediaResource($mediaResource);
+    public function persistMergeMediaResource(MediaResource $mediaResource){
+        if($this->em->contains($mediaResource))
+            $this->em->merge($mediaResource);
+        else
+            $this->em->persist($mediaResource);
     }
-    
+
     
 }
 

@@ -24,6 +24,7 @@ use SkNd\MediaBundle\Form\Type\MediaSelectionType;
 use SkNd\MediaBundle\Form\Type\MediaSearchType;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\MediaAPI\MediaAPI;
+use SkNd\MediaBundle\MediaAPI\IProcessMediaStrategy;
 
 class MediaController extends Controller
 {
@@ -177,7 +178,7 @@ class MediaController extends Controller
        return $this->render('SkNdMediaBundle:Media:searchResults.html.twig', $responseParams);
     }
    
-    public function mediaDetailsAction($id, $apiReferrer){
+    public function mediaDetailsAction($id, $apiKey){
         /*
          * set the mediaSelection object if it doesn't exist - user may have gone straight to the page
          * without going through the selection process
@@ -205,18 +206,30 @@ class MediaController extends Controller
             'decade'            => $decade,
             'genre'             => $genre,
             'keywords'          => $keywords,
-            'api'               => $apiReferrer,
+            'api'               => $apiKey,
             'referrer'          => $referrer,
         );
         
-        if($media != 'music'){
-            $params = array(
+        if($this->mediaSelection->getMediaType()->getMediaName() != 'music'){
+            /*$params = array(
                'ItemId'         =>  $id,
-               'apiReferrer'    =>  $apiReferrer,
-            );
-                       
-            try{     
-                $responseParams['mediaResource'] = $this->mediaapi->getDetails($params);
+               'apiKey'    =>  $apiKey,
+            );*/
+            
+            $processStrategy = new ProcessDetailsStrategy(array(
+                'em'            =>      $this->em,
+                'apiStrategy'   =>      $this->mediaapi->getAPIStrategy($apiKey), 
+                'mediaSelection'=>      $this->mediaSelection,
+                'itemId'        =>      $id,
+            ));
+            $processStrategy = new ProcessDetailsDecoratorStrategy(array(
+                'processStrategy'   => $processStrategy,
+                'em'                => $em,
+                'apis'              => $this->mediaapi->getAPIs()));
+            //create the decorator strategy and pass the original strategy to it
+            try{  
+                
+                $responseParams['mediaResource'] = $this->mediaapi->getMedia($processStrategy);
                                 
             }catch(\RunTimeException $re){
                 $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');

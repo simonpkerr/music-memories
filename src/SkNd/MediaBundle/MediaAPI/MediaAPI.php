@@ -55,8 +55,8 @@ class MediaAPI {
         $this->debugMode = $debug_mode;
         $this->em = $em;
         $this->session = $session;
-        if(is_null($this->apiStrategy))
-            $this->setAPIStrategy('amazonapi');
+        //if(is_null($this->apiStrategy))
+        //    $this->setAPIStrategy('amazonapi');
         
         $this->mediaSelection = $this->getMediaSelection();
         
@@ -82,17 +82,26 @@ class MediaAPI {
         return $this->session;
     }
     
-    public function setAPIStrategy($apiStrategyKey){
-        if(array_key_exists($apiStrategyKey, $this->apis)){
-            $this->apiStrategy = $this->apis[$apiStrategyKey]; 
-        }
-        else
+    public function setAPIStrategy($apiKey){
+        if(!array_key_exists($apiKey, $this->apis))
             throw new RuntimeException("api key not found");
+            
+        $this->apiStrategy = $this->apis[$apiKey]; 
+    }
+    
+    public function getAPIStrategy($apiKey){
+        if(!array_key_exists($apiKey, $this->apis))
+            throw new RuntimeException("api key not found");
+            
+        return $this->apis[$apiKey]; 
+         
     }
     
     public function getCurrentAPI(){
         return $this->apiStrategy;
     }
+    
+    
     
     public function setAPIs(array $apis){
         $this->apis = array_merge($apis);
@@ -285,18 +294,25 @@ class MediaAPI {
      * not require recommendations to be looked up
      * 
      **/
-    public function getDetails(array $params, $getRecommendations = true){
+    public function getMedia(IProcessStrategy $processStrategy){
         //$this->response = null;
-        $itemId = $params['ItemId'];
+        //$itemId = $params['ItemId'];
         //set the correct api from the controller
-        $apiReferrer = $params['apiReferrer'];
-        $this->setAPIStrategy($apiReferrer);
-        $mediaDetails = new MediaDetails($this->em, $this->apiStrategy, $this->mediaSelection);
+        //$apiReferrer = $params['apiReferrer'];
+       
+        //process batch strategy will not have a key?
+        $this->setAPIStrategy($processStrategy->getAPIData());
+        $processStrategy->setAPIStrategy($this->apiStrategy);
+        $processStrategy->processMedia();
+        $processStrategy->cacheMedia();
+        
+        return $processStrategy->getMedia();
+        
         //if recommendations are required, decorate the mediadetails object
-        if($getRecommendations){
-            $mediaDetails = new MediaDetailsRecommendationDecorator($mediaDetails);
-        }
-        $this->mediaResource = $mediaDetails->getDetails($itemId);
+        //if($getRecommendations){
+        //    $mediaDetails = new MediaDetailsRecommendationDecorator($mediaDetails);
+       // }
+        //$this->mediaResource = $mediaDetails->getDetails($itemId);
         
         
         /*//look up the mediaResource in the db and fetch associated cached object
@@ -318,12 +334,12 @@ class MediaAPI {
             //$allMediaResources = array_merge(array($itemId => $this->mediaResource), $recommendations['genericMatches'], $recommendations['exactMatches']);
 
             //process all the resources, which filters mr's based on uncached ones, then does a batch job
-            $this->processMediaResources($allMediaResources);
+        //    $this->processMediaResources($allMediaResources);
             
-            $this->mediaResource->setRelatedMediaResources($recommendations);
+       //     $this->mediaResource->setRelatedMediaResources($recommendations);
         //}
         
-        return $this->mediaResource;
+        
         
     }
     
@@ -393,26 +409,26 @@ class MediaAPI {
      * @param $itemId is used so that the selected item is not picked as a recommendation
      * @return $recommendatations array
      */
-    public function getRecommendations($recType = null, $id = null) {
-        $recommendationSet = null;
-        
-        if($recType == self::MEMORY_WALL_RECOMMENDATION){
-            if($this->mediaSelection->getDecade() != null){
-                $recommendationSet = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallsByDecade($this->mediaSelection->getDecade());
-                if(count($recommendationSet) > 0)
-                    return $recommendationSet;
-            }
-        }
-        
-        /*if($recType == self::MEDIA_RESOURCE_RECOMMENDATION){
-            
-            $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($this->mediaSelection, $id);
-            return $recommendationSet;
-        }*/
-        
-        return null;
-        
-    }
+//    public function getRecommendations($recType = null, $id = null) {
+//        $recommendationSet = null;
+//        
+//        if($recType == self::MEMORY_WALL_RECOMMENDATION){
+//            if($this->mediaSelection->getDecade() != null){
+//                $recommendationSet = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallsByDecade($this->mediaSelection->getDecade());
+//                if(count($recommendationSet) > 0)
+//                    return $recommendationSet;
+//            }
+//        }
+//        
+//        /*if($recType == self::MEDIA_RESOURCE_RECOMMENDATION){
+//            
+//            $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($this->mediaSelection, $id);
+//            return $recommendationSet;
+//        }*/
+//        
+//        return null;
+//        
+//    }
    
     //get an individual media resource based on item id and retrieve or delete associated cached resource
     /*public function getMediaResource($itemId){
@@ -488,36 +504,36 @@ class MediaAPI {
     }*/
     
     //from a batch operation, take the xml data and resources and re-cache them
-    public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, array $mediaResources, $immediateFlush = true){
-        foreach($xmlData as $itemXml){
-            $id = $this->apiStrategy->getIdFromXML($itemXml);
-            //if media resource exists, re-cache the data
-            if(isset($mediaResources[$id])){
-                $mr = $mediaResources[$id];
-                $cachedResource = new MediaResourceCache();
-                $cachedResource->setId($id);
-                $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($itemXml));
-                $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($itemXml));
-                $cachedResource->setXmlData($this->apiStrategy->getXML($itemXml));
-                $cachedResource->setDateCreated(new \DateTime("now"));
-                try{
-                    $mr->setMediaResourceCache($cachedResource);
-                    $this->persistMergeMediaResource($mr);
-                } catch(\Exception $ex){
-                    throw $ex;
-                }
-            } else{
-                //otherwise create a new media resource and cache it
-                $this->mediaResource = null;
-                $this->cacheMediaResource($itemXml, $id, false);                
-            }
-        }
-        
-        if($immediateFlush)
-            $this->flush();
-    }
-    
+//    public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, array $mediaResources, $immediateFlush = true){
+//        foreach($xmlData as $itemXml){
+//            $id = $this->apiStrategy->getIdFromXML($itemXml);
+//            //if media resource exists, re-cache the data
+//            if(isset($mediaResources[$id])){
+//                $mr = $mediaResources[$id];
+//                $cachedResource = new MediaResourceCache();
+//                $cachedResource->setId($id);
+//                $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($itemXml));
+//                $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($itemXml));
+//                $cachedResource->setXmlData($this->apiStrategy->getXML($itemXml));
+//                $cachedResource->setDateCreated(new \DateTime("now"));
+//                try{
+//                    $mr->setMediaResourceCache($cachedResource);
+//                    $this->persistMergeMediaResource($mr);
+//                } catch(\Exception $ex){
+//                    throw $ex;
+//                }
+//            } else{
+//                //otherwise create a new media resource and cache it
+//                $this->mediaResource = null;
+//                $this->cacheMediaResource($itemXml, $id, false);                
+//            }
+//        }
+//        
+//        if($immediateFlush)
+//            $this->flush();
+//    }
     /**
+    
      *
      * @param array $mediaResources 
      * @param int $page - optional page number to determine which results to process
@@ -527,34 +543,34 @@ class MediaAPI {
      * deletes older cached records and loads uncached mediaresources from live api, then caches it 
      * For use by show memory wall and the timeline
      */
-    public function processMediaResources(array $mediaResources, $page = 1){
-        $updatesMade = false;
-        //loop through each api, get the relevant media resources
-        foreach($this->apis as $api){
-            $this->setAPIStrategy($api->getName());
-            
-            $resources = array_filter($mediaResources, function($mr) use ($api){
-                return $mr->getAPI()->getName() == $api->getName() && ($mr->getMediaResourceCache() == null || $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime());
-            });
-                        
-            if(count($resources) > 0){
-                $ids = array_keys($resources);
-                
-                //do batch process of ids then store in cache
-                $this->response = $this->apiStrategy->getBatch($ids);
-                
-                //cache the data using the collection of uncached resources, but don't flush yet
-                $this->cacheMediaResourceBatch($this->response, $resources, false);
-                
-                $updatesMade = true;
-            }
-        }
-        //only flush when finished going through all records.
-        //flush will update all the older cached records from db 
-        $this->flush();
-        
-        return $updatesMade;
-    }
+//    public function processMediaResources(array $mediaResources, $page = 1){
+//        $updatesMade = false;
+//        //loop through each api, get the relevant media resources
+//        foreach($this->apis as $api){
+//            $this->setAPIStrategy($api->getName());
+//            
+//            $resources = array_filter($mediaResources, function($mr) use ($api){
+//                return $mr->getAPI()->getName() == $api->getName() && ($mr->getMediaResourceCache() == null || $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime());
+//            });
+//                        
+//            if(count($resources) > 0){
+//                $ids = array_keys($resources);
+//                
+//                //do batch process of ids then store in cache
+//                $this->response = $this->apiStrategy->getBatch($ids);
+//                
+//                //cache the data using the collection of uncached resources, but don't flush yet
+//                $this->cacheMediaResourceBatch($this->response, $resources, false);
+//                
+//                $updatesMade = true;
+//            }
+//        }
+//        //only flush when finished going through all records.
+//        //flush will update all the older cached records from db 
+//        $this->flush();
+//        
+//        return $updatesMade;
+//    }
     
     
     /*protected function flush(){

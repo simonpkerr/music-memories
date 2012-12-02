@@ -15,8 +15,10 @@ use \SimpleXMLElement;
 
 interface IProcessMediaStrategy {
     public function processMedia();
-    public function cacheMedia(array $params);
-    
+    public function cacheMedia();
+    public function getAPIData();
+    public function getMedia();
+    public function persistMergeMediaResource(MediaResource $mr);
 }
 
 ?>
