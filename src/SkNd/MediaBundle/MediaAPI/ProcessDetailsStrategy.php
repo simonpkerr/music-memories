@@ -21,6 +21,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
     protected $mediaResource;
     protected $em;
     protected $itemId;
+    private $apiResponse;
     
     /**
      *
@@ -33,29 +34,42 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
         $this->itemId = $params['itemId'];
+        $this->mediaResource = null;
+    }
+    
+    public function getAPIData(){
+        return $this->apiStrategy->getName();
+    }
+    
+    public function getMedia(){
+        if(is_null($this->mediaResource))
+            throw new \RuntimeException("MediaResource is null");
+            
+        return $this->mediaResource;
+        
     }
     
     public function processMedia(){
-        //look up the mediaResource in the db and fetch associated cached object
-        $this->mediaResource = $this->getMediaResource($this->itemId);
+        $this->mediaResource = $this->getMediaResource();
         
         if($this->mediaResource->getMediaResourceCache() == null){
             //look up the details from the api if not cached
-            $response = $this->apiStrategy->getDetails($this->itemId);
+            $this->apiResponse = $this->apiStrategy->getDetails($this->itemId);
             /*$this->cacheMedia(array(
                 'response'  =>  $response, 
                 'itemId'    =>  $this->itemId));*/
         }
         
-        return array(
-                'response'  =>  $response, 
-                'itemId'    =>  $this->itemId);
+        //return array(
+        //    'response'  =>  $response);
+            //'itemId'    =>  $this->itemId);
+
     }
     
-    public function getMediaResource($itemId){
-        $this->mediaResource = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceById($itemId);
+    public function getMediaResource(){
+        $this->mediaResource = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceById($this->itemId);
         if($this->mediaResource == null)
-            $this->mediaResource = $this->createNewMediaResource($itemId);
+            $this->mediaResource = $this->createNewMediaResource($this->itemId);
         else {
             $this->mediaResource = $this->processCache($this->mediaResource);
             /**
@@ -96,9 +110,9 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         return $mediaResource;
     }
     
-    public function cacheMedia(array $params){
-        $response = $params['response']; //may need to convert to simplexml
-        $itemId = $params['itemId'];
+    public function cacheMedia(){
+        //$response = $params['response']; //may need to convert to simplexml
+        //$itemId = $params['itemId'];
         // not needed as is in getDetails method
         //if($this->mediaResource == null)
         //    $this->mediaResource = $this->createNewMediaResource($itemId);
@@ -107,9 +121,9 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         if($this->mediaResource->getMediaResourceCache() == null){
             $cachedResource = new MediaResourceCache();
             $cachedResource->setId($this->mediaResource->getId());
-            $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($response));
-            $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($response));
-            $cachedResource->setXmlData($response->asXML());
+            $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($this->apiResponse));
+            $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($this->apiResponse));
+            $cachedResource->setXmlData($this->apiResponse->asXML());
             $cachedResource->setDateCreated(new \DateTime("now"));
             $this->mediaResource->setMediaResourceCache($cachedResource);
         }

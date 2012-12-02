@@ -14,8 +14,8 @@ use SkNd\MediaBundle\Entity\MediaResourceCache;
 use \SimpleXMLElement;
 
 interface IMediaDetails {
-    public function getMediaResource($itemId);
-    public function persistMergeMediaResource(MediaResource $mr);
+    public function getMediaResource();
+    
     
 }
 

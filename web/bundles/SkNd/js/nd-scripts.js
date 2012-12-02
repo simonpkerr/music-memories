@@ -25,8 +25,7 @@ function populateGenres(selectedMedia){
             }
         });
         $selectedMediaGenre.val($selectedGenre);
-    }
-    
+    } 
 }
 
 });
