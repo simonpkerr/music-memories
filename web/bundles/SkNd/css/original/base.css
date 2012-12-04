@@ -73,6 +73,10 @@ li.note {
     font-style: italic;
 }
 
+.hide {
+    display: none;
+}
+
 /********** LINK FONT STYLES ***********/
 a {
     color: #29478D;
@@ -493,6 +497,10 @@ div#content dd {
 
 
 /*----------- listings ---------*/
+div.pagingControls {
+    margin-bottom: 20px;
+}
+
 div.pagingControls p {
     margin-bottom: 0.5em;
     font-weight: bold;

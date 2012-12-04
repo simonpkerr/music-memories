@@ -1,9 +1,10 @@
 <?php
 
 /**
- * @abstract ProcessBatchStrategy
+ * @abstract ProcessListingsStrategy
  * @copyright Simon Kerr 2012
  * @author Simon Kerr
+ * @uses MediaController
  * @version 1.0
  */
 namespace SkNd\MediaBundle\MediaAPI;
@@ -11,13 +12,16 @@ use SkNd\MediaBundle\Entity\MediaSelection;
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
+use SkNd\MediaBundle\Entity\MediaResourceListingsCache;
+use \SimpleXMLElement;
 
 class ProcessListingsStrategy implements IProcessMediaStrategy {
     protected $apiStrategy;
     protected $em;
     protected $mediaSelection;
     protected $listings;
-       
+    protected $recommendations;
+
     /**
      * @param array $params includes -
      * @param EntityManager $em, 
@@ -28,7 +32,6 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
         $this->em = $params['em'];
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
-        $this->listings = null;
     }
     
     public function getAPIData(){
@@ -39,80 +42,68 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
         if(is_null($this->listings))
             throw new \RuntimeException("listings are null");
             
-        return $this->listings;
+        return array(
+            'listings'          => $this->listings,
+            'recommendations'   => $this->recommendations,
+        );
     }
 
     public function processMedia(){
         $this->listings = null;
            
-        $this->listings = $this->getCachedListings();
-        
-        //look up the query from the db and return cached listings if available
-        if(is_null($this->listings)){
-            $this->listings = $this->apiStrategy->getListings($this->mediaSelection);
-            
-            //once results are retrieved insert into cache
-            //$this->cacheListings($this->listings);
-        } 
-        
-        $recommendations = $this->getRecommendations($recType);
-        return array(
-            'response'          => $this->response,
-            'recommendations'   => $recommendations,
-        );
-    }
-    
-    //from a batch operation, take the xml data and resources and re-cache them
-    public function cacheMedia(){ 
-    //public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, array $mediaResources, $immediateFlush = true){
-        /* all elements in the arrays are either existing mediaresources 
-         * or the details mediaresource without cache
-         */
-        
-        foreach($this->apiReponses as $apiResponse){
-            $api = $apiResponse['api'];
-            $mediaResources = $apiResponse['mediaResources'];
-            
-            foreach($apiResponse['xmlData'] as $itemXml){
-                $id = $api->getIdFromXML($itemXml);
-                //if media resource exists, re-cache the data
-                if(isset($mediaResources[$id])){
-                    $mr = $mediaResources[$id];
-                    $cachedResource = new MediaResourceCache();
-                    $cachedResource->setId($id);
-                    $cachedResource->setImageUrl($api->getImageUrlFromXML($itemXml));
-                    $cachedResource->setTitle($api->getItemTitleFromXML($itemXml));
-                    $cachedResource->setXmlData($api->getXML($itemXml));
-                    $cachedResource->setDateCreated(new \DateTime("now"));
-                    try{
-                        $mr->setMediaResourceCache($cachedResource);
-                        $this->persistMergeMediaResource($mr);
-                    } catch(\Exception $ex){
-                        throw $ex;
-                    }
-                } 
-                //IS THIS NEEDED?
-                ////else{
-                    //otherwise create a new media resource and cache it
-                    //$this->mediaResource = null;
-                    
-                    //HOW TO CONNECT CACHE MEDIA RESOURCE WHICH EXISTS IN PROCESSDETAILSSTRATEGY
-                   // $this->cacheMediaResource($itemXml, $id, false);                
-                //}
-            }
+        $this->listings = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection);
+        if(is_null($this->listings) || $this->listings->getLastModified()->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
+            $this->listings = $this->createCachedListings($this->apiStrategy->getListings($this->mediaSelection), $this->listings);
         }
         
-        
-        
-        $this->em->flush();
-    
+        $this->recommendations = $this->getRecommendations();
+      
     }
     
-    public function persistMergeMediaResource(MediaResource $mediaResource){
-        if($this->em->contains($mediaResource))
-            $this->em->merge($mediaResource);
+    public function getRecommendations() {
+        $recommendations = null;
+   
+        if($this->mediaSelection->getDecade() != null){
+            $recommendations = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallsByDecade($this->mediaSelection->getDecade());
+            if(count($recommendations) > 0)
+                return $recommendations;
+        }
+       
+        return null;
+        
+    }
+    
+    //do something here about integrating the API classes and entities
+    private function createCachedListings(SimpleXMLElement $xmlData, MediaResourceListingsCache $listings = null){
+        
+        if(!is_null($listings)){
+            $listings->setXmlData($xmlData->asXML());      
+        }else{
+            $listings = new MediaResourceListingsCache();
+            $listings->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
+            $listings->setMediaType($this->mediaSelection->getMediaType());
+            $listings->setDecade($this->mediaSelection->getDecade());
+            $listings->setGenre($this->mediaSelection->getSelectedMediaGenre());
+            $listings->setKeywords($this->mediaSelection->getKeywords());
+            $listings->setComputedKeywords($this->mediaSelection->getComputedKeywords());
+            $listings->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
+            $listings->setXmlData($xmlData->asXML());
+        }
+        
+        return $listings;
+    }
+    
+    //check date created first, then either replace xmldata and re-cache or do nothing.
+    public function cacheMedia(){ 
+        $this->persistMerge($this->listings);
+        $this->em->flush();
+    }
+    
+    public function persistMerge($obj){
+        if($this->em->contains($obj))
+            $this->em->merge($obj);
         else
-            $this->em->persist($mediaResource);
+            $this->em->persist($obj);
     }
 
     

@@ -56,6 +56,8 @@ class MediaSelectionType extends AbstractType{
                 
         //hidden field to hold all genres 
         $builder->add('genres', 'hidden');
+        
+        
  
                 
     }

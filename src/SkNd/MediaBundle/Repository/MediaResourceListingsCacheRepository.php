@@ -16,18 +16,15 @@ use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 
-
 class MediaResourceListingsCacheRepository extends EntityRepository
 {
-    /* gets cached listings based on search parameters and api type as well as timeStamp on record
-     * records older than 24 hours must be removed
+    /* gets cached listings based on search parameters and api type 
      * @params includes mediatype, optional decade, optional genre, optional keywords,
      * optional page
     */
-    public function getCachedListings(MediaSelection $mediaSelection, IAPIStrategy $api){
+    public function getCachedListings(MediaSelection $mediaSelection){
   
         $q = $this->createQueryBuilder('cl')
-                ->select('cl.xmlData, cl.dateCreated, cl.id')
                 ->where('cl.mediaType = :mediaType')
                 ->andWhere('cl.api = :api')
                 ->setParameters(array(
@@ -42,7 +39,7 @@ class MediaResourceListingsCacheRepository extends EntityRepository
         if($mediaSelection->getDecade() != null){
             $q = $q->andWhere('cl.decade = :decade')
                     ->setParameter('decade', $mediaSelection->getDecade());
-        }else {
+        } else {
             $q = $q->andWhere('cl.decade is null');
         }
         
@@ -74,22 +71,12 @@ class MediaResourceListingsCacheRepository extends EntityRepository
             $q = $q->andWhere('cl.page is null');
         }
         
-        $q = $q->getQuery()->setMaxResults(1)->getOneOrNullResult();
+        $data = $q->getQuery()->setMaxResults(1)->getOneOrNullResult();
         
-        if($q == null)
-            return null;
-        else if($q['dateCreated'] < $api->getValidCreationTime()){
-            //delete the entry since the timestamp is out of date
-            $this->createQueryBuilder('cl')
-                    ->delete()
-                    ->where('cl.id = :id')
-                    ->setParameter('id', $q['id'])
-                    ->getQuery()
-                    ->execute();
-            return null;
-        }
-        else
-            return $q['xmlData'];
+        if(!is_null($data))
+            return $data;
+      
+        return null;
 
      }
      

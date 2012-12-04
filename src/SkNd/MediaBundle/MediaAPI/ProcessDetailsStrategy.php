@@ -34,7 +34,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
         $this->itemId = $params['itemId'];
-        $this->mediaResource = null;
+        //$this->mediaResource = null;
     }
     
     public function getAPIData(){
@@ -111,13 +111,6 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
     }
     
     public function cacheMedia(){
-        //$response = $params['response']; //may need to convert to simplexml
-        //$itemId = $params['itemId'];
-        // not needed as is in getDetails method
-        //if($this->mediaResource == null)
-        //    $this->mediaResource = $this->createNewMediaResource($itemId);
-        
-        //if cached listings not exists create a new MediaResourceCache object and update the mediaResource    
         if($this->mediaResource->getMediaResourceCache() == null){
             $cachedResource = new MediaResourceCache();
             $cachedResource->setId($this->mediaResource->getId());
@@ -129,18 +122,15 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         }
 
         $this->mediaResource->incrementViewCount();
-        
-        $this->persistMergeMediaResource($this->mediaResource);
-        
+        $this->persistMerge($this->mediaResource);
         $this->em->flush();
-        
     }
         
-    public function persistMergeMediaResource(MediaResource $mediaResource){
-        if($this->em->contains($mediaResource))
-            $this->em->merge($mediaResource);
+    public function persistMerge($obj){
+        if($this->em->contains($obj))
+            $this->em->merge($obj);
         else
-            $this->em->persist($mediaResource);
+            $this->em->persist($obj);
     }
     
     

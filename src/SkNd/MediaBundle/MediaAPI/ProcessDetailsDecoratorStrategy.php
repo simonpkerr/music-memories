@@ -36,7 +36,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         $this->apiStrategy = $params['apiStrategy'];
         $this->itemId = $params['itemId'];*/
         parent::__construct($params);
-        $this->mediaResource = null; 
+        //$this->mediaResource = null; 
     }
     
     public function getAPIData(){
@@ -83,8 +83,8 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         return $this->processDetailsStrategy->getMediaResource();
     }
     
-    public function persistMergeMediaResource($mediaResource){
-        parent::persistMergeMediaResource($mediaResource);
+    public function persistMerge($obj){
+        parent::persistMerge($obj);
     }
     
     

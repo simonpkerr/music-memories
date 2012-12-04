@@ -18,7 +18,7 @@ interface IProcessMediaStrategy {
     public function cacheMedia();
     public function getAPIData();
     public function getMedia();
-    public function persistMergeMediaResource(MediaResource $mr);
+    public function persistMerge($obj);
 }
 
 ?>

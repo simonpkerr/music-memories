@@ -34,7 +34,7 @@
         <div id="wrapper" class="">
             <div id="header">
                 {# the 'path' function can be used to target any particular route defined in the routing config file #}
-                <a id="siteLogo" href="{{path('index')}}" title="Go back to noodleDig home page">
+                <a id="siteLogo" class="hide" href="{{path('index')}}" title="Go back to noodleDig home page">
                     <img src="{{ asset('bundles/SkNd/images/site-logo-v2.png') }}" alt="noodleDig" />
                 </a>
                 {% block topNavLinks %}

@@ -101,8 +101,6 @@ class MediaAPI {
         return $this->apiStrategy;
     }
     
-    
-    
     public function setAPIs(array $apis){
         $this->apis = array_merge($apis);
     }
@@ -261,19 +259,21 @@ class MediaAPI {
         $params = array();
         if($this->mediaSelection != null){
             $params = array(
-                    'media'     => $this->mediaSelection->getMediaType()->getSlug(),    
-                    'decade'    => $this->mediaSelection->getDecade() != null ? $this->mediaSelection->getDecade()->getSlug() : Decade::$default,
-                    'genre'     => $this->mediaSelection->getSelectedMediaGenre() != null ? $this->mediaSelection->getSelectedMediaGenre()->getSlug() : Genre::$default,
-                    'keywords'  => $this->mediaSelection->getKeywords() != null ? $this->mediaSelection->getKeywords() : '-',
-                    'page'      => $this->mediaSelection->getPage() != null ? $this->mediaSelection->getPage() : 1,
+                'api'       => !is_null($this->mediaSelection->getAPI()) ? $this->mediaSelection->getAPI()->getName() : API::$default,    
+                'media'     => $this->mediaSelection->getMediaType()->getSlug(),    
+                'decade'    => !is_null($this->mediaSelection->getDecade()) ? $this->mediaSelection->getDecade()->getSlug() : Decade::$default,
+                'genre'     => !is_null($this->mediaSelection->getSelectedMediaGenre()) ? $this->mediaSelection->getSelectedMediaGenre()->getSlug() : Genre::$default,
+                'keywords'  => !is_null($this->mediaSelection->getKeywords()) ? $this->mediaSelection->getKeywords() : null,
+                'page'      => !is_null($this->mediaSelection->getPage()) ? $this->mediaSelection->getPage() : 1,
             );
         }else {
             $params = array(
+                'api'       => API::$default,    
                 'media'     => MediaType::$default,
                 'decade'    => Decade::$default,
                 'genre'     => Genre::$default,
+                'keywords'  => null,
                 'page'      => 1,
-                'keywords'  => '-',
             );
         }
         
@@ -285,7 +285,7 @@ class MediaAPI {
     
        
     /**
-     * getDetails calls the api of the current strategy
+     * getMedia calls the api of the current strategy
      * but first gets recommendations from the db about that api
      * @param params - contains the relevant parameters to call the api. for amazon this is things
      * like ItemId. For youtube it contains things like keywords, decade, media etc
@@ -294,15 +294,17 @@ class MediaAPI {
      * not require recommendations to be looked up
      * 
      **/
-    public function getMedia(IProcessStrategy $processStrategy){
+    public function getMedia(IProcessMediaStrategy $processStrategy){
         //$this->response = null;
         //$itemId = $params['ItemId'];
         //set the correct api from the controller
         //$apiReferrer = $params['apiReferrer'];
        
         //process batch strategy will not have a key?
-        $this->setAPIStrategy($processStrategy->getAPIData());
-        $processStrategy->setAPIStrategy($this->apiStrategy);
+        
+        //IS THIS NEEDED? WILL BREAK WITH PROCESSBATCHSTRATEGY
+        $this->setAPIStrategy($processStrategy->getAPIData()->getName());
+        
         $processStrategy->processMedia();
         $processStrategy->cacheMedia();
         
@@ -376,32 +378,32 @@ class MediaAPI {
 //    }
     
     //only results returned from the live api are cached
-    public function cacheListings(SimpleXMLElement $response){
-        $cachedListing = new \SkNd\MediaBundle\Entity\MediaResourceListingsCache();
-        $cachedListing->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
-        $cachedListing->setMediaType($this->mediaSelection->getMediaType());
-        $cachedListing->setDecade($this->mediaSelection->getDecade());
-        $cachedListing->setGenre($this->mediaSelection->getSelectedMediaGenre());
-        $cachedListing->setKeywords($this->mediaSelection->getKeywords());
-        $cachedListing->setComputedKeywords($this->mediaSelection->getComputedKeywords());
-        $cachedListing->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
-        $cachedListing->setXmlData($response->asXML());        
-        
-        $this->em->persist($cachedListing);
-        $this->flush();
-    }
-    
-    public function getCachedListings(){
-        //look up the MediaResourceListingsCache with the params and the current apistrategy name   
-        $xmlResponse = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection, $this->apiStrategy);
-        
-        if($xmlResponse != null){
-            return @simplexml_load_string($xmlResponse);
-        }
-        else{
-            return null;
-        }
-    }
+//    public function cacheListings(SimpleXMLElement $response){
+//        $cachedListing = new \SkNd\MediaBundle\Entity\MediaResourceListingsCache();
+//        $cachedListing->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
+//        $cachedListing->setMediaType($this->mediaSelection->getMediaType());
+//        $cachedListing->setDecade($this->mediaSelection->getDecade());
+//        $cachedListing->setGenre($this->mediaSelection->getSelectedMediaGenre());
+//        $cachedListing->setKeywords($this->mediaSelection->getKeywords());
+//        $cachedListing->setComputedKeywords($this->mediaSelection->getComputedKeywords());
+//        $cachedListing->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
+//        $cachedListing->setXmlData($response->asXML());        
+//        
+//        $this->em->persist($cachedListing);
+//        $this->flush();
+//    }
+//    
+//    public function getCachedListings(){
+//        //look up the MediaResourceListingsCache with the params and the current apistrategy name   
+//        $xmlResponse = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection, $this->apiStrategy);
+//        
+//        if($xmlResponse != null){
+//            return @simplexml_load_string($xmlResponse);
+//        }
+//        else{
+//            return null;
+//        }
+//    }
     
     /**
      * gets recommendations for either the listings or details pages

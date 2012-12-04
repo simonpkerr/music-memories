@@ -2,6 +2,7 @@
 
 /**
  * @abstract ProcessBatchStrategy
+ * @uses MemoryWallController show action, MediaController details action
  * @copyright Simon Kerr 2012
  * @author Simon Kerr
  * @version 1.0
@@ -12,7 +13,7 @@ use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
 
-class ProcessBatchStrategy implements IProcessMediaStrategy {
+class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $apis;
     protected $em;
     protected $mediaResources;
@@ -27,7 +28,8 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
         $this->em = $params['em'];
         //$this->mediaSelection = $params['mediaSelection'];
         $this->apis = $params['apis'];
-        $this->mediaResources = isset($params['mediaResources']) ? $params['mediaResources'] : null;
+        if(isset($params['mediaResources']))
+            $this->mediaResources = $params['mediaResources'];
     }
     
     public function getAPIData(){
@@ -37,10 +39,10 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
     public function getMedia(){
         //for show memory wall, nothing is required to be returned
         
-        /*if(is_null($this->mediaResource))
-            throw new \RuntimeException("MediaResource is null");
+        if(is_null($this->mediaResources))
+            throw new \RuntimeException("MediaResources are null");
             
-        return $this->mediaResource;*/
+        return $this->mediaResources;
     }
     
     /**
@@ -110,7 +112,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
                     $cachedResource->setDateCreated(new \DateTime("now"));
                     try{
                         $mr->setMediaResourceCache($cachedResource);
-                        $this->persistMergeMediaResource($mr);
+                        $this->persistMerge($mr);
                     } catch(\Exception $ex){
                         throw $ex;
                     }
@@ -132,11 +134,16 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
     
     }
     
-    public function persistMergeMediaResource(MediaResource $mediaResource){
-        if($this->em->contains($mediaResource))
-            $this->em->merge($mediaResource);
+    public function persistMerge($obj){
+        if($this->em->contains($obj))
+            $this->em->merge($obj);
         else
-            $this->em->persist($mediaResource);
+            $this->em->persist($obj);
+    }
+    
+    //not needed
+    public function getMediaResource(){
+        return null;
     }
 
     
