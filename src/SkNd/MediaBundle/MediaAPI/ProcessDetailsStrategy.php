@@ -71,6 +71,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         if($this->mediaResource == null)
             $this->mediaResource = $this->createNewMediaResource($this->itemId);
         else {
+            //is it necessary to delete immediately the cache or simply merge and updated version?
             $this->mediaResource = $this->processCache($this->mediaResource);
             /**
              * if the media resource exists but was discovered using more specific parameters (i.e. mediatype, decade and genre)

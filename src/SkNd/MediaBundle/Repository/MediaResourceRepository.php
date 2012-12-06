@@ -12,6 +12,7 @@ namespace SkNd\MediaBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\Entity\MediaSelection;
+use SkNd\MediaBundle\Entity\MediaResource;
 
 class MediaResourceRepository extends EntityRepository
 {
@@ -29,29 +30,36 @@ class MediaResourceRepository extends EntityRepository
         
     }
     
-    public function getMediaResourceRecommendations(MediaSelection $mediaSelection, $itemId){
+    public function getMediaResourceRecommendations(MediaResource $mr, MediaSelection $mediaSelection){
+        //only find generic matches if the decade is not null (all decades)
+        $decade = !is_null($mr->getDecade()) ? $mr->getDecade() : !is_null($mediaSelection->getDecade) ? $mediaSelection->getDecade() : null;
+        
         $genericMatches = array();
         $exactMatches = array();
         
         //get media resources based most generic data but not including the selected item
-        $q = $this->createQueryBuilder('mr')
-                ->where('mr.decade = :decade')
-                ->andWhere('mr.id != :itemId')
-                ->andWhere('mr.api = :api')
-                ->orderBy('mr.selectedCount','DESC')
-                ->addOrderBy('mr.viewCount', 'DESC')
-                ->addOrderBy('mr.lastUpdated', 'DESC')
-                ->setMaxResults(50)
-                ->setParameter('decade', $mediaSelection->getDecade())
-                ->setParameter('itemId', $itemId)        
-                ->setParameter('api', $mediaSelection->getAPI())
-                ->getQuery();
-        
-        //index by is not natively supported by querybuilder, so injecting the index clause
-        $q  = $q->setDQL(str_replace('WHERE', 'INDEX BY mr.id WHERE', $q->getDQL()));
-        $genericMatches = $q->getResult();
+        if(!is_null($decade)){
+            $q = $this->createQueryBuilder('mr')
+                    ->where('mr.decade = :decade')
+                    ->andWhere('mr.id != :itemId')
+                    ->andWhere('mr.api = :api')
+                    ->orderBy('mr.selectedCount','DESC')
+                    ->addOrderBy('mr.viewCount', 'DESC')
+                    ->addOrderBy('mr.lastUpdated', 'DESC')
+                    ->setMaxResults(50)
+                    ->setParameter('decade', $mediaSelection->getDecade())
+                    ->setParameter('itemId', $mr->getId())        
+                    ->setParameter('api', $mediaSelection->getAPI())
+                    ->getQuery();
+
+            //index by is not natively supported by querybuilder, so injecting the index clause
+            $q  = $q->setDQL(str_replace('WHERE', 'INDEX BY mr.id WHERE', $q->getDQL()));
+            $genericMatches = $q->getResult();
+        }
              
-        //try to get exact matches based on the mediaSelection
+        //try to get exact matches based on the mediaResource first, and then the 
+        //mediaSelection if necessary. This means that if the items
+        
         $exactMatches = array_filter($genericMatches, function($gm) use ($mediaSelection){
             return $gm->getMediaType() == $mediaSelection->getMediaType()
                     && $gm->getGenre() == $mediaSelection->getSelectedMediaGenre() 

@@ -45,7 +45,6 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     
     public function processMedia(){
         $this->mediaResource = $this->getMediaResource();
-        $recommendations = $this->getRecommendations($this->mediaResource->getId());
         //process all the resources, which filters mr's based on uncached ones, then does a batch job
         parent::$mediaResources = array_merge(
                 array($this->mediaResource->getId() => $this->mediaResource),
@@ -53,6 +52,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
                 $recommendations['exactMatches']);
         
         parent::processMedia();
+        $recommendations = $this->getRecommendations($this->mediaResource);
         $this->mediaResource->setRelatedMediaResources($recommendations);
         
         //return $this->mediaResource;
@@ -74,8 +74,8 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
      * @param $itemId is used so that the selected item is not picked as a recommendation
      * @return $recommendatations array
      */
-    private function getRecommendations($itemId) {
-        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($this->mediaSelection, $itemId);
+    private function getRecommendations(MediaResource $mr) {
+        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($mr, $this->mediaSelection);
         return $recommendationSet;
     }
 

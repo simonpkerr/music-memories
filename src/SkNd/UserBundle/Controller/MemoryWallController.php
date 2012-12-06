@@ -274,7 +274,7 @@ class MemoryWallController extends Controller
         
         $processStrategy = new ProcessDetailsStrategy(array(
             'em'                => $this->em,
-            'mediaSelection'    => $mediaapi->getMediaSelection(),
+            'mediaSelection'    => $mediaapi->setMediaSelection(),
             'apiStrategy'       => $mediaapi->getAPIStrategy($apiKey),
             'itemId'            => $id,          
         ));

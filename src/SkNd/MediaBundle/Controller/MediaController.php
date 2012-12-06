@@ -96,7 +96,7 @@ class MediaController extends Controller
             if($form->isValid()){
                 
                 $mediaSelection = $form->getData();
-                $this->mediaapi->setMediaSelection($mediaSelection);
+                $this->mediaapi->setMediaSelection(array('mediaSelection' => $mediaSelection));
                 
                 return $this->redirect($this->generateUrl('search', $this->mediaapi->getMediaSelectionParams()));
             }else{
@@ -135,7 +135,7 @@ class MediaController extends Controller
        $this->mediaapi = $this->get('sk_nd_media.mediaapi');
        $em = $this->mediaapi->getEntityManager(); 
        
-       $mediaSelection = $this->mediaapi->getMediaSelection(array(
+       $mediaSelection = $this->mediaapi->setMediaSelection(array(
            'api'       => $api, 
            'media'     => $media,
            'decade'    => $decade,
@@ -145,10 +145,10 @@ class MediaController extends Controller
            'computedKeywords'  => null,
         ));
        
-       $pagerCount = 5;
+       /*$pagerCount = 5;
        $pagerParams = array(
            'pagerCount' => $pagerCount,
-       );
+       );**/
        
        $responseParams = $this->mediaapi->getMediaSelectionParams();
        
@@ -225,8 +225,8 @@ class MediaController extends Controller
             'keywords'          => $keywords,
         ));*/
         
-        $details = null;
-        $title = null;
+        //$details = null;
+        //$title = null;
         
         $referrer = $this->getRequest()->headers->get('referer');
         
@@ -237,7 +237,7 @@ class MediaController extends Controller
         $processMediaStrategy = new ProcessDetailsStrategy(array(
             'em'            =>      $em,
             'apiStrategy'   =>      $this->mediaapi->getAPIStrategy($api), 
-            'mediaSelection'=>      $this->mediaSelection,
+            'mediaSelection'=>      $this->mediaapi->getMediaSelection(),
             'itemId'        =>      $id,
         ));
         
@@ -271,7 +271,7 @@ class MediaController extends Controller
         $em = $this->mediaapi->getEntityManager(); 
         
         //$responseParams['api'] = $this->mediaapi->getCurrentAPI()->getName();
-        $mediaSelection = $this->mediaapi->getMediaSelection(array(
+        $mediaSelection = $this->mediaapi->setMediaSelection(array(
             'api'               => $api,
             'media'             => $media,
             'decade'            => $decade,
