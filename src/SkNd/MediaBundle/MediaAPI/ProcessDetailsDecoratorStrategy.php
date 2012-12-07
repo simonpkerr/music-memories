@@ -7,10 +7,12 @@
  * @author Simon Kerr
  */
 namespace SkNd\MediaBundle\MediaAPI;
-use SkNd\MediaBundle\Entity\MediaSelection;
+
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
+use SkNd\MediaBundle\Entity\MediaResource;
+use SkNd\MediaBundle\Entity\MediaSelection;
 
 class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $processDetailsStrategy;
@@ -29,14 +31,26 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
      */
     public function __construct(array $params){
         //reference passed to the decorator strategy
-        $this->processDetailsStrategy = $params['processDetailsStrategy'];
-        $this->em = $params['em'];
-        /*$this->em = $params['em'];
-        $this->mediaSelection = $params['mediaSelection'];
+        if(isset($params['processDetailsStrategy']) && $params['processDetailsStrategy'] instanceof IProcessMediaStrategy)
+            $this->processDetailsStrategy = $params['processDetailsStrategy'];
+        else
+            throw new \RuntimeException('no process details strategy supplied');
+        
+        if(isset($params['em']) && $params['em'] instanceof EntityManager)
+            $this->em = $params['em'];
+        else
+            throw new \RuntimeException('entity manager not supplied');
+        
+        $params['mediaSelection'] = $this->getMediaSelection();
+        /*$this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
         $this->itemId = $params['itemId'];*/
         parent::__construct($params);
         //$this->mediaResource = null; 
+    }
+    
+    public function getMediaSelection(){
+        return $this->processDetailsStrategy->getMediaSelection();
     }
     
     public function getAPIData(){
@@ -45,15 +59,17 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     
     public function processMedia(){
         $this->mediaResource = $this->getMediaResource();
+        $recommendations = $this->getRecommendations($this->mediaResource);
         //process all the resources, which filters mr's based on uncached ones, then does a batch job
-        parent::$mediaResources = array_merge(
+        $this->mediaResources = array_merge(
                 array($this->mediaResource->getId() => $this->mediaResource),
                 $recommendations['genericMatches'],
                 $recommendations['exactMatches']);
         
         parent::processMedia();
-        $recommendations = $this->getRecommendations($this->mediaResource);
-        $this->mediaResource->setRelatedMediaResources($recommendations);
+        
+        if(!is_null($recommendations))
+            $this->mediaResource->setRelatedMediaResources($recommendations);
         
         //return $this->mediaResource;
     }
@@ -74,7 +90,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
      * @param $itemId is used so that the selected item is not picked as a recommendation
      * @return $recommendatations array
      */
-    private function getRecommendations(MediaResource $mr) {
+    protected function getRecommendations(MediaResource $mr) {
         $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($mr, $this->mediaSelection);
         return $recommendationSet;
     }

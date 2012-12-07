@@ -15,7 +15,7 @@ use \SimpleXMLElement;
 interface IAPIStrategy {
     
     public function getListings(MediaSelection $mediaSelection);
-    public function getDetails($id);
+    public function getDetails(array $params);
     public function getName();
     public function getBatch(array $ids);
     //each api implements its own method of getting the id

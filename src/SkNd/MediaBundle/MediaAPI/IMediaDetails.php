@@ -15,7 +15,7 @@ use \SimpleXMLElement;
 
 interface IMediaDetails {
     public function getMediaResource();
-    
+    public function getMediaSelection();
     
 }
 

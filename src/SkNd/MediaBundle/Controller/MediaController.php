@@ -48,7 +48,7 @@ class MediaController extends Controller
     }
     
     public function mediaSelectionAction(Request $request = null){
-        $session = $this->getRequest()->getSession();
+        //$session = $this->getRequest()->getSession();
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $em = $this->mediaapi->getEntityManager();
  
@@ -59,7 +59,8 @@ class MediaController extends Controller
          * the form, otherwise just use the empty media selection object
          */
         $mediaSelection = new MediaSelection();
-        $sessionFormData = $session->get('mediaSelection');
+        //$sessionFormData = $session->get('mediaSelection');
+        $sessionFormData = $this->mediaapi->getMediaSelection();
         if($sessionFormData != null){
             
             $mediaType = $sessionFormData->getMediaType();
@@ -228,13 +229,13 @@ class MediaController extends Controller
         //$details = null;
         //$title = null;
         
-        $referrer = $this->getRequest()->headers->get('referer');
+        $referrer = $this->getRequest()->headers->get('referer');//need to hide if not coming from search
         
         $responseParams = array_merge(
                 $this->mediaapi->getMediaSelectionParams(),
                 array('referrer' => $referrer));
   
-        $processMediaStrategy = new ProcessDetailsStrategy(array(
+        $processDetailsStrategy = new ProcessDetailsStrategy(array(
             'em'            =>      $em,
             'apiStrategy'   =>      $this->mediaapi->getAPIStrategy($api), 
             'mediaSelection'=>      $this->mediaapi->getMediaSelection(),
@@ -242,14 +243,14 @@ class MediaController extends Controller
         ));
         
         //create the decorator strategy and pass the original strategy to it
-        $processMediaStrategy = new ProcessDetailsDecoratorStrategy(array(
-            'processMediaStrategy'  => $processMediaStrategy,
+        $processDetailsStrategy = new ProcessDetailsDecoratorStrategy(array(
+            'processDetailsStrategy'=> $processDetailsStrategy,
             'em'                    => $em,
             'apis'                  => $this->mediaapi->getAPIs()));
 
         try{  
 
-            $responseParams['mediaResource'] = $this->mediaapi->getMedia($processMediaStrategy);
+            $responseParams['mediaResource'] = $this->mediaapi->getMedia($processDetailsStrategy);
 
         }catch(\RunTimeException $re){
             $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');

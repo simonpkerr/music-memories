@@ -127,14 +127,15 @@ class AmazonAPI implements IAPIStrategy {
      * getDetails handles calls to the live api, 
      * @param params - params to carry out the query - only contains the id of the amazon product
      */
-    public function getDetails($id){
-        $this->amazonParameters = array_merge($params, array(
-               'ItemId'             =>      $id,
-                'Operation'          =>      $this->ITEM_LOOKUP,
-               //'ResponseGroup'      =>      'Images,ItemAttributes,Request,Similarities,EditorialReview',
+    public function getDetails(array $params){
+        $this->amazonParameters = array_merge(
+                $this->amazonParameters,
+                $params, 
+                array(
+               'Operation'          =>     $this->ITEM_LOOKUP,
+               //'ResponseGroup'      =>    'Images,ItemAttributes,Request,Similarities,EditorialReview',
                'ResponseGroup'      =>      'Images,ItemAttributes,Request,Similarities',
- 
-        ));
+                ));
 
         
         $xml_response = $this->queryAmazon($this->amazonParameters, "co.uk");

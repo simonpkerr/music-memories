@@ -37,8 +37,12 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         //$this->mediaResource = null;
     }
     
+    public function getMediaSelection(){
+        return $this->mediaSelection;
+    }
+    
     public function getAPIData(){
-        return $this->apiStrategy->getName();
+        return $this->apiStrategy;
     }
     
     public function getMedia(){
@@ -54,7 +58,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         
         if($this->mediaResource->getMediaResourceCache() == null){
             //look up the details from the api if not cached
-            $this->apiResponse = $this->apiStrategy->getDetails($this->itemId);
+            $this->apiResponse = $this->apiStrategy->getDetails(array('ItemId' => $this->itemId));
             /*$this->cacheMedia(array(
                 'response'  =>  $response, 
                 'itemId'    =>  $this->itemId));*/
@@ -91,7 +95,8 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
     private function createNewMediaResource($itemId){
         $mediaResource = new MediaResource();
         $mediaResource->setId($itemId);
-        $mediaResource->setAPI($this->apiStrategy->getAPI());
+        //$mediaResource->setAPI($this->apiStrategy->getAPI()); //re-factor so that API entity exists in apiStrategy
+        $mediaResource->setAPI($this->mediaSelection->getAPI());
         $mediaResource->setMediaType($this->mediaSelection->getMediaType());
         $mediaResource->setDecade($this->mediaSelection->getDecade());
         $mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());

@@ -17,7 +17,9 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $apis;
     protected $em;
     protected $mediaResources;
-    private $apiResponses;
+    protected $apiResponses;
+    protected $mediaSelection;
+    
     //need mediaResource?
     
     /**
@@ -30,10 +32,18 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
         $this->apis = $params['apis'];
         if(isset($params['mediaResources']))
             $this->mediaResources = $params['mediaResources'];
+        
+        $this->mediaSelection = $params['mediaSelection'];
+        $this->apiResponses = array();
+    }
+    
+    public function getMediaSelection(){
+        return $this->mediaSelection;
     }
     
     public function getAPIData(){
-        return $this->apis;
+        return null;
+        //$this->apis;
     }
     
     public function getMedia(){

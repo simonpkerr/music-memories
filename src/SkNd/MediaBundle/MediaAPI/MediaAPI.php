@@ -130,7 +130,7 @@ class MediaAPI {
         $page = 1;
         
         if(isset($params['mediaSelection']) && $params['mediaSelection'] instanceof MediaSelection){
-            $this->mediaSelection = $mediaSelection;
+            $this->mediaSelection = $params['mediaSelection'];
             $this->session->set('mediaSelection', $this->mediaSelection);
         }else{
             //try getting the media selection from the session
@@ -322,7 +322,7 @@ class MediaAPI {
         //process batch strategy will not have a key?
         
         //IS THIS NEEDED? WILL BREAK WITH PROCESSBATCHSTRATEGY
-        $this->setAPIStrategy($processStrategy->getAPIData()->getName());
+        //$this->setAPIStrategy($processStrategy->getAPIData()->getName());
         
         $processStrategy->processMedia();
         $processStrategy->cacheMedia();

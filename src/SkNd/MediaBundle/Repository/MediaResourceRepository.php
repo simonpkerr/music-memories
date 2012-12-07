@@ -31,45 +31,63 @@ class MediaResourceRepository extends EntityRepository
     }
     
     public function getMediaResourceRecommendations(MediaResource $mr, MediaSelection $mediaSelection){
-        //only find generic matches if the decade is not null (all decades)
-        $decade = !is_null($mr->getDecade()) ? $mr->getDecade() : !is_null($mediaSelection->getDecade) ? $mediaSelection->getDecade() : null;
+        $recommendations = array(
+            'genericMatches'   => array(),
+            'exactMatches'     => array(),
+        );
         
-        $genericMatches = array();
-        $exactMatches = array();
+        //only find generic matches if the decade is not null (all decades)
+        $decade = !is_null($mr->getDecade()) ? $mr->getDecade() : !is_null($mediaSelection->getDecade()) ? $mediaSelection->getDecade() : null;
         
         //get media resources based most generic data but not including the selected item
-        if(!is_null($decade)){
-            $q = $this->createQueryBuilder('mr')
-                    ->where('mr.decade = :decade')
-                    ->andWhere('mr.id != :itemId')
-                    ->andWhere('mr.api = :api')
-                    ->orderBy('mr.selectedCount','DESC')
-                    ->addOrderBy('mr.viewCount', 'DESC')
-                    ->addOrderBy('mr.lastUpdated', 'DESC')
-                    ->setMaxResults(50)
-                    ->setParameter('decade', $mediaSelection->getDecade())
-                    ->setParameter('itemId', $mr->getId())        
-                    ->setParameter('api', $mediaSelection->getAPI())
-                    ->getQuery();
-
-            //index by is not natively supported by querybuilder, so injecting the index clause
-            $q  = $q->setDQL(str_replace('WHERE', 'INDEX BY mr.id WHERE', $q->getDQL()));
-            $genericMatches = $q->getResult();
+        if(is_null($decade)){
+            return $recommendations;
         }
-             
-        //try to get exact matches based on the mediaResource first, and then the 
-        //mediaSelection if necessary. This means that if the items
         
-        $exactMatches = array_filter($genericMatches, function($gm) use ($mediaSelection){
-            return $gm->getMediaType() == $mediaSelection->getMediaType()
-                    && $gm->getGenre() == $mediaSelection->getSelectedMediaGenre() 
-                    && $gm->getAPI() == $mediaSelection->getAPI();
-        });
+        $params = array(
+            'api'       => !is_null($mr->getAPI()) ? $mr->getAPI() : $mediaSelection->getAPI(),
+            'mediaType' => !is_null($mr->getMediaType()) ? $mr->getMediaType() : $mediaSelection->getMediaType(),
+            'genre'     => !is_null($mr->getMediaType()) ? $mr->getGenre() : $mediaSelection->getSelectedMediaGenre(),
+            );
+        
+        $q = $this->createQueryBuilder('mr')
+                ->where('mr.decade = :decade')
+                ->andWhere('mr.id != :itemId')
+                ->andWhere('mr.api = :api')
+                ->orderBy('mr.selectedCount','DESC')
+                ->addOrderBy('mr.viewCount', 'DESC')
+                ->addOrderBy('mr.lastUpdated', 'DESC')
+                ->setMaxResults(50)
+                ->setParameter('decade', $decade)
+                ->setParameter('itemId', $mr->getId())        
+                ->setParameter('api', $params['api'])
+                ->getQuery();
+
+        //index by is not natively supported by querybuilder, so injecting the index clause
+        $q  = $q->setDQL(str_replace('WHERE', 'INDEX BY mr.id WHERE', $q->getDQL()));
+        $genericMatches = $q->getResult();
+ 
+        //try to get exact matches based on the mediaResource first, and then the 
+        //mediaSelection if necessary. This means that if the items are located from a referrer
+        //rather than a search (or manually typed in), they will still discover relevant 
+        //recommendations
+        
+        $exactMatches = array();
+        if(!is_null($params['genre'])){
+            $exactMatches = array_filter($genericMatches, function($gm) use ($params){
+                return $gm->getMediaType() == $params['mediaType']
+                        && $gm->getGenre() == $params['genre'];
+                        //&& $gm->getAPI() == $params['api']; //no need to refine by api, already done
+            });
+        }
                
         //remove exact matches from the generic array and return the first 4 items
         $genericMatches = array_diff_key($genericMatches, $exactMatches);
         $genericMatches = array_slice($genericMatches, 0, 4); 
         $exactMatches = array_slice($exactMatches, 0, 4);
+        
+        if(count($genericMatches) == 0 && count($exactMatches) == 0)
+            return $recommendations;
         
         return array(
             'genericMatches'   => $genericMatches,

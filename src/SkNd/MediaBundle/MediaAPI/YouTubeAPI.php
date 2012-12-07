@@ -62,12 +62,12 @@ class YouTubeAPI implements IAPIStrategy {
      * but still need to be stored to drive recommendations, timeline
      * and improve memory walls
      */
-    public function getDetails($id){
+    public function getDetails(array $params){
         
-        //if(!isset($params['ItemId']))
-         //   throw new \InvalidArgumentException('No id was passed to Youtube');
+        if(!isset($params['ItemId']))
+           throw new \InvalidArgumentException('No id was passed to Youtube');
         
-        $ve = $this->youTube->getVideoEntry($id);
+        $ve = $this->youTube->getVideoEntry($params['ItemId']);
         
         if($ve === false)
             throw new \RuntimeException("Could not connect to YouTube");
