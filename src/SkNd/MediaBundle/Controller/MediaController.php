@@ -229,11 +229,9 @@ class MediaController extends Controller
         //$details = null;
         //$title = null;
         
-        $referrer = $this->getRequest()->headers->get('referer');//need to hide if not coming from search
-        
         $responseParams = array_merge(
                 $this->mediaapi->getMediaSelectionParams(),
-                array('referrer' => $referrer));
+                array('referrer' => $this->getRequest()->headers->get('referer')));
   
         $processDetailsStrategy = new ProcessDetailsStrategy(array(
             'em'            =>      $em,

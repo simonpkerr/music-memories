@@ -30,6 +30,13 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
      * itemId
      */
     public function __construct(array $params){
+        if(!isset($params['em'])||
+            !isset($params['mediaSelection'])||
+            !isset($params['apiStrategy'])||
+            !isset($params['itemId']))
+            throw new \RuntimeException('required params not supplied for '. $this);
+        
+        
         $this->em = $params['em'];
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];

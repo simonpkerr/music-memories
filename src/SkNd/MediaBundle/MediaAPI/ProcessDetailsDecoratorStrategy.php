@@ -11,6 +11,7 @@ namespace SkNd\MediaBundle\MediaAPI;
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
+use SkNd\MediaBundle\MediaAPI\ProcessBatchStrategy;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaSelection;
 
@@ -23,30 +24,24 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     //protected $itemId;
     
     /**
-     * @param array $params includes MediaDetails $mediaDetails,
-     * EntityManager $em, 
-     * IAPIStrategy $apiStrategy, 
-     * MediaSelection $mediaSelection,
-     * itemId
+     * @param array $params includes 
+     * EntityManager, processDetailsStrategy
      */
     public function __construct(array $params){
-        //reference passed to the decorator strategy
-        if(isset($params['processDetailsStrategy']) && $params['processDetailsStrategy'] instanceof IProcessMediaStrategy)
-            $this->processDetailsStrategy = $params['processDetailsStrategy'];
-        else
-            throw new \RuntimeException('no process details strategy supplied');
+        if(!isset($params['processDetailsStrategy'])||
+           !isset($params['em']))
+                throw new \RuntimeException('invalid params for ' . $this);
         
-        if(isset($params['em']) && $params['em'] instanceof EntityManager)
-            $this->em = $params['em'];
-        else
-            throw new \RuntimeException('entity manager not supplied');
+        if(!$params['processDetailsStrategy'] instanceof IProcessMediaStrategy)
+            throw new \RuntimeException('invalid details strategy');
         
+        if(!$params['em'] instanceof EntityManager)
+            throw new \RuntimeException('invalid em');
+        
+        $this->processDetailsStrategy = $params['processDetailsStrategy'];
+        $this->em = $params['em'];
         $params['mediaSelection'] = $this->getMediaSelection();
-        /*$this->mediaSelection = $params['mediaSelection'];
-        $this->apiStrategy = $params['apiStrategy'];
-        $this->itemId = $params['itemId'];*/
         parent::__construct($params);
-        //$this->mediaResource = null; 
     }
     
     public function getMediaSelection(){

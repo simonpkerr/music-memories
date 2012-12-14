@@ -1,14 +1,15 @@
-{% macro m_mediaResource(item, media, decade, genre) %}
+{% macro m_mediaResource(mr) %}
+{% set item = mr.mediaResourceCache.xmlData %}
 <li class="cf">
-    <a title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}" class="fl">
+    <a title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':item.ASIN, 'api':mr.api.name })}}" class="fl">
         <img src="{{item.MediumImage is defined ? item.MediumImage.URL : asset('bundles/SkNd/images/image-placeholder.jpg') }}" alt="{{item.ItemAttributes.Title}}" />
     </a>
     <div>
-        <a href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}">
+        <a href="{{path('mediaDetails', {'id':item.ASIN, 'api':mr.api.name })}}">
             <strong>{{item.ItemAttributes.Title}}</strong>
         </a>
         <ul class="actions">
-            <li class="explore-it"><a class="button" title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':item.ASIN })}}"><span>Explore</span></a></li>
+            <li class="explore-it"><a class="button" title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':item.ASIN, 'api':mr.api.name })}}"><span>Explore</span></a></li>
             <li class="buy-it"><a class="orange button" title="buy this from Amazon" target="_blank" href="{{item.DetailPageURL}}"><span>Buy</span></a></li>
         </ul>
     </div>
@@ -38,7 +39,7 @@
         <ul class="actions fl two-thirds-width">
             {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
                 with {
-                'api'       : api,
+                'api'       : mediaResource.api.name,
                 'itemId'    : item.ASIN,
                 'itemTitle' : item.ItemAttributes.Title,
                 'linkType'  : 'button',
@@ -58,7 +59,7 @@
             <ul class="bullet-list">
             {% for similarItem in item.SimilarProducts.SimilarProduct %}
                 <li>
-                    <a title="see more details for {{similarItem.Title}}" href="{{path('mediaDetails', {'media':media, 'decade':decade, 'genre':genre, 'id':similarItem.ASIN })}}">{{similarItem.Title}}</a>
+                    <a title="see more details for {{similarItem.Title}}" href="{{path('mediaDetails', {'id':similarItem.ASIN , 'api': mediaResource.api.name })}}">{{similarItem.Title}}</a>
                 </li>
             {% endfor %}
             </ul>
@@ -71,9 +72,9 @@
     {% 
         render "SkNdMediaBundle:Media:youTubeRequest" with {
             'title'     :   item.ItemAttributes.Title|url_encode, 
-            'media'     :   media,
-            'decade'    :   decade,
-            'genre'     :   genre
+            'media'     :   mediaResource.mediaType.mediaName,
+            'decade'    :   mediaResource.decade.decadeName,
+            'genre'     :   mediaResource.genre.genreName,
         } 
     %}
     </div>
@@ -97,10 +98,10 @@
     {% if recommendations.exactMatches is not empty %}
     <div id="exact-recommendations">
         <h2>Recommended</h2>
-        <p class="strapline">Here are some items just like the one you chose.</p>
+        <p class="strapline">Here&rsquo;s some related stuff.</p>
         <ul>
         {% for mr in recommendations.exactMatches %}
-             {{ _self.m_mediaResource(mr.mediaResourceCache.xmlData, media, decade, genre) }}
+             {{ _self.m_mediaResource(mr) }}
         {% endfor %}
         </ul>
     </div>
@@ -109,10 +110,10 @@
     {% if recommendations.genericMatches is not empty %}
         <div id="generic-recommendations" class="clear">
         <h2>You might also like</h2>
-        <p class="strapline">Here&rsquo;s some other stuff you might be interested in.</p>
+        <p class="strapline">Here&rsquo;s some other stuff from the same decade.</p>
         <ul>
         {% for mr in recommendations.genericMatches %}
-            {{ _self.m_mediaResource(mr.mediaResourceCache.xmlData, media, decade, genre) }}
+            {{ _self.m_mediaResource(mr) }}
         {% endfor %}
         </ul>
     </div>

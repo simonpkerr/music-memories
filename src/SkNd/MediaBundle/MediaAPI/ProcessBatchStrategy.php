@@ -9,6 +9,7 @@
  */
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
+use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
@@ -78,8 +79,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                 $ids = array_keys($resources);
                 
                 //do batch process of ids 
-                array_push($this->apiResponses, 
-                        array(
+                array_push($this->apiResponses, array(
                             'api'            => $api, 
                             'xmlData'        => $api->getBatch($ids),
                             'mediaResources' => $resources,
@@ -105,7 +105,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
          * or the details mediaresource without cache
          */
         
-        foreach($this->apiReponses as $apiResponse){
+        foreach($this->apiResponses as $apiResponse){
             $api = $apiResponse['api'];
             $mediaResources = $apiResponse['mediaResources'];
             

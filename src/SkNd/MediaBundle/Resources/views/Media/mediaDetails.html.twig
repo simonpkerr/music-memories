@@ -11,8 +11,9 @@
     {%if mediaResource is defined %}
         <h1>{{mediaResource.mediaResourceCache.title}}</h1>
     {% endif %}
+    {% if 'search' in referrer %}
     <a class="go-back" href="{{referrer}}">go back to the previous page</a>
-
+    {% endif %}
     {% if media != 'music' %}
         {% include 'SkNdMediaBundle:Media:filmTVDetailsPartial.html.twig' %}
 
