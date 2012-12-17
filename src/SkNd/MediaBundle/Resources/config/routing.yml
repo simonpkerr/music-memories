@@ -30,16 +30,11 @@ mediaDetails:
   pattern: /mediadetails/{id}/{api}
   defaults:
     _controller: SkNdMediaBundle:Media:mediaDetails
-    decade: all-decades
-    genre: all-genres
-    keywords: '-'
 
 youTubeRequest:
-  pattern: /youtuberequest/{title}/{media}/{decade}/{genre}/{keywords}
+  pattern: /youtuberequest/{title}/{mrid}
   defaults:
     _controller: SkNdMediaBundle:Media:youTubeRequest
-    keywords: '-'
-
   
 #setSlugs:
 #  pattern: /setSlugs/{table}

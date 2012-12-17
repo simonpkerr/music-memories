@@ -267,7 +267,6 @@ class MediaAPI {
         }
         
         return $this->mediaSelection;
-
     }
     
     /*

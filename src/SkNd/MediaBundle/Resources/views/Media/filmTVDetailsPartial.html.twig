@@ -72,10 +72,7 @@
     {% 
         render "SkNdMediaBundle:Media:youTubeRequest" with {
             'title'     :   item.ItemAttributes.Title|url_encode, 
-            'media'     :   mediaResource.mediaType.mediaName,
-            'decade'    :   mediaResource.decade.decadeName,
-            'genre'     :   mediaResource.genre.genreName,
-        } 
+            'mrid'      :   mediaResource.id,    
     %}
     </div>
 

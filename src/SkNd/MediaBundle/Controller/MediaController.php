@@ -124,6 +124,11 @@ class MediaController extends Controller
     
     /*
      * perform the search, then redirect to the listings action to show the results
+     * search should look up all relevant apis - 
+     * film/tv: amazon, youtube, google images (?), wikipedia (?)
+     * music: 7digital, youtube, google images (?), wikipedia (?)
+     * will most likely be more than 1 api looked up,
+     * needs to be able to process multiple apis based on config
      */
     public function searchAction(
             $media, 
@@ -144,7 +149,7 @@ class MediaController extends Controller
            'keywords'  => $keywords,
            'page'      => $page,
            'computedKeywords'  => null,
-        ));
+       ));
        
        /*$pagerCount = 5;
        $pagerParams = array(
@@ -161,6 +166,7 @@ class MediaController extends Controller
            'api'            => $apiKey,
        ));*/
        
+       //loop through each configured api and store as index of array
        
        $processMediaStrategy = new ProcessListingsStrategy(array(
            'em'             => $em,
@@ -207,6 +213,11 @@ class MediaController extends Controller
             'pagerRouteParams'      =>  $this->mediaapi->getMediaSelectionParams());
     }
     
+    /* media selection is not set from the details action, only looked up,
+     * details looks up api data from all relevant apis for the given item
+     * (should this use partials or just process all from the main details action?)
+     * 
+     */
     public function mediaDetailsAction($id, $api){
         /*
          * set the mediaSelection object if it doesn't exist - user may have gone straight to the page
@@ -260,31 +271,68 @@ class MediaController extends Controller
         return $this->render('SkNdMediaBundle:Media:mediaDetails.html.twig', $responseParams);
         
     }
-          
-    public function youTubeRequestAction($title, $media, $decade, $genre, $keywords = '-'){
+    
+    /* 
+     * pass the id of the related item so that a media selection object can be
+     * created. 
+     */
+    public function youTubeRequestAction($title, $mrid){
         $responseParams = array();
-        $api = 'youtubeapi';
+        /*
+         * api entity needs to be a property of api strategy
+         */
+        $api = $em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi');
         
         //get the youtube service
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $em = $this->mediaapi->getEntityManager(); 
         
+        //get media resource id
+        $mr = $em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceById($mrid);
+        
         //$responseParams['api'] = $this->mediaapi->getCurrentAPI()->getName();
-        $mediaSelection = $this->mediaapi->setMediaSelection(array(
+        /*dont need to set the media api media selection, why not just create a new one
+         * use the media resource id to look up the media resource details 
+         * and create a new media selection.
+         */
+         
+        /* PROBLEM - Need to pass correct api ref along with all other
+         * media selection params, to media listings repository
+         * so that correct cached listings can be returned.
+         * also, at present, the youtube listings are stored based on media selection
+         * and title of item (stored as keywords)
+         * 
+         * from media details page, mediaresource mediatype, decade, genre can be 
+         * passed. the api ref needs to be manually set in this action but the 
+         * mediaapi mediaselection should not be updated, since this results in issues with 
+         * media being incorrectly added to walls.
+         */
+       
+        /*$mediaSelection = $this->mediaapi->setMediaSelection(array(
             'api'               => $api,
             'media'             => $media,
             'decade'            => $decade,
             'genre'             => $genre,
             'computedKeywords'  => urldecode($title),
-            'keywords'          => $keywords,
-        ));
+            //'keywords'          => $keywords,
+        ));*/
         
+        /*this mediaselection is based on the mediaapi one but modified 
+         * based on the referenced mediaresource
+         */
+        $mediaSelection = $this->mediaapi->getMediaSelection();
+        $mediaSelection->setAPI($api);
+        $mediaSelection->setMediaType($mr->getMediaType());
+        $mediaSelection->setDecade($mr->getDecade());
+        $mediaSelection->setSelectedMediaGenre($mr->getGenre());
+        $mediaSelection->setKeywords(urldecade($title));
+                
         $listings = null;
         
         $processMediaStrategy = new ProcessListingsStrategy(array(
            'em'             => $em,
            'mediaSelection' => $mediaSelection,
-           'apiStrategy'    => $this->mediaapi->getAPIStrategy($api),
+           'apiStrategy'    => $this->mediaapi->getAPIStrategy($api->getName()),
         ));
         try{
             $listings = array_shift($this->mediaapi->getMedia($processMediaStrategy));
