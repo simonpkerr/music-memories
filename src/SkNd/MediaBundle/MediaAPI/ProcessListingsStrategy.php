@@ -37,6 +37,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
         $this->apiStrategy = $params['apiStrategy'];
     }
     
+    //is this needed? its no longer referenced in mediaapi
     public function getAPIData(){
         return $this->apiStrategy;
     }
@@ -83,7 +84,10 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
             $listings->setXmlData($xmlData->asXML());      
         }else{
             $listings = new MediaResourceListingsCache();
-            $listings->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
+            //$listings->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
+            //THE API ENTITY IS NOW IN THE APISTRATEGY CLASS
+            //$listings->setAPI($this->apiStrategy->getAPIEntity());
+            $listings->setAPI($this->mediaSelection->getAPI());
             $listings->setMediaType($this->mediaSelection->getMediaType());
             $listings->setDecade($this->mediaSelection->getDecade());
             $listings->setGenre($this->mediaSelection->getSelectedMediaGenre());

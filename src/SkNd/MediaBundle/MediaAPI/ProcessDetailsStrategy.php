@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @abstract MediaDetails handles looking up of media resources, getting details
+ * @abstract ProcessDetailsStrategy handles looking up of single media resource, getting details
  * without recommendations, processing cache and storing cache.
  * @copyright Simon Kerr 2012
  * @author Simon Kerr
@@ -102,8 +102,8 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
     private function createNewMediaResource($itemId){
         $mediaResource = new MediaResource();
         $mediaResource->setId($itemId);
-        //$mediaResource->setAPI($this->apiStrategy->getAPI()); //re-factor so that API entity exists in apiStrategy
-        $mediaResource->setAPI($this->mediaSelection->getAPI());
+        $mediaResource->setAPI($this->apiStrategy->getAPIEntity()); //re-factor so that API entity exists in apiStrategy
+        //$mediaResource->setAPI($this->mediaSelection->getAPI());
         $mediaResource->setMediaType($this->mediaSelection->getMediaType());
         $mediaResource->setDecade($this->mediaSelection->getDecade());
         $mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());

@@ -9,6 +9,7 @@
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\Entity\MediaSelection;
+use SkNd\MediaBundle\Entity\API;
 use Doctrine\ORM\EntityManager;
 use \SimpleXMLElement;
 
@@ -18,6 +19,7 @@ class YouTubeAPI implements IAPIStrategy {
     const BATCH_PROCESS_THRESHOLD = 24;
     
     protected $youTube;
+    protected $apiEntity;
     private $query;
     
     public function __construct($youtube_request_object = null){
@@ -28,6 +30,15 @@ class YouTubeAPI implements IAPIStrategy {
     
     public function getName(){
         return self::API_NAME;
+    }
+    
+    public function getAPIEntity() {
+        return $this->apiEntity;
+    }
+
+    public function setAPIEntity(API $entity) {
+        $this->apiEntity = $entity;
+        
     }
     
     public function setRequestObject($obj){
@@ -130,7 +141,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
             throw new \LengthException("No results were returned");
         }
 
-        return $this->getSimpleXml($videoFeed);
+        return $this->getSimpleXml($videoFeed, true);
                 
     }
     
@@ -155,7 +166,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         }*/
         
         $searchString = Utilities::formatSearchString(array(
-            'keywords'  => $mediaSelection->getComputedKeywords(),
+            'keywords'  => $mediaSelection->getKeywords(),
             'media'     => $mediaSelection->getMediaType()->getSlug(),
             'decade'    => $mediaSelection->getDecade() != null ? $mediaSelection->getDecade()->getDecadeName() : null,
             'genre'     => $mediaSelection->getSelectedMediaGenre() != null ? $mediaSelection->getSelectedMediaGenre()->getGenreName() : null
@@ -224,6 +235,7 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
 
          return $date;
     }
+
     
    
 }

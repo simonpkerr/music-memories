@@ -236,7 +236,9 @@ class MediaController extends Controller
             'computedKeywords'  => null,
             'keywords'          => $keywords,
         ));*/
-        
+        $apiStrategy = $this->mediaapi->getAPIStrategy($api);//entity in class
+        $mediaSelection = clone $this->mediaapi->getMediaSelection();
+        $mediaSelection->setAPI($apiStrategy->getAPIEntity());        
         //$details = null;
         //$title = null;
         
@@ -246,8 +248,8 @@ class MediaController extends Controller
   
         $processDetailsStrategy = new ProcessDetailsStrategy(array(
             'em'            =>      $em,
-            'apiStrategy'   =>      $this->mediaapi->getAPIStrategy($api), 
-            'mediaSelection'=>      $this->mediaapi->getMediaSelection(),
+            'apiStrategy'   =>      $apiStrategy, 
+            'mediaSelection'=>      $mediaSelection,
             'itemId'        =>      $id,
         ));
         
@@ -278,19 +280,22 @@ class MediaController extends Controller
      */
     public function youTubeRequestAction($title, $mrid){
         $responseParams = array();
-        /*
-         * api entity needs to be a property of api strategy
-         */
-        $api = $em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi');
         
         //get the youtube service
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $em = $this->mediaapi->getEntityManager(); 
         
+        /*
+         * api entity needs to be a property of api strategy
+         */
+        //$api = $em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi');
+        $apiStrategy = $this->mediaapi->getAPIStrategy('youtubeapi');//entity in class
+        
+        
         //get media resource id
         $mr = $em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceById($mrid);
         
-        //$responseParams['api'] = $this->mediaapi->getCurrentAPI()->getName();
+        //$responseParams['api'] = $apiStrategy->getName();
         /*dont need to set the media api media selection, why not just create a new one
          * use the media resource id to look up the media resource details 
          * and create a new media selection.
@@ -320,22 +325,22 @@ class MediaController extends Controller
         /*this mediaselection is based on the mediaapi one but modified 
          * based on the referenced mediaresource
          */
-        $mediaSelection = $this->mediaapi->getMediaSelection();
-        $mediaSelection->setAPI($api);
+        $mediaSelection = clone $this->mediaapi->getMediaSelection();
+        $mediaSelection->setAPI($apiStrategy->getAPIEntity());
         $mediaSelection->setMediaType($mr->getMediaType());
         $mediaSelection->setDecade($mr->getDecade());
         $mediaSelection->setSelectedMediaGenre($mr->getGenre());
-        $mediaSelection->setKeywords(urldecade($title));
+        $mediaSelection->setKeywords(urldecode($title));
                 
         $listings = null;
         
         $processMediaStrategy = new ProcessListingsStrategy(array(
            'em'             => $em,
            'mediaSelection' => $mediaSelection,
-           'apiStrategy'    => $this->mediaapi->getAPIStrategy($api->getName()),
+           'apiStrategy'    => $apiStrategy,
         ));
         try{
-            $listings = array_shift($this->mediaapi->getMedia($processMediaStrategy));
+            $listings = $this->mediaapi->getMedia($processMediaStrategy);
             //merge the listings and responseParams and remove null entries
             $responseParams = Utilities::removeNullEntries(array_merge($responseParams, $listings));
         }catch(\RuntimeException $re){

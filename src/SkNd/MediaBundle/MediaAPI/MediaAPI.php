@@ -51,10 +51,11 @@ class MediaAPI {
      * and an array of api objects
      */
     public function __construct($debug_mode, EntityManager $em, Session $session, array $apis){
-        $this->setAPIs($apis);
+        
         $this->debugMode = $debug_mode;
         $this->em = $em;
         $this->session = $session;
+        $this->setAPIs($apis);        
         //if(is_null($this->apiStrategy))
         //    $this->setAPIStrategy('amazonapi');
         
@@ -74,6 +75,14 @@ class MediaAPI {
         return $this->apis;
     }
     
+    //set the apis and attach the entity to each api
+    public function setAPIs(array $apis){
+        $this->apis = array_merge($apis);
+        foreach($this->apis as $api){
+            $api->setAPIEntity($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($api->getName()));
+        }
+    }
+        
     public function setSession(Session $session){
         $this->session = $session;
     }
@@ -99,10 +108,6 @@ class MediaAPI {
     
     public function getCurrentAPI(){
         return $this->apiStrategy;
-    }
-    
-    public function setAPIs(array $apis){
-        $this->apis = array_merge($apis);
     }
     
     //returns the current media resource or null if it doesn't exist
