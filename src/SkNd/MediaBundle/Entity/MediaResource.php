@@ -81,17 +81,19 @@ class MediaResource
         return $this->memoryWallMediaResources;
     }
     
-    public function getDetailsPageParams(){
+    /*public function getDetailsPageParams(){
         $params = array();
-        $params['media'] = $this->mediaType->getSlug();
         $params['id'] = $this->getId();
+        
+        $params['media'] = $this->mediaType->getSlug();
         if($this->decade != null)
             $params['decade'] = $this->decade->getSlug();
         if($this->genre != null)
             $params['genre'] = $this->genre->getSlug();
         
+        
         return $params;
-    }
+    }*/
     
     public function setMediaResourceCache(MediaResourceCache $mediaResourceCache = null){
         $this->mediaResourceCache = $mediaResourceCache;

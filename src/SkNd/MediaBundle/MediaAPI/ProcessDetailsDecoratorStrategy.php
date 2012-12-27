@@ -40,7 +40,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         
         $this->processDetailsStrategy = $params['processDetailsStrategy'];
         $this->em = $params['em'];
-        $params['mediaSelection'] = $this->getMediaSelection();
+        //$params['mediaSelection'] = $this->getMediaSelection();
         parent::__construct($params);
     }
     
@@ -86,7 +86,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
      * @return $recommendatations array
      */
     protected function getRecommendations(MediaResource $mr) {
-        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($mr, $this->mediaSelection);
+        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($mr, $this->getMediaSelection());
         return $recommendationSet;
     }
 

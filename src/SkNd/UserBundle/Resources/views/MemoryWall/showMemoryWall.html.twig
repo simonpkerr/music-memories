@@ -5,7 +5,7 @@
 {% set wallBelongsToThisUser = app.user is not null and mw.user.username == app.user.username %}
 <h1>{{ mw.name|capitalize }}</h1>
 {% if returnUrl is not null %}
-<a class="go-back" href="{{returnUrl}}">go back to listings</a>
+<a class="go-back" href="{{returnUrl}}">go back to the previous page</a>
 {% endif %}
 {% include "SkNdUserBundle:MemoryWall:memoryWallMediaResourcesPartial.html.twig" 
     with {

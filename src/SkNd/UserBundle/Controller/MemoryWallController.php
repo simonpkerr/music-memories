@@ -15,7 +15,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\UserBundle\Form\Type\MemoryWallType;
-use SkNd\MediaBundle\MediaAPI\IProcessMediaStrategy;
+use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
+use SkNd\MediaBundle\MediaAPI\ProcessBatchStrategy;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -155,10 +156,14 @@ class MemoryWallController extends Controller
             $mediaapi->getMedia($processStrategy);
         }
         
-        $returnUrl = null;
-        if($session->get('tokens/SkNd-added-resource')){
+        $returnUrl = $this->getRequest()->headers->get('referer');
+        //if come from the search page, refer back to search page
+        /*if($session->get('tokens/SkNd-added-resource')){
             $returnUrl = $this->generateUrl('search', $mediaapi->getMediaSelectionParams());
             $session->remove('tokens/SkNd-added-resource');
+        }*/
+        if(strpos($returnUrl, 'details') === false && strpos($returnUrl, 'search') === false){
+            $returnUrl = null;
         }
                 
         return $this->render('SkNdUserBundle:MemoryWall:showMemoryWall.html.twig', array (
@@ -242,7 +247,7 @@ class MemoryWallController extends Controller
      * to add a resource, make sure the wall it's to be added to is valid and belongs to the current user
      * then look up the details based on the api and id and add it to the wall
      */
-    public function addMediaResourceAction($apiKey, $id, $slug = 'personal'){
+    public function addMediaResourceAction($api, $id, $slug = 'personal'){
         $session = $this->get('session');
         $this->em = $this->getEntityManager();
         $this->currentUser = $this->getCurrentUser();
@@ -274,8 +279,8 @@ class MemoryWallController extends Controller
         
         $processStrategy = new ProcessDetailsStrategy(array(
             'em'                => $this->em,
-            'mediaSelection'    => $mediaapi->setMediaSelection(),
-            'apiStrategy'       => $mediaapi->getAPIStrategy($apiKey),
+            'mediaSelection'    => clone $mediaapi->getMediaSelection(),
+            'apiStrategy'       => $mediaapi->getAPIStrategy($api),
             'itemId'            => $id,          
         ));
         
@@ -285,7 +290,6 @@ class MemoryWallController extends Controller
         //add the resource to the selected wall
         try{
             $mw->addMediaResource($mediaResource);
-            
             $this->em->flush();
         }catch(\InvalidArgumentException $ex){
             $session->setFlash('notice', 'mediaResource.add.flash.identicalResourceError');
