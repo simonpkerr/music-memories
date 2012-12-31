@@ -16,6 +16,7 @@ use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\API;
+use \SimpleXMLElement;
 
 class MediaResourceListingsCache
 {
@@ -32,17 +33,17 @@ class MediaResourceListingsCache
     
     protected $api;
 
-    /**
-     * @var integer $page
-     */
     protected $page;
 
     protected $keywords;
+    
     protected $computedKeywords;
 
     protected $xmlData;
 
     protected $dateCreated;
+    
+    protected $lastModified;
     
     public function getId()
     {
@@ -149,26 +150,29 @@ class MediaResourceListingsCache
      */
     public function getXmlData()
     {
-        return $this->xmlData;
+        return new SimpleXMLElement($this->xmlData);
     }
 
-    /**
-     * Set dateCreated
-     *
-     * @param datetime $dateCreated
-     */
+    
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
     }
 
-    /**
-     * Get dateCreated
-     *
-     * @return datetime 
-     */
+    
     public function getDateCreated()
     {
         return $this->dateCreated;
+    }
+    
+    public function setLastModified($lastModified)
+    {
+        $this->lastModified = $lastModified;
+    }
+
+    
+    public function getLastModified()
+    {
+        return $this->lastModified;
     }
 }

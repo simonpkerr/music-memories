@@ -24,7 +24,10 @@ use SkNd\MediaBundle\Form\Type\MediaSelectionType;
 use SkNd\MediaBundle\Form\Type\MediaSearchType;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\MediaAPI\MediaAPI;
-use SkNd\MediaBundle\MediaAPI\IProcessMediaStrategy;
+use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
+use SkNd\MediaBundle\MediaAPI\ProcessDetailsDecoratorStrategy;
+use SkNd\MediaBundle\MediaAPI\ProcessListingsStrategy;
+use \SimpleXMLElement;
 
 class MediaController extends Controller
 {
@@ -45,7 +48,7 @@ class MediaController extends Controller
     }
     
     public function mediaSelectionAction(Request $request = null){
-        $session = $this->getRequest()->getSession();
+        //$session = $this->getRequest()->getSession();
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $em = $this->mediaapi->getEntityManager();
  
@@ -56,7 +59,8 @@ class MediaController extends Controller
          * the form, otherwise just use the empty media selection object
          */
         $mediaSelection = new MediaSelection();
-        $sessionFormData = $session->get('mediaSelection');
+        //$sessionFormData = $session->get('mediaSelection');
+        $sessionFormData = $this->mediaapi->getMediaSelection();
         if($sessionFormData != null){
             
             $mediaType = $sessionFormData->getMediaType();
@@ -93,7 +97,7 @@ class MediaController extends Controller
             if($form->isValid()){
                 
                 $mediaSelection = $form->getData();
-                $this->mediaapi->setMediaSelection($mediaSelection);
+                $this->mediaapi->setMediaSelection(array('mediaSelection' => $mediaSelection));
                 
                 return $this->redirect($this->generateUrl('search', $this->mediaapi->getMediaSelectionParams()));
             }else{
@@ -120,65 +124,101 @@ class MediaController extends Controller
     
     /*
      * perform the search, then redirect to the listings action to show the results
+     * search should look up all relevant apis - 
+     * film/tv: amazon, youtube, google images (?), wikipedia (?)
+     * music: 7digital, youtube, google images (?), wikipedia (?)
+     * will most likely be more than 1 api looked up,
+     * needs to be able to process multiple apis based on config
      */
-    public function searchAction($media, $decade = "all-decades", $genre = "all-genres", $keywords = '-', $page = 1){
+    public function searchAction(
+            $media, 
+            $decade = "all-decades", 
+            $genre = "all-genres", 
+            $keywords = '-', 
+            $page = 1,
+            $api = 'amazonapi'){
+       
        $this->mediaapi = $this->get('sk_nd_media.mediaapi');
-       $mediaSelection = $this->mediaapi->getMediaSelection(array(
-           'api'       => 'amazonapi', 
+       $em = $this->mediaapi->getEntityManager(); 
+       
+       $mediaSelection = $this->mediaapi->setMediaSelection(array(
+           'api'       => $api, 
            'media'     => $media,
            'decade'    => $decade,
            'genre'     => $genre,
            'keywords'  => $keywords,
            'page'      => $page,
            'computedKeywords'  => null,
-        ));
+       ));
        
-       $pagerCount = 5;
+       /*$pagerCount = 5;
        $pagerParams = array(
            'pagerCount' => $pagerCount,
-       );
+       );**/
        
-       $responseParams = Utilities::removeNullEntries(array(
+       $responseParams = $this->mediaapi->getMediaSelectionParams();
+       
+       /*Utilities::removeNullEntries(array(
            'decade'         => $decade,
            'genre'          => $genre,
            'media'          => $media,
            'keywords'       => $keywords != '-' ? $keywords : null,
-           'api'            => 'amazonapi',
+           'api'            => $apiKey,
+       ));*/
+       
+       //loop through each configured api and store as index of array
+       
+       $processMediaStrategy = new ProcessListingsStrategy(array(
+           'em'             => $em,
+           'mediaSelection' => $mediaSelection,
+           'apiStrategy'    => $this->mediaapi->getAPIStrategy($api),
        ));
        
        //todo
-       if($media == "music"){
-            
-            $this->mediaapi->setAPIStrategy('sevendigitalapi');
-            try{
-                $response = $this->mediaapi->getListings();
-            }catch(Exception $ex){
-                $exception = $ex;
-            }
-       }else{
-            $this->mediaapi->setAPIStrategy('amazonapi');
-            try{
-                $listings = $this->mediaapi->getListings(MediaAPI::MEMORY_WALL_RECOMMENDATION);
-                $response = $listings['response'];
-                $pagerParams['pagerUpperBound'] = $response->TotalPages > 10 ? 10 : $response->TotalPages;
-                $pagerParams['pagerLowerBound'] = 1;
-                $pagerParams['totalPages'] = $pagerParams['pagerUpperBound'];
-                $pagerParams['pagerRouteParams'] = $this->mediaapi->getMediaSelectionParams();
-                $responseParams['pagerParams'] = $pagerParams;
-                
-                $responseParams = array_merge($responseParams, $listings);
-                //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
-            }catch(\RunTimeException $re){
-                $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
-            }catch(\LengthException $le){
-                $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
-            }
-       }
+//       if($media == "music"){
+//            
+//            //$this->mediaapi->setAPIStrategy('sevendigitalapi');
+//            try{
+//                //$response = $this->mediaapi->getListings();
+//                $listings = $this->mediaapi->getMedia($processMediaStrategy);
+//            }catch(Exception $ex){
+//                $exception = $ex;
+//            }
+//       }else{
+            //$this->mediaapi->setAPIStrategy('amazonapi');
+        try{
+            $listings = $this->mediaapi->getMedia($processMediaStrategy);
+            //$listings = $this->mediaapi->getListings(MediaAPI::MEMORY_WALL_RECOMMENDATION);
+            //$response = $listings['response'];
+            $responseParams = array_merge($responseParams, $listings);
+            $responseParams['pagerParams'] = $this->calculatePagerParams($listings['listings']->getXmlData());
+
+            $responseParams = array_merge($responseParams, $listings);
+            //$pagerParams = array_merge($pagerParams, $this->calculatePagingBounds($pagerCount, $page));
+        }catch(\RunTimeException $re){
+            $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
+        }catch(\LengthException $le){
+            $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
+        }
+       //}
        
        return $this->render('SkNdMediaBundle:Media:searchResults.html.twig', $responseParams);
     }
    
-    public function mediaDetailsAction($id, $apiKey){
+    private function calculatePagerParams(SimpleXMLElement $xmlData){
+        return array(
+            'pagerUpperBound'       =>  $xmlData->TotalPages > 10 ? 10 : $xmlData->TotalPages,
+            'pagerLowerBound'       =>  1,
+            'totalPages'            =>  $xmlData->TotalPages > 10 ? 10 : $xmlData->TotalPages,
+            'pagerRouteParams'      =>  $this->mediaapi->getMediaSelectionParams());
+    }
+    
+    /* media selection is not set from the details action, only looked up,
+     * details looks up api data from all relevant apis for the given item
+     * (should this use partials or just process all from the main details action?)
+     * 
+     */
+    public function mediaDetailsAction($id, $api){
         /*
          * set the mediaSelection object if it doesn't exist - user may have gone straight to the page
          * without going through the selection process
@@ -187,6 +227,7 @@ class MediaController extends Controller
          * first and if they don't they can be looked up but not inserted, or looked up but without recommendations
          */
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
+        $em = $this->mediaapi->getEntityManager(); 
         /*$mediaSelection = $this->mediaapi->getMediaSelection(array(
             'api'               => 'amazonapi',
             'media'             => $media,
@@ -195,71 +236,111 @@ class MediaController extends Controller
             'computedKeywords'  => null,
             'keywords'          => $keywords,
         ));*/
+        $apiStrategy = $this->mediaapi->getAPIStrategy($api);//entity in class
+        $mediaSelection = clone $this->mediaapi->getMediaSelection();
+        $mediaSelection->setAPI($apiStrategy->getAPIEntity());        
+        //$details = null;
+        //$title = null;
         
-        $details = null;
-        $title = null;
+        $responseParams = array_merge(
+                $this->mediaapi->getMediaSelectionParams(),
+                array('referrer' => $this->getRequest()->headers->get('referer')));
+  
+        $processDetailsStrategy = new ProcessDetailsStrategy(array(
+            'em'            =>      $em,
+            'apiStrategy'   =>      $apiStrategy, 
+            'mediaSelection'=>      $mediaSelection,
+            'itemId'        =>      $id,
+        ));
         
-        $referrer = $this->getRequest()->headers->get('referer');
-        
-        $responseParams = array(
-            'media'             => $media,
-            'decade'            => $decade,
-            'genre'             => $genre,
-            'keywords'          => $keywords,
-            'api'               => $apiKey,
-            'referrer'          => $referrer,
-        );
-        
-        if($this->mediaSelection->getMediaType()->getMediaName() != 'music'){
-            /*$params = array(
-               'ItemId'         =>  $id,
-               'apiKey'    =>  $apiKey,
-            );*/
-            
-            $processStrategy = new ProcessDetailsStrategy(array(
-                'em'            =>      $this->em,
-                'apiStrategy'   =>      $this->mediaapi->getAPIStrategy($apiKey), 
-                'mediaSelection'=>      $this->mediaSelection,
-                'itemId'        =>      $id,
-            ));
-            $processStrategy = new ProcessDetailsDecoratorStrategy(array(
-                'processStrategy'   => $processStrategy,
-                'em'                => $em,
-                'apis'              => $this->mediaapi->getAPIs()));
-            //create the decorator strategy and pass the original strategy to it
-            try{  
-                
-                $responseParams['mediaResource'] = $this->mediaapi->getMedia($processStrategy);
-                                
-            }catch(\RunTimeException $re){
-                $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
-            }catch(\LengthException $le){
-                $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
-            }
+        //create the decorator strategy and pass the original strategy to it
+        $processDetailsStrategy = new ProcessDetailsDecoratorStrategy(array(
+            'processDetailsStrategy'=> $processDetailsStrategy,
+            'em'                    => $em,
+            'apis'                  => $this->mediaapi->getAPIs()));
+
+        try{  
+
+            $responseParams['mediaResource'] = $this->mediaapi->getMedia($processDetailsStrategy);
+
+        }catch(\RunTimeException $re){
+            $this->get('session')->setFlash('amazon-notice', 'media.amazon.runtime_exception');
+        }catch(\LengthException $le){
+            $this->get('session')->setFlash('amazon-notice', 'media.amazon.length_exception');
         }
+      
        
         return $this->render('SkNdMediaBundle:Media:mediaDetails.html.twig', $responseParams);
         
     }
-          
-    public function youTubeRequestAction($title, $media, $decade, $genre, $keywords = '-'){
+    
+    /* 
+     * pass the id of the related item so that a media selection object can be
+     * created. 
+     */
+    public function youTubeRequestAction($title, $mrid){
         $responseParams = array();
         
         //get the youtube service
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
-        $responseParams['api'] = $this->mediaapi->getCurrentAPI()->getName();
-        $mediaSelection = $this->mediaapi->getMediaSelection(array(
-            'api'               => 'youtubeapi',
+        $em = $this->mediaapi->getEntityManager(); 
+        
+        /*
+         * api entity needs to be a property of api strategy
+         */
+        //$api = $em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi');
+        $apiStrategy = $this->mediaapi->getAPIStrategy('youtubeapi');//entity in class
+        
+        
+        //get media resource id
+        $mr = $em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceById($mrid);
+        
+        //$responseParams['api'] = $apiStrategy->getName();
+        /*dont need to set the media api media selection, why not just create a new one
+         * use the media resource id to look up the media resource details 
+         * and create a new media selection.
+         */
+         
+        /* PROBLEM - Need to pass correct api ref along with all other
+         * media selection params, to media listings repository
+         * so that correct cached listings can be returned.
+         * also, at present, the youtube listings are stored based on media selection
+         * and title of item (stored as keywords)
+         * 
+         * from media details page, mediaresource mediatype, decade, genre can be 
+         * passed. the api ref needs to be manually set in this action but the 
+         * mediaapi mediaselection should not be updated, since this results in issues with 
+         * media being incorrectly added to walls.
+         */
+       
+        /*$mediaSelection = $this->mediaapi->setMediaSelection(array(
+            'api'               => $api,
             'media'             => $media,
             'decade'            => $decade,
             'genre'             => $genre,
             'computedKeywords'  => urldecode($title),
-            'keywords'          => $keywords,
-        ));
+            //'keywords'          => $keywords,
+        ));*/
         
+        /*this mediaselection is based on the mediaapi one but modified 
+         * based on the referenced mediaresource
+         */
+        $mediaSelection = clone $this->mediaapi->getMediaSelection();
+        $mediaSelection->setAPI($apiStrategy->getAPIEntity());
+        $mediaSelection->setMediaType($mr->getMediaType());
+        $mediaSelection->setDecade($mr->getDecade());
+        $mediaSelection->setSelectedMediaGenre($mr->getGenre());
+        $mediaSelection->setKeywords(urldecode($title));
+                
         $listings = null;
+        
+        $processMediaStrategy = new ProcessListingsStrategy(array(
+           'em'             => $em,
+           'mediaSelection' => $mediaSelection,
+           'apiStrategy'    => $apiStrategy,
+        ));
         try{
-            $listings = $this->mediaapi->getListings();
+            $listings = $this->mediaapi->getMedia($processMediaStrategy);
             //merge the listings and responseParams and remove null entries
             $responseParams = Utilities::removeNullEntries(array_merge($responseParams, $listings));
         }catch(\RuntimeException $re){

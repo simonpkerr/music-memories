@@ -10,10 +10,13 @@
 
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
+use SkNd\MediaBundle\Entity\API;
 use \SimpleXMLElement;
 
 interface IAPIStrategy {
     
+    public function getAPIEntity();
+    public function setAPIEntity(API $entity);
     public function getListings(MediaSelection $mediaSelection);
     public function getDetails(array $params);
     public function getName();

@@ -59,4 +59,4 @@ memoryWallDeleteMediaResourceConfirm:
   defaults:
     _controller: SkNdUserBundle:MemoryWall:deleteMediaResource
   requirements:
-    confirmed: true
+    confirmed: "true"

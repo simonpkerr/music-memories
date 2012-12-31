@@ -1,14 +1,18 @@
+{% macro shortenTitle(title) %}
+{{ title|slice(0,85) }}{% if title|length > 85 %}&hellip;{%endif%}
+{% endmacro %}
+
 {% macro mrLinkAndPic(mr, api) %}
 {% if api.name == 'youtubeapi' %}
     <a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}','{{mr.mediaResourceCache.title|escape('js')}}')">
         <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
     </a>
-    <strong><a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}','{{mr.mediaResourceCache.title|escape('js')}}')">{{ mr.mediaResourceCache.title }}</a></strong>
+    <strong><a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}','{{mr.mediaResourceCache.title|escape('js')}}')">{{ _self.shortenTitle(mr.mediaResourceCache.title) }}</a></strong>
 {% else %}
-    <a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">
+    <a href="{{path('mediaDetails', {'id':mr.id, 'api':mr.api.name})}}" title="click to explore {{mr.mediaResourceCache.title}}">
         <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
     </a>
-    <strong><a href="{{path('mediaDetails', mr.detailsPageParams )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mr.mediaResourceCache.title}}</a></strong>    
+    <strong><a href="{{path('mediaDetails',{'id':mr.id, 'api':mr.api.name} )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{_self.shortenTitle(mr.mediaResourceCache.title)}}</a></strong>    
 {% endif %}
        
 {% endmacro %}

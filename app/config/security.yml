@@ -1,32 +1,24 @@
+jms_security_extra:
+    secure_all_services: false
+    expressions: true
+
 security:
+    providers:
+        #fos_userbundle:
+        #  id: fos_user.user_manager
+        fos_userbundle:
+          id: fos_user.user_provider.username
+        in_memory:
+            memory:
+                users:
+                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+                    
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
         SkNd\UserBundle\Entity\User: sha512
-        FOS\UserBundle\Model\UserInterface: 
-          algorithm: sha512
-          encode_as_base64: false
-          iterations: 1
-
-    role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
-        #[ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-
-    providers:
-        fos_userbundle:
-          id: fos_user.user_manager
-        in_memory:
-            users:
-                user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
-        #main:
-          #entity: { class: SkNd\UserBundle\Entity\User, property: username }    
-                
-    #this section determines the patterns for which areas are secured
-    #and which are open. So in the code below, the login action is open
-    #but the check path is secured
-    #the access control area determines which areas of the site are secured
-    #in this case all routes beginning with 'admin'    
+        FOS\UserBundle\Model\UserInterface: sha512
+       
     firewalls:
         main:
           pattern: ^/
@@ -40,25 +32,33 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+#
 #        login:
-#            pattern:  ^/login$
+#            pattern:  ^/demo/secured/login$
 #            security: false
 #
 #        secured_area:
-#            pattern:    ^/
+#            pattern:    ^/demo/secured/
 #            form_login:
-#                check_path: /login_check
-#                login_path: /login
+#                check_path: /demo/secured/login_check
+#                login_path: /demo/secured/login
 #            logout:
-#                path:   /logout
-#                target: /index
-#            anonymous: ~
+#                path:   /demo/secured/logout
+#                target: /demo/
+            #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
+            
+#    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
 
     access_control:
        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/admin/, role: ROLE_ADMIN }
-
+    
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN

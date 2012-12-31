@@ -10,7 +10,7 @@
 namespace SkNd\MediaBundle\MediaAPI;
 
 use Symfony\Bundle\DoctrineBundle\Registry;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\Utilities;
@@ -51,14 +51,15 @@ class MediaAPI {
      * and an array of api objects
      */
     public function __construct($debug_mode, EntityManager $em, Session $session, array $apis){
-        $this->setAPIs($apis);
+        
         $this->debugMode = $debug_mode;
         $this->em = $em;
         $this->session = $session;
+        $this->setAPIs($apis);        
         //if(is_null($this->apiStrategy))
         //    $this->setAPIStrategy('amazonapi');
         
-        $this->mediaSelection = $this->getMediaSelection();
+        $this->mediaSelection = $this->setMediaSelection();
         
     }
  
@@ -74,6 +75,14 @@ class MediaAPI {
         return $this->apis;
     }
     
+    //set the apis and attach the entity to each api
+    public function setAPIs(array $apis){
+        $this->apis = array_merge($apis);
+        foreach($this->apis as $api){
+            $api->setAPIEntity($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($api->getName()));
+        }
+    }
+        
     public function setSession(Session $session){
         $this->session = $session;
     }
@@ -101,29 +110,22 @@ class MediaAPI {
         return $this->apiStrategy;
     }
     
-    
-    
-    public function setAPIs(array $apis){
-        $this->apis = array_merge($apis);
-    }
-    
     //returns the current media resource or null if it doesn't exist
     public function getCurrentMediaResource(){
         return $this->mediaResource;
     }
     
-    public function setMediaSelection(MediaSelection $mediaSelection){
-        $this->mediaSelection = $mediaSelection;
-        $this->session->set('mediaSelection', $this->mediaSelection);
-    }
     
     /*
      * check session, return mediaSelection if not null
      * else create new media selection and return
-     * $params - contains optional media, decade, genre, keywords, page
+     * $params - contains optional mediaSelection object - if this is set,
+     * simply set the mediaselection as the passed object
+     * otherwise
+     * @param media, decade, genre, keywords, page
      * if params exist, they should override the session values if different
-     */
-    public function getMediaSelection(array $params = null){
+     */    
+    public function setMediaSelection(array $params = null){
         $api = null;
         $mediaTypeSlug = null;
         $decadeSlug = null;
@@ -132,127 +134,146 @@ class MediaAPI {
         $computedKeywords = null;
         $page = 1;
         
-        //try getting the media selection from the session
-        if($this->mediaSelection == null)
-            $this->mediaSelection = $this->session->has('mediaSelection') ? $this->session->get('mediaSelection') : new MediaSelection();
-        
-        $api = $this->mediaSelection->getAPI();
-        $mediaType = $this->mediaSelection->getMediaType();
-        $decade = $this->mediaSelection->getDecade();
-        $genre = $this->mediaSelection->getSelectedMediaGenre();
-        
-        if($params != null){
-            $apiSlug = isset($params['api']) ? $params['api'] : API::$default;
-            $mediaTypeSlug = isset($params['media']) ? $params['media'] : MediaType::$default;
-            $decadeSlug = isset($params['decade']) ? $params['decade'] : Decade::$default;
-            $genreSlug = isset($params['genre']) ? $params['genre'] : Genre::$default;
-            $keywords = isset($params['keywords']) ? $params['keywords'] != '-' ? $params['keywords'] : null : null;
-            $computedKeywords = isset($params['computedKeywords']) ? $params['computedKeywords'] : null;
-            $page = isset($params['page']) ? $params['page'] : $page;
-            
-            //only update the mediaSelection if different
-            if($api == null || $apiSlug != $api->getName()){
-                $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiSlug);
-                if($api == null)
-                    throw new \RuntimeException("There was a problem with that api value");
+        if(isset($params['mediaSelection']) && $params['mediaSelection'] instanceof MediaSelection){
+            $this->mediaSelection = $params['mediaSelection'];
+            $this->session->set('mediaSelection', $this->mediaSelection);
+        }else{
+            //try getting the media selection from the session
+            if($this->mediaSelection == null)
+                $this->mediaSelection = $this->session->has('mediaSelection') ? $this->session->get('mediaSelection') : new MediaSelection();
 
-                $this->setAPIStrategy($apiSlug);
-            } 
+            $api = $this->mediaSelection->getAPI();
+            $mediaType = $this->mediaSelection->getMediaType();
+            $decade = $this->mediaSelection->getDecade();
+            $genre = $this->mediaSelection->getSelectedMediaGenre();
 
-            if($mediaType == null || $mediaTypeSlug != $mediaType->getSlug()){
-                $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
-                if($mediaType == null)
-                    throw new NotFoundHttpException("There was a problem with that address");
-            }
-       
-            //if decade is not default decade and is not the same as existing decade
-            if($decadeSlug != Decade::$default){
-                if($decade == null || $decadeSlug != $decade->getSlug()){
-                    $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
-                    if($decade == null)
-                        throw new NotFoundHttpException ("There was a problem with that address");
+            if($params != null){
+                $apiSlug = isset($params['api']) ? $params['api'] : API::$default;
+                $mediaTypeSlug = isset($params['media']) ? $params['media'] : MediaType::$default;
+                $decadeSlug = isset($params['decade']) ? $params['decade'] : Decade::$default;
+                $genreSlug = isset($params['genre']) ? $params['genre'] : Genre::$default;
+                $keywords = isset($params['keywords']) ? $params['keywords'] != '-' ? $params['keywords'] : null : null;
+                $computedKeywords = isset($params['computedKeywords']) ? $params['computedKeywords'] : null;
+                $page = isset($params['page']) ? $params['page'] : $page;
+
+                //only update the mediaSelection if different
+                if($api == null || $apiSlug != $api->getName()){
+                    $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($apiSlug);
+                    if($api == null)
+                        throw new \RuntimeException("There was a problem with that api value");
+
+                    $this->setAPIStrategy($apiSlug);
                 } 
-            }else{
-                $decade = null;
+
+                if($mediaType == null || $mediaTypeSlug != $mediaType->getSlug()){
+                    $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
+                    if($mediaType == null)
+                        throw new NotFoundHttpException("There was a problem with that address");
+                }
+
+                //if decade is not default decade and is not the same as existing decade
+                if($decadeSlug != Decade::$default){
+                    if($decade == null || $decadeSlug != $decade->getSlug()){
+                        $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
+                        if($decade == null)
+                            throw new NotFoundHttpException ("There was a problem with that address");
+                    } 
+                }else{
+                    $decade = null;
+                }
+
+                if($genreSlug != Genre::$default){
+                    //if the genre is different or the media type is different, reset the genre
+                    if($genre == null || $genreSlug != $genre->getSlug() || $mediaTypeSlug != $mediaType->getSlug()){
+                        try{
+                            $genre = $this->em->getRepository('SkNdMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
+                        }catch(\Exception $ex){
+                            throw new NotFoundHttpException ("There was a problem with that address");
+                        }
+                    } 
+                }else{
+                    $genre = null;
+                }
+
+                /*
+                * if the keywords are set from a search then removed and another search performed
+                * they should be removed from the MediaSelection object. 
+                */
+                if($this->mediaSelection->getKeywords() != $keywords){
+                    $this->mediaSelection->setKeywords($keywords);
+                }
+
+                if($this->mediaSelection->getComputedKeywords() != $computedKeywords){
+                    $this->mediaSelection->setComputedKeywords($computedKeywords);
+                }
+            } else {
+                //if no params were sent through, ensure that defaults are added for mediatype and api
+                if($api == null){
+                    $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName(API::$default);
+                    $this->setAPIStrategy(API::$default);
+                }
+                if($mediaType == null){
+                    $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug(MediaType::$default);
+                }
+
             }
 
-            if($genreSlug != Genre::$default){
-                //if the genre is different or the media type is different, reset the genre
-                if($genre == null || $genreSlug != $genre->getSlug() || $mediaTypeSlug != $mediaType->getSlug()){
-                    try{
-                        $genre = $this->em->getRepository('SkNdMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
-                    }catch(\Exception $ex){
-                        throw new NotFoundHttpException ("There was a problem with that address");
-                    }
-                } 
-            }else{
-                $genre = null;
+            if(isset($params['page']))
+                $this->mediaSelection->setPage($page);
+
+            if($this->mediaSelection->getGenres() == null){
+                $genres = $this->em->getRepository('SkNdMediaBundle:Genre')->getAllGenres();
+                $this->mediaSelection->setGenres($genres);
             }
-            
-            /*
-             * if the keywords are set from a search then removed and another search performed
-             * they should be removed from the MediaSelection object. 
-             */
-            if($this->mediaSelection->getKeywords() != $keywords){
-                $this->mediaSelection->setKeywords($keywords);
+
+            //*****is necessary to merge the entities back into the entity manager after retrieving them
+            if(!is_null($api)){
+                $api = $this->em->merge($api);
+                $this->mediaSelection->setAPI($api);
             }
-            
-            if($this->mediaSelection->getComputedKeywords() != $computedKeywords){
-                $this->mediaSelection->setComputedKeywords($computedKeywords);
+
+            if(!is_null($mediaType)){
+                $mediaType = $this->em->merge($mediaType);
+                $this->mediaSelection->setMediaType($mediaType);
             }
-        } else {
-            //if no params were sent through, ensure that defaults are added for mediatype and api
-            if($api == null){
-                $api = $this->em->getRepository('SkNdMediaBundle:API')->getAPIByName(API::$default);
-                $this->setAPIStrategy(API::$default);
-            }
-            if($mediaType == null){
-                $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug(MediaType::$default);
-            }
-            
-        }
-        
-        if(isset($params['page']))
-            $this->mediaSelection->setPage($page);
-            
-        if($this->mediaSelection->getGenres() == null){
-            $genres = $this->em->getRepository('SkNdMediaBundle:Genre')->getAllGenres();
-            $this->mediaSelection->setGenres($genres);
-        }
-        
-        //*****is necessary to merge the entities back into the entity manager after retrieving them
-        if(!is_null($api)){
-            $api = $this->em->merge($api);
-            $this->mediaSelection->setAPI($api);
-        }
-        
-        if(!is_null($mediaType)){
-            $mediaType = $this->em->merge($mediaType);
-            $this->mediaSelection->setMediaType($mediaType);
-        }
-        
-        if(!is_null($decade))
-            $decade = $this->em->merge($decade);
-        
-        $this->mediaSelection->setDecade($decade);
-                    
-        if(!is_null($genre))
-            $genre = $this->em->merge($genre);
-        
-        $this->mediaSelection->setSelectedMediaGenre($genre);
-        
-        //final check to see if everything is still null
-        if(is_null($api) && is_null($mediaType))
-            throw new RuntimeException('No media selection has been made');
-        
-        //save the data so this process is only done once
-        $this->session->set('mediaSelection', $this->mediaSelection);
-        
-        return $this->mediaSelection;
+
+            if(!is_null($decade))
+                $decade = $this->em->merge($decade);
+
+            $this->mediaSelection->setDecade($decade);
+
+            if(!is_null($genre))
+                $genre = $this->em->merge($genre);
+
+            $this->mediaSelection->setSelectedMediaGenre($genre);
+
+            //final check to see if everything is still null
+            if(is_null($api) && is_null($mediaType))
+                throw new RuntimeException('No media selection has been made');
+
+            //save the data so this process is only done once
+            $this->session->set('mediaSelection', $this->mediaSelection);
+
+            return $this->mediaSelection;
    
+        }
         
     }
-   
+    
+    public function getMediaSelection(){
+        if(!is_null($this->mediaSelection))
+            return $this->mediaSelection;
+        
+        if($this->session->has('mediaSelection')){
+            $this->mediaSelection = $this->session->get('mediaSelection');
+        }else{
+            $this->mediaSelection = $this->setMediaSelection();
+            $this->session->set('mediaSelection', $this->mediaSelection);
+        }
+        
+        return $this->mediaSelection;
+    }
+    
     /*
      * if no media, decade or genre is selected, defaults should be returned
      * so that the media selection form can be correctly set.
@@ -261,19 +282,21 @@ class MediaAPI {
         $params = array();
         if($this->mediaSelection != null){
             $params = array(
-                    'media'     => $this->mediaSelection->getMediaType()->getSlug(),    
-                    'decade'    => $this->mediaSelection->getDecade() != null ? $this->mediaSelection->getDecade()->getSlug() : Decade::$default,
-                    'genre'     => $this->mediaSelection->getSelectedMediaGenre() != null ? $this->mediaSelection->getSelectedMediaGenre()->getSlug() : Genre::$default,
-                    'keywords'  => $this->mediaSelection->getKeywords() != null ? $this->mediaSelection->getKeywords() : '-',
-                    'page'      => $this->mediaSelection->getPage() != null ? $this->mediaSelection->getPage() : 1,
+                'api'       => !is_null($this->mediaSelection->getAPI()) ? $this->mediaSelection->getAPI()->getName() : API::$default,    
+                'media'     => $this->mediaSelection->getMediaType()->getSlug(),    
+                'decade'    => !is_null($this->mediaSelection->getDecade()) ? $this->mediaSelection->getDecade()->getSlug() : Decade::$default,
+                'genre'     => !is_null($this->mediaSelection->getSelectedMediaGenre()) ? $this->mediaSelection->getSelectedMediaGenre()->getSlug() : Genre::$default,
+                'keywords'  => !is_null($this->mediaSelection->getKeywords()) ? $this->mediaSelection->getKeywords() : null,
+                'page'      => !is_null($this->mediaSelection->getPage()) ? $this->mediaSelection->getPage() : 1,
             );
         }else {
             $params = array(
+                'api'       => API::$default,    
                 'media'     => MediaType::$default,
                 'decade'    => Decade::$default,
                 'genre'     => Genre::$default,
+                'keywords'  => null,
                 'page'      => 1,
-                'keywords'  => '-',
             );
         }
         
@@ -285,7 +308,7 @@ class MediaAPI {
     
        
     /**
-     * getDetails calls the api of the current strategy
+     * getMedia calls the api of the current strategy
      * but first gets recommendations from the db about that api
      * @param params - contains the relevant parameters to call the api. for amazon this is things
      * like ItemId. For youtube it contains things like keywords, decade, media etc
@@ -294,15 +317,17 @@ class MediaAPI {
      * not require recommendations to be looked up
      * 
      **/
-    public function getMedia(IProcessStrategy $processStrategy){
+    public function getMedia(IProcessMediaStrategy $processStrategy){
         //$this->response = null;
         //$itemId = $params['ItemId'];
         //set the correct api from the controller
         //$apiReferrer = $params['apiReferrer'];
        
         //process batch strategy will not have a key?
-        $this->setAPIStrategy($processStrategy->getAPIData());
-        $processStrategy->setAPIStrategy($this->apiStrategy);
+        
+        //IS THIS NEEDED? WILL BREAK WITH PROCESSBATCHSTRATEGY
+        //$this->setAPIStrategy($processStrategy->getAPIData()->getName());
+        
         $processStrategy->processMedia();
         $processStrategy->cacheMedia();
         
@@ -352,56 +377,56 @@ class MediaAPI {
      * @return array(response, recommendations)
      * 
      **/
-    public function getListings($recType = null){
-        $this->response = null;
-           
-        $this->response = $this->getCachedListings();
-        $this->cachedDataExist = $this->response != null ? true : false;
-        
-        //look up the query from the db and return cached listings if available
-        if(!$this->cachedDataExist){
-            $this->response = $this->apiStrategy->getListings($this->mediaSelection);
-            
-            //once results are retrieved insert into cache
-            $this->cacheListings($this->response);
-        } 
-        
-        $recommendations = $this->getRecommendations($recType);
-        return array(
-            'response'          => $this->response,
-            'recommendations'   => $recommendations,
-        );
-        
-                
-    }
+//    public function getListings($recType = null){
+//        $this->response = null;
+//           
+//        $this->response = $this->getCachedListings();
+//        $this->cachedDataExist = $this->response != null ? true : false;
+//        
+//        //look up the query from the db and return cached listings if available
+//        if(!$this->cachedDataExist){
+//            $this->response = $this->apiStrategy->getListings($this->mediaSelection);
+//            
+//            //once results are retrieved insert into cache
+//            $this->cacheListings($this->response);
+//        } 
+//        
+//        $recommendations = $this->getRecommendations($recType);
+//        return array(
+//            'response'          => $this->response,
+//            'recommendations'   => $recommendations,
+//        );
+//        
+//                
+//    }
     
     //only results returned from the live api are cached
-    public function cacheListings(SimpleXMLElement $response){
-        $cachedListing = new \SkNd\MediaBundle\Entity\MediaResourceListingsCache();
-        $cachedListing->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
-        $cachedListing->setMediaType($this->mediaSelection->getMediaType());
-        $cachedListing->setDecade($this->mediaSelection->getDecade());
-        $cachedListing->setGenre($this->mediaSelection->getSelectedMediaGenre());
-        $cachedListing->setKeywords($this->mediaSelection->getKeywords());
-        $cachedListing->setComputedKeywords($this->mediaSelection->getComputedKeywords());
-        $cachedListing->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
-        $cachedListing->setXmlData($response->asXML());        
-        
-        $this->em->persist($cachedListing);
-        $this->flush();
-    }
-    
-    public function getCachedListings(){
-        //look up the MediaResourceListingsCache with the params and the current apistrategy name   
-        $xmlResponse = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection, $this->apiStrategy);
-        
-        if($xmlResponse != null){
-            return @simplexml_load_string($xmlResponse);
-        }
-        else{
-            return null;
-        }
-    }
+//    public function cacheListings(SimpleXMLElement $response){
+//        $cachedListing = new \SkNd\MediaBundle\Entity\MediaResourceListingsCache();
+//        $cachedListing->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
+//        $cachedListing->setMediaType($this->mediaSelection->getMediaType());
+//        $cachedListing->setDecade($this->mediaSelection->getDecade());
+//        $cachedListing->setGenre($this->mediaSelection->getSelectedMediaGenre());
+//        $cachedListing->setKeywords($this->mediaSelection->getKeywords());
+//        $cachedListing->setComputedKeywords($this->mediaSelection->getComputedKeywords());
+//        $cachedListing->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
+//        $cachedListing->setXmlData($response->asXML());        
+//        
+//        $this->em->persist($cachedListing);
+//        $this->flush();
+//    }
+//    
+//    public function getCachedListings(){
+//        //look up the MediaResourceListingsCache with the params and the current apistrategy name   
+//        $xmlResponse = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection, $this->apiStrategy);
+//        
+//        if($xmlResponse != null){
+//            return @simplexml_load_string($xmlResponse);
+//        }
+//        else{
+//            return null;
+//        }
+//    }
     
     /**
      * gets recommendations for either the listings or details pages

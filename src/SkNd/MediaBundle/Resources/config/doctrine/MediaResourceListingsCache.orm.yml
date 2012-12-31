@@ -26,6 +26,12 @@ SkNd\MediaBundle\Entity\MediaResourceListingsCache:
       gedmo:
         timestampable:
           on: create
+    lastModified:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: update
+          
   manyToOne:
     api:
       targetEntity: API

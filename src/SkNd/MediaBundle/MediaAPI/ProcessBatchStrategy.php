@@ -2,21 +2,25 @@
 
 /**
  * @abstract ProcessBatchStrategy
+ * @uses MemoryWallController show action, MediaController details action
  * @copyright Simon Kerr 2012
  * @author Simon Kerr
  * @version 1.0
  */
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
+use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
 
-class ProcessBatchStrategy implements IProcessMediaStrategy {
+class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $apis;
     protected $em;
     protected $mediaResources;
-    private $apiResponses;
+    protected $apiResponses;
+   // protected $mediaSelection; --not needed
+    
     //need mediaResource?
     
     /**
@@ -25,22 +29,30 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
      */
     public function __construct(array $params){
         $this->em = $params['em'];
-        //$this->mediaSelection = $params['mediaSelection'];
         $this->apis = $params['apis'];
-        $this->mediaResources = isset($params['mediaResources']) ? $params['mediaResources'] : null;
+        if(isset($params['mediaResources']))
+            $this->mediaResources = $params['mediaResources'];
+        
+        //$this->mediaSelection = $params['mediaSelection'];
+        $this->apiResponses = array();
+    }
+    
+    public function getMediaSelection(){
+        return null;
     }
     
     public function getAPIData(){
-        return $this->apis;
+        return null;
+        //$this->apis;
     }
     
     public function getMedia(){
         //for show memory wall, nothing is required to be returned
         
-        /*if(is_null($this->mediaResource))
-            throw new \RuntimeException("MediaResource is null");
+        if(is_null($this->mediaResources))
+            throw new \RuntimeException("MediaResources are null");
             
-        return $this->mediaResource;*/
+        return $this->mediaResources;
     }
     
     /**
@@ -66,8 +78,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
                 $ids = array_keys($resources);
                 
                 //do batch process of ids 
-                array_push($this->apiResponses, 
-                        array(
+                array_push($this->apiResponses, array(
                             'api'            => $api, 
                             'xmlData'        => $api->getBatch($ids),
                             'mediaResources' => $resources,
@@ -93,7 +104,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
          * or the details mediaresource without cache
          */
         
-        foreach($this->apiReponses as $apiResponse){
+        foreach($this->apiResponses as $apiResponse){
             $api = $apiResponse['api'];
             $mediaResources = $apiResponse['mediaResources'];
             
@@ -105,12 +116,13 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
                     $cachedResource = new MediaResourceCache();
                     $cachedResource->setId($id);
                     $cachedResource->setImageUrl($api->getImageUrlFromXML($itemXml));
+                    //$cachedResource->setSlug(null);
                     $cachedResource->setTitle($api->getItemTitleFromXML($itemXml));
                     $cachedResource->setXmlData($api->getXML($itemXml));
                     $cachedResource->setDateCreated(new \DateTime("now"));
                     try{
                         $mr->setMediaResourceCache($cachedResource);
-                        $this->persistMergeMediaResource($mr);
+                        $this->persistMerge($mr);
                     } catch(\Exception $ex){
                         throw $ex;
                     }
@@ -132,11 +144,16 @@ class ProcessBatchStrategy implements IProcessMediaStrategy {
     
     }
     
-    public function persistMergeMediaResource(MediaResource $mediaResource){
-        if($this->em->contains($mediaResource))
-            $this->em->merge($mediaResource);
+    public function persistMerge($obj){
+        if($this->em->contains($obj))
+            $this->em->merge($obj);
         else
-            $this->em->persist($mediaResource);
+            $this->em->persist($obj);
+    }
+    
+    //not needed
+    public function getMediaResource(){
+        return null;
     }
 
     

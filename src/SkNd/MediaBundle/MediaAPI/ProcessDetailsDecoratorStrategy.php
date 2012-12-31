@@ -7,10 +7,13 @@
  * @author Simon Kerr
  */
 namespace SkNd\MediaBundle\MediaAPI;
-use SkNd\MediaBundle\Entity\MediaSelection;
+
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
+use SkNd\MediaBundle\MediaAPI\ProcessBatchStrategy;
+use SkNd\MediaBundle\Entity\MediaResource;
+use SkNd\MediaBundle\Entity\MediaSelection;
 
 class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $processDetailsStrategy;
@@ -21,22 +24,28 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     //protected $itemId;
     
     /**
-     * @param array $params includes MediaDetails $mediaDetails,
-     * EntityManager $em, 
-     * IAPIStrategy $apiStrategy, 
-     * MediaSelection $mediaSelection,
-     * itemId
+     * @param array $params includes 
+     * EntityManager, processDetailsStrategy
      */
     public function __construct(array $params){
-        //reference passed to the decorator strategy
+        if(!isset($params['processDetailsStrategy'])||
+           !isset($params['em']))
+                throw new \RuntimeException('invalid params for ' . $this);
+        
+        if(!$params['processDetailsStrategy'] instanceof IProcessMediaStrategy)
+            throw new \RuntimeException('invalid details strategy');
+        
+        if(!$params['em'] instanceof EntityManager)
+            throw new \RuntimeException('invalid em');
+        
         $this->processDetailsStrategy = $params['processDetailsStrategy'];
         $this->em = $params['em'];
-        /*$this->em = $params['em'];
-        $this->mediaSelection = $params['mediaSelection'];
-        $this->apiStrategy = $params['apiStrategy'];
-        $this->itemId = $params['itemId'];*/
+        //$params['mediaSelection'] = $this->getMediaSelection();
         parent::__construct($params);
-        $this->mediaResource = null; 
+    }
+    
+    public function getMediaSelection(){
+        return $this->processDetailsStrategy->getMediaSelection();
     }
     
     public function getAPIData(){
@@ -45,15 +54,17 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     
     public function processMedia(){
         $this->mediaResource = $this->getMediaResource();
-        $recommendations = $this->getRecommendations($this->mediaResource->getId());
+        $recommendations = $this->getRecommendations($this->mediaResource);
         //process all the resources, which filters mr's based on uncached ones, then does a batch job
-        parent::$mediaResources = array_merge(
+        $this->mediaResources = array_merge(
                 array($this->mediaResource->getId() => $this->mediaResource),
                 $recommendations['genericMatches'],
                 $recommendations['exactMatches']);
         
         parent::processMedia();
-        $this->mediaResource->setRelatedMediaResources($recommendations);
+        
+        if(!is_null($recommendations))
+            $this->mediaResource->setRelatedMediaResources($recommendations);
         
         //return $this->mediaResource;
     }
@@ -74,8 +85,8 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
      * @param $itemId is used so that the selected item is not picked as a recommendation
      * @return $recommendatations array
      */
-    private function getRecommendations($itemId) {
-        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($this->mediaSelection, $itemId);
+    protected function getRecommendations(MediaResource $mr) {
+        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($mr, $this->getMediaSelection());
         return $recommendationSet;
     }
 
@@ -83,8 +94,8 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         return $this->processDetailsStrategy->getMediaResource();
     }
     
-    public function persistMergeMediaResource($mediaResource){
-        parent::persistMergeMediaResource($mediaResource);
+    public function persistMerge($obj){
+        parent::persistMerge($obj);
     }
     
     

@@ -1,7 +1,0 @@
-SkNd\MediaBundle\Tests\Controller\DefaultController
- [x] Index
- [x] Error
-
-SkNd\MediaBundle\Tests\Controller\MediaController
- [x] Media selection
-

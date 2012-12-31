@@ -52,10 +52,10 @@ class MediaResourceCache
         return $this->dateCreated;
     }
 
-    public function setSlug($slug = null)
+    /*public function setSlug($slug = null)
     {
         $this->slug = $slug;
-    }
+    }*/
 
 
     public function getSlug()

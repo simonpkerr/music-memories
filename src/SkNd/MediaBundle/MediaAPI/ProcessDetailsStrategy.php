@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @abstract MediaDetails handles looking up of media resources, getting details
+ * @abstract ProcessDetailsStrategy handles looking up of single media resource, getting details
  * without recommendations, processing cache and storing cache.
  * @copyright Simon Kerr 2012
  * @author Simon Kerr
@@ -30,15 +30,26 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
      * itemId
      */
     public function __construct(array $params){
+        if(!isset($params['em'])||
+            !isset($params['mediaSelection'])||
+            !isset($params['apiStrategy'])||
+            !isset($params['itemId']))
+            throw new \RuntimeException('required params not supplied for '. $this);
+        
+        
         $this->em = $params['em'];
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
         $this->itemId = $params['itemId'];
-        $this->mediaResource = null;
+        //$this->mediaResource = null;
+    }
+    
+    public function getMediaSelection(){
+        return $this->mediaSelection;
     }
     
     public function getAPIData(){
-        return $this->apiStrategy->getName();
+        return $this->apiStrategy;
     }
     
     public function getMedia(){
@@ -54,7 +65,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         
         if($this->mediaResource->getMediaResourceCache() == null){
             //look up the details from the api if not cached
-            $this->apiResponse = $this->apiStrategy->getDetails($this->itemId);
+            $this->apiResponse = $this->apiStrategy->getDetails(array('ItemId' => $this->itemId));
             /*$this->cacheMedia(array(
                 'response'  =>  $response, 
                 'itemId'    =>  $this->itemId));*/
@@ -71,6 +82,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         if($this->mediaResource == null)
             $this->mediaResource = $this->createNewMediaResource($this->itemId);
         else {
+            //is it necessary to delete immediately the cache or simply merge and updated version?
             $this->mediaResource = $this->processCache($this->mediaResource);
             /**
              * if the media resource exists but was discovered using more specific parameters (i.e. mediatype, decade and genre)
@@ -90,7 +102,8 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
     private function createNewMediaResource($itemId){
         $mediaResource = new MediaResource();
         $mediaResource->setId($itemId);
-        $mediaResource->setAPI($this->apiStrategy->getAPI());
+        $mediaResource->setAPI($this->apiStrategy->getAPIEntity()); //re-factor so that API entity exists in apiStrategy
+        //$mediaResource->setAPI($this->mediaSelection->getAPI());
         $mediaResource->setMediaType($this->mediaSelection->getMediaType());
         $mediaResource->setDecade($this->mediaSelection->getDecade());
         $mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());
@@ -111,13 +124,6 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
     }
     
     public function cacheMedia(){
-        //$response = $params['response']; //may need to convert to simplexml
-        //$itemId = $params['itemId'];
-        // not needed as is in getDetails method
-        //if($this->mediaResource == null)
-        //    $this->mediaResource = $this->createNewMediaResource($itemId);
-        
-        //if cached listings not exists create a new MediaResourceCache object and update the mediaResource    
         if($this->mediaResource->getMediaResourceCache() == null){
             $cachedResource = new MediaResourceCache();
             $cachedResource->setId($this->mediaResource->getId());
@@ -129,18 +135,15 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         }
 
         $this->mediaResource->incrementViewCount();
-        
-        $this->persistMergeMediaResource($this->mediaResource);
-        
+        $this->persistMerge($this->mediaResource);
         $this->em->flush();
-        
     }
         
-    public function persistMergeMediaResource(MediaResource $mediaResource){
-        if($this->em->contains($mediaResource))
-            $this->em->merge($mediaResource);
+    public function persistMerge($obj){
+        if($this->em->contains($obj))
+            $this->em->merge($obj);
         else
-            $this->em->persist($mediaResource);
+            $this->em->persist($obj);
     }
     
     

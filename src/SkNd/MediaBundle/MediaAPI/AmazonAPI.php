@@ -14,13 +14,16 @@ use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\MediaSelection;
+use SkNd\MediaBundle\Entity\API;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use \SimpleXMLElement;
+
 
 class AmazonAPI implements IAPIStrategy {
     const FRIENDLY_NAME = 'Amazon';
     const API_NAME = 'amazonapi';
     const BATCH_PROCESS_THRESHOLD = 10;
+    protected $apiEntity;
     private $amazonParameters;
     private $public_key;                           
     private $private_key;
@@ -50,6 +53,14 @@ class AmazonAPI implements IAPIStrategy {
     
     public function getName(){
         return self::API_NAME;
+    }
+    
+    public function setAPIEntity(API $entity){
+        $this->apiEntity = $entity;
+    }
+    
+    public function getAPIEntity(){
+        return $this->apiEntity;
     }
     
     public function setAmazonSignedRequest($asr){
@@ -127,14 +138,15 @@ class AmazonAPI implements IAPIStrategy {
      * getDetails handles calls to the live api, 
      * @param params - params to carry out the query - only contains the id of the amazon product
      */
-    public function getDetails($id){
-        $this->amazonParameters = array_merge($params, array(
-               'ItemId'             =>      $id,
-                'Operation'          =>      $this->ITEM_LOOKUP,
-               //'ResponseGroup'      =>      'Images,ItemAttributes,Request,Similarities,EditorialReview',
+    public function getDetails(array $params){
+        $this->amazonParameters = array_merge(
+                $this->amazonParameters,
+                $params, 
+                array(
+               'Operation'          =>     $this->ITEM_LOOKUP,
+               //'ResponseGroup'      =>    'Images,ItemAttributes,Request,Similarities,EditorialReview',
                'ResponseGroup'      =>      'Images,ItemAttributes,Request,Similarities',
- 
-        ));
+                ));
 
         
         $xml_response = $this->queryAmazon($this->amazonParameters, "co.uk");

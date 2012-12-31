@@ -17,28 +17,24 @@ mediaSelection:
     _method: GET|POST
 
 search:
-  pattern: /search/{media}/{decade}/{genre}/{keywords}/{page}
+  pattern: /search/{media}/{decade}/{genre}/{keywords}/{page}/{api}
   defaults:
     _controller: SkNdMediaBundle:Media:search
     decade: all-decades
     genre: all-genres
     keywords: '-'
     page: 1    
+    api: amazonapi
     
 mediaDetails:
-  pattern: /mediadetails/{id}/{apiKey}
+  pattern: /mediadetails/{id}/{api}
   defaults:
     _controller: SkNdMediaBundle:Media:mediaDetails
-    decade: all-decades
-    genre: all-genres
-    keywords: '-'
 
 youTubeRequest:
-  pattern: /youtuberequest/{title}/{media}/{decade}/{genre}/{keywords}
+  pattern: /youtuberequest/{title}/{mrid}
   defaults:
     _controller: SkNdMediaBundle:Media:youTubeRequest
-    keywords: '-'
-
   
 #setSlugs:
 #  pattern: /setSlugs/{table}

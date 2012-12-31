@@ -7,6 +7,11 @@
  * @author Simon Kerr
  * @version 1.0
  */
+use SkNd\MediaBundle\Entity\Decade;
+use SkNd\MediaBundle\Entity\Genre;
+use SkNd\MediaBundle\Entity\MediaType;
+use SkNd\MediaBundle\Entity\API;
+
 
 namespace SkNd\MediaBundle\Entity;
 class MediaSelection
@@ -30,6 +35,8 @@ class MediaSelection
     public function __construct(){
         $this->page = null;
         $this->keywords = null;
+        $this->selectedMediaGenre = null;
+        $this->decade = null;
     }
     
     public function setPage($page){
@@ -48,14 +55,14 @@ class MediaSelection
         return $this->api;
     }
     
-    public function setSelectedMediaGenre($genre){
+    public function setSelectedMediaGenre(Genre $genre = null){
         $this->selectedMediaGenre = $genre;
     }
     public function getSelectedMediaGenre(){
         return $this->selectedMediaGenre;
     }
 
-    public function setDecade($decade)
+    public function setDecade(Decade $decade = null)
     {
         $this->decade = $decade;
     }

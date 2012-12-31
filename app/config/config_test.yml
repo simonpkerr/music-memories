@@ -1,16 +1,14 @@
 imports:
     - { resource: config_dev.yml }
 
-
 framework:
     test: ~
     session:
-        storage_id: session.storage.filesystem
+        storage_id: session.storage.mock_file
 
-security:
-  firewalls:
-    main:
-      http_basic: ~
+doctrine:
+    dbal:
+        dbname: "SkNd_test"
 
 web_profiler:
     toolbar: false
@@ -18,21 +16,3 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
-
-sk_nd_media:
-  mediaapi:
-    debug_mode: true
-    apis: 
-      amazonapi:
-        access_params:
-          amazon_public_key: 12345
-          amazon_private_key: 12345
-          amazon_associate_tag: tag
-        #this can be set in the config but has a default value defined in the Configuration.php of the bundle
-        amazon_signed_request:
-          class: SkNd\MediaBundle\MediaAPI\TestAmazonSignedRequest
-      youtubeapi: 
-        #use the below parameter to inject a dummy class for testing
-        youtube_request_object: 
-          class: SkNd\MediaBundle\MediaAPI\TestYouTubeRequest
-  

@@ -1,19 +1,19 @@
-{% if response is defined %}
+{% if listings is defined %}
 {% include "SkNdMediaBundle:Media:youTubePlayerPartial.html.twig" 
     with {
-        'firstVideo' : response.entry,
+        'firstVideo' : listings.xmlData.entry,
     } 
 %}
-    {%if response.url is defined %}<strong>{{ response.url }}</strong>{%endif%}
+    {%if listings.xmlData.url is defined %}<strong>{{ listings.xmlData.url }}</strong>{%endif%}
     <ul id="youTubeCarousel">
-    {% for ytResult in response.entry %}
+    {% for ytResult in listings.xmlData.entry %}
                 <li>
                     <a href="javascript:void(0)" onclick="play('{{ytResult.id}}','{{ytResult.title|escape('js')}}')" title="Click to play {{ ytResult.title }}"><img src="{{ ytResult.thumbnail }}" alt="{{ ytResult.title }}" /></a>
                     <a href="javascript:void(0)" onclick="play('{{ytResult.id}}','{{ytResult.title|escape('js')}}')" title="Click to play {{ ytResult.title }}">{{ ytResult.title|title|slice(0,35) }}{% if ytResult.title|title|length > 35 %}&hellip;{%endif%}</a>
                     <ul class="actions">
                     {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
                     with {
-                    'api'       : api,
+                    'api'       : listings.api.name,
                     'itemId'    : ytResult.id,
                     'itemTitle' : ytResult.title,
                     'linkType'  : 'button',
