@@ -293,6 +293,9 @@ div#headerMediaSelection ul li form {
     width: 11em;
 }
 
+div#headerMediaSelection span.required {
+    display: none;
+}
 
 /********** FLASH MESSAGES ***********/
 
