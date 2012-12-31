@@ -10,7 +10,7 @@
 namespace SkNd\MediaBundle\MediaAPI;
 
 use Symfony\Bundle\DoctrineBundle\Registry;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\Utilities;

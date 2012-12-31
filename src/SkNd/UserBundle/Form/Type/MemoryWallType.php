@@ -9,17 +9,19 @@
 namespace SkNd\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 
 class MemoryWallType extends AbstractType{
     
-    public function buildForm(FormBuilder $builder, array $options = null){
+    public function buildForm(FormBuilderInterface $builder, array $options = null){
         
         //entity field mapped to the decade class displaying the id and decadeName properties
         $builder->add('name', 'text', array(
             'trim'     => true,
             'max_length'=> 35,
+            'label'     => 'form.memory_wall.name',
+            'translation_domain' => 'SkNdUserBundle',
         ));
         
         //entity field mapped to the mediatype class displaying the id and mediaName properties
@@ -27,6 +29,8 @@ class MemoryWallType extends AbstractType{
             'trim'      => true,
             'required'  => false,
             'max_length'=> 100,
+            'label'     => 'form.memory_wall.description',
+            'translation_domain' => 'SkNdUserBundle',
         ));
         
         $builder->add('associatedDecade', 'entity', array(
@@ -34,11 +38,15 @@ class MemoryWallType extends AbstractType{
             'class'         => 'SkNdMediaBundle:Decade',
             'empty_value'   => 'All Decades',
             'required'      => false,
+            'label'         => 'form.memory_wall.associated_decade',
+            'translation_domain' => 'SkNdUserBundle',
         ));
         
         $builder->add('isPublic', 'checkbox', array(
             'attr'     => array('checked'   => 'checked'),
-            'required'  => false 
+            'required'  => false,
+            'label'     => 'form.memory_wall.is_public',
+            'translation_domain' => 'SkNdUserBundle',
         ));
                 
     }

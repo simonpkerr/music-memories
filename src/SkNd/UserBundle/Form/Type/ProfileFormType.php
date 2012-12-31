@@ -11,7 +11,8 @@
 namespace SkNd\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use FOS\UserBundle\Form\Type\ProfileFormType as BaseType;
 
 class ProfileFormType extends BaseType
@@ -26,13 +27,13 @@ class ProfileFormType extends BaseType
         $this->class = $class;
     }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    /*public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
   
-    }
+    }*/
     
-    protected function buildUserForm(FormBuilder $builder, array $options)
+    protected function buildUserForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildUserForm($builder, $options);
         
@@ -43,18 +44,34 @@ class ProfileFormType extends BaseType
         arsort($yearRange);
         $builder->add('dateofbirth', 'birthday', array(
             'years' => $yearRange,
-            'label' => 'Date of Birth',
-            'error_bubbling' => true,
+            'label' => 'form.dob',
+            'translation_domain' => 'FOSUserBundle',
             ));
         
         $builder->add('firstname', 'text', array(
             'required'  => false,
+            'label'     => 'form.firstname',
+            'translation_domain' => 'FOSUserBundle',
         ));
         $builder->add('surname', 'text', array(
             'required'  => false,
+            'label'     => 'form.surname',
+            'translation_domain' => 'FOSUserBundle',
         ));
     }
 
+    public function getDefaultOptions(array $options){
+        return array(
+            'data_class' => 'SkNd\UserBundle\Entity\User',
+        );
+    }
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'SkNd\UserBundle\Entity\User',
+        ));
+    }
     
     public function getName()
     {

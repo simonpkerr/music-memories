@@ -8,12 +8,12 @@
  */
 namespace SkNd\UserBundle\Form\Type;
     
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
 
 class RegistrationFormType extends BaseType {
     
-    public function buildForm(FormBuilder $builder, array $options){
+    public function buildForm(FormBuilderInterface $builder, array $options){
         parent::buildForm($builder, $options);
         
         //any extra properties are added here
@@ -23,15 +23,21 @@ class RegistrationFormType extends BaseType {
         arsort($yearRange);
         $builder->add('dateofbirth', 'birthday', array(
             'years' => $yearRange,
-            'label' => 'Date of Birth',
             'format'=> 'MMM-dd-yyyy',
+            'label'     => 'form.dob',
+            'translation_domain' => 'FOSUserBundle',
+            
             ));
         
         $builder->add('firstname', 'text', array(
             'required'  => false,
+            'label'     => 'form.firstname',
+            'translation_domain' => 'FOSUserBundle',
         ));
         $builder->add('surname', 'text', array(
             'required'  => false,
+            'label'     => 'form.surname',
+            'translation_domain' => 'FOSUserBundle',
         ));
         
         

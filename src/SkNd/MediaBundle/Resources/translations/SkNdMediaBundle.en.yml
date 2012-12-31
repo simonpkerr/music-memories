@@ -1,3 +1,11 @@
+form:
+  media_selection:
+    media_type: "Category:"
+    decade: "Decade:"
+    genre: "Genre:"
+    keywords: "Keywords (optional):"
+    
+    
 media_selection:
   submit: Noodle it!
   media_type: Choose the category

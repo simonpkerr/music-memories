@@ -116,6 +116,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                     $cachedResource = new MediaResourceCache();
                     $cachedResource->setId($id);
                     $cachedResource->setImageUrl($api->getImageUrlFromXML($itemXml));
+                    //$cachedResource->setSlug(null);
                     $cachedResource->setTitle($api->getItemTitleFromXML($itemXml));
                     $cachedResource->setXmlData($api->getXML($itemXml));
                     $cachedResource->setDateCreated(new \DateTime("now"));

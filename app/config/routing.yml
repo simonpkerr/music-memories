@@ -1,11 +1,13 @@
-SkNdUserBundle:
-    resource: "@SkNdUserBundle/Resources/config/routing.yml"
-    prefix:   /
+# Internal routing configuration to handle ESI
+# ****** WARNING ******
+# This route should be enabled with caution as it can open a security vulnerability
+# see http://symfony.com/blog/security-release-symfony-2-0-20-and-2-1-5-released for more information
+# ****** WARNING ******
+#_internal:
+#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+#    prefix:   /_internal
 
-SkNdMediaBundle:
-    resource: "@SkNdMediaBundle/Resources/config/routing.yml"
-    prefix:   /
-     
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
@@ -23,4 +25,12 @@ fos_user_resetting:
 
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
-    prefix: /change-password
+    prefix: /profile
+    
+SkNdUserBundle:
+    resource: "@SkNdUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+SkNdMediaBundle:
+    resource: "@SkNdMediaBundle/Resources/config/routing.yml"
+    prefix:   /    

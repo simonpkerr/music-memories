@@ -1,7 +1,9 @@
-memoryWall_name: Name
-memoryWall_description: Description
-memoryWall_associatedDecade: Associated decade
-memoryWall_isPublic: Memory wall is public
+form:
+  memory_wall:
+    name: Name
+    description: Description
+    associated_decade: Associated decade
+    is_public: Memory wall is public
 
 memoryWall:
   links:

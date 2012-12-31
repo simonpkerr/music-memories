@@ -12,16 +12,17 @@
 namespace SkNd\MediaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 
 class MediaSelectionType extends AbstractType{
     
-    public function buildForm(FormBuilder $builder, array $options = null){
+    public function buildForm(FormBuilderInterface $builder, array $options = null){
         
         //entity field mapped to the decade class displaying the id and decadeName properties
         $builder->add('decade', 'entity', array(
-            'label'         => 'Choose a decade',
+            'label'         => 'form.media_selection.decade',
+            'translation_domain' => 'SkNdMediaBundle',
             'property'      => 'decadeName',
             'class'         => 'SkNdMediaBundle:Decade',
             'empty_value'   => 'All Decades',
@@ -31,12 +32,14 @@ class MediaSelectionType extends AbstractType{
         //entity field mapped to the mediatype class displaying the id and mediaName properties
         $builder->add('mediaType', 'entity', array(
             'property'      => 'mediaName',
-            'label'         => 'Choose the category',
+            'label'         => 'form.media_selection.media_type',
+            'translation_domain' => 'SkNdMediaBundle',
             'class'         => 'SkNdMediaBundle:MediaType',
         ));
         
         $builder->add('selectedMediaGenre','entity', array(
-            'label'             =>  'Choose a genre',
+            'label'             =>  'form.media_selection.genre',
+            'translation_domain' => 'SkNdMediaBundle',
             'property'          =>  'genreName',
             'class'             =>  'SkNdMediaBundle:Genre',
             'empty_value'       =>  'All Genres',
@@ -48,7 +51,8 @@ class MediaSelectionType extends AbstractType{
         ));
         
         $builder->add('keywords', 'text', array(
-            'label'     => 'Keywords (optional)',
+            'label'     => 'form.media_selection.keywords',
+            'translation_domain' => 'SkNdMediaBundle',
             'required'  => false,
             'trim'      => true,
    

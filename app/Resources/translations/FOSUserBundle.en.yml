@@ -1,91 +1,131 @@
 # Group
-group.edit.submit: Update group
-group.show.name: Group name
-group.new.submit: Create group
-group.flash.updated: The group has been updated
-group.flash.created: The group has been created
-group.flash.deleted: The group has been deleted
-
+group:
+    edit:
+        submit: Update group
+    show:
+        name: Group name
+    new:
+        submit: Create group
+    flash:
+        updated: The group has been updated
+        created: The group has been created
+        deleted: The group has been deleted
+        
 # Security
-security.login.username: "Username"
-security.login.password: "Password"
-security.login.remember_me: Remember me
-security.login.submit: Login
+"Bad credentials": Invalid username or password
+
+security:
+    login:
+        username: "Username:"
+        password: "Password:"
+        remember_me: Remember me
+        submit: Login
 
 # Profile
-profile.show.username: Username
-profile.show.email: Email
-profile.show.firstname: First name
-profile.show.surname: Surname
-profile.show.dateofbirth: Date of birth
-profile.edit.submit: Update your profile
-profile.flash.updated: Your profile has been updated
-
+profile:
+    show:
+        username: Username
+        email: Email
+        firstname: First name
+        surname: Surname
+        dob: Date of birth
+    edit:
+        submit: Update
+    flash:
+        updated: The profile has been updated
+        
 # Password change
-change_password.submit: Change password
-change_password.flash.success: The password has been changed
+change_password:
+    submit: Change password
+    flash:
+        success: The password has been changed
 
 # Registration
-registration.check_email: An email has been sent to %email%. It contains an activation link you must click to activate your account.
-registration.confirmed: Nice one %username%! Your account is now active.
-registration.back: Go back to the original page.
-registration.submit: Get noodling
-registration.flash.user_created: You&rsquo;re now an official noodleDigger! Yay.
+registration:
+  check_email: An email has been sent to %email%. It contains an activation link you must click to activate your account.
+  confirmed: Nice one %username%! Your account is now active.
+  back: Go back to the original page.
+  submit: Get noodling
+  flash:
+    user_created: You&rsquo;re now an official noodleDigger! Yay.
+  email:
+        subject: Welcome %username%!
+        message: |
+          Hello %username%!
 
-registration.email: |
-    Hello %username%!
+          To finish validating your account - please visit %confirmationUrl%
 
-    To finish validating your account - please visit %confirmationUrl%
-
-    Regards,
-    the noodleDig Team.
+          Regards,
+          the noodleDig Team.
 
 # Password resetting
-resetting.password_already_requested: The password for this user has already been requested within the last 24 hours.
-resetting.check_email: An email has been sent to %email%. It contains an link you must click to reset your password.
-resetting.request.invalid_username: The username or email address "%username%" does not exist.
-resetting.request.username: "Username or email address:"
-resetting.request.submit: Reset password
-resetting.reset.submit: Change password
-resetting.flash.success: The password has been reset successfully
+resetting:
+    password_already_requested: The password for this user has already been requested within the last 24 hours.
+    check_email: An email has been sent to %email%. It contains a link you must click to reset your password.
+    request:
+        invalid_username: The username or email address "%username%" does not exist.
+        username: "Username or email address:"
+        submit: Reset password
+    reset:
+        submit: Change password
+    flash:
+        success: The password has been reset successfully
+    email:
+        subject: Reset Password
+        message: |
+          Hello %username%!
 
-resetting.email: |
-    Reset Password
-    Hello %username%!
+          To reset your password - please visit %confirmationUrl%
 
-    To reset your password - please visit %confirmationUrl%
-
-    Regards,
-    the noodleDig Team.
+          Regards,
+          the noodleDig Team.
 
 # Global strings
-layout.edit_profile: Profile
-layout.logout: Logout
-layout.login: Login
-layout.register: Sign up
-layout.logged_in_as: %username%
+layout:
+  edit_profile: Profile
+  logout: Logout
+  login: Login
+  register: Sign up
+  logged_in_as: %username%
 
 # Form field labels
-fos_user_group_form_name: "Group name:"
+#fos_user_group_form_name: "Group name:"
+#
+#fos_user_profile_form_user_username: "Username"
+#fos_user_profile_form_user_email: "Email"
+#fos_user_profile_form_current: "Current Password"
+#fos_user_profile_form_user_firstname: "First Name"
+#fos_user_profile_form_user_surname: "Surname"
+#
+#fos_user_registration_form_username: "Username"
+#fos_user_registration_form_email: "Email"
+#fos_user_registration_form_plainPassword_first: "Password"
+#fos_user_registration_form_plainPassword_second: "Re-type password"
 
-fos_user_profile_form_user_username: "Username"
-fos_user_profile_form_user_email: "Email"
-fos_user_profile_form_current: "Current Password"
-fos_user_profile_form_user_firstname: "First Name"
-fos_user_profile_form_user_surname: "Surname"
+#my settings - registration
+#fos_user_registration_form_firstname: "First Name"
+#fos_user_registration_form_surname: "Surname"
+#
+#fos_user_resetting_form_new_first: "New password"
+#fos_user_resetting_form_new_second: "Re-type password"
+#
+#fos_user_change_password_form_new_first: "New password"
+#fos_user_change_password_form_new_second: "Re-type password"
+#fos_user_change_password_form_current: "Current password"
+#
+#fos_user_registration_form_dateofbirth: "Date of Birth"
 
-fos_user_registration_form_username: "Username"
-fos_user_registration_form_email: "Email"
-fos_user_registration_form_plainPassword_first: "Password"
-fos_user_registration_form_plainPassword_second: "Re-type password"
-
-#my settings
-fos_user_registration_form_firstname: "First Name"
-fos_user_registration_form_surname: "Surname"
-
-fos_user_resetting_form_new_first: "New password"
-fos_user_resetting_form_new_second: "Re-type password"
-
-fos_user_change_password_form_new_first: "New password"
-fos_user_change_password_form_new_second: "Re-type password"
-fos_user_change_password_form_current: "Current password"
+# Form field labels
+form:
+    group_name: "Group name:"
+    username: "Username:"
+    email: "Email:"
+    current_password: "Current password:"
+    password: "Password:"
+    password_confirmation: "Verification:"
+    new_password: "New password:"
+    new_password_confirmation: "Verification:"
+    firstname: "Firstname:"
+    surname: "Surname:"
+    dob: "Date of birth:"
+    

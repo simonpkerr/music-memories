@@ -7,7 +7,7 @@ framework:
 
 doctrine:
     dbal:
-        dbname: "SkNd_test"
+        dbname: "SkNd_dev"
 
 web_profiler:
     toolbar: true
@@ -17,7 +17,7 @@ monolog:
     handlers:
         main:
             type:  stream
-            path:  %kernel.logs_dir%/%kernel.environment%.log
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
         firephp:
             type:  firephp
@@ -26,9 +26,11 @@ monolog:
 assetic:
     use_controller: true
 
+#swiftmailer:
+#    delivery_address: me@example.com
+
+
 services:
   debug.twig.extension:
     class: Twig_Extensions_Extension_Debug
     tags: [{ name: 'twig.extension' }]
-
-
