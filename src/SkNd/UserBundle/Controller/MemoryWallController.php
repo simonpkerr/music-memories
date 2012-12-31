@@ -150,18 +150,10 @@ class MemoryWallController extends Controller
                 'apis'              => $mediaapi->getAPIs(),
                 'mediaResources'    => $mediaResources,
             ));
-            //$mediaapi->processMediaResources($mediaResources, $page);
-            //no need to return anything, just re-cache if necessary
-            //no need to create new resources.
             $mediaapi->getMedia($processStrategy);
         }
         
         $returnUrl = $this->getRequest()->headers->get('referer');
-        //if come from the search page, refer back to search page
-        /*if($session->get('tokens/SkNd-added-resource')){
-            $returnUrl = $this->generateUrl('search', $mediaapi->getMediaSelectionParams());
-            $session->remove('tokens/SkNd-added-resource');
-        }*/
         if(strpos($returnUrl, 'details') === false && strpos($returnUrl, 'search') === false){
             $returnUrl = null;
         }
@@ -284,7 +276,6 @@ class MemoryWallController extends Controller
             'itemId'            => $id,          
         ));
         
-        //$mediaResource = $mediaapi->getDetails(array('ItemId'   =>  $id));
         $mediaResource = $mediaapi->getMedia($processStrategy);
         
         //add the resource to the selected wall

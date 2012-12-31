@@ -19,9 +19,6 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $em;
     protected $mediaResources;
     protected $apiResponses;
-   // protected $mediaSelection; --not needed
-    
-    //need mediaResource?
     
     /**
      * @param EntityManager $em, 
@@ -33,7 +30,6 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
         if(isset($params['mediaResources']))
             $this->mediaResources = $params['mediaResources'];
         
-        //$this->mediaSelection = $params['mediaSelection'];
         $this->apiResponses = array();
     }
     
@@ -43,7 +39,6 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     
     public function getAPIData(){
         return null;
-        //$this->apis;
     }
     
     public function getMedia(){
@@ -67,9 +62,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     public function processMedia(){
         $updatesMade = false;
         //loop through each api, get the relevant media resources
-        foreach($this->apis as $api){
-            //$this->setAPIStrategy($api->getName());
-            
+        foreach($this->apis as $api){         
             $resources = array_filter($this->mediaResources, function($mr) use ($api){
                 return $mr->getAPI()->getName() == $api->getName() && ($mr->getMediaResourceCache() == null || $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime());
             });
@@ -84,17 +77,10 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                             'mediaResources' => $resources,
                         ));
                 
-                //cache the data using the collection of uncached resources, but don't flush yet
-                //$this->cacheMediaResourceBatch($this->response, $resources, false);
-                
                 $updatesMade = true;
             }
         }
-        //only flush when finished going through all records.
-        //flush will update all the older cached records from db 
-        //$this->em->flush();
-        
-        //return $updatesMade;
+
     }
     
     //from a batch operation, take the xml data and resources and re-cache them
@@ -116,7 +102,6 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                     $cachedResource = new MediaResourceCache();
                     $cachedResource->setId($id);
                     $cachedResource->setImageUrl($api->getImageUrlFromXML($itemXml));
-                    //$cachedResource->setSlug(null);
                     $cachedResource->setTitle($api->getItemTitleFromXML($itemXml));
                     $cachedResource->setXmlData($api->getXML($itemXml));
                     $cachedResource->setDateCreated(new \DateTime("now"));
@@ -127,14 +112,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                         throw $ex;
                     }
                 } 
-                //IS THIS NEEDED?
-                ////else{
-                    //otherwise create a new media resource and cache it
-                    //$this->mediaResource = null;
-                    
-                    //HOW TO CONNECT CACHE MEDIA RESOURCE WHICH EXISTS IN PROCESSDETAILSSTRATEGY
-                   // $this->cacheMediaResource($itemXml, $id, false);                
-                //}
+                
             }
         }
         
