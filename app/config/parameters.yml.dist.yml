@@ -10,7 +10,7 @@ parameters:
     mailer_encryption: ssl
     mailer_host:       smtp.gmail.com
     mailer_user:       noodledig
-    mailer_password:   Woshinage1
+    mailer_password:   password
 
     locale:            en
     secret:            secret
