@@ -30,12 +30,14 @@ assetic:
     debug:          "%kernel.debug%"
     use_controller: false
     bundles:        [ ]
-    java:           "C:\Program Files (x86)\Java\jre7\bin\java.exe" 
+    java:           "C:/Program Files (x86)/Java/jre6/bin/java.exe" 
+    write_to: "%kernel.root_dir%/Resources/assets/"
+    read_from: "%kernel.root_dir%/Resources/assets/"
     filters:
         yui_css:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
-#        yui_js:
-#            jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+        yui_js:
+            jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
 
 # Doctrine Configuration

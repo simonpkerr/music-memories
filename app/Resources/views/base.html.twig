@@ -10,11 +10,11 @@
      
         {# use the stylesheets tag for when assetic is working, meaning that files can be minified
         for production environment. Use the '?' inside the filter to run the app in debug mode #}
-        {% stylesheets output='bundles/SkNd/css/compiled/main.css' filter='?yui_css' 
-        'bundles/SkNd/css/original/reset.css'
-        'bundles/SkNd/css/original/typography.css'
-        'bundles/SkNd/css/original/base.css'  
-        'bundles/SkNd/css/original/wide.css'
+        {% stylesheets output='css/compiled/main.css' filter='?yui_css' 
+        'css/original/reset.css'
+        'css/original/typography.css'
+        'css/original/base.css'  
+        'css/original/wide.css'
         %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />    
         {% endstylesheets %}
@@ -100,19 +100,19 @@
 
             </div>
         </div>
-        {% block javascripts %} 
+        {#% block javascripts %} 
             <script src="{{ asset('bundles/SkNd/js/original/jquery-1.8.3.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/SkNd/js/original/nd-scripts.js') }}" type="text/javascript"></script>
-        {% endblock %}
-        {#% javascripts 
-            'bundles/SkNd/js/original/jquery-1.8.3.min.js'
-            'bundles/SkNd/js/original/nd-scripts.js'
+        {% endblock %#}
+        {% javascripts 
+            'js/original/jquery-1.8.3.min.js'
+            'js/original/nd-scripts.js'
             filter='?yui_js'
-            output='bundles/SkNd/js/compiled/nd-scripts.js'
+            output='js/compiled/nd-scripts.js'
         %} 
             <script type="text/javascript" src="{{ asset_url }}"></script>
 
-        {% endjavascripts %#}
+        {% endjavascripts %}
             
            
     </body>
