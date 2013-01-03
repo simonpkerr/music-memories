@@ -13,8 +13,8 @@ parameters:
     mailer_password:   password
 
     locale:            en
-    secret:            secret
-    amazon_public_key: ~
-    amazon_uk_private_key: pk
-    amazon_us_private_key: pk
-    amazon_associate_tag: at
+    secret: ec26480381c197a34ceed8510cf39ad44
+    amazon_public_key: AKIAJVJZWBLIJ353LQ2Q
+    amazon_uk_private_key: jfpvbT7g9yURYWOYPUc8C7cw489lZuSz5aM9idBn
+    amazon_us_private_key: e4qR7EjP6fWVt4ks3bO/huKI+sv2Z24icGsDyXt7
+    amazon_associate_tag: noodledig-21
