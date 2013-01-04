@@ -51,13 +51,15 @@
 
                 {% endblock %}
             </div>
-            {% if app.session.getFlashes() %}    
+                {#{ dump(app.session.flashbag.peekAll()) }#}
+            {% if app.session.flashbag.peekAll() %}    
             <div class="flashMessages fr">
-                
                 <ul>
-                {% for key, message in app.session.getFlashes() %}
-                <li class="{{ key }}">{{ message|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle')|raw|trans({}, 'SkNdMediaBundle')|raw }}</li>
-                {% endfor %}   
+                {% for type, flashMessages in app.session.flashbag.all() %}
+                    {% for flashMessage in flashMessages %}
+                        <li class="{{ type }}">{{ flashMessage|trans({}, 'FOSUserBundle')|trans({}, 'SkNdUserBundle')|raw|trans({}, 'SkNdMediaBundle')|raw }}</li>
+                    {% endfor %}
+                {% endfor %}
                 </ul>
             </div>
             {% endif %}
