@@ -10,15 +10,16 @@
      
         {# use the stylesheets tag for when assetic is working, meaning that files can be minified
         for production environment. Use the '?' inside the filter to run the app in debug mode #}
-        {% stylesheets output='css/compiled/main.css' filter='?yui_css' 
+        {#% stylesheets output='css/compiled/main.css' filter='?yui_css' 
         'css/original/reset.css'
         'css/original/typography.css'
         'css/original/base.css'  
         'css/original/wide.css'
         %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />    
-        {% endstylesheets %}
-                             
+        {% endstylesheets %#}
+                            
+        
         <script src="{{ asset('bundles/SkNd/js/original/modernizr.js') }}" type="text/javascript"></script>    
         <script type="text/javascript">Modernizr.load([{test: Modernizr.mq('only screen and (min-width: 600px)'),nope: ['/SkNd/web/bundles/SkNd/js/original/respond.min.js']}]);</script>
     </head>
@@ -106,7 +107,7 @@
             <script src="{{ asset('bundles/SkNd/js/original/jquery-1.8.3.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/SkNd/js/original/nd-scripts.js') }}" type="text/javascript"></script>
         {% endblock %#}
-        {% javascripts 
+        {#% javascripts 
             'js/original/jquery-1.8.3.min.js'
             'js/original/nd-scripts.js'
             filter='?yui_js'
@@ -114,7 +115,7 @@
         %} 
             <script type="text/javascript" src="{{ asset_url }}"></script>
 
-        {% endjavascripts %}
+        {% endjavascripts %#}
             
            
     </body>

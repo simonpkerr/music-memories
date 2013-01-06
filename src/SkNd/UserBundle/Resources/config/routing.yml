@@ -44,7 +44,7 @@ memoryWallDeleteConfirm:
   defaults: { _controller: SkNdUserBundle:MemoryWall:deleteConfirm }
 
 memoryWallAddMediaResource:
-  pattern: /memorywall/{slug}/add/{apiKey}/{id}
+  pattern: /memorywall/{slug}/add/{api}/{id}
   defaults:
     _controller: SkNdUserBundle:MemoryWall:addMediaResource
     slug: personal

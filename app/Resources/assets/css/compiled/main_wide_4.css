@@ -201,6 +201,11 @@ div#headerMediaSelection ul li form {
     border: 2px solid #fff;
 }
 
+div#headerMediaSelection span.required {
+    display: none;
+}
+
+
 .borderradius ul#loginPanel li ul,
 .borderradius ul#memoryWalls li ul,
 .borderradius div#headerMediaSelection ul li form {
@@ -293,9 +298,6 @@ div#headerMediaSelection ul li form {
     width: 11em;
 }
 
-div#headerMediaSelection span.required {
-    display: none;
-}
 
 /********** FLASH MESSAGES ***********/
 
