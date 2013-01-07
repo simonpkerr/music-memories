@@ -16,7 +16,6 @@ web/bundles/sensiodistribution
 web/bundles/webprofiler
 
 # Configuration files
-app/config/parameters.ini
 app/config/parameters.yml
 
 # nbproject files

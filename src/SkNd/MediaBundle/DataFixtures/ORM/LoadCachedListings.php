@@ -44,7 +44,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
         $cachedListing = new MediaResourceListingsCache();
         $cachedListing->setAPI($this->getAPI());
         $cachedListing->setMediaType($this->getMediaType("film"));
-        $cachedListing->setDecade($this->getDecade("1980"));
+        $cachedListing->setDecade($this->getDecade("1980s"));
         $cachedListing->setGenre($this->getGenre("science-fiction", "film"));
         $cachedListing->setDateCreated(new \DateTime("now"));
         $cachedListing->setXmlData($this->getXmlData());
@@ -54,7 +54,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
         $cachedListing = new MediaResourceListingsCache();
         $cachedListing->setAPI($this->getAPI());
         $cachedListing->setMediaType($this->getMediaType("film"));
-        $cachedListing->setDecade($this->getDecade("1980"));
+        $cachedListing->setDecade($this->getDecade("1980s"));
         $cachedListing->setGenre($this->getGenre("science-fiction", "film"));
         $cachedListing->setKeywords("aliens");
         $cachedListing->setDateCreated(new \DateTime("now"));
@@ -65,7 +65,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
         $cachedListing = new MediaResourceListingsCache();
         $cachedListing->setAPI($this->getAPI());
         $cachedListing->setMediaType($this->getMediaType("film"));
-        $cachedListing->setDecade($this->getDecade("1980"));
+        $cachedListing->setDecade($this->getDecade("1980s"));
         $cachedListing->setGenre($this->getGenre("science-fiction", "film"));
         $cachedListing->setKeywords("aliens");
         $cachedListing->setPage(2);

@@ -73,10 +73,10 @@ class MediaResourceListingsCacheRepository extends EntityRepository
         
         $data = $q->getQuery()->setMaxResults(1)->getOneOrNullResult();
         
-        if(!is_null($data))
-            return $data;
+        //if(!is_null($data))
+        return $data;
       
-        return null;
+        //return null;
 
      }
      

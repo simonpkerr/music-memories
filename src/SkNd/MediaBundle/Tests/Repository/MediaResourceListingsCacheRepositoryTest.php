@@ -98,22 +98,10 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
         $this->assertTrue($results != null);
     }
     
-    public function testAmazonAPITVCachedListingsExistsInvalidTimestampReturnsNull(){
-        $this->setUpMediaSelection(array(
-                'media'     => 'tv',
-            ));   
-        
-        $results = self::$em
-            ->getRepository('SkNdMediaBundle:MediaResourceListingsCache')
-            ->getCachedListings($this->mediaSelection, $this->api)
-        ;
-        $this->assertTrue($results == null);
-    }
-    
     public function testAmazonAPITVSpecificDecadeCachedListingsNotExistsReturnsNull(){
         $this->setUpMediaSelection(array(
                 'media'     => 'tv',
-                'decade'    => '1990',
+                'decade'    => '1990s',
             ));   
                 
         $results = self::$em
@@ -126,7 +114,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
     public function testAmazonAPIFilmsSpecificDecadeAndGenreCachedListingsExistsReturnsXML(){
         $this->setUpMediaSelection(array(
                 'media'     => 'film',
-                'decade'    => '1980',
+                'decade'    => '1980s',
                 'genre'     => 'science-fiction',
             )); 
         
@@ -140,7 +128,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
     public function testAmazonAPIFilmsSpecificDecadeGenreKeywordsCachedListingsExistsReturnsXML(){
         $this->setUpMediaSelection(array(
                 'media'     => 'film',
-                'decade'    => '1980',
+                'decade'    => '1980s',
                 'genre'     => 'science-fiction',
                 'keywords'  => 'aliens',
             )); 
@@ -155,7 +143,7 @@ class MediaResourceListingsCacheRepositoryTest extends WebTestCase {
     public function testAmazonAPIFilmsSpecificDecadeGenreKeywordsPageCachedListingsExistsReturnsXML(){
         $this->setUpMediaSelection(array(
                 'media'     => 'film',
-                'decade'    => '1980',
+                'decade'    => '1980s',
                 'genre'     => 'science-fiction',
                 'keywords'  => 'aliens',
                 'page'      => 2,
