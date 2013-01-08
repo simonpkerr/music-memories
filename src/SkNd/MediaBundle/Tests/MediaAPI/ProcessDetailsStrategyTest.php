@@ -122,15 +122,6 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         
     }
     
-    /**
-     * @expectedException RuntimeException
-     * @exceptedExceptionMessage api key not found 
-     */
-    public function testSetAPIStrategyOnNonExistentAPIThrowsException(){
-        
-        $response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
-    }
-        
     public function testGetDBNonExistentMediaResourceReturnsNewMediaResource(){
         $this->mediaAPI = $this->mediaAPI->getMock();
         $mr = $this->mediaAPI->getMediaResource('nonexistentID');

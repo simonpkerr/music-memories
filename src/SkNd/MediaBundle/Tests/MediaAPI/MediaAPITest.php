@@ -98,7 +98,7 @@ class MediaAPITests extends WebTestCase {
                     'flush',
                 ));
         
-        $this->mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'api'   => 'amazonapi',
             'media' => 'film'
         ));
@@ -120,6 +120,19 @@ class MediaAPITests extends WebTestCase {
         
     }
     
+    
+    public function testGetMediaSelectionWhenNotNullReturnsMediaSelection(){
+        
+    }
+    
+    public function testGetMediaSelectionWhenMediaSelectionIsNullButInSessionReturnsMediaSelection(){
+        
+    }
+    
+    public function testGetMediaSelectionWhenNonExistentReturnsNewMediaSelection(){
+        
+    }
+    
     /**
      * @expectedException RuntimeException
      * @exceptedExceptionMessage api key not found 
@@ -133,15 +146,15 @@ class MediaAPITests extends WebTestCase {
      * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @exceptedExceptionMessage There was a problem with that address 
      */
-    public function testGetMediaSelectionWithInvalidParametersThrowsException(){
-        $response = $this->mediaAPI->getMock()->getMediaSelection(array(
+    public function testSetMediaSelectionWithInvalidParametersThrowsException(){
+        $response = $this->mediaAPI->getMock()->setMediaSelection(array(
             'media' => 'invalid-media',
         ));
         
     }
     
-    public function testGetMediaSelectionWithSpecificDecadeOverridesSessionParameters(){
-        $mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+    public function testSetMediaSelectionWithSpecificDecadeOverridesSessionParameters(){
+        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'media' => 'film',
             'decade'=> '1980s'
         ));
@@ -150,34 +163,34 @@ class MediaAPITests extends WebTestCase {
         
     }
     
-    public function testGetMediaSelectionWithDefaultDecadeOverridesSpecificSessionParameters(){
-        $mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+    public function testSetMediaSelectionWithDefaultDecadeOverridesSpecificSessionParameters(){
+        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'media' => 'film',
             'decade'=> '1980s'
         ));
         
-        $mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'media' => 'film',
         ));
         
         $this->assertTrue($mediaSelection->getDecade() == null, "decade was updated to default");
     }
     
-    public function testGetMediaSelectionWithDefaultGenreOverridesSpecificGenreSessionParameters(){
-        $mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+    public function testSetMediaSelectionWithDefaultGenreOverridesSpecificGenreSessionParameters(){
+        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'media' => 'film',
             'genre'=> 'drama'
         ));
         
-        $mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'media' => 'film',
         ));
         
         $this->assertTrue($mediaSelection->getSelectedMediaGenre() == null, "genre was updated to default");
     }
     
-    public function testGetMediaSelectionWithKeywordsUpdatesMediaSelection(){
-        $mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+    public function testSetMediaSelectionWithKeywordsUpdatesMediaSelection(){
+        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'media' => 'film',
             'keywords'=> 'some keywords'
         ));
@@ -185,22 +198,22 @@ class MediaAPITests extends WebTestCase {
         $this->assertTrue($mediaSelection->getKeywords() == 'some keywords', "keywords were added");
     }
     
-    public function testGetMediaSelectionWithNoKeywordsOverridesSpecificKeywordsSessionParameter(){
-        $mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+    public function testSetMediaSelectionWithNoKeywordsOverridesSpecificKeywordsSessionParameter(){
+        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'media' => 'film',
             'keywords'=> 'some keywords'
         ));
         
-        $mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'media' => 'film',
         ));
         
         $this->assertTrue($mediaSelection->getKeywords() == null, "keywords were removed");
     }
     
-    public function testGetMediaSelectionParamsReturnsArray(){
+    public function testSetMediaSelectionParamsReturnsArray(){
         $this->mediaAPI = $this->mediaAPI->getMock();
-        $mediaSelection = $this->mediaAPI->getMediaSelection(array(
+        $mediaSelection = $this->mediaAPI->setMediaSelection(array(
             'media' => 'film',
         ));
         
@@ -208,7 +221,7 @@ class MediaAPITests extends WebTestCase {
         $this->assertTrue($response['media'] == 'film', "film not returned as media type");
     }
     
-    public function testGetMediaSelectionParamsForNonExistentMediaSelectionReturnsDefaultsArray(){
+    public function testSetMediaSelectionParamsForNonExistentMediaSelectionReturnsDefaultsArray(){
         self::$session->remove('mediaSelection');
         
         $response = $this->mediaAPI->getMock()->getMediaSelectionParams();
@@ -236,7 +249,6 @@ class MediaAPITests extends WebTestCase {
         
         $listings = $this->mediaAPI->getListings();
         $this->assertEquals((string)$listings['response']->item->attributes()->id, 'liveData');
-        
     }
     
     public function testExistingValidCachedListingsReturnedFromSameQueryReturnsListings(){
@@ -267,7 +279,7 @@ class MediaAPITests extends WebTestCase {
     public function testGetMediaResourceInDBWithVagueDetailsUpdatesMediaResource(){
         $this->mediaAPI = $this->mediaAPI->getMock();
         
-        $this->mediaSelection = $this->mediaAPI->getMediaSelection(array(
+        $this->mediaSelection = $this->mediaAPI->setMediaSelection(array(
             'media' => 'film',
             'decade'=> '1980s',
             'genre' => 'drama',
