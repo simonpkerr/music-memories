@@ -162,19 +162,28 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
     }
     
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testGetNullMediaResourceThrowsException(){
+        
+    }
     
-    public function testGetDBNonExistentMediaResourceReturnsNewMediaResource(){
+    
+    
+    
+    public function testGetMediaResourceWithNonExistentIdReturnsNewMediaResource(){
         $this->mediaAPI = $this->mediaAPI->getMock();
         $mr = $this->mediaAPI->getMediaResource('nonexistentID');
         $this->assertEquals($mr->getId(), 'nonexistentID', 'new media resource was returned');
     }
     
-    public function testUpdateVagueMediaResourceOnlyIfReferredFromSearch(){
+    public function testGetCachedMediaResourceWithVagueDetailsUpdatesMediaResourceOnlyIfReferredFromSearch(){
         //test the getMediaResource method to refine mr's
         
     }
     
-    public function testGetMediaResourceInDBWithVagueDetailsUpdatesMediaResourceIfSpecificMediaTypeSet(){
+    public function testGetCachedMediaResourceWithVagueDetailsUpdatesMediaResourceIfSpecificMediaTypeSet(){
         $this->mediaAPI = $this->mediaAPI->getMock();
         
         $this->mediaSelection = $this->mediaAPI->getMediaSelection(array(
@@ -234,7 +243,15 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         
     }
     
-    public function testNonexistentMediaResourceCallsLiveAPI(){
+    public function testProcessMediaResourceCacheReturnsOriginalMediaResourceIfCacheIsNull(){
+        
+    }
+    
+    public function testProcessMediaResourceCacheDeletesCacheIfHasReachedAgeThreshold(){
+        
+    }
+    
+    public function testNonExistentMediaResourceCallsLiveAPI(){
         $this->mediaAPI = 
                 $this->mediaAPI->setMethods(array(
                     'getMediaResource',
@@ -300,56 +317,6 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         $this->assertEquals((string)$mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData');
         
     }
-    
-    public function testProcessMediaResourcesWith1CachedAmazonResourceReturnsFalse(){
-        //add a media resource and cached record first
-        //then update the media resource
-        $cachedResource = new MediaResourceCache();
-        $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
-        $cachedResource->setId($this->mediaResource->getId());
-        $cachedResource->setDateCreated(new \DateTime("now"));
-        $this->mediaResource->setMediaResourceCache($cachedResource);
-        
-        $mediaResources = array(
-            $cachedResource->getId() => $this->mediaResource,
-        );
-                   
-        $updatesMade = $this->mediaAPI->getMock()->processMediaResources($mediaResources);
-        
-        $this->assertEquals($updatesMade, false);
-        
-    }
-    
-    public function testProcessMediaResourcesWith1CachedOutOfDateAmazonResourceCallsLiveAPIReturnsTrue(){
-        
-         $this->mediaAPI = 
-                $this->mediaAPI->setMethods(array(
-                    'cacheMediaResourceBatch',
-                    'flush',
-                    ))
-                ->getMock();
-
-        $this->mediaAPI->expects($this->any())
-                ->method('cacheMediaResourceBatch')
-                ->will($this->returnValue(true));
-        $this->mediaAPI->expects($this->any())
-                ->method('flush')
-                ->will($this->returnValue(true));
-        
-        $cachedResource = new MediaResourceCache();
-        $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
-        $cachedResource->setId($this->mediaResource->getId());
-        $cachedResource->setDateCreated(new \DateTime("1st jan 1980"));
-        $this->mediaResource->setMediaResourceCache($cachedResource);
-        
-        $mediaResources = array(
-            $cachedResource->getId() => $this->mediaResource,
-        );
-            
-        $updatesMade = $this->mediaAPI->processMediaResources($mediaResources);
-        
-        $this->assertEquals($updatesMade, true);
-    } 
     
     public function testProcessMediaDetailsWhenSessionExpiredAddsResourceToDB(){
         

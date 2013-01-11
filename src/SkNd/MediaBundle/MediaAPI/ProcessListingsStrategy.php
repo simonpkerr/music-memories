@@ -29,7 +29,9 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
      * @param MediaSelection $mediaSelection 
      */
     public function __construct(array $params){
-        if(!isset($params['em'])||!isset($params['mediaSelection'])||!isset($params['apiStrategy']))
+        if(!isset($params['em'])||
+                !isset($params['mediaSelection'])||
+                !isset($params['apiStrategy']))
             throw new \RuntimeException('required params not supplied for '. $this);
         
         $this->em = $params['em'];

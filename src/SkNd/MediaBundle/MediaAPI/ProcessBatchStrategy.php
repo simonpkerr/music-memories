@@ -25,6 +25,10 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
      * @param array $apis, 
      */
     public function __construct(array $params){
+        if(!isset($params['em'])||
+                !isset($params['apis']))
+            throw new \RuntimeException('required params not supplied for '. $this);
+        
         $this->em = $params['em'];
         $this->apis = $params['apis'];
         if(isset($params['mediaResources']))

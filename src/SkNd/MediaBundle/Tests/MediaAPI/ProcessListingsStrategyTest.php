@@ -2,7 +2,8 @@
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
- * Base class for all media api's tests
+ * ProcessDetailsDecoratorStrategy test to test extended functionality
+ * of getting recommendations and processing the data in a different way
  * @author Simon Kerr
  * @version 1.0
  * Run UserBundle Fixtures first
@@ -19,7 +20,7 @@ use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Session;
 
-class MediaAPITests extends WebTestCase {
+class ProcessListingsStrategyTest extends WebTestCase {
     private $mediaAPI;
     private $mediaSelection;
     private $testAmazonAPI;
@@ -98,7 +99,7 @@ class MediaAPITests extends WebTestCase {
                     'flush',
                 ));
         
-        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
+        $this->mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
             'api'   => 'amazonapi',
             'media' => 'film'
         ));
@@ -120,114 +121,90 @@ class MediaAPITests extends WebTestCase {
         
     }
     
-    
-    public function testGetMediaSelectionWhenNotNullReturnsMediaSelection(){
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testConstructWithoutEntityManagerThrowsException(){
         
-    }
-    
-    public function testGetMediaSelectionWhenMediaSelectionIsNullButInSessionReturnsMediaSelection(){
-        
-    }
-    
-    public function testGetMediaSelectionWhenNonExistentReturnsNewMediaSelection(){
-        
+        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
     }
     
     /**
      * @expectedException RuntimeException
-     * @exceptedExceptionMessage api key not found 
      */
-    public function testSetAPIStrategyOnNonExistentAPIThrowsException(){
+    public function testConstructWithoutMediaSelectionThrowsException(){
         
-        $response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
     }
     
     /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @exceptedExceptionMessage There was a problem with that address 
+     * @expectedException RuntimeException
      */
-    public function testSetMediaSelectionWithInvalidParametersThrowsException(){
-        $response = $this->mediaAPI->getMock()->setMediaSelection(array(
-            'media' => 'invalid-media',
-        ));
+    public function testConstructWithoutAPIStrategyThrowsException(){
         
+        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
     }
     
-    public function testSetMediaSelectionWithSpecificDecadeOverridesSessionParameters(){
-        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
-            'media' => 'film',
-            'decade'=> '1980s'
-        ));
+    //re-factor into its own test class        
+    public function testNonExistentCachedListingsCallsLiveAPI(){
+        $this->mediaAPI = 
+                $this->mediaAPI->setMethods(array(
+                    'getCachedListings',
+                    'cacheListings',
+                    'flush'
+                    ))
+                ->getMock();
         
-        $this->assertTrue($mediaSelection->getDecade()->getDecadeName() == '1980', "decade was updated");
+ 
+        $this->mediaAPI->expects($this->once())
+                ->method('getCachedListings')
+                ->will($this->returnValue(null));
+
+        $this->mediaAPI->expects($this->any())
+                ->method('cacheListings')
+                ->will($this->returnValue(true));
         
+        $listings = $this->mediaAPI->getListings();
+        $this->assertEquals((string)$listings['response']->item->attributes()->id, 'liveData');
     }
     
-    public function testSetMediaSelectionWithDefaultDecadeOverridesSpecificSessionParameters(){
-        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
-            'media' => 'film',
-            'decade'=> '1980s'
-        ));
+    public function testExistingValidCachedListingsReturnedFromSameQueryReturnsListings(){
+        $this->mediaAPI = $this->mediaAPI
+                ->setMethods(array(
+                    'getCachedListings',
+                    'cacheListings',
+                    'flush'
+                    ))
+                ->getMock();
         
-        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
-            'media' => 'film',
-        ));
-        
-        $this->assertTrue($mediaSelection->getDecade() == null, "decade was updated to default");
+
+        $this->mediaAPI->expects($this->once())
+                ->method('getCachedListings')
+                ->will($this->returnValue($this->cachedXMLResponse));
+
+        $listings = $this->mediaAPI->getListings();
+        $this->assertEquals((string)$listings['response']->item->attributes()->id, 'cachedData');
     }
     
-    public function testSetMediaSelectionWithDefaultGenreOverridesSpecificGenreSessionParameters(){
-        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
-            'media' => 'film',
-            'genre'=> 'drama'
-        ));
-        
-        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
-            'media' => 'film',
-        ));
-        
-        $this->assertTrue($mediaSelection->getSelectedMediaGenre() == null, "genre was updated to default");
+    public function processMediaWithCachedRecommendationsReturnsCache(){
+        //todo
     }
     
-    public function testSetMediaSelectionWithKeywordsUpdatesMediaSelection(){
-        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
-            'media' => 'film',
-            'keywords'=> 'some keywords'
-        ));
-       
-        $this->assertTrue($mediaSelection->getKeywords() == 'some keywords', "keywords were added");
+    public function processMediaWithNonCachedRecommendationsReturnsLiveRecords(){
+        //todo
     }
     
-    public function testSetMediaSelectionWithNoKeywordsOverridesSpecificKeywordsSessionParameter(){
-        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
-            'media' => 'film',
-            'keywords'=> 'some keywords'
-        ));
-        
-        $mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
-            'media' => 'film',
-        ));
-        
-        $this->assertTrue($mediaSelection->getKeywords() == null, "keywords were removed");
+    //will be part of the process media method
+    public function testGetRecommendationsWithNullIdentifierReturnsNull(){
+        $response = $this->mediaAPI->getMock()->getRecommendations();
+        $this->assertTrue($response == null, "returned recommendations are null");
     }
     
-    public function testGetMediaSelectionParamsReturnsArray(){
-        $this->mediaAPI = $this->mediaAPI->getMock();
-        $mediaSelection = $this->mediaAPI->setMediaSelection(array(
-            'media' => 'film',
-        ));
-        
-        $response = $this->mediaAPI->getMediaSelectionParams();
-        $this->assertTrue($response['media'] == 'film', "film not returned as media type");
-    }
+
     
-    public function testGetMediaSelectionParamsForNonExistentMediaSelectionReturnsDefaultsArray(){
-        self::$session->remove('mediaSelection');
-        
-        $response = $this->mediaAPI->getMock()->getMediaSelectionParams();
-        $this->assertTrue($response['media'] == 'film-and-tv', "default film and tv was returned as media type");
-    }
-  
+   
+    
+    
 }
 
 ?>

@@ -117,7 +117,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
     }
     
     private function processCache(MediaResource $mediaResource){
-        if($mediaResource != null && $mediaResource->getMediaResourceCache() != null){
+        if($mediaResource->getMediaResourceCache() != null){
             //if a cached resource exists and is older than the threshold for the current api, delete it
             $dateCreated = $mediaResource->getMediaResourceCache()->getDateCreated();
             if($dateCreated->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
