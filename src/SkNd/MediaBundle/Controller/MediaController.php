@@ -199,16 +199,18 @@ class MediaController extends Controller
         $apiStrategy = $this->mediaapi->getAPIStrategy($api);//entity in class
         $mediaSelection = clone $this->mediaapi->getMediaSelection();
         $mediaSelection->setAPI($apiStrategy->getAPIEntity());        
+        $referrer = $this->getRequest()->headers->get('referer');
         
         $responseParams = array_merge(
                 $this->mediaapi->getMediaSelectionParams(),
-                array('referrer' => $this->getRequest()->headers->get('referer')));
+                array('referrer' => $referrer));
   
         $processDetailsStrategy = new ProcessDetailsStrategy(array(
             'em'            =>      $em,
             'apiStrategy'   =>      $apiStrategy, 
             'mediaSelection'=>      $mediaSelection,
             'itemId'        =>      $id,
+            'referrer'      =>      $referrer,
         ));
         
         //create the decorator strategy and pass the original strategy to it

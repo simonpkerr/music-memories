@@ -13,8 +13,6 @@ require_once 'src\SkNd\MediaBundle\MediaAPI\AmazonSignedRequest.php';
  * @version 1.0
  * debug cmd: set XDEBUG_CONFIG=idekey=netbeans-xdebug 
  */
-
-
 class MediaControllerTest extends WebTestCase
 {
     private $client;
@@ -149,6 +147,15 @@ class MediaControllerTest extends WebTestCase
         
        $this->assertTrue($crawler->filter('html:contains("Error")')->count() > 0);
     }
+    
+    public function testMediaDetailsShowsCorrectReturnUrl(){
+        
+    }
+    
+    public function testMediaDetailsWithAdditionalParamsShowsCorrectReturnUrl(){
+        
+    }
+    
     
     
     

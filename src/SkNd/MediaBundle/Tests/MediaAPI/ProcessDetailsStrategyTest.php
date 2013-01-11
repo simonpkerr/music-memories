@@ -122,13 +122,59 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         
     }
     
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testConstructWithoutEntityManagerThrowsException(){
+        
+        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+    }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testConstructWithoutMediaSelectionThrowsException(){
+        
+        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+    }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testConstructWithoutAPIStrategyThrowsException(){
+        
+        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+    }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testConstructWithoutItemIdThrowsException(){
+        
+        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+    }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testConstructWithoutReferrerThrowsException(){
+        
+        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+    }
+    
+    
     public function testGetDBNonExistentMediaResourceReturnsNewMediaResource(){
         $this->mediaAPI = $this->mediaAPI->getMock();
         $mr = $this->mediaAPI->getMediaResource('nonexistentID');
         $this->assertEquals($mr->getId(), 'nonexistentID', 'new media resource was returned');
     }
     
-    public function testGetMediaResourceInDBWithVagueDetailsUpdatesMediaResource(){
+    public function testUpdateVagueMediaResourceOnlyIfReferredFromSearch(){
+        //test the getMediaResource method to refine mr's
+        
+    }
+    
+    public function testGetMediaResourceInDBWithVagueDetailsUpdatesMediaResourceIfSpecificMediaTypeSet(){
         $this->mediaAPI = $this->mediaAPI->getMock();
         
         $this->mediaSelection = $this->mediaAPI->getMediaSelection(array(
@@ -151,6 +197,13 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         
         self::$em->remove($mr);
         self::$em->flush();
+    }
+    
+    public function testGetMediaResourceInDBWithVagueDetailsUpdatesMediaResourceIfSpecificDecadeSet(){
+        
+    }
+    
+    public function testGetMediaResourceInDBWithVagueDetailsUpdatesMediaResourceIfSpecificGenreSet(){
         
     }
     
@@ -297,6 +350,10 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         
         $this->assertEquals($updatesMade, true);
     } 
+    
+    public function testProcessMediaDetailsWhenSessionExpiredAddsResourceToDB(){
+        
+    }
     
     
     

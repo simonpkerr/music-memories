@@ -263,6 +263,14 @@ class MWCMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("testuser-mr1")')->count() > 0);
         
     }
+    
+    /*
+     * media resources added to memory walls should have their params updated.
+     * Scenario - mr discovered through vague search (media type only). then, 
+     */
+    public function testMediaResourceAddedToWallDoesNotHaveVagueParametersUpdated(){
+        
+    }
 
     public function testRemoveMediaResourceFromMemoryWallShowsConfirmation(){
         
