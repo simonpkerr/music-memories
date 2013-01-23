@@ -121,8 +121,9 @@ class MediaAPITests extends WebTestCase {
     }
     
     
-    public function testGetMediaSelectionWhenNotNullReturnsMediaSelection(){
-        
+    /* how to test these? they all return a media selection object */
+    /*public function testGetMediaSelectionWhenNotNullReturnsMediaSelection(){
+        $this->assertTrue($this->mediaSelection->getMediaSelection);
     }
     
     public function testGetMediaSelectionWhenMediaSelectionIsNullButInSessionReturnsMediaSelection(){
@@ -131,7 +132,7 @@ class MediaAPITests extends WebTestCase {
     
     public function testGetMediaSelectionWhenNonExistentReturnsNewMediaSelection(){
         
-    }
+    }*/
     
     /**
      * @expectedException RuntimeException
