@@ -88,7 +88,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
              * 
              * IMPORTANT - only update the media resource if the referrer was the search method, otherwise could cause
              * wrong categorisation of resources. (if a vague search was performed, an item added, a more specific search done,
-             * then the item viewed again, it could potentially be refined but wrongly.
+             * then the item viewed again through a memory wall or direct referral, it could potentially be refined wrongly.
              **/ 
             if(strpos($this->referrer, 'search') !== false){
                 if($this->mediaResource->getMediaType()->getSlug() == 'film-and-tv' && $this->mediaSelection->getMediaType()->getSlug() != 'film-and-tv')

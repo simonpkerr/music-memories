@@ -103,7 +103,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
                     'flush',
                 ));
         
-        $this->mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'api'   => 'amazonapi',
             'media' => 'film'
         ));
@@ -211,8 +211,39 @@ class ProcessDetailsStrategyTest extends WebTestCase {
     }
     
     public function testGetCachedMediaResourceWithVagueDetailsNotUpdatedIfNotReferredFromSearch(){
-        //test the getMediaResource method to refine mr's
+        //set up a new media resource with certain vague details (mediatype and decade)
+        $mr = new MediaResource();
+        $mr->setId('CachedMediaResourceWithVagueDetails');
+        $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        $mr->setDecade(self::$em->getRepository('SkNdMediaBundle:Decade')->findOneBy(array('id' => 1)));
+        self::$em->persist($mr);
+        self::$em->flush();
         
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
+            'api'   => 'amazonapi',
+            'media' => 'film',
+            'decade'=> '1960s',
+            'genre' => 'comedy',
+        ));
+                
+               
+        $constructorParams = array_merge(array(
+            'itemId'            =>      'CachedMediaResourceWithVagueDetails',
+            'referrer'          =>      'details',
+            'mediaSelection'    =>      $this->mediaSelection,
+            ), $this->constructorParams);
+        
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
+                array(
+                    $constructorParams,
+                ))->getMock();
+                
+       $mr = $this->processDetailsStrategy->getMediaResource();
+       $this->assertFalse($mr->getDecade()->getSlug('1960s'));
+        
+        self::$em->remove($mr);
+        self::$em->flush();
     }
     
     public function testGetCachedMediaResourceWithVagueDetailsUpdatesMediaResourceIfSpecificMediaTypeSet(){
@@ -234,7 +265,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         $mr->setId('mediaAPITestMR1');
         $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
         $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
-        //$mr->setMediaResourceCache($this->getCache($id));
+        
         self::$em->persist($mr);
         self::$em->flush();
         

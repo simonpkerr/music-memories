@@ -119,7 +119,7 @@ class MediaAPI {
      * $params - contains optional mediaSelection object - if this is set,
      * simply set the mediaselection as the passed object
      * otherwise
-     * @param media, decade, genre, keywords, page
+     * @param array(api (e.g.amazonapi), media (e.g.film), decade (e.g.1980), genre (e.g. comedy), keywords, computedKeywords, page)
      * if params exist, they should override the session values if different
      */    
     public function setMediaSelection(array $params = null){
@@ -165,7 +165,7 @@ class MediaAPI {
                 if($mediaType == null || $mediaTypeSlug != $mediaType->getSlug()){
                     $mediaType = $this->em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug($mediaTypeSlug);
                     if($mediaType == null)
-                        throw new NotFoundHttpException("There was a problem with that address");
+                        throw new NotFoundHttpException("There was a problem with that media type");
                 }
 
                 //if decade is not default decade and is not the same as existing decade
@@ -173,7 +173,7 @@ class MediaAPI {
                     if($decade == null || $decadeSlug != $decade->getSlug()){
                         $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decadeSlug);
                         if($decade == null)
-                            throw new NotFoundHttpException ("There was a problem with that address");
+                            throw new NotFoundHttpException ("There was a problem with that decade");
                     } 
                 }else{
                     $decade = null;
@@ -185,7 +185,7 @@ class MediaAPI {
                         try{
                             $genre = $this->em->getRepository('SkNdMediaBundle:Genre')->getGenreBySlugAndMedia($genreSlug, $mediaTypeSlug);
                         }catch(\Exception $ex){
-                            throw new NotFoundHttpException ("There was a problem with that address");
+                            throw new NotFoundHttpException ("There was a problem with that genre");
                         }
                     } 
                 }else{
