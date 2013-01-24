@@ -13,6 +13,7 @@
 
 namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\MediaAPI;
+use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
 use SkNd\MediaBundle\MediaAPI\AmazonAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
@@ -22,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Session;
 
 class ProcessDetailsStrategyTest extends WebTestCase {
+    private $processDetailsStrategy;
     private $mediaAPI;
     private $mediaSelection;
     private $testAmazonAPI;
@@ -29,6 +31,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
     private $cachedXMLResponse;
     private $liveXMLResponse;
     private $mediaResource;
+    private $constructorParams;
     
     protected static $kernel;
     protected static $em;
@@ -105,10 +108,20 @@ class ProcessDetailsStrategyTest extends WebTestCase {
             'media' => 'film'
         ));
         
-        $this->mediaResource = new MediaResource();
-        $this->mediaResource->setId('testMediaResource');
-        $this->mediaResource->setAPI($this->mediaSelection->getAPI());
-        $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+ 
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+            'itemId'            =>      'testItemId',
+            'referrer'          =>      'search',
+        );
+        
+        $this->processDetailsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsStrategy')
+                ->setConstructorArgs(array($this->constructorParams))
+                ->setMethods(array(
+                    'persistMerge'
+                ));
     }
     
     public function tearDown(){
@@ -119,6 +132,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         unset($this->mediaAPI);
         unset($this->mediaSelection);
         unset($this->mediaResource);
+        unset($this->processDetailsStrategy);
         
     }
     
@@ -126,59 +140,77 @@ class ProcessDetailsStrategyTest extends WebTestCase {
      * @expectedException RuntimeException
      */
     public function testConstructWithoutEntityManagerThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['em']);
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
     }
     
     /**
      * @expectedException RuntimeException
      */
     public function testConstructWithoutMediaSelectionThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['mediaSelection']);
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
     }
     
     /**
      * @expectedException RuntimeException
      */
     public function testConstructWithoutAPIStrategyThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['apiStrategy']);
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
     }
     
     /**
      * @expectedException RuntimeException
      */
     public function testConstructWithoutItemIdThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['itemId']);
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
     }
     
     /**
      * @expectedException RuntimeException
      */
     public function testConstructWithoutReferrerThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['referrer']);
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
     }
     
     /**
      * @expectedException RuntimeException
      */
     public function testGetNullMediaResourceThrowsException(){
-        
+        $this->processDetailsStrategy = $this->processDetailsStrategy->getMock();
+        $this->processDetailsStrategy->getMedia();
     }
-    
-    
-    
     
     public function testGetMediaResourceWithNonExistentIdReturnsNewMediaResource(){
-        $this->mediaAPI = $this->mediaAPI->getMock();
-        $mr = $this->mediaAPI->getMediaResource('nonexistentID');
-        $this->assertEquals($mr->getId(), 'nonexistentID', 'new media resource was returned');
+        $this->constructorParams['itemId'] = 'MediaResourceWithNonExistentId';
+        
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
+                array($this->constructorParams))->getMock();
+        
+        $mr = $this->processDetailsStrategy->getMediaResource();
+        $this->assertEquals($mr->getId(), 'MediaResourceWithNonExistentId', 'new media resource was returned');
+        $this->assertEquals($mr->getViewCount(), 0, 'media resources has been viewed more than once');
     }
     
-    public function testGetCachedMediaResourceWithVagueDetailsUpdatesMediaResourceOnlyIfReferredFromSearch(){
+    public function testGetCachedMediaResourceWithVagueDetailsNotUpdatedIfNotReferredFromSearch(){
         //test the getMediaResource method to refine mr's
         
     }
@@ -186,12 +218,17 @@ class ProcessDetailsStrategyTest extends WebTestCase {
     public function testGetCachedMediaResourceWithVagueDetailsUpdatesMediaResourceIfSpecificMediaTypeSet(){
         $this->mediaAPI = $this->mediaAPI->getMock();
         
-        $this->mediaSelection = $this->mediaAPI->getMediaSelection(array(
+        $this->mediaSelection = $this->mediaAPI->setMediaSelection(array(
             'media' => 'film',
             'decade'=> '1980s',
             'genre' => 'drama',
         ));
         
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(array(array_merge(array(
+            'mediaSelection'    => $this->mediaSelection,
+            'itemId'            => 'mediaAPITestMR1',
+        ), $this->constructorParams)))->getMock();
+                
         //create and insert a dummy mediaresource
         $mr = new MediaResource();
         $mr->setId('mediaAPITestMR1');
@@ -201,7 +238,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         self::$em->persist($mr);
         self::$em->flush();
         
-        $updatedMr = $this->mediaAPI->getMediaResource('mediaAPITestMR1');
+        $updatedMr = $this->processDetailsStrategy->getMediaResource();
         $this->assertEquals($updatedMr->getDecade()->getDecadeName(), '1980', "Decade was updated to 1980");
         
         self::$em->remove($mr);
@@ -217,24 +254,27 @@ class ProcessDetailsStrategyTest extends WebTestCase {
     }
     
     public function testGetMediaResourceWithExpiredCacheDeletesCache(){
-        $this->mediaAPI = $this->mediaAPI->getMock();
-       
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(array(array_merge(array(
+            'mediaSelection'    => $this->mediaSelection,
+            'itemId'            => 'mediaAPITestMR2',
+        ), $this->constructorParams)))->getMock();
+               
         $cachedResource = new MediaResourceCache();
         $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
-        $cachedResource->setId('mediaAPITestMR1');
-        $cachedResource->setTitle('mediaAPITestMR1');
+        $cachedResource->setId('mediaAPITestMR2');
+        $cachedResource->setTitle('mediaAPITestMR2');
         $cachedResource->setDateCreated(new \DateTime("1st Jan 1980"));
         
         //create and insert a dummy mediaresource
         $mr = new MediaResource();
-        $mr->setId('mediaAPITestMR1');
+        $mr->setId('mediaAPITestMR2');
         $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
         $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
         $mr->setMediaResourceCache($cachedResource);
         self::$em->persist($mr);
         self::$em->flush();
         
-        $updatedMr = $this->mediaAPI->getMediaResource('mediaAPITestMR1');
+        $updatedMr = $this->processDetailsStrategy->getMediaResource();
         $this->assertTrue($updatedMr->getMediaResourceCache() == null, "cache was deleted");
         
         self::$em->remove($mr);
@@ -252,68 +292,77 @@ class ProcessDetailsStrategyTest extends WebTestCase {
     }
     
     public function testNonExistentMediaResourceCallsLiveAPI(){
-        $this->mediaAPI = 
-                $this->mediaAPI->setMethods(array(
-                    'getMediaResource',
-                    'flush',
-                    ))
-                ->getMock();
-        
-        $this->mediaAPI->expects($this->any())
-                ->method('getMediaResource')
-                ->will($this->returnValue(null));
-        $this->mediaAPI->expects($this->any())
-                ->method('flush')
-                ->will($this->returnValue(true));
-        
+        $this->processDetailsStrategy = $this->processDetailsStrategy->getMock();
 
-        $mr = $this->mediaAPI->getDetails(
-                array('ItemId'  =>  '1'));
+        $this->processDetailsStrategy->expects($this->any())
+                ->method('persistMerge')
+                ->will($this->returnValue(true));
+
+        $this->processDetailsStrategy->processMedia();
+        $this->processDetailsStrategy->cacheMedia();
+        $mr = $this->processDetailsStrategy->getMedia();
         
         $this->assertEquals((string)$mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData');
     }
     
     public function testExistingMediaResourceAndNonexistentCachedResourceCallsLiveAPI(){
-        $this->mediaAPI = 
-                $this->mediaAPI->setMethods(array(
+        $this->mediaResource = new MediaResource();
+        $this->mediaResource->setId('testMediaResource');
+        $this->mediaResource->setAPI($this->mediaSelection->getAPI());
+        $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+        
+        $this->processDetailsStrategy = 
+                $this->processDetailsStrategy->setMethods(array(
                     'getMediaResource',
-                    'flush',
+                    'persistMerge',
                     ))
                 ->getMock();
         
-        $this->mediaAPI->expects($this->once())
+        $this->processDetailsStrategy->expects($this->once())
                 ->method('getMediaResource')
                 ->will($this->returnValue($this->mediaResource));
-        $this->mediaAPI->expects($this->any())
-                ->method('flush')
+        $this->processDetailsStrategy->expects($this->any())
+                ->method('persistMerge')
                 ->will($this->returnValue(true));
 
-        $mr = $this->mediaAPI->getDetails(
-                array('ItemId'  =>  '1'));
+        $this->processDetailsStrategy->processMedia();
+        $this->processDetailsStrategy->cacheMedia();
+        $mr = $this->processDetailsStrategy->getMedia();
+        
         $this->assertEquals((string)$mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData');
     }
     
     public function testExistingMediaResourceAndExistingValidCachedResourceReturnsCache(){
-         $this->mediaAPI = 
-                $this->mediaAPI->setMethods(array(
+         $this->processDetailsStrategy = 
+                $this->processDetailsStrategy->setMethods(array(
                     'getMediaResource',
-                    'flush',
+                    'persistMerge',
                     ))
                 ->getMock();
          
+        $this->mediaResource = new MediaResource();
+        $this->mediaResource->setId('ExistingMediaResourceAndExistingValidCachedResource');
+        $this->mediaResource->setAPI($this->mediaSelection->getAPI());
+        $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+        
         $cachedResource = new MediaResourceCache();
         $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
         $cachedResource->setId($this->mediaResource->getId());
         $cachedResource->setDateCreated(new \DateTime("now"));
+        $cachedResource->setTitle('ExistingMediaResourceAndExistingValidCachedResource');
         $this->mediaResource->setMediaResourceCache($cachedResource);
 
         //tell the mocked object which methods to mock and what to return
-        $this->mediaAPI->expects($this->any())
+        $this->processDetailsStrategy->expects($this->any())
                 ->method('getMediaResource')
                 ->will($this->returnValue($this->mediaResource));
+        $this->processDetailsStrategy->expects($this->any())
+                ->method('persistMerge')
+                ->will($this->returnValue(true));        
         
-        $mr = $this->mediaAPI->getDetails(
-                array('ItemId'  =>  '1'));
+        $this->processDetailsStrategy->processMedia();
+        $this->processDetailsStrategy->cacheMedia();
+        $mr = $this->processDetailsStrategy->getMedia();
         $this->assertEquals((string)$mr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData');
         
     }
@@ -322,7 +371,13 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         
     }
     
+    public function testGetMediaForNonExistentMediaResourceThrowsException(){
+        
+    }
     
+    public function testCachedMediaResourceHasViewCountIncremented(){
+        
+    }
     
     
 }

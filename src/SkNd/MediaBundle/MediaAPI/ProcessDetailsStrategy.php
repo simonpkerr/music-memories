@@ -28,7 +28,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
      *
      * @param $params includes EntityManager $em, 
      * IAPIStrategy $apiStrategy, MediaSelection $mediaSelection,
-     * itemId
+     * itemId, referrer (which url the request has come from)
      */
     public function __construct(array $params){
         if(!isset($params['em'])||
@@ -36,7 +36,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
             !isset($params['apiStrategy'])||
             !isset($params['itemId'])||
             !isset($params['referrer']))
-            throw new \RuntimeException('required params not supplied for '. $this);
+            throw new \RuntimeException('required params not supplied for ' . get_class($this));
         
         
         $this->em = $params['em'];
@@ -141,7 +141,6 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
 
         $this->mediaResource->incrementViewCount();
         $this->persistMerge($this->mediaResource);
-        $this->em->flush();
     }
         
     public function persistMerge($obj){
@@ -149,6 +148,8 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
             $this->em->merge($obj);
         else
             $this->em->persist($obj);
+        
+        $this->em->flush();
     }
     
     

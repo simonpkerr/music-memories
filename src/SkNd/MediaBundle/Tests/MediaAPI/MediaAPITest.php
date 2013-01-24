@@ -56,6 +56,7 @@ class MediaAPITests extends WebTestCase {
         $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="liveData"></item></items>');
         
         //for the mock object, need to provide a fully qualified path 
+        
         $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
                 ->disableOriginalConstructor()
                 ->setMethods(array(
@@ -85,6 +86,7 @@ class MediaAPITests extends WebTestCase {
         
         $this->testYouTubeAPI = new YouTubeAPI(new \SkNd\MediaBundle\MediaAPI\TestYouTubeRequest());
         
+        
         $this->mediaAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\MediaAPI')
                 ->setConstructorArgs(array(
                         'true', 
@@ -95,7 +97,7 @@ class MediaAPITests extends WebTestCase {
                             'youtubeapi'    =>  $this->testYouTubeAPI,
                         )))
                 ->setMethods(array(
-                    'flush',
+                    'getMedia',
                 ));
         
         $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
