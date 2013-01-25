@@ -12,6 +12,8 @@
 
 namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\MediaAPI;
+use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
+use SkNd\MediaBundle\MediaAPI\ProcessDetailsDecoratorStrategy;
 use SkNd\MediaBundle\MediaAPI\AmazonAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
@@ -21,6 +23,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Session;
 
 class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
+    private $processDetailsStrategy;
+    private $processDetailsDecoratorStrategy;
     private $mediaAPI;
     private $mediaSelection;
     private $testAmazonAPI;
@@ -28,6 +32,8 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
     private $cachedXMLResponse;
     private $liveXMLResponse;
     private $mediaResource;
+    private $constructorParams;
+    
     
     protected static $kernel;
     protected static $em;
@@ -99,15 +105,42 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
                     'flush',
                 ));
         
-        $this->mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'api'   => 'amazonapi',
             'media' => 'film'
         ));
         
-        $this->mediaResource = new MediaResource();
-        $this->mediaResource->setId('testMediaResource');
-        $this->mediaResource->setAPI($this->mediaSelection->getAPI());
-        $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+ 
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+            'itemId'            =>      'testItemId',
+            'referrer'          =>      'search',
+        );
+        
+        $this->processDetailsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsStrategy')
+                ->setConstructorArgs(array($this->constructorParams))
+                ->setMethods(array(
+                    'persistMerge'
+                ));
+        
+        //redefined params for the decorator strategy
+        $this->constructorParams = array(
+            'em'                        =>      self::$em,
+            'processDetailsStrategy'    =>      $this->processDetailsStrategy->getMock(),            
+            'apis'                      =>      array(
+                'amazonapi' =>  $this->testAmazonAPI,
+                'youtubeapi'=>  $this->testYouTubeAPI,
+            )
+        );
+        
+        $this->processDetailsDecoratorStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsDecoratorStrategy')
+                ->setConstructorArgs(array($this->constructorParams))
+                ->setMethods(array(
+                    'persistMerge'
+                ));
+        
     }
     
     public function tearDown(){
@@ -125,20 +158,42 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
      * @expectedException RuntimeException
      */
     public function testConstructWithoutDetailsStrategyThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['processDetailsStrategy']);
+        $this->processDetailsDecoratorStrategy = $this->processDetailsDecoratorStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
     }
      
     /**
      * @expectedException RuntimeException
      */
     public function testConstructWithoutEntityManagerThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['em']);
+        $this->processDetailsDecoratorStrategy = $this->processDetailsDecoratorStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
     }
     
-    public function processMediaWithCachedRecommendationsReturnsCache(){
-        //todo
+    public function processMediaResourceWithCachedRecommendationsReturnsCache(){
+        $this->processDetailsDecoratorStrategy = $this->processDetailsDecoratorStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
+        
+        $this->processDetailsDecoratorStrategy->expects($this->any())
+                ->method('persistMerge')
+                ->will($this->returnValue(true));
+        $this->processDetailsDecoratorStrategy->expects($this->any())
+                ->method('getMediaResource')
+                ->will($this->returnValue(true));
+                
+
+        
+        //pass mocked media resources to class
+        
+        //insert some cached 
     }
     
     public function processMediaWithNonCachedRecommendationsReturnsLiveRecords(){
@@ -148,7 +203,7 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
     //will be part of the process media method
     public function testGetRecommendationsWithNullIdentifierReturnsNull(){
         $response = $this->mediaAPI->getMock()->getRecommendations();
-        $this->assertTrue($response == null, "returned recommendations are null");
+        $this->assertTrue($response == null, "returned recommendations are not null");
     }
     
     public function testRecommendationsForDetailsPageAreAddedToMediaResourceWhenAvailable(){
