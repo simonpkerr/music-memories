@@ -33,7 +33,7 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
     private $liveXMLResponse;
     private $mediaResource;
     private $constructorParams;
-    
+    private $decoratorConstructorParams;
     
     protected static $kernel;
     protected static $em;
@@ -126,7 +126,7 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
                 ));
         
         //redefined params for the decorator strategy
-        $this->constructorParams = array(
+        $this->decoratorConstructorParams = array(
             'em'                        =>      self::$em,
             'processDetailsStrategy'    =>      $this->processDetailsStrategy->getMock(),            
             'apis'                      =>      array(
@@ -136,7 +136,7 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
         );
         
         $this->processDetailsDecoratorStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsDecoratorStrategy')
-                ->setConstructorArgs(array($this->constructorParams))
+                ->setConstructorArgs(array($this->decoratorConstructorParams))
                 ->setMethods(array(
                     'persistMerge'
                 ));
@@ -177,6 +177,29 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
     }
     
     public function processMediaResourceWithCachedRecommendationsReturnsCache(){
+        //set up a new media resource 
+        $mr = new MediaResource();
+        $mr->setId('CachedMediaResource');
+        $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        $mr->setDecade(self::$em->getRepository('SkNdMediaBundle:Decade')->findOneBy(array('id' => 1)));
+        
+        $rec = clone $mr;
+        $rec->setId('RecMediaResource');
+        
+        $cachedResource = new MediaResourceCache();
+        $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
+        $cachedResource->setId('RecMediaResource');
+        $cachedResource->setTitle('RecMediaResource');
+        $cachedResource->setDateCreated(new \DateTime("now"));
+        $rec->setMediaResourceCache($cachedResource);
+        
+        $recs = array(
+            'genericMatches' => array(
+                'RecMediaResource' => $rec,
+            ),
+        );
+        
         $this->processDetailsDecoratorStrategy = $this->processDetailsDecoratorStrategy->setConstructorArgs(
                 array(
                     $this->constructorParams
@@ -188,80 +211,19 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
         $this->processDetailsDecoratorStrategy->expects($this->any())
                 ->method('getMediaResource')
                 ->will($this->returnValue(true));
-                
-
+        $this->processDetailsDecoratorStrategy->expects($this->any())
+                ->method('getRecommendations')
+                ->will($this->returnValue($recs));
         
-        //pass mocked media resources to class
-        
-        //insert some cached 
+        $recs = $mr->getRelatedMediaResources();
+        $this->assertTrue(!is_null($recs), "recommendations weren't saved");
+        $this->assertEquals((string)$recs[0]->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData');
     }
     
     public function processMediaWithNonCachedRecommendationsReturnsLiveRecords(){
         //todo
     }
-    
-    //will be part of the process media method
-    public function testGetRecommendationsWithNullIdentifierReturnsNull(){
-        $response = $this->mediaAPI->getMock()->getRecommendations();
-        $this->assertTrue($response == null, "returned recommendations are not null");
-    }
-    
-    public function testRecommendationsForDetailsPageAreAddedToMediaResourceWhenAvailable(){
-        $this->mediaAPI = 
-                $this->mediaAPI->setMethods(array(
-                    'getRecommendations',
-                    'getMediaResource',
-                    'processMediaResources',
-                    'flush',
-                    ))
-                ->getMock();
-        
-        $rec1 = new MediaResource();
-        $rec1->setId('testRec1');
-        $rec1->setAPI($this->mediaSelection->getAPI());
-        $rec1->setMediaType($this->mediaSelection->getMediaType());
-        
-        $rec2 = new MediaResource();
-        $rec2->setId('testRec2');
-        $rec2->setAPI($this->mediaSelection->getAPI());
-        $rec2->setMediaType($this->mediaSelection->getMediaType());
-        
-        $recommendations = array(
-            'exactMatches'     => array(
-                'testRec1'  => $rec1,
-            ),
-            'genericMatches'   => array(
-                'testRec2'  => $rec2,
-            )
-        );
-        
-        $this->mediaAPI->expects($this->any())
-                ->method('getRecommendations')
-                ->will($this->returnValue($recommendations));
-        $this->mediaAPI->expects($this->any())
-                ->method('getMediaResource')
-                ->will($this->returnValue($this->mediaResource));
-        $this->mediaAPI->expects($this->any())
-                ->method('processMediaResources')
-                ->will($this->returnValue(true));
-        
-        $mr = $this->mediaAPI->getDetails(array('ItemId' => 'testMediaResource'), MediaAPI::MEDIA_RESOURCE_RECOMMENDATION);
-        
-        $relatedMrs = $mr->getRelatedMediaResources();
-        $this->assertEquals($relatedMrs['exactMatches']['testRec1']->getId(), 'testRec1', "recommended media resources include testRec1");
-    }
-    
-    public function testBatchOfMediaResourcesAreCachedCorrectly(){
-        //todo
-    }
-   
-    /*
-     * if the session was destroyed or the url is manually typed in, the recommendations should be based on 
-     * the media resource media type, decade and genre, not the media selection
-     */
-    public function testGetMediaResourceDetailsWhenNoSessionExistsReturnsRecommendationsBasedOnMediaResourceParameters(){
-        
-    }
+          
     
    
     

@@ -17,15 +17,12 @@ use SkNd\MediaBundle\Entity\MediaSelection;
 
 class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $processDetailsStrategy;
-    //protected $apiStrategy;
-    //protected $mediaSelection;
     protected $mediaResource;
     protected $em;
-    //protected $itemId;
     
     /**
      * @param array $params includes 
-     * EntityManager, processDetailsStrategy
+     * EntityManager, processDetailsStrategy, apis (to go to parent)
      */
     public function __construct(array $params){
         if(!isset($params['processDetailsStrategy'])||
@@ -40,7 +37,6 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         
         $this->processDetailsStrategy = $params['processDetailsStrategy'];
         $this->em = $params['em'];
-        //$params['mediaSelection'] = $this->getMediaSelection();
         parent::__construct($params);
     }
     
@@ -66,7 +62,6 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         if(!is_null($recommendations))
             $this->mediaResource->setRelatedMediaResources($recommendations);
         
-        //return $this->mediaResource;
     }
     
     public function cacheMedia(){

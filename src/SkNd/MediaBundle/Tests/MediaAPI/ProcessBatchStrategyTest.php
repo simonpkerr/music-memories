@@ -200,7 +200,10 @@ class ProcessBatchStrategyTest extends WebTestCase {
         
     }
     
-    
+    public function testBatchOfMediaResourcesAreCachedCorrectly(){
+        //todo
+    }
+   
     
     
 }
