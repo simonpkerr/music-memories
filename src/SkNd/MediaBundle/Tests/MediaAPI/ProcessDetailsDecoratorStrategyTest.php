@@ -176,7 +176,41 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
                 ))->getMock();
     }
     
-    public function processMediaResourceWithCachedRecommendationsReturnsCache(){
+    public function testProcessMediaResourcesWithNoRelatedMediaResourcesDoesntSaveRecommendations(){
+        //set up a new media resource 
+        $mr = new MediaResource();
+        $mr->setId('MediaResourcesWithNoRelatedMediaResources');
+        $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        $mr->setDecade(self::$em->getRepository('SkNdMediaBundle:Decade')->findOneBy(array('id' => 1)));
+        
+        $emptyRecs = array(
+            'genericMatches' => array(),
+            'exactMatches'  => array(),
+        );
+        
+        $this->processDetailsDecoratorStrategy = $this->processDetailsDecoratorStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
+        
+        $this->processDetailsDecoratorStrategy->expects($this->any())
+                ->method('persistMerge')
+                ->will($this->returnValue(true));
+        $this->processDetailsDecoratorStrategy->expects($this->any())
+                ->method('getMediaResource')
+                ->will($this->returnValue($mr));
+        $this->processDetailsDecoratorStrategy->expects($this->any())
+                ->method('getRecommendations')
+                ->will($this->returnValue($emptyRecs));
+        
+        $recs = $mr->getRelatedMediaResources();
+        $this->assertTrue(is_null($recs), "recommendations were saved incorrectly");        
+    }
+    
+    
+        
+    public function testProcessMediaResourceWithCachedRecommendationsReturnsCache(){
         //set up a new media resource 
         $mr = new MediaResource();
         $mr->setId('CachedMediaResource');
@@ -210,7 +244,7 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
                 ->will($this->returnValue(true));
         $this->processDetailsDecoratorStrategy->expects($this->any())
                 ->method('getMediaResource')
-                ->will($this->returnValue(true));
+                ->will($this->returnValue($mr));
         $this->processDetailsDecoratorStrategy->expects($this->any())
                 ->method('getRecommendations')
                 ->will($this->returnValue($recs));
@@ -220,8 +254,41 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
         $this->assertEquals((string)$recs[0]->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData');
     }
     
-    public function processMediaWithNonCachedRecommendationsReturnsLiveRecords(){
-        //todo
+    public function testProcessMediaWithNonCachedRecommendationsReturnsLiveRecords(){
+        //set up a new media resource 
+        $mr = new MediaResource();
+        $mr->setId('CachedMediaResource');
+        $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        $mr->setDecade(self::$em->getRepository('SkNdMediaBundle:Decade')->findOneBy(array('id' => 1)));
+        
+        $rec = clone $mr;
+        $rec->setId('RecMediaResource');
+        
+        $recs = array(
+            'genericMatches' => array(
+                'RecMediaResource' => $rec,
+            ),
+        );
+        
+        $this->processDetailsDecoratorStrategy = $this->processDetailsDecoratorStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
+        
+        $this->processDetailsDecoratorStrategy->expects($this->any())
+                ->method('persistMerge')
+                ->will($this->returnValue(true));
+        $this->processDetailsDecoratorStrategy->expects($this->any())
+                ->method('getMediaResource')
+                ->will($this->returnValue($mr));
+        $this->processDetailsDecoratorStrategy->expects($this->any())
+                ->method('getRecommendations')
+                ->will($this->returnValue($recs));
+        
+        $recs = $mr->getRelatedMediaResources();
+        $this->assertTrue(!is_null($recs), "recommendations weren't saved");
+        $this->assertEquals((string)$recs[0]->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData');
     }
           
     

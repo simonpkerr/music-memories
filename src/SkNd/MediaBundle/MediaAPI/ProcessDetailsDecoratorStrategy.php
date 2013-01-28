@@ -27,7 +27,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     public function __construct(array $params){
         if(!isset($params['processDetailsStrategy'])||
            !isset($params['em']))
-                throw new \RuntimeException('invalid params for ' . $this);
+                throw new \RuntimeException('invalid params for ' . get_class($this));
         
         if(!$params['processDetailsStrategy'] instanceof IProcessMediaStrategy)
             throw new \RuntimeException('invalid details strategy');
@@ -59,7 +59,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         
         parent::processMedia();
         
-        if(!is_null($recommendations))
+        if(count($recommendations['genericMatches']) > 0 || count($recommendations['exactMatches']) > 0)
             $this->mediaResource->setRelatedMediaResources($recommendations);
         
     }
@@ -81,7 +81,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
      * @return $recommendatations array
      */
     protected function getRecommendations(MediaResource $mr) {
-        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($mr, $this->getMediaSelection());
+        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($mr);
         return $recommendationSet;
     }
 

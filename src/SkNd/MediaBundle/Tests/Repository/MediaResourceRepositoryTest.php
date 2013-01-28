@@ -60,18 +60,13 @@ class MediaResourceRepositoryTest extends WebTestCase {
         unset($this->api);
     }
     
-    
-    /*
-     * if the session was destroyed or the url is manually typed in, the recommendations should be based on 
-     * the media resource media type, decade and genre, not the media selection
-     */
-    public function testGetMediaResourceDetailsWhenNoSessionExistsReturnsRecommendationsBasedOnMediaResourceParameters(){
+    public function testGetRecommendationsWithNoDecadeDoesntSaveRecommendations(){
         
     }
-       
     
-    
-    
+    public function testGetNoRecommendationsReturnsEmptyArray(){
+        
+    }
     
     
        
