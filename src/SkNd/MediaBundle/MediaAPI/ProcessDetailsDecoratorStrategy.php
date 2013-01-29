@@ -17,20 +17,17 @@ use SkNd\MediaBundle\Entity\MediaSelection;
 
 class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $processDetailsStrategy;
-    //protected $apiStrategy;
-    //protected $mediaSelection;
     protected $mediaResource;
     protected $em;
-    //protected $itemId;
     
     /**
      * @param array $params includes 
-     * EntityManager, processDetailsStrategy
+     * EntityManager, processDetailsStrategy, apis (to go to parent)
      */
     public function __construct(array $params){
         if(!isset($params['processDetailsStrategy'])||
            !isset($params['em']))
-                throw new \RuntimeException('invalid params for ' . $this);
+                throw new \RuntimeException('invalid params for ' . get_class($this));
         
         if(!$params['processDetailsStrategy'] instanceof IProcessMediaStrategy)
             throw new \RuntimeException('invalid details strategy');
@@ -40,7 +37,6 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         
         $this->processDetailsStrategy = $params['processDetailsStrategy'];
         $this->em = $params['em'];
-        //$params['mediaSelection'] = $this->getMediaSelection();
         parent::__construct($params);
     }
     
@@ -63,10 +59,9 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         
         parent::processMedia();
         
-        if(!is_null($recommendations))
+        if(count($recommendations['genericMatches']) > 0 || count($recommendations['exactMatches']) > 0)
             $this->mediaResource->setRelatedMediaResources($recommendations);
         
-        //return $this->mediaResource;
     }
     
     public function cacheMedia(){
@@ -86,7 +81,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
      * @return $recommendatations array
      */
     protected function getRecommendations(MediaResource $mr) {
-        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($mr, $this->getMediaSelection());
+        $recommendationSet = $this->em->getRepository('SkNdMediaBundle:MediaResource')->getMediaResourceRecommendations($mr);
         return $recommendationSet;
     }
 

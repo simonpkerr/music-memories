@@ -30,24 +30,24 @@ class MediaResourceRepository extends EntityRepository
         
     }
     
-    public function getMediaResourceRecommendations(MediaResource $mr, MediaSelection $mediaSelection){
+    public function getMediaResourceRecommendations(MediaResource $mr){
         $recommendations = array(
             'genericMatches'   => array(),
             'exactMatches'     => array(),
         );
         
-        //only find generic matches if the decade is not null (all decades)
-        $decade = !is_null($mr->getDecade()) ? $mr->getDecade() : !is_null($mediaSelection->getDecade()) ? $mediaSelection->getDecade() : null;
-        
+        /*only find generic matches if the decade is not null (all decades) */
+        $decade = !is_null($mr->getDecade()) ? $mr->getDecade() : null;
+               
         //get media resources based most generic data but not including the selected item
         if(is_null($decade)){
             return $recommendations;
         }
         
         $params = array(
-            'api'       => !is_null($mr->getAPI()) ? $mr->getAPI() : $mediaSelection->getAPI(),
-            'mediaType' => !is_null($mr->getMediaType()) ? $mr->getMediaType() : $mediaSelection->getMediaType(),
-            'genre'     => !is_null($mr->getMediaType()) ? $mr->getGenre() : $mediaSelection->getSelectedMediaGenre(),
+            'api'       => $mr->getAPI(),
+            'mediaType' => $mr->getMediaType(),
+            'genre'     => $mr->getGenre(),
             );
         
         $q = $this->createQueryBuilder('mr')
@@ -67,17 +67,11 @@ class MediaResourceRepository extends EntityRepository
         $q  = $q->setDQL(str_replace('WHERE', 'INDEX BY mr.id WHERE', $q->getDQL()));
         $genericMatches = $q->getResult();
  
-        //try to get exact matches based on the mediaResource first, and then the 
-        //mediaSelection if necessary. This means that if the items are located from a referrer
-        //rather than a search (or manually typed in), they will still discover relevant 
-        //recommendations
-        
         $exactMatches = array();
         if(!is_null($params['genre'])){
             $exactMatches = array_filter($genericMatches, function($gm) use ($params){
                 return $gm->getMediaType() == $params['mediaType']
                         && $gm->getGenre() == $params['genre'];
-                        //&& $gm->getAPI() == $params['api']; //no need to refine by api, already done
             });
         }
                
