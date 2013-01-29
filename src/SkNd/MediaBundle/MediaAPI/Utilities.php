@@ -8,6 +8,7 @@
  *
  */
 namespace SkNd\MediaBundle\MediaAPI;
+use Doctrine\ORM\EntityManager;
 
 class Utilities {
     
@@ -84,6 +85,20 @@ class Utilities {
              return !is_null($params);
          }); 
     }
+    
+    public function persistMergeFlush(EntityManager $em, $obj = null, $immediateFlush = true){
+        if(!is_null($obj)){
+            if($em->contains($obj))
+                $em->merge($obj);
+            else
+                $em->persist($obj);
+        }
+        
+        if($immediateFlush){
+            $em->flush();
+        }
+    }
+
     
 }
 

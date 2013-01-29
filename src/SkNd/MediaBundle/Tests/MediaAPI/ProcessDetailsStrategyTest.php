@@ -56,7 +56,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
     }
     
     protected function setUp(){
-  
+        
         $this->cachedXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedData"></item></items>');
         $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="liveData"></item></items>');
         
@@ -120,8 +120,9 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         $this->processDetailsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsStrategy')
                 ->setConstructorArgs(array($this->constructorParams))
                 ->setMethods(array(
-                    'persistMerge'
+                    'persistMergeFlush'
                 ));
+     
     }
     
     public function tearDown(){
@@ -373,7 +374,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         $this->processDetailsStrategy = $this->processDetailsStrategy->getMock();
 
         $this->processDetailsStrategy->expects($this->any())
-                ->method('persistMerge')
+                ->method('persistMergeFlush')
                 ->will($this->returnValue(true));
 
         $this->processDetailsStrategy->processMedia();
@@ -392,7 +393,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         $this->processDetailsStrategy = 
                 $this->processDetailsStrategy->setMethods(array(
                     'getMediaResource',
-                    'persistMerge',
+                    'persistMergeFlush',
                     ))
                 ->getMock();
         
@@ -400,7 +401,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
                 ->method('getMediaResource')
                 ->will($this->returnValue($this->mediaResource));
         $this->processDetailsStrategy->expects($this->any())
-                ->method('persistMerge')
+                ->method('persistMergeFlush')
                 ->will($this->returnValue(true));
 
         $this->processDetailsStrategy->processMedia();
@@ -414,7 +415,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
          $this->processDetailsStrategy = 
                 $this->processDetailsStrategy->setMethods(array(
                     'getMediaResource',
-                    'persistMerge',
+                    'persistMergeFlush',
                     ))
                 ->getMock();
          
@@ -435,7 +436,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
                 ->method('getMediaResource')
                 ->will($this->returnValue($this->mediaResource));
         $this->processDetailsStrategy->expects($this->any())
-                ->method('persistMerge')
+                ->method('persistMergeFlush')
                 ->will($this->returnValue(true));        
         
         $this->processDetailsStrategy->processMedia();

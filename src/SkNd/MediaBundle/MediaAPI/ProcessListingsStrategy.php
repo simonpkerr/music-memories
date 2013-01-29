@@ -14,6 +14,7 @@ use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
 use SkNd\MediaBundle\Entity\MediaResourceListingsCache;
 use \SimpleXMLElement;
+use SkNd\MediaBundle\MediaAPI\Utilities;
 
 class ProcessListingsStrategy implements IProcessMediaStrategy {
     protected $apiStrategy;
@@ -21,6 +22,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     protected $mediaSelection;
     protected $listings;
     protected $recommendations;
+    protected $utilities;
 
     /**
      * @param array $params includes -
@@ -37,6 +39,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
         $this->em = $params['em'];
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
+        $this->utilities = new Utilities();
     }
     
     //is this needed? its no longer referenced in mediaapi
@@ -104,18 +107,12 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     
     //check date created first, then either replace xmldata and re-cache or do nothing.
     public function cacheMedia(){ 
-        $this->persistMerge($this->listings);
-        $this->em->flush();
+        $this->persistMergeFlush($this->listings);
     }
     
-    public function persistMerge($obj){
-        if($this->em->contains($obj))
-            $this->em->merge($obj);
-        else
-            $this->em->persist($obj);
+    public function persistMergeFlush($obj = null, $immediateFlush = true){
+        $this->utilities->persistMergeFlush($this->em, $obj, $immediateFlush);
     }
-
-    
 }
 
 

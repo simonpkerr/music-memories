@@ -18,7 +18,8 @@ interface IProcessMediaStrategy {
     public function cacheMedia();
     public function getAPIData();
     public function getMedia();
-    public function persistMerge($obj);
+    public function persistMergeFlush($obj = null, $immediateFlush = true);
+    
 }
 
 ?>

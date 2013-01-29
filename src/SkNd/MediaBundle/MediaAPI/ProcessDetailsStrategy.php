@@ -11,15 +11,17 @@ namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
+use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
 use \SimpleXMLElement;
 
-class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
+class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $apiStrategy;
     protected $mediaSelection;
     protected $mediaResource;
     protected $em;
+    protected $utilities;
     protected $itemId;
     private $apiResponse;
     private $referrer;
@@ -38,12 +40,13 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
             !isset($params['referrer']))
             throw new \RuntimeException('required params not supplied for ' . get_class($this));
         
-        
         $this->em = $params['em'];
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
         $this->itemId = $params['itemId'];
         $this->referrer = $params['referrer'];
+        
+        $this->utilities = new Utilities();
         
     }
     
@@ -122,7 +125,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
             $dateCreated = $mediaResource->getMediaResourceCache()->getDateCreated();
             if($dateCreated->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
                 $mediaResource->deleteMediaResourceCache();
-                $this->em->flush();
+                $this->persistMergeFlush();
             }
         }
         return $mediaResource;
@@ -140,16 +143,11 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails{
         }
 
         $this->mediaResource->incrementViewCount();
-        $this->persistMerge($this->mediaResource);
+        $this->persistMergeFlush($this->em, $this->mediaResource);
     }
         
-    public function persistMerge($obj){
-        if($this->em->contains($obj))
-            $this->em->merge($obj);
-        else
-            $this->em->persist($obj);
-        
-        $this->em->flush();
+    public function persistMergeFlush($obj = null, $immediateFlush = true){
+        $this->utilities->persistMergeFlush($this->em, $obj, $immediateFlush);
     }
     
     

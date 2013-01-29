@@ -13,12 +13,14 @@ use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\MediaDetails;
+use SkNd\MediaBundle\MediaAPI\Utilities;
 
 class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $apis;
     protected $em;
     protected $mediaResources;
     protected $apiResponses;
+    protected $utilities;
     
     /**
      * @param EntityManager $em, 
@@ -35,6 +37,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
             $this->mediaResources = $params['mediaResources'];
         
         $this->apiResponses = array();
+        $this->utilities = new Utilities();
     }
     
     public function getMediaSelection(){
@@ -89,11 +92,9 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     
     //from a batch operation, take the xml data and resources and re-cache them
     public function cacheMedia(){ 
-    //public function cacheMediaResourceBatch(SimpleXMLElement $xmlData, array $mediaResources, $immediateFlush = true){
         /* all elements in the arrays are either existing mediaresources 
          * or the details mediaresource without cache
          */
-        
         foreach($this->apiResponses as $apiResponse){
             $api = $apiResponse['api'];
             $mediaResources = $apiResponse['mediaResources'];
@@ -111,7 +112,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                     $cachedResource->setDateCreated(new \DateTime("now"));
                     try{
                         $mr->setMediaResourceCache($cachedResource);
-                        $this->persistMerge($mr);
+                        $this->persistMergeFlush($mr, false);
                     } catch(\Exception $ex){
                         throw $ex;
                     }
@@ -119,19 +120,15 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                 
             }
         }
-        
-        
-        
-        $this->em->flush();
+       
+        $this->persistMergeFlush();
     
     }
     
-    public function persistMerge($obj){
-        if($this->em->contains($obj))
-            $this->em->merge($obj);
-        else
-            $this->em->persist($obj);
+    public function persistMergeFlush($obj = null, $immediateFlush = true){
+        $this->utilities->persistMergeFlush($this->em, $obj, $immediateFlush);
     }
+    
     
     //not needed
     public function getMediaResource(){

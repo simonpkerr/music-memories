@@ -89,10 +89,11 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         return $this->processDetailsStrategy->getMediaResource();
     }
     
-    public function persistMerge($obj){
-        parent::persistMerge($obj);
+    public function persistMergeFlush($obj = null, $immediateFlush = true){
+        parent::persistMergeFlush($obj, $immediateFlush);
     }
-    
+        
+   
     
 }
 
