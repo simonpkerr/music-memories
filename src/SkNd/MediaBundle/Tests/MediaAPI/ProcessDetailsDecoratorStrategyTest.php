@@ -353,6 +353,8 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
         $this->assertEquals((string)array_pop($recs['genericMatches'])->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData2');
         
     }
+    
+    
           
     
    

@@ -50,6 +50,7 @@ class MediaResourceRepository extends EntityRepository
             'genre'     => $mr->getGenre(),
             );
         
+        //get recommendations and filter out the item passed in
         $q = $this->createQueryBuilder('mr')
                 ->where('mr.decade = :decade')
                 ->andWhere('mr.id != :itemId')
@@ -67,6 +68,9 @@ class MediaResourceRepository extends EntityRepository
         $q  = $q->setDQL(str_replace('WHERE', 'INDEX BY mr.id WHERE', $q->getDQL()));
         $genericMatches = $q->getResult();
  
+        if(count($genericMatches) == 0)
+            return $recommendations;
+        
         $exactMatches = array();
         if(!is_null($params['genre'])){
             $exactMatches = array_filter($genericMatches, function($gm) use ($params){
@@ -79,10 +83,7 @@ class MediaResourceRepository extends EntityRepository
         $genericMatches = array_diff_key($genericMatches, $exactMatches);
         $genericMatches = array_slice($genericMatches, 0, 4); 
         $exactMatches = array_slice($exactMatches, 0, 4);
-        
-        if(count($genericMatches) == 0 && count($exactMatches) == 0)
-            return $recommendations;
-        
+          
         return array(
             'genericMatches'   => $genericMatches,
             'exactMatches'     => $exactMatches,
