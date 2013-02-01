@@ -23,7 +23,7 @@ class YouTubeAPI implements IAPIStrategy {
     private $query;
     
     public function __construct($youtube_request_object = null){
-        $this->youTube = $youtube_request_object == null ? new \Zend_Gdata_YouTube() : $youtube_request_object;
+        $this->youTube = is_null($youtube_request_object) ? new \Zend_Gdata_YouTube() : $youtube_request_object;
         $this->youTube->setMajorProtocolVersion(2);
        
     }

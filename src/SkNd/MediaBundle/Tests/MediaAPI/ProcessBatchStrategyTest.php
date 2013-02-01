@@ -14,6 +14,7 @@ namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\AmazonAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
+use SkNd\MediaBundle\MediaAPI\ProcessBatchStrategy;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
@@ -28,6 +29,8 @@ class ProcessBatchStrategyTest extends WebTestCase {
     private $cachedXMLResponse;
     private $liveXMLResponse;
     private $mediaResource;
+    private $constructorParams;
+    private $pbs;
     
     protected static $kernel;
     protected static $em;
@@ -53,8 +56,20 @@ class ProcessBatchStrategyTest extends WebTestCase {
     
     protected function setUp(){
   
-        $this->cachedXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedData"></item></items>');
-        $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="liveData"></item></items>');
+        $this->cachedXMLResponse = new \SimpleXMLElement(
+        '<?xml version="1.0" ?>
+        <items>
+            <item id="cachedData">
+                <ASIN>cachedData</ASIN>
+            </item>
+        </items>');
+        $this->liveXMLResponse = new \SimpleXMLElement(
+        '<?xml version="1.0" ?>
+        <items>
+            <item id="liveData">
+                <ASIN>liveData</ASIN>
+            </item>
+        </items>');
         
         //for the mock object, need to provide a fully qualified path 
         $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
@@ -85,7 +100,7 @@ class ProcessBatchStrategyTest extends WebTestCase {
                 ->will($this->returnValue('itemTitle'));
         
         $this->testYouTubeAPI = new YouTubeAPI(new \SkNd\MediaBundle\MediaAPI\TestYouTubeRequest());
-        
+
         $this->mediaAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\MediaAPI')
                 ->setConstructorArgs(array(
                         'true', 
@@ -99,7 +114,7 @@ class ProcessBatchStrategyTest extends WebTestCase {
                     'flush',
                 ));
         
-        $this->mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'api'   => 'amazonapi',
             'media' => 'film'
         ));
@@ -108,6 +123,22 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $this->mediaResource->setId('testMediaResource');
         $this->mediaResource->setAPI($this->mediaSelection->getAPI());
         $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+        
+        $this->constructorParams = array(
+            'em'    =>  self::$em,
+            'apis'  =>  array(
+                            'amazonapi'     =>  $this->testAmazonAPI,
+                            'youtubeapi'    =>  $this->testYouTubeAPI,
+                        )
+        );
+        
+        $this->pbs = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\ProcessBatchStrategy')
+                ->setConstructorArgs(array(
+                    $this->constructorParams
+                ))
+                ->setMethods(array(
+                    'persistMergeFlush',
+                ));
     }
     
     public function tearDown(){
@@ -125,28 +156,49 @@ class ProcessBatchStrategyTest extends WebTestCase {
      * @expectedException RuntimeException
      */
     public function testConstructWithoutEntityManagerThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['em']);
+        $pbs = new ProcessBatchStrategy($this->constructorParams);
     }
     
     /**
      * @expectedException RuntimeException
      */
     public function testConstructWithoutAPIsArrayThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['apis']);
+        $pbs = new ProcessBatchStrategy($this->constructorParams);
     }
     
     /**
      * @expectedException RuntimeException
      */
-    public function testConstructWithoutMediaResourcesDoesntThrowException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+    public function testGetMediaBeforeBeingSetThrowsException(){
+        $pbs = new ProcessBatchStrategy($this->constructorParams);
+        $pbs->getMedia();
     }
     
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testProcessMediaBeforeMediaResourcesSetThrowsException(){
+        $pbs = new ProcessBatchStrategy($this->constructorParams);
+        $pbs->processMedia();
+    }
     
-    public function testProcessMediaResourcesWith1CachedAmazonResourceReturnsFalse(){
+    public function testConstructWithoutMediaResourcesDoesntThrowException(){
+        $this->constructorParams['mediaResources'] = array(
+            'testMediaResource' => $this->mediaResource,
+        );
+        $this->pbs = $this->pbs
+            ->setConstructorArgs(array(
+                $this->constructorParams
+            ))->setMethods(array(
+                'persistMergeFlush'
+            ))->getMock();
+
+        $this->assertTrue(!is_null($this->pbs->getMedia()), 'media resources were null');
+    }   
+       
+    public function testProcessMediaResourcesWith1CachedAmazonResourceReturnsCache(){
         //add a media resource and cached record first
         //then update the media resource
         $cachedResource = new MediaResourceCache();
@@ -155,31 +207,26 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $cachedResource->setDateCreated(new \DateTime("now"));
         $this->mediaResource->setMediaResourceCache($cachedResource);
         
-        $mediaResources = array(
-            $cachedResource->getId() => $this->mediaResource,
+        $this->constructorParams['mediaResources'] = array(
+            'testMediaResource' => $this->mediaResource,
         );
-                   
-        $updatesMade = $this->mediaAPI->getMock()->processMediaResources($mediaResources);
-        
-        $this->assertEquals($updatesMade, false);
+        $this->pbs = $this->pbs
+            ->setConstructorArgs(array(
+                $this->constructorParams
+            ))->setMethods(array(
+                'persistMergeFlush'
+            ))->getMock();
+             
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+                
+        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData', 'media resources was updated');
         
     }
     
-    public function testProcessMediaResourcesWith1CachedOutOfDateAmazonResourceCallsLiveAPIReturnsTrue(){
-        
-         $this->mediaAPI = 
-                $this->mediaAPI->setMethods(array(
-                    'cacheMediaResourceBatch',
-                    'flush',
-                    ))
-                ->getMock();
-
-        $this->mediaAPI->expects($this->any())
-                ->method('cacheMediaResourceBatch')
-                ->will($this->returnValue(true));
-        $this->mediaAPI->expects($this->any())
-                ->method('flush')
-                ->will($this->returnValue(true));
+    public function testProcessMediaResourcesWith1CachedOutOfDateAmazonResourceCallsLiveAPI(){
+        $this->mediaResource->setId('liveData');
         
         $cachedResource = new MediaResourceCache();
         $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
@@ -187,23 +234,83 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $cachedResource->setDateCreated(new \DateTime("1st jan 1980"));
         $this->mediaResource->setMediaResourceCache($cachedResource);
         
-        $mediaResources = array(
-            $cachedResource->getId() => $this->mediaResource,
+        $this->constructorParams['mediaResources'] = array(
+            'liveData' => $this->mediaResource,
         );
-            
-        $updatesMade = $this->mediaAPI->processMediaResources($mediaResources);
+        $this->pbs = $this->pbs
+            ->setConstructorArgs(array(
+                $this->constructorParams
+            ))->setMethods(array(
+                'persistMergeFlush'
+            ))->getMock();
+             
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+                
+        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData', 'media resources was not updated');
         
-        $this->assertEquals($updatesMade, true);
     } 
     
-    public function testProcessMediaResourcesWhenSessionExpiredFunctionsCorrectly(){
+    public function testProcessMediaResourcesWith1NonCachedAmazonResourceCallsLiveAPI(){
+        $this->mediaResource->setId('liveData');
+        $this->constructorParams['mediaResources'] = array(
+            'liveData' => $this->mediaResource,
+        );
+        $this->pbs = $this->pbs
+            ->setConstructorArgs(array(
+                $this->constructorParams
+            ))->setMethods(array(
+                'persistMergeFlush'
+            ))->getMock();
+             
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+                
+        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData', 'media resources was not updated');
         
     }
     
-    public function testBatchOfMediaResourcesAreCachedCorrectly(){
-        //todo
+    public function testProcessMediaResourcesWith1CachedYouTubeResourceReturnsCache(){
+        $this->mediaResource->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi'));
+        
+        $cachedResource = new MediaResourceCache();
+        $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
+        $cachedResource->setId($this->mediaResource->getId());
+        $cachedResource->setDateCreated(new \DateTime("now"));
+        $this->mediaResource->setMediaResourceCache($cachedResource);
+        
+        $this->constructorParams['mediaResources'] = array(
+            'testMediaResource' => $this->mediaResource,
+        );
+        $this->pbs = $this->pbs
+            ->setConstructorArgs(array(
+                $this->constructorParams
+            ))->setMethods(array(
+                'persistMergeFlush'
+            ))->getMock();
+             
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+                
+        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData', 'media resources was updated');
+        
     }
-   
+    
+    public function testProcessMediaResourcesWith1OutOfDateCachedYouTubeResourceCallsLiveAPI(){
+       
+    }
+    
+    public function testProcessMediaResourcesWith1NonCachedYouTubeResourceCallsLiveAPI(){
+        
+    }
+    
+    
+    public function testProcessMediaResourcesWith1NonCachedYouTubeResourceAnd1NonCachedAmazonResourceCallsLiveAPI(){
+        
+    }
     
     
 }

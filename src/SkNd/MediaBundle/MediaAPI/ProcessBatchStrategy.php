@@ -25,11 +25,14 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     /**
      * @param EntityManager $em, 
      * @param array $apis, 
+     * @param [mediaResources] - passed from MemoryWallController for showWall,
+     * calculated from processDetailsDecoratorStrategy processMedia method
+     * 
      */
     public function __construct(array $params){
         if(!isset($params['em'])||
-                !isset($params['apis']))
-            throw new \RuntimeException('required params not supplied for '. $this);
+           !isset($params['apis']))
+            throw new \RuntimeException('required params not supplied for '. get_class($this));
         
         $this->em = $params['em'];
         $this->apis = $params['apis'];
@@ -50,7 +53,6 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     
     public function getMedia(){
         //for show memory wall, nothing is required to be returned
-        
         if(is_null($this->mediaResources))
             throw new \RuntimeException("MediaResources are null");
             
@@ -68,9 +70,12 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
      */
     public function processMedia(){
         $updatesMade = false;
+        
+        $mrs = $this->getMedia();
+        
         //loop through each api, get the relevant media resources
         foreach($this->apis as $api){         
-            $resources = array_filter($this->mediaResources, function($mr) use ($api){
+            $resources = array_filter($mrs, function($mr) use ($api){
                 return $mr->getAPI()->getName() == $api->getName() && ($mr->getMediaResourceCache() == null || $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime());
             });
                         
@@ -113,6 +118,11 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                     try{
                         $mr->setMediaResourceCache($cachedResource);
                         $this->persistMergeFlush($mr, false);
+                        /*
+                         * if the original media resource was updated, insert it back
+                         * into the mediaResources array
+                         */
+                        $this->mediaResources[$mr->getId()] = $mr;
                     } catch(\Exception $ex){
                         throw $ex;
                     }

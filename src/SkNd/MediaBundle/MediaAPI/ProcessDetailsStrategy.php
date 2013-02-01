@@ -5,6 +5,8 @@
  * without recommendations, processing cache and storing cache.
  * @copyright Simon Kerr 2012
  * @author Simon Kerr
+ * @uses MemoryWallController addMediaResource, MediaController getDetails (param of decorator strategy)
+ * 
  */
 
 namespace SkNd\MediaBundle\MediaAPI;
@@ -72,9 +74,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         if($this->mediaResource->getMediaResourceCache() == null){
             //look up the details from the api if not cached
             $this->apiResponse = $this->apiStrategy->getDetails(array('ItemId' => $this->itemId));
-            
         }
-       
     }
     
     public function getMediaResource(){
