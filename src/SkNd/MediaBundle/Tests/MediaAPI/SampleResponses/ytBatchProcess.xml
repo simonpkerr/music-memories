@@ -28,51 +28,7 @@
     <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='the'/>
     <atom:category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat' term='master'/>
     <atom:title type='text'>Doctor Who (1996 film) (part 1 of 6)</atom:title>
-    <atom:content type='text'>Cast
-      Doctor
-      
-      Paul McGann (Eighth Doctor)
-      Sylvester McCoy (Seventh Doctor)
-      
-      Companion
-      
-      Daphne Ashbrook (Grace Holloway)
-      
-      Others
-      
-      Yee Jee Tso (Chang Lee)
-      Eric Roberts -- The Master
-      John Novak -- Salinger
-      Michael David Simms -- Dr. Swift
-      Eliza Roberts -- Miranda
-      Dave Hurtubise -- Professor Wagg
-      Dolores Drake -- Curtis
-      Catherine Lough -- Wheeler
-      William Sasso -- Pete
-      Joel Wirkkunen -- Ted
-      Jeremy Radick -- Gareth
-      Bill Croft -- Motorcyclist Policeman
-      Mi-Jung Lee -- News Anchor
-      Joanna Piros -- News Anchor
-      Dee Jay Jackson -- Security Man
-      Gordon Tipple -- The Old Master
-      
-      Production
-      Writer  Matthew Jacobs
-      Director  Geoffrey Sax
-      Script editor  None
-      Producer  Peter V. Ware
-      Matthew Jacobs (co-producer)
-      Executive producer(s)  Philip David Segal
-      Alex Beaton
-      Jo Wright (for the BBC)
-      Production code  50/LDX071Y/01X[1]
-      Series  Television movie
-      Length  85 mins (UK)
-      89 mins (US)
-      Originally broadcast  12 May 1996 (Canada)
-      14 May 1996 (USA)
-      27 May 1996 (UK)</atom:content>
+    <atom:content type='text'>text</atom:content>
     <atom:link rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=G2iq6uONT_M&amp;feature=youtube_gdata'/>
     <atom:link rel='http://gdata.youtube.com/schemas/2007#video.responses' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/G2iq6uONT_M/responses'/>
     <atom:link rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/G2iq6uONT_M/related'/>
@@ -92,51 +48,7 @@
       <media:content url='http://www.youtube.com/v/G2iq6uONT_M?version=3&amp;f=videos&amp;app=youtube_gdata' type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full' duration='871' yt:format='5'/>
       <media:content url='rtsp://v4.cache3.c.youtube.com/CiILENy73wIaGQnzT43j6qpoGxMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp' type='video/3gpp' medium='video' expression='full' duration='871' yt:format='1'/>
       <media:content url='rtsp://v3.cache1.c.youtube.com/CiILENy73wIaGQnzT43j6qpoGxMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp' type='video/3gpp' medium='video' expression='full' duration='871' yt:format='6'/>
-      <media:description type='plain'>Cast
-        Doctor
-        
-        Paul McGann (Eighth Doctor)
-        Sylvester McCoy (Seventh Doctor)
-        
-        Companion
-        
-        Daphne Ashbrook (Grace Holloway)
-        
-        Others
-        
-        Yee Jee Tso (Chang Lee)
-        Eric Roberts -- The Master
-        John Novak -- Salinger
-        Michael David Simms -- Dr. Swift
-        Eliza Roberts -- Miranda
-        Dave Hurtubise -- Professor Wagg
-        Dolores Drake -- Curtis
-        Catherine Lough -- Wheeler
-        William Sasso -- Pete
-        Joel Wirkkunen -- Ted
-        Jeremy Radick -- Gareth
-        Bill Croft -- Motorcyclist Policeman
-        Mi-Jung Lee -- News Anchor
-        Joanna Piros -- News Anchor
-        Dee Jay Jackson -- Security Man
-        Gordon Tipple -- The Old Master
-        
-        Production
-        Writer  Matthew Jacobs
-        Director  Geoffrey Sax
-        Script editor  None
-        Producer  Peter V. Ware
-        Matthew Jacobs (co-producer)
-        Executive producer(s)  Philip David Segal
-        Alex Beaton
-        Jo Wright (for the BBC)
-        Production code  50/LDX071Y/01X[1]
-        Series  Television movie
-        Length  85 mins (UK)
-        89 mins (US)
-        Originally broadcast  12 May 1996 (Canada)
-        14 May 1996 (USA)
-        27 May 1996 (UK)</media:description>
+      <media:description type='plain'>text</media:description>
       <media:keywords>doctor, who, 1996, film, movie, paul, mcgann, sylvester, mccoy, daphne, ashbrook, grace, holloway, eric, roberts, the, master</media:keywords>
       <media:player url='http://www.youtube.com/watch?v=G2iq6uONT_M&amp;feature=youtube_gdata_player'/>
       <media:thumbnail url='http://i.ytimg.com/vi/G2iq6uONT_M/0.jpg' height='360' width='480' time='00:07:15.500'/>

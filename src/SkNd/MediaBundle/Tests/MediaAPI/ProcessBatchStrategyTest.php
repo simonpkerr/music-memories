@@ -300,16 +300,81 @@ class ProcessBatchStrategyTest extends WebTestCase {
     }
     
     public function testProcessMediaResourcesWith1OutOfDateCachedYouTubeResourceCallsLiveAPI(){
-       
+        //for this to work the xml file loaded by TestYouTubeRequest must have a videoid param : ytBatch
+        $this->mediaResource->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi'));
+        $this->mediaResource->setId('ytBatch');
+        $cachedResource = new MediaResourceCache();
+        $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
+        $cachedResource->setId($this->mediaResource->getId());
+        $cachedResource->setDateCreated(new \DateTime("1st jan 1980"));
+        $this->mediaResource->setMediaResourceCache($cachedResource);
+        
+        $this->constructorParams['mediaResources'] = array(
+            'ytBatch' => $this->mediaResource,
+        );
+        $this->pbs = $this->pbs
+            ->setConstructorArgs(array(
+                $this->constructorParams
+            ))->setMethods(array(
+                'persistMergeFlush'
+            ))->getMock();
+             
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+                
+        $this->assertEquals((string)$mrs['ytBatch']->getMediaResourceCache()->getXmlData()->id, 'ytBatch', 'media resources were not updated');
+           
     }
     
     public function testProcessMediaResourcesWith1NonCachedYouTubeResourceCallsLiveAPI(){
+        //for this to work the xml file loaded by TestYouTubeRequest must have a videoid param : ytBatch
+        $this->mediaResource->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi'));
+        $this->mediaResource->setId('ytBatch');
         
+        $this->constructorParams['mediaResources'] = array(
+            'ytBatch' => $this->mediaResource,
+        );
+        $this->pbs = $this->pbs
+            ->setConstructorArgs(array(
+                $this->constructorParams
+            ))->setMethods(array(
+                'persistMergeFlush'
+            ))->getMock();
+             
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+                
+        $this->assertEquals((string)$mrs['ytBatch']->getMediaResourceCache()->getXmlData()->id, 'ytBatch', 'media resources were not updated');
     }
     
     
     public function testProcessMediaResourcesWith1NonCachedYouTubeResourceAnd1NonCachedAmazonResourceCallsLiveAPI(){
+        $this->mediaResource->setId('liveData');
+        $mr2 = clone $this->mediaResource;
+        $mr2->setId('ytBatch');
+        $mr2->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi'));
         
+        
+        $this->constructorParams['mediaResources'] = array(
+            'liveData' => $this->mediaResource,
+            'ytBatch'  => $mr2,
+        );
+        
+        $this->pbs = $this->pbs
+            ->setConstructorArgs(array(
+                $this->constructorParams
+            ))->setMethods(array(
+                'persistMergeFlush'
+            ))->getMock();
+             
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+        
+        $this->assertEquals((string)$mrs['ytBatch']->getMediaResourceCache()->getXmlData()->id, 'ytBatch', 'youtube media resource was not updated');
+        $this->assertEquals((string)$mrs['liveData']->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData', 'amazon media resource was not updated');
     }
     
     

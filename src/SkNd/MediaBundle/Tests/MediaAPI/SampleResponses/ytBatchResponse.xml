@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom'>
+    <id>http://gdata.youtube.com/feeds/api/videos/batch/1360052536522</id>
+    <updated>2013-02-05T08:22:16.614Z</updated>
+    <category scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/>
+    <title>Batch Feed</title>
+    <entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:media='http://search.yahoo.com/mrss/' xmlns:gd='http://schemas.google.com/g/2005' xmlns:yt='http://gdata.youtube.com/schemas/2007' gd:etag='W/&quot;C0IBQn47eCp7I2A9WhNaE0k.&quot;'>
+        <id>tag:youtube.com,2008:video:ytBatch</id>
+        <published>2010-08-24T14:01:14.000Z</published>
+        <updated>2013-01-28T02:52:33.000Z</updated>
+        <category scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/>
+        <category scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment' label='Entertainment'/>
+        <title>Blazing Saddles - "Rivulets Of Thought ... "</title>
+        <content type='application/x-shockwave-flash' src='http://www.youtube.com/v/37v-6Zs5T10?version=3&amp;f=videos&amp;app=youtube_gdata'/>
+        <link rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=37v-6Zs5T10&amp;feature=youtube_gdata'/>
+        <link rel='http://gdata.youtube.com/schemas/2007#video.responses' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/37v-6Zs5T10/responses'/>
+        <link rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/37v-6Zs5T10/related'/>
+        <link rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=37v-6Zs5T10'/>
+        <link rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/users/x-zddtLYXaH1d5cWyu47GQ'/>
+        <link rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/37v-6Zs5T10'/>
+        <author>
+            <name>fishypaw</name>
+            <uri>http://gdata.youtube.com/feeds/api/users/fishypaw</uri>
+            <yt:userId>x-zddtLYXaH1d5cWyu47GQ</yt:userId>
+        </author>
+        <yt:accessControl action='comment' permission='allowed'/>
+        <yt:accessControl action='commentVote' permission='allowed'/>
+        <yt:accessControl action='videoRespond' permission='moderated'/>
+        <yt:accessControl action='rate' permission='allowed'/>
+        <yt:accessControl action='embed' permission='allowed'/>
+        <yt:accessControl action='list' permission='allowed'/>
+        <yt:accessControl action='autoPlay' permission='allowed'/>
+        <yt:accessControl action='syndicate' permission='allowed'/>
+        <batch:operation type='query'/>
+        <batch:status code='200' reason='Success'/>
+        <gd:comments>
+            <gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments' href='http://gdata.youtube.com/feeds/api/videos/37v-6Zs5T10/comments' countHint='11'/>
+        </gd:comments>
+        <media:group>
+            <media:category label='Entertainment' scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category>
+            <media:content url='http://www.youtube.com/v/37v-6Zs5T10?version=3&amp;f=videos&amp;app=youtube_gdata' type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full' duration='33' yt:format='5'/>
+            <media:content url='rtsp://v8.cache5.c.youtube.com/CiILENy73wIaGQldTzmb6f673xMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp' type='video/3gpp' medium='video' expression='full' duration='33' yt:format='1'/>
+            <media:content url='rtsp://v8.cache5.c.youtube.com/CiILENy73wIaGQldTzmb6f673xMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp' type='video/3gpp' medium='video' expression='full' duration='33' yt:format='6'/>
+            <media:credit role='uploader' scheme='urn:youtube' yt:display='fishypaw'>fishypaw</media:credit>
+            <media:description type='plain'>One of my favourite quotes from the movie Blazing Saddles.
+
+                "My mind is a raging torrent, flodded with rivulets of thought, cascading into a whirlpool of creative alternatives."
+
+                Gotta love Taggarts reply too ...
+
+                "Gal-darnit, Mr. Lamarr, you use your tongue purttier than a twenty-dollar whore"
+
+                Hedley Lamarr - Harvey Korman
+                Taggart - Slim Pickens
+            </media:description>
+            <media:keywords/>
+            <media:license type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license>
+            <media:player url='http://www.youtube.com/watch?v=37v-6Zs5T10&amp;feature=youtube_gdata_player'/>
+            <media:thumbnail url='http://i.ytimg.com/vi/37v-6Zs5T10/default.jpg' height='90' width='120' time='00:00:16.500' yt:name='default'/>
+            <media:thumbnail url='http://i.ytimg.com/vi/37v-6Zs5T10/mqdefault.jpg' height='180' width='320' yt:name='mqdefault'/>
+            <media:thumbnail url='http://i.ytimg.com/vi/37v-6Zs5T10/hqdefault.jpg' height='360' width='480' yt:name='hqdefault'/>
+            <media:thumbnail url='http://i.ytimg.com/vi/37v-6Zs5T10/1.jpg' height='90' width='120' time='00:00:08.250' yt:name='start'/>
+            <media:thumbnail url='http://i.ytimg.com/vi/37v-6Zs5T10/2.jpg' height='90' width='120' time='00:00:16.500' yt:name='middle'/>
+            <media:thumbnail url='http://i.ytimg.com/vi/37v-6Zs5T10/3.jpg' height='90' width='120' time='00:00:24.750' yt:name='end'/>
+            <media:title type='plain'>Blazing Saddles - "Rivulets Of Thought ... "</media:title>
+            <yt:aspectRatio>widescreen</yt:aspectRatio>
+            <yt:duration seconds='33'/>
+            <yt:uploaded>2010-08-24T14:01:14.000Z</yt:uploaded>
+            <yt:uploaderId>UCx-zddtLYXaH1d5cWyu47GQ</yt:uploaderId>
+            <yt:videoid>ytBatch</yt:videoid>
+        </media:group>
+        <gd:rating average='5.0' max='5' min='1' numRaters='34' rel='http://schemas.google.com/g/2005#overall'/>
+        <yt:statistics favoriteCount='0' viewCount='15463'/>
+        <yt:rating numDislikes='0' numLikes='34'/>
+    </entry>
+</feed>
