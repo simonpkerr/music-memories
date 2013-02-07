@@ -1,9 +1,8 @@
 <?php
 
 /*
- * Original code Copyright (c) 2011 Simon Kerr
- * ProcessDetailsDecoratorStrategy test to test extended functionality
- * of getting recommendations and processing the data in a different way
+ * Original code Copyright (c) 2013 Simon Kerr
+ * ProcessListingsStrategy to test retrieval and caching of listings from apis
  * @author Simon Kerr
  * @version 1.0
  * Run UserBundle Fixtures first
@@ -14,9 +13,10 @@ namespace SkNd\MediaBundle\Tests\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\AmazonAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
+use SkNd\MediaBundle\MediaAPI\ProcessListingsStrategy;
 use SkNd\MediaBundle\Entity\MediaSelection;
-use SkNd\MediaBundle\Entity\MediaResource;
-use SkNd\MediaBundle\Entity\MediaResourceCache;
+use SkNd\UserBundle\Entity\MemoryWall;
+use SkNd\MediaBundle\Entity\MediaResourceListingsCache;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Session;
 
@@ -27,7 +27,8 @@ class ProcessListingsStrategyTest extends WebTestCase {
     private $testYouTubeAPI;
     private $cachedXMLResponse;
     private $liveXMLResponse;
-    private $mediaResource;
+    private $constructorParams;
+    private $processListingsStrategy;
     
     protected static $kernel;
     protected static $em;
@@ -43,6 +44,9 @@ class ProcessListingsStrategyTest extends WebTestCase {
         $loadUsers = new \SkNd\UserBundle\DataFixtures\ORM\LoadUsers();
         $loadUsers->setContainer(self::$kernel->getContainer());
         $loadUsers->load(self::$em);
+        
+        $q = self::$em->createQuery('DELETE from SkNd\MediaBundle\Entity\MediaResourceListingsCache');
+        $q->execute();
     }
     
     public static function tearDownAfterClass(){
@@ -99,15 +103,22 @@ class ProcessListingsStrategyTest extends WebTestCase {
                     'flush',
                 ));
         
-        $this->mediaSelection = $this->mediaAPI->getMock()->getMediaSelection(array(
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'api'   => 'amazonapi',
-            'media' => 'film'
+            'media' => 'film',
         ));
         
-        $this->mediaResource = new MediaResource();
-        $this->mediaResource->setId('testMediaResource');
-        $this->mediaResource->setAPI($this->mediaSelection->getAPI());
-        $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+        );
+        
+        $this->processListingsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessListingsStrategy')
+        ->setConstructorArgs(array($this->constructorParams))
+        ->setMethods(array(
+            'persistMergeFlush'
+        ));
     }
     
     public function tearDown(){
@@ -125,84 +136,164 @@ class ProcessListingsStrategyTest extends WebTestCase {
      * @expectedException RuntimeException
      */
     public function testConstructWithoutEntityManagerThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['em']);
+        $pls = new ProcessListingsStrategy($this->constructorParams);
     }
     
     /**
      * @expectedException RuntimeException
      */
     public function testConstructWithoutMediaSelectionThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['mediaSelection']);
+        $pls = new ProcessListingsStrategy($this->constructorParams);
     }
     
     /**
      * @expectedException RuntimeException
      */
     public function testConstructWithoutAPIStrategyThrowsException(){
-        
-        //$response = $this->mediaAPI->getMock()->setAPIStrategy('bogusAPIKey');
+        unset($this->constructorParams['apiStrategy']);
+        $pls = new ProcessListingsStrategy($this->constructorParams);
     }
     
-    //re-factor into its own test class        
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testGetMediaWhenNotSetThrowsException(){
+        $pls = new ProcessListingsStrategy($this->constructorParams);
+        $pls->getMedia();
+    }
+    
+    
     public function testNonExistentCachedListingsCallsLiveAPI(){
-        $this->mediaAPI = 
-                $this->mediaAPI->setMethods(array(
-                    'getCachedListings',
-                    'cacheListings',
-                    'flush'
-                    ))
+        $pls = $this->processListingsStrategy->getMock();
+        
+        $pls->processMedia();
+        $listings = $pls->getMedia();
+        $this->assertEquals((string)$listings['listings']->getXmlData()->item->attributes()->id, 'liveData');
+    }
+    
+    public function testExistingCachedListingsReturnsCache(){
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
+            'api'     => 'amazonapi',
+            'media'   => 'film',
+            'keywords'=> 'testExistingCachedListingsReturnsCache',
+        ));
+        
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+        );
+        
+        $pls = $this->processListingsStrategy
+                ->setConstructorArgs(array($this->constructorParams))
                 ->getMock();
         
- 
-        $this->mediaAPI->expects($this->once())
-                ->method('getCachedListings')
-                ->will($this->returnValue(null));
-
-        $this->mediaAPI->expects($this->any())
-                ->method('cacheListings')
-                ->will($this->returnValue(true));
+        $listings = new MediaResourceListingsCache();
+        $listings->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
+        $listings->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film'));
+        $listings->setKeywords('testExistingCachedListingsReturnsCache');
+        $listings->setXmlData($this->cachedXMLResponse->asXML());
+        $listings->setLastModified(new \DateTime("now"));
         
-        $listings = $this->mediaAPI->getListings();
-        $this->assertEquals((string)$listings['response']->item->attributes()->id, 'liveData');
+        self::$em->persist($listings);
+        self::$em->flush();
+        
+        $pls = $this->processListingsStrategy->getMock();
+        
+        $pls->processMedia();
+        $result = $pls->getMedia();
+        $this->assertEquals((string)$result['listings']->getXmlData()->item->attributes()->id, 'cachedData');
+        
+        self::$em->remove($listings);
+        self::$em->flush();
     }
     
-    public function testExistingValidCachedListingsReturnedFromSameQueryReturnsListings(){
-        $this->mediaAPI = $this->mediaAPI
-                ->setMethods(array(
-                    'getCachedListings',
-                    'cacheListings',
-                    'flush'
-                    ))
+    public function testExistingOutOfDateCachedListingsUpdatesCacheFromLiveAPI(){
+        //insert some listings
+        $listings = new MediaResourceListingsCache();
+        $listings->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
+        $listings->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film'));
+        $listings->setXmlData($this->cachedXMLResponse->asXML());
+        $listings->setLastModified(new \DateTime("1st Jan 1980"));
+        
+        self::$em->persist($listings);
+        self::$em->flush();
+        
+        $pls = $this->processListingsStrategy->getMock();
+        
+        $pls->processMedia();
+        $result = $pls->getMedia();
+        $this->assertEquals((string)$result['listings']->getXmlData()->item->attributes()->id, 'liveData');
+        
+        self::$em->remove($listings);
+        self::$em->flush();
+    }
+    
+    public function testGetRecommendationsReturnsNullIfNoDecadeSet(){
+        $pls = $this->processListingsStrategy->getMock();
+        
+        $pls->processMedia();
+        $result = $pls->getMedia();
+        $this->assertNull($result['recommendations']);
+        
+    }
+    
+    public function testGetRecommendationsReturnsNullIfNothingFound(){
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
+            'api'   => 'amazonapi',
+            'media' => 'film',
+            'decade'=> '1980s',
+        ));
+        
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+        );
+        
+        $pls = $this->processListingsStrategy
+                ->setConstructorArgs(array($this->constructorParams))
                 ->getMock();
         
-
-        $this->mediaAPI->expects($this->once())
-                ->method('getCachedListings')
-                ->will($this->returnValue($this->cachedXMLResponse));
-
-        $listings = $this->mediaAPI->getListings();
-        $this->assertEquals((string)$listings['response']->item->attributes()->id, 'cachedData');
+        $pls->processMedia();
+        $result = $pls->getMedia();
+        $this->assertNull($result['recommendations']);
     }
     
-    public function processMediaWithCachedRecommendationsReturnsCache(){
-        //todo
+    public function testGetRecommendationsReturnsMemoryWallsIfFound(){
+        $mw = new MemoryWall();
+        $mw->setAssociatedDecade(self::$em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug('1980s'));
+        self::$em->persist($mw);
+        self::$em->flush();
+        
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
+            'api'   => 'amazonapi',
+            'media' => 'film',
+            'decade'=> '1980s',
+        ));
+        
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+        );
+        
+        $pls = $this->processListingsStrategy
+                ->setConstructorArgs(array($this->constructorParams))
+                ->getMock();
+        
+        $pls->processMedia();
+        $result = $pls->getMedia();
+        $this->assertEquals($result['recommendations'][0]->getAssociatedDecade()->getSlug(), '1980s');
+        
+        self::$em->remove($mw);
+        self::$em->flush();
+                
     }
     
-    public function processMediaWithNonCachedRecommendationsReturnsLiveRecords(){
-        //todo
-    }
     
-    //will be part of the process media method
-    public function testGetRecommendationsWithNullIdentifierReturnsNull(){
-        $response = $this->mediaAPI->getMock()->getRecommendations();
-        $this->assertTrue($response == null, "returned recommendations are null");
-    }
-    
-
-    
-   
     
     
 }

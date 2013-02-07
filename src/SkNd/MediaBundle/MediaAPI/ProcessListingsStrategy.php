@@ -34,7 +34,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
         if(!isset($params['em'])||
                 !isset($params['mediaSelection'])||
                 !isset($params['apiStrategy']))
-            throw new \RuntimeException('required params not supplied for '. $this);
+            throw new \RuntimeException('required params not supplied for '. get_class($this));
         
         $this->em = $params['em'];
         $this->mediaSelection = $params['mediaSelection'];
@@ -62,7 +62,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
            
         $this->listings = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection);
         if(is_null($this->listings) || $this->listings->getLastModified()->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
-            $this->listings = $this->createCachedListings($this->apiStrategy->getListings($this->mediaSelection), $this->listings);
+            $this->listings = $this->createListings($this->apiStrategy->getListings($this->mediaSelection), $this->listings);
         }
         
         $this->recommendations = $this->getRecommendations();
@@ -70,8 +70,6 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     }
     
     public function getRecommendations() {
-        $recommendations = null;
-   
         if($this->mediaSelection->getDecade() != null){
             $recommendations = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallsByDecade($this->mediaSelection->getDecade());
             if(count($recommendations) > 0)
@@ -82,16 +80,12 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
         
     }
     
-    //do something here about integrating the API classes and entities
-    private function createCachedListings(SimpleXMLElement $xmlData, MediaResourceListingsCache $listings = null){
-        
+    private function createListings(SimpleXMLElement $xmlData, MediaResourceListingsCache $listings = null){
+        //if listings object exists but cache is out of date
         if(!is_null($listings)){
             $listings->setXmlData($xmlData->asXML());      
-        }else{
+        } else {
             $listings = new MediaResourceListingsCache();
-            //$listings->setAPI($this->em->getRepository('SkNdMediaBundle:API')->getAPIByName($this->apiStrategy->getName()));
-            //THE API ENTITY IS NOW IN THE APISTRATEGY CLASS
-            //$listings->setAPI($this->apiStrategy->getAPIEntity());
             $listings->setAPI($this->mediaSelection->getAPI());
             $listings->setMediaType($this->mediaSelection->getMediaType());
             $listings->setDecade($this->mediaSelection->getDecade());
