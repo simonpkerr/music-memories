@@ -47,7 +47,7 @@ registration:
   back: Go back to the original page.
   submit: Get noodling
   flash:
-    user_created: You&rsquo;re now an official noodleDigger! Yay.
+    user_created: You&rsquo;re nearly there. Just check your email to complete registration!
   email:
         subject: Welcome %username%!
         message: |

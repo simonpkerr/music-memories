@@ -445,6 +445,10 @@ div#wrapper h3
     margin-bottom: 0.3em;
 }
 
+div#wrapper h3 {
+    border: none;
+}
+
 div#introPanel li img {
     float: left;
     width: 48%;
