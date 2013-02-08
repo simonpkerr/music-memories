@@ -3,8 +3,8 @@
     <dl>
         <dt>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}</dt><dd>{{ user.username }}</dd>
         <dt>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}</dt><dd>{{ user.email }}</dd>
-        <dt>{{ 'profile.show.firstname'|trans({}, 'FOSUserBundle') }}</dt><dd>{{ user.firstname }}</dd>
-        <dt>{{ 'profile.show.surname'|trans({}, 'FOSUserBundle') }}</dt><dd>{{ user.surname }}</dd>
-        <dt>{{ 'profile.show.dateofbirth'|trans({}, 'FOSUserBundle') }}</dt><dd>{{ user.dateofbirth|date("d/m/y") }}</dd>
+        <dt>{{ 'profile.show.firstname'|trans({}, 'FOSUserBundle') }}</dt><dd>{{ user.firstname ? user.firstname : "Not filled in" }}</dd>
+        <dt>{{ 'profile.show.surname'|trans({}, 'FOSUserBundle') }}</dt><dd>{{ user.surname ? user.surname : "Not filled in" }}</dd>
+        <dt>{{ 'profile.show.dateofbirth'|trans({}, 'FOSUserBundle') }}</dt><dd>{{ user.dateofbirth|date("d/m/Y") }}</dd>
     </dl>
 </div>

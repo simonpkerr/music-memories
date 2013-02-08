@@ -28,7 +28,7 @@ profile:
         email: Email
         firstname: First name
         surname: Surname
-        dob: Date of birth
+        dateofbirth: Date of birth
     edit:
         submit: Update
     flash:
