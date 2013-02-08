@@ -26,7 +26,6 @@ class RegistrationFormType extends BaseType {
             'format'=> 'MMM-dd-yyyy',
             'label'     => 'form.dob',
             'translation_domain' => 'FOSUserBundle',
-            
             ));
         
         $builder->add('firstname', 'text', array(
@@ -38,6 +37,11 @@ class RegistrationFormType extends BaseType {
             'required'  => false,
             'label'     => 'form.surname',
             'translation_domain' => 'FOSUserBundle',
+        ));
+        $builder->add('tacagreement', 'checkbox', array(
+            'label'                 => 'form.tac',
+            'required'              => true,
+            'translation_domain'    => 'FOSUserBundle',
         ));
         
         

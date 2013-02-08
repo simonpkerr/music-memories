@@ -22,6 +22,7 @@ class User extends BaseUser {
     protected $surname;
     protected $dateofbirth;
     protected $memoryWalls;
+    protected $tacagreement;
 
     public function __construct(){
         parent::__construct();
@@ -56,6 +57,14 @@ class User extends BaseUser {
         return $this->id;
     }
 
+    public function setTacagreement($tacagreement){
+        $this->tacagreement = $tacagreement;
+    }
+    
+    public function getTacagreement(){
+        return $this->tacagreement;
+    }
+    
     public function setFirstname($firstname = null)
     {
         $this->firstname = $firstname;

@@ -5,6 +5,11 @@
         http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
 
     <class name="SkNd\UserBundle\Entity\User">
+        <getter property="tacagreement">
+            <constraint name="True">
+                <option name="message">You must accept our terms and conditions</option>
+            </constraint>
+        </getter>
         
         <property name="firstname">
             <constraint name="MinLength">
@@ -43,6 +48,8 @@
                 </option>
             </constraint>
         </property>
+        
+        
         
     </class>
     
