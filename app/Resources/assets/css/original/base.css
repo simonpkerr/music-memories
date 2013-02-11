@@ -96,7 +96,7 @@ form fieldset {
 }
 
 form fieldset > div {
-    padding-top: 1em;
+    padding-top: 0.5em;
 }
 
 form fieldset legend {
@@ -139,6 +139,7 @@ form input[type="password"]
 .borderradius form textarea
 {
     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
     border-radius: 5px;
 }
 
