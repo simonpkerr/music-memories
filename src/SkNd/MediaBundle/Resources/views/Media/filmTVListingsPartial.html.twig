@@ -39,7 +39,12 @@ with
             <ul>
                 <li>
                     <strong><a target="_blank" href="{{item.DetailPageURL}}">Buy this from Amazon {% if item.ItemAttributes.ListPrice is defined %}for {{ item.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a></strong>
-                    <span class="note">Please note Amazon prices may vary from those specified on noodleDig &ndash; we&rsquo;re not sure why</span>
+                    {% if item.ItemAttributes.ListPrice is defined %}
+                    <span class="note">Price on Amazon.co.uk: GBP (as of {{ 'now'|date("d/m/Y g:ia", "Europe/London") }}). Product prices and availability are accurate as of the date/time indicated and are subject to change. Any price and availability information displayed on Amazon.co.uk at the time of purchase will apply to the purchase of this product.</span>
+                    <span class="note"><strong>&hellip;however, we&rsquo;ve noticed the prices on Amazon are often much cheaper, very odd. Please check out the price by clicking on the buy button.</strong>
+                    </span>
+                    {% endif %}
+                    <span class="note">Click on the buy button to check prices on Amazon.co.uk</span>
                       
                 </li>
             </ul>

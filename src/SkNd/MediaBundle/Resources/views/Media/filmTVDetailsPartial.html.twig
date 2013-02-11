@@ -47,8 +47,12 @@
             %}
             <li class="buy-it">
                 <a class="orange button" target="_blank" href="{{item.DetailPageURL}}"><span>Buy this from Amazon{% if item.ItemAttributes.ListPrice is defined %} for {{ item.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</span></a>
-                <span class="note">For some reason these prices aren&rsquo;t always the same as Amazon, so click on the buy button to check prices on Amazon.</span>
-                
+                {% if item.ItemAttributes.ListPrice is defined %}
+                <span class="note">Price on Amazon.co.uk: GBP (as of {{ 'now'|date("d/m/Y g:ia", "Europe/London") }}). Product prices and availability are accurate as of the date/time indicated and are subject to change. Any price and availability information displayed on Amazon.co.uk at the time of purchase will apply to the purchase of this product.</span>
+                <span class="note"><strong>&hellip;however, the prices on Amazon are often much cheaper. Please check out the price by clicking on the buy button.</strong></span>
+                {% else %}
+                 <span class="note">Click on the buy button to check prices on Amazon.co.uk.</span>
+                {% endif %}
             </li>
         </ul>
 
@@ -93,34 +97,37 @@
         
 <div id="recommendations" class="third-width fr">
     {% set recommendations = mediaResource.relatedMediaResources %}
-    {% if recommendations.exactMatches is not empty %}
-    <div id="exact-recommendations">
-        <h2>Recommended</h2>
-        <p class="strapline">Here&rsquo;s some related stuff.</p>
-        <ul>
-        {% for mr in recommendations.exactMatches %}
-             {{ _self.m_mediaResource(mr) }}
-        {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-    
-    {% if recommendations.genericMatches is not empty %}
-        <div id="generic-recommendations" class="clear">
-        <h2>You might also like</h2>
-        <p class="strapline">Here&rsquo;s some other stuff from the same decade.</p>
-        <ul>
-        {% for mr in recommendations.genericMatches %}
-            {{ _self.m_mediaResource(mr) }}
-        {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-            
-    {% if recommendations.exactMatches is empty and recommendations.genericMatches is empty %}   
+    {% if recommendations is null %}   
         <h2>Recommended</h2>
         <p class="strapline">Hmmm&hellip;there don&rsquo;t seem to be any recommendations for this item, sorry!</p>
-    {% endif %}   
+    {% else %}   
+        
+        {% if recommendations.exactMatches is not empty %}
+        <div id="exact-recommendations">
+            <h2>Recommended</h2>
+            <p class="strapline">Here&rsquo;s some related stuff.</p>
+            <ul>
+            {% for mr in recommendations.exactMatches %}
+                 {{ _self.m_mediaResource(mr) }}
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if recommendations.genericMatches is not empty %}
+            <div id="generic-recommendations" class="clear">
+            <h2>You might also like</h2>
+            <p class="strapline">Here&rsquo;s some other stuff from the same decade.</p>
+            <ul>
+            {% for mr in recommendations.genericMatches %}
+                {{ _self.m_mediaResource(mr) }}
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    {% endif %}
+            
+    
         
 </div>
 

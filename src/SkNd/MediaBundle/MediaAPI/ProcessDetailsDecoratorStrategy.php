@@ -59,7 +59,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         
         parent::processMedia();
         
-        if(count($recommendations['genericMatches']) > 0 || count($recommendations['exactMatches']) > 0)
+        if(count($recommendations['genericMatches']) > 0)
             $this->mediaResource->setRelatedMediaResources($recommendations);
         
     }
