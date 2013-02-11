@@ -59,6 +59,14 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
         return $this->mediaResources;
     }
     
+    private function getAllMediaResources(){
+        //for show memory wall, nothing is required to be returned
+        if(is_null($this->mediaResources))
+            throw new \RuntimeException("MediaResources are null");
+            
+        return $this->mediaResources;
+    }
+    
     /**
      * @param array $mediaResources 
      * @param int $page - optional page number to determine which results to process
@@ -71,7 +79,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     public function processMedia(){
         $updatesMade = false;
         
-        $mrs = $this->getMedia();
+        $mrs = $this->getAllMediaResources();
         
         //loop through each api, get the relevant media resources
         foreach($this->apis as $api){         

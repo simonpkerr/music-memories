@@ -1,8 +1,5 @@
 {% extends '::base.html.twig' %}
 {% block title %}Index{% endblock %}
-{% block stylesheets %}
-{{ parent() }}
-{% endblock %}
 {% block content %}
 <h1>Helping you find stuff you loved&hellip;</h1>
 <div id="introPanel" class="cf">
@@ -62,8 +59,4 @@
     </ul>
 </div>
 
-{% endblock %}
-{% block javascripts %} 
-{{ parent() }}
-{# <script src="{{ asset('bundles/SkNd/scripts/main.js') }}" type="text/javascript"></script>#}
 {% endblock %}

@@ -3,11 +3,7 @@
         
 {% block fos_user_content %}
 <h1>Check your email</h1>
-
-
 <div class="half-width fl">
-<p class="strapline">
-{{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}
-</p>
+    <p class="strapline">{{ 'registration.check_email'|trans({'%email%': user.email}, 'FOSUserBundle') }}</p>
 </div>
-{% endblock fos_user_content %} 
+{% endblock fos_user_content %}    

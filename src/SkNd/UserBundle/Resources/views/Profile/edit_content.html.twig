@@ -3,19 +3,6 @@
 <form id="fos_user_profile_edit" action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="half-width left fl">
     <fieldset>
         <legend>Profile details</legend>
-        {#% debug(form.get('errors'))%#}
-        {#{dump(form) }#}
-        {#% for fkey in form.user|keys %}
-            {{ form_errors(form.user[fkey]) }} 
-        {% endfor %#}
-        {#{ form_errors(form) }}
-        {{ form_row(form.user.username) }}
-        {{ form_row(form.user.email) }}
-        {{ form_row(form.user.dateofbirth) }}
-        {{ form_row(form.user.firstname) }}
-        {{ form_row(form.user.surname) }}
-        {{ form_row(form.current) }}
-        {{ form_rest(form) }#}
         {{ form_widget(form) }}
         <div>
             <input type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}" />
@@ -28,7 +15,3 @@
     <p>Want to change your password, do you? Do it right here&hellip;</p>
     <a href="{{ path('fos_user_change_password')}}">Change your password.</a>
 </div>
-
-{#<div class="fl">
-{% debug(form.user.username) %}
-</div>#}

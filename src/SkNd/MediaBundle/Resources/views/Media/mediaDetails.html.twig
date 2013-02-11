@@ -1,9 +1,4 @@
 {% extends 'SkNdMediaBundle::layout.html.twig' %}
-{#% block javascripts %}
-    {{parent()}}
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>    
-{% endblock %#}
-
 {% block title %}Details{% if mediaResource is defined %} for {{mediaResource.mediaResourceCache.title}}{% endif %}{% endblock %}
 
 {% block content %}

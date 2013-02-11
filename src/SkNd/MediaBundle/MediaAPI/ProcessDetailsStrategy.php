@@ -38,15 +38,14 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         if(!isset($params['em'])||
             !isset($params['mediaSelection'])||
             !isset($params['apiStrategy'])||
-            !isset($params['itemId'])||
-            !isset($params['referrer']))
+            !isset($params['itemId']))
             throw new \RuntimeException('required params not supplied for ' . get_class($this));
         
         $this->em = $params['em'];
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
         $this->itemId = $params['itemId'];
-        $this->referrer = $params['referrer'];
+        $this->referrer = isset($params['referrer']) ? $params['referrer'] : null ;
         
         $this->utilities = new Utilities();
         
@@ -93,7 +92,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
              * wrong categorisation of resources. (if a vague search was performed, an item added, a more specific search done,
              * then the item viewed again through a memory wall or direct referral, it could potentially be refined wrongly.
              **/ 
-            if(strpos($this->referrer, 'search') !== false){
+            if(!is_null($this->referrer) && strpos($this->referrer, 'search') !== false){
                 if($this->mediaResource->getMediaType()->getSlug() == 'film-and-tv' && $this->mediaSelection->getMediaType()->getSlug() != 'film-and-tv')
                     $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
 
