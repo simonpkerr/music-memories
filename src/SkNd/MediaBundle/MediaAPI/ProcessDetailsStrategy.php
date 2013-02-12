@@ -45,7 +45,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
         $this->itemId = $params['itemId'];
-        $this->referrer = isset($params['referrer']) ? $params['referrer'] : null ;
+        $this->referrer = isset($params['referrer']) ? $params['referrer'] : null;
         
         $this->utilities = new Utilities();
         

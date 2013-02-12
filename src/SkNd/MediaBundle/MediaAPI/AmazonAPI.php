@@ -145,7 +145,7 @@ class AmazonAPI implements IAPIStrategy {
                 array(
                'Operation'          =>     $this->ITEM_LOOKUP,
                //'ResponseGroup'      =>    'Images,ItemAttributes,Request,Similarities,EditorialReview',
-               'ResponseGroup'      =>      'Images,ItemAttributes,Request,Similarities',
+               'ResponseGroup'      =>      'Images,ItemAttributes,Request,Similarities,OfferSummary',
                 ));
 
         

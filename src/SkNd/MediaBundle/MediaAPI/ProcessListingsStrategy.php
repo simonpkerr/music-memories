@@ -10,8 +10,6 @@
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use Doctrine\ORM\EntityManager;
-use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
-use SkNd\MediaBundle\MediaAPI\MediaDetails;
 use SkNd\MediaBundle\Entity\MediaResourceListingsCache;
 use \SimpleXMLElement;
 use SkNd\MediaBundle\MediaAPI\Utilities;

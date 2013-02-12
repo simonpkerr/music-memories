@@ -184,17 +184,6 @@ class ProcessDetailsStrategyTest extends WebTestCase {
     /**
      * @expectedException RuntimeException
      */
-    public function testConstructWithoutReferrerThrowsException(){
-        unset($this->constructorParams['referrer']);
-        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
-                array(
-                    $this->constructorParams
-                ))->getMock();
-    }
-    
-    /**
-     * @expectedException RuntimeException
-     */
     public function testGetNullMediaResourceThrowsException(){
         $this->processDetailsStrategy = $this->processDetailsStrategy->getMock();
         $this->processDetailsStrategy->getMedia();
@@ -245,6 +234,45 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         self::$em->remove($mr);
         self::$em->flush();
     }
+
+    public function testGetMediaResourceWithVagueDetailsNotUpdatesIfNoReferrer(){
+        unset($this->constructorParams['referrer']);
+        $this->mediaAPI = $this->mediaAPI->getMock();
+        
+        $this->mediaSelection = $this->mediaAPI->setMediaSelection(array(
+            'media' => 'film',
+            'decade'=> '1980s',
+            'genre' => 'drama',
+        ));
+        
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
+            array(
+                array_merge(
+                    $this->constructorParams,
+                    array(
+                        'mediaSelection'    => $this->mediaSelection,
+                        'itemId'            => 'VagueMediaResourceNotUpdatedIfNoReferrer',
+                     ) 
+                    )
+                )
+            )->getMock();
+        
+        //create and insert a dummy mediaresource
+        $mr = new MediaResource();
+        $mr->setId('VagueMediaResourceNotUpdatedIfNoReferrer');
+        $mr->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->findOneBy(array('id' => 1)));
+        $mr->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->findOneBy(array('id' => 1)));
+        
+        self::$em->persist($mr);
+        self::$em->flush();
+        
+        $updatedMr = $this->processDetailsStrategy->getMediaResource();
+        $this->assertNull($updatedMr->getDecade(), "Decade was updated to 1980");
+        
+        self::$em->remove($mr);
+        self::$em->flush();
+        
+    }
     
     public function testGetCachedMediaResourceWithVagueDetailsUpdatesMediaResourceIfSpecificMediaTypeSet(){
         $this->mediaAPI = $this->mediaAPI->getMock();
@@ -270,7 +298,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         self::$em->flush();
         
         $updatedMr = $this->processDetailsStrategy->getMediaResource();
-        $this->assertEquals($updatedMr->getDecade()->getDecadeName(), '1980', "Decade was updated to 1980");
+        $this->assertEquals($updatedMr->getDecade()->getDecadeName(), '1980', "Decade was not updated to 1980");
         
         self::$em->remove($mr);
         self::$em->flush();
@@ -301,8 +329,8 @@ class ProcessDetailsStrategyTest extends WebTestCase {
                     $constructorParams,
                 ))->getMock();
                 
-       $mr = $this->processDetailsStrategy->getMediaResource();
-       $this->assertEquals($mr->getDecade()->getSlug(), '1960s', 'decade was not changed to 1960s');
+       $processedMr = $this->processDetailsStrategy->getMediaResource();
+       $this->assertEquals($processedMr->getDecade()->getSlug(), '1960s', 'decade was not changed to 1960s');
         
         self::$em->remove($mr);
         self::$em->flush();
@@ -333,8 +361,8 @@ class ProcessDetailsStrategyTest extends WebTestCase {
                     $constructorParams,
                 ))->getMock();
                 
-       $mr = $this->processDetailsStrategy->getMediaResource();
-       $this->assertEquals($mr->getGenre()->getSlug(), 'comedy', 'genre was not changed to comedy');
+       $processedMr = $this->processDetailsStrategy->getMediaResource();
+       $this->assertEquals($processedMr->getGenre()->getSlug(), 'comedy', 'genre was not changed to comedy');
         
         self::$em->remove($mr);
         self::$em->flush();
