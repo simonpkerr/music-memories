@@ -76,7 +76,7 @@ class DefaultControllerTest extends WebTestCase
         );
        
         $crawler = $this->client->submit($form, $params);
-        $this->assertTrue($crawler->filter('html:contains("The presented password is invalid")')->count() > 0);
+        $this->assertTrue($crawler->filter('html:contains("Invalid username or password")')->count() > 0);
     }
     
     public function testLoginPostWithMissingCredentialsShowsErrors()
@@ -154,20 +154,20 @@ class DefaultControllerTest extends WebTestCase
         $profileLink = $crawler->selectLink('Profile')->link();
         $crawler = $this->client->click($profileLink);
         
-        $crawler->selectButton('Update your profile')->addContent('formnovalidate="formnovalidate"');
-        $form = $crawler->selectButton('Update your profile')->form();
+        $crawler->selectButton('Update')->addContent('formnovalidate="formnovalidate"');
+        $form = $crawler->selectButton('Update')->form();
         $params = array(
-            'fos_user_profile_form[user][username]' => '',
-            'fos_user_profile_form[user][email]'    => 'invalid_email',
-            'fos_user_profile_form[user][firstname]'=> 'u',
-            'fos_user_profile_form[current]'        => 'wrong_password',
+            'fos_user_profile_form[username]'           => '',
+            'fos_user_profile_form[email]'              => 'invalid_email',
+            'fos_user_profile_form[firstname]'          => 'u',
+            'fos_user_profile_form[current_password]'   => 'wrong_password',
         );
        
         $crawler = $this->client->submit($form, $params);
         $this->assertTrue($crawler->filter('html:contains("Please enter a username")')->count() > 0, "no username specified");
         $this->assertTrue($crawler->filter('html:contains("The email is not valid")')->count() > 0, "invalid email given");
         $this->assertTrue($crawler->filter('html:contains("This firstname is too short")')->count() > 0, "first name is too short");
-        $this->assertTrue($crawler->filter('html:contains("This password is invalid")')->count() > 0, "invalid password");
+        $this->assertTrue($crawler->filter('html:contains("This value should be the user current password")')->count() > 0, "invalid password");
         
     }
     
@@ -179,21 +179,20 @@ class DefaultControllerTest extends WebTestCase
         $params = array(
             '_username' => 'testuser',
             '_password' => 'testuser',
-            
         );
         $crawler = $this->client->submit($form, $params);
         $profileLink = $crawler->selectLink('Profile')->link();
         $crawler = $this->client->click($profileLink);
         
-        $crawler->selectButton('Update your profile')->addContent('formnovalidate="formnovalidate"');
-        $form = $crawler->selectButton('Update your profile')->form();
+        $crawler->selectButton('Update')->addContent('formnovalidate="formnovalidate"');
+        $form = $crawler->selectButton('Update')->form();
         $params = array(
-            'fos_user_profile_form[user][firstname]'=> 'Simon',
-            'fos_user_profile_form[current]'        => 'testuser',
+            'fos_user_profile_form[firstname]'          => 'Simon',
+            'fos_user_profile_form[current_password]'   => 'testuser',
         );
        
         $crawler = $this->client->submit($form, $params);
-        $this->assertTrue($crawler->filter('html:contains("Your profile has been updated")')->count() > 0, "profile successfully updated.");
+        $this->assertTrue($crawler->filter('html:contains("The profile has been updated")')->count() > 0, "profile unsuccessfully updated.");
         
     }
     
@@ -209,22 +208,21 @@ class DefaultControllerTest extends WebTestCase
         $crawler = $this->client->submit($form, $params);
         
         //go to the profile page
-        $crawler = $this->client->request('GET', '/change-password/change-password');
+        $crawler = $this->client->request('GET', '/profile/change-password');
         $form = $crawler->selectButton('Change password')->form();
         $params = array(
-            'fos_user_change_password_form[current]' => 'testuser',
+            'fos_user_change_password_form[current_password]' => 'testuser',
             'fos_user_change_password_form[new][first]' => 'testuser_new',
             'fos_user_change_password_form[new][second]' => 'testuser_invalid',
             
         );
         $crawler = $this->client->submit($form, $params);
         //indicates a flash message saying password is not valid
-        $this->assertTrue($crawler->filter('html:contains("not valid")')->count() > 0);
-        
+        $this->assertTrue($crawler->filter('html:contains("The entered passwords don\'t match")')->count() > 0);
     }
     
     public function testChangePasswordWhenNotLoggedInRedirectsToLoginPage(){
-        $crawler = $this->client->request('GET', '/change-password/change-password');
+        $crawler = $this->client->request('GET', '/profile/change-password');
         
         $this->assertTrue($crawler->selectButton("Login")->count() > 0, "redirected to log in screen");
         
@@ -239,13 +237,13 @@ class DefaultControllerTest extends WebTestCase
             
         );
         $crawler = $this->client->submit($form, $params);
-        $crawler = $this->client->request('GET', '/change-password/change-password');
+        $crawler = $this->client->request('GET', '/profile/change-password');
         
         $form = $crawler->selectButton('Change password')->form();
         $params = array(
-            'fos_user_change_password_form[current]'        => 'testuser3',
-            'fos_user_change_password_form[new][first]'     => 'testuser3_new',
-            'fos_user_change_password_form[new][second]'    => 'testuser3_new',
+            'fos_user_change_password_form[current_password]'   => 'testuser3',
+            'fos_user_change_password_form[new][first]'         => 'testuser3_new',
+            'fos_user_change_password_form[new][second]'        => 'testuser3_new',
             
         );
         $crawler = $this->client->submit($form, $params);

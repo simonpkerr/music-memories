@@ -17,7 +17,7 @@ use SkNd\MediaBundle\Entity\MediaResource;
  */
 
 
-class MemoryWallMediaResourcesTest extends WebTestCase
+class MemoryWallControllerTest extends WebTestCase
 {
     private $client;
     protected static $em;

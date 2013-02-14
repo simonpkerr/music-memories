@@ -18,7 +18,7 @@ use SkNd\MediaBundle\Entity\MediaResource;
  */
 
 
-class MWCMediaResourcesTest extends WebTestCase
+class MemoryWallMediaResourcesTest extends WebTestCase
 {
     protected static $kernel;
     protected $client;
@@ -303,7 +303,7 @@ class MWCMediaResourcesTest extends WebTestCase
         $url = self::$router->generate('memoryWallDeleteMediaResourceConfirm', array(
             'slug'  => 'my-memory-wall',
             'id'    => 'testuser-mr1',
-            'confirmed' => true,
+            'confirmed' => "true",
         ));
         $crawler = $this->client->request('GET', $url);
         
@@ -325,7 +325,7 @@ class MWCMediaResourcesTest extends WebTestCase
         $url = self::$router->generate('memoryWallDeleteMediaResourceConfirm', array(
             'slug'  => 'my-memory-wall',
             'id'    => 'testuser-mr2',
-            'confirmed' => true,
+            'confirmed' => "true",
         ));
         $crawler = $this->client->request('GET', $url);
         

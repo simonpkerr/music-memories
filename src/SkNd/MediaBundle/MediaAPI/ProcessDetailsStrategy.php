@@ -142,7 +142,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         }
 
         $this->mediaResource->incrementViewCount();
-        $this->persistMergeFlush($this->em, $this->mediaResource);
+        $this->persistMergeFlush($this->mediaResource);
     }
         
     public function persistMergeFlush($obj = null, $immediateFlush = true){

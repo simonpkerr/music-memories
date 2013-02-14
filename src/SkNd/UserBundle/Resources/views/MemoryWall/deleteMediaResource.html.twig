@@ -9,7 +9,7 @@
 {% endif %}
 <p>Are you <span class="italic">really</span> sure you want to remove &ldquo;<strong>{{ mr.mediaResourceCache.title|default('this item') }}&rdquo;</strong> from your Memory Wall &ndash; <strong>{{ mw.name }}</strong>?</p>
 <ul class="bullet-list fl">
-    <li><a href="{{ path('memoryWallDeleteMediaResourceConfirm', {'slug':mw.slug, 'id': mr.id, 'confirmed':true }) }}" title="remove the item">{{ 'mediaResource.delete.confirm'|trans({}, 'SkNdUserBundle')|raw }}</a></li> 
+    <li><a href="{{ path('memoryWallDeleteMediaResourceConfirm', {'slug':mw.slug, 'id': mr.id, 'confirmed':'true' }) }}" title="remove the item">{{ 'mediaResource.delete.confirm'|trans({}, 'SkNdUserBundle')|raw }}</a></li> 
     <li><a href="{{ path('memoryWallShow', {'slug' : mw.slug }) }}" title="Cancel removing the item">{{ 'mediaResource.delete.cancel'|trans({}, 'SkNdUserBundle')|raw }}</a></li> 
 </ul>
 {% endblock content %}
