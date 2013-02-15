@@ -1,11 +1,14 @@
 {% extends 'SkNdMediaBundle::layout.html.twig' %}
-{% block title %}Details{% if mediaResource is defined %} for {{mediaResource.mediaResourceCache.title}}{% endif %}{% endblock %}
+{% 
+set mediaDetailsTitle = mediaResource is defined and mediaResource.mediaResourceCache is defined ? mediaResource.mediaResourceCache.title : "Details"
+%}
+
+{% block metadescription %}{{mediaDetailsTitle}}{% endblock %}
+{% block metakeywords %}{{mediaDetailsTitle}}{% endblock %}
+{% block title %}{{mediaDetailsTitle}}{% endblock %}
 
 {% block content %}
-    {#<a href="{{path('search', returnRouteParams)}}">back to listings</a>#}
-    {%if mediaResource is defined %}
-        <h1>{{mediaResource.mediaResourceCache.title}}</h1>
-    {% endif %}
+    <h1>{{mediaDetailsTitle}}</h1>
     {% if 'search' in referrer %}
     <a class="go-back" href="{{referrer}}">go back to the previous page</a>
     {% endif %}

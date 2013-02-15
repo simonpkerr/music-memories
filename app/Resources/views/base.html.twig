@@ -4,8 +4,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="{% block metadescription %}noodleDig helps you remember your past, reminisce about things you used to love, especially Film and TV.{% endblock %}" />
-        <meta name="keywords" content="{% block metakeywords %}noodleDig,past,reminisce,nostalgia,nostalgic,old films,old tv,tv programmes,good old days{% endblock %}" />        
+        <meta name="description" content="noodledig helps you remember your past. {% block metadescription %}Reminisce about things you used to love, especially Film and TV.{% endblock %}" />
+        <meta name="keywords" content="noodleDig,past,reminisce,nostalgia,nostalgic,old films,old tv,tv programmes,good old days,{% block metakeywords %}{% endblock %}" />        
         <title>noodleDig &ndash; {% block title %}Home{% endblock %}</title>
         {#<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />#}
      
@@ -26,14 +26,8 @@
         <script type="text/javascript">Modernizr.load([{test: Modernizr.mq('only screen and (min-width: 600px)'),nope: ['/SkNd/web/bundles/SkNd/js/original/respond.min.js']}]);</script>
     </head>
     <body>
-        <div id="sm-sharing">
-            <ul>
-                <li><a id="facebookShare" title="Share this page on Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fwww.noodledig.com&amp;t=noodleDig+website" target="_blank"><span>Share on Facebook</span></a></li>
-                <li><a id="twitterShare" title="Share this page on Twitter" href="https://twitter.com/share" target="_blank"><span>Share on Twitter</span></a></li>
-                <li><a id="pinterestShare" title="Pin this page with Pinterest" href="javascript:void((function(){var e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','http://assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)})());"><span>Share on Pinterest</span></a></li>
-                <li><a id="emailShare" title="Email this page to a friend" href="mailto:?subject=Check out noodleDig&amp;body=Check out this cool site called www.noodleDig.com. It helps you to re-discover things from the past. It's ace!"><span>Share with email</span></a></li>
-            </ul>
-        </div>
+        {% include 'SkNdMediaBundle:Default:socialMediaSharing.html.twig' %}
+        
         <div id="wrapper" class="">
             <div id="header">
                 {# the 'path' function can be used to target any particular route defined in the routing config file #}

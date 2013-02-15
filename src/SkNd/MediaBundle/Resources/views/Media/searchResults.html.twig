@@ -1,4 +1,6 @@
 {% extends 'SkNdMediaBundle::layout.html.twig' %}
+{% block metadescription %} Search results for {{media}} ({{ decade }}, {{ genre }}){% endblock %}
+{% block metakeywords %}{{media}},{{ decade }},{{ genre }}{% endblock %}
 {% block title %}Search results for {{media}} ({{ decade }}, {{ genre }}){% endblock %}
 
 {% block content %}
