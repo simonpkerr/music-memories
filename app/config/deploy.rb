@@ -1,5 +1,5 @@
 set :application, "noodleDig"
-set :deploy_to,   "/public_html/noodledig.com"
+set :deploy_to,   "/public_html/noodledig"
 set :domain,      "artemis.web-hosting.uk.com"
 set :user,        "simonker"
 

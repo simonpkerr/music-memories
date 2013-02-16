@@ -1,37 +1,42 @@
+$(document).ready(function () {
+    var allGenres = eval($("#mediaSelection_genres").val()),
+        selectedMediaGenre = $("select#mediaSelection_selectedMediaGenre"),
+        selectedGenre = selectedMediaGenre.val();
 
-$(document).ready(function(){
+    //when a media is selected, populate the genres
+    function populateGenres(selectedMedia) {
+        
+        selectedMediaGenre.empty();
+        selectedMediaGenre.append("<option value=\"\">All Genres</option>");
 
-var $allGenres = eval($("#mediaSelection_genres").val());
-var $selectedMediaGenre = $("select#mediaSelection_selectedMediaGenre");
-var $selectedGenre = $selectedMediaGenre.val();
+        //only populate with genres if the film and tv option was not selected
+        if (selectedMedia !== 4) {
+            $.each(allGenres, function () {
+                if (this.mediaType_id === selectedMedia) {
+                    selectedMediaGenre.append("<option value=\"" + this.id + "\">" + this.genreName + "</option>");
 
-populateGenres($("select#mediaSelection_mediaType").val());
+                }
+            });
+            selectedMediaGenre.val(selectedGenre);
+        }
+    }
 
-$("select#mediaSelection_mediaType").change(function(){
-    populateGenres($(this).val())
+    populateGenres($("select#mediaSelection_mediaType").val());
+
+    $("select#mediaSelection_mediaType").change(function () {
+        populateGenres(parseInt($(this).val(), 10));//parse as decimal int
+    });
+
+    // social media sharing icons pop up
+    $(document).on("click", "a.popup", function () {
+        var newwindow = window.open($(this).attr('href'), '', 'height=400,width=450');
+        if (window.focus) {
+            newwindow.focus();
+        }
+        return false;
+    });
+
+
 });
-
-//when a media is selected, populate the genres
-function populateGenres(selectedMedia){
-    $selectedMediaGenre.empty();
-    $selectedMediaGenre.append("<option value=\"\">All Genres</option>");
-    
-    //only populate with genres if the film and tv option was not selected
-    if(selectedMedia != 4){
-        $.each($allGenres, function(i,genre){
-            if(genre.mediaType_id == selectedMedia){
-                $selectedMediaGenre.append("<option value=\""+ genre.id +"\">"+ genre.genreName +"</option>");
-
-            }
-        });
-        $selectedMediaGenre.val($selectedGenre);
-    } 
-}
-
-});
-
-
-       
-
 
 
