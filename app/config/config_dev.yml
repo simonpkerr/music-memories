@@ -24,7 +24,7 @@ monolog:
             level: info
 
 assetic:
-    use_controller: false
+    use_controller: true
 
 swiftmailer:
     delivery_address: noodledig@gmail.com

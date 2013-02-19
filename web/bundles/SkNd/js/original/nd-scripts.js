@@ -5,7 +5,6 @@ $(document).ready(function () {
 
     //when a media is selected, populate the genres
     function populateGenres(selectedMedia) {
-        
         selectedMediaGenre.empty();
         selectedMediaGenre.append("<option value=\"\">All Genres</option>");
 
@@ -21,7 +20,7 @@ $(document).ready(function () {
         }
     }
 
-    populateGenres($("select#mediaSelection_mediaType").val());
+    populateGenres(parseInt($("select#mediaSelection_mediaType").val(),10));
 
     $("select#mediaSelection_mediaType").change(function () {
         populateGenres(parseInt($(this).val(), 10));//parse as decimal int
