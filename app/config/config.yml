@@ -34,6 +34,7 @@ assetic:
     #write_to:       "%kernel.root_dir%/Resources/assets/"
     #read_from:      "%kernel.root_dir%/Resources/assets/"
     filters:
+        cssrewrite: ~
         yui_css:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
         yui_js:
