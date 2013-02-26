@@ -1,7 +1,8 @@
 $(document).ready(function () {
     var allGenres = eval($("#mediaSelection_genres").val()),
         selectedMediaGenre = $("select#mediaSelection_selectedMediaGenre"),
-        selectedGenre = selectedMediaGenre.val();
+        selectedGenre = selectedMediaGenre.val(),
+        timer;
 
     //when a media is selected, populate the genres
     function populateGenres(selectedMedia) {
@@ -19,22 +20,27 @@ $(document).ready(function () {
             selectedMediaGenre.val(selectedGenre);
         }
     }
+    populateGenres(parseInt($("select#mediaSelection_mediaType").val(), 10));
 
-    populateGenres(parseInt($("select#mediaSelection_mediaType").val(),10));
-
-    $("select#mediaSelection_mediaType").change(function () {
+    $("select#mediaSelection_mediaType").on("change", function () {
         populateGenres(parseInt($(this).val(), 10));//parse as decimal int
     });
 
+    //header search box close delay
+    $("div#headerMediaSelection form *").on("focus", function () {
+        $(this).parents("form").css("top", 0);
+    }).on("blur", function () {
+        $(this).parents("form").attr("style", '');
+    });
+
     // social media sharing icons pop up
-    $(document).on("click", "a.popup", function () {
+    $("a.popup").on("click", function () {
         var newwindow = window.open($(this).attr('href'), '', 'height=400,width=450');
         if (window.focus) {
             newwindow.focus();
         }
         return false;
     });
-
 
 });
 
