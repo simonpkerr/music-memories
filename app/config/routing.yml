@@ -29,8 +29,8 @@ fos_user_change_password:
     
 SkNdUserBundle:
     resource: "@SkNdUserBundle/Resources/config/routing.yml"
-    prefix:   /
+#    prefix:   /
 
 SkNdMediaBundle:
     resource: "@SkNdMediaBundle/Resources/config/routing.yml"
-    prefix:   /    
+#    prefix:   /    

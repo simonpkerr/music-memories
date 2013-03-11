@@ -60,9 +60,10 @@ doctrine:
             default:
                 connection:       default
                 mappings:
+                    FOSUserBundle: ~
                     SkNdUserBundle: ~
                     SkNdMediaBundle: ~
-                    FOSUserBundle: ~
+                    
 #        mappings:
 #          sluggable: ~
 #          timestampable: ~
