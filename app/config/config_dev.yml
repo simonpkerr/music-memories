@@ -32,6 +32,10 @@ swiftmailer:
     username: noodledig
     password: Woshinage1
 
+fos_user:
+  registration:
+    confirmation:
+      enabled: false
 
 services:
   debug.twig.extension:

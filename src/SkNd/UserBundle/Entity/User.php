@@ -23,9 +23,11 @@ class User extends BaseUser {
     protected $dateofbirth;
     protected $memoryWalls;
     protected $tacagreement;
+    const ND_ROLE = 'ND_USER';
 
     public function __construct(){
         parent::__construct();
+        $this->addRole(self::ND_ROLE);
         $this->memoryWalls = new ArrayCollection();
         $this->createDefaultMemoryWall();
     }
