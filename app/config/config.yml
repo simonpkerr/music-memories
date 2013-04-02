@@ -40,7 +40,6 @@ assetic:
         yui_js:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
-
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -51,6 +50,8 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
+        types:
+          json: Sonata\Doctrine\Types\JsonType
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -61,8 +62,11 @@ doctrine:
                 connection:       default
                 mappings:
                     FOSUserBundle: ~
-                    SkNdUserBundle: ~
+                    #ApplicationSonataUserBundle: ~
+                    SonataUserBundle: ~
+                    #SkNdUserBundle: ~
                     SkNdMediaBundle: ~
+                    
                     
 #        mappings:
 #          sluggable: ~
@@ -83,25 +87,11 @@ sonata_cache:
             token: ~
             servers:
                 - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
-
         ssi:
             token: ~
-
-        #mongo:
-        #    database:   cache
-        #    collection: cache
-        #    servers:
-        #        - {host: 127.0.0.1, port: 27017, user: username, password: pASS'}
-        #        - {host: 127.0.0.2}
-
-        #memcached:
-        #    prefix: sknd_mem_cache
-        #    servers:
-        #        - {host: 127.0.0.1, port: 11211, weight: 0}
-
         apc:
             token:  s3cur3   # token used to clear the related cache
-            prefix: test     # prefix to ensure there is no clash between instances
+            prefix: sknd_apc     # prefix to ensure there is no clash between instances
             servers:
                 - { domain: kooqit.local, ip: 127.0.0.1, port: 80}
 
@@ -114,27 +104,37 @@ sonata_block:
         sonata.block.service.text:
         sonata.block.service.rss:
 
+sonata_user:
+  class:
+    user: SkNd\UserBundle\Entity\User
+  security_acl: true
+  manager_type: orm 
+
 fos_user:
   db_driver: orm
   firewall_name: main
   user_class: SkNd\UserBundle\Entity\User
-  registration:
-    form:
-      type: sk_nd_user_registration
-    confirmation:
-      enabled: true
-      from_email:
-        address:        noodledig@gmail.com
-        sender_name:    noodleDig Registration
-  profile:
-    form:
-      type: sk_nd_user_profile
-  resetting:
-    email:
-      from_email:
-        address:        noodledig@gmail.com
-        sender_name:    noodleDig Password reset
+  #user_class: Application\Sonata\UserBundle\Entity\User
+  group:
+    group_class: Application\Sonata\UserBundle\Entity\Group
       
+#  registration:
+#    form:
+#      type: sk_nd_user_registration
+#    confirmation:
+#      enabled: true
+#      from_email:
+#        address:        noodledig@gmail.com
+#        sender_name:    noodleDig Registration
+#  profile:
+#    form:
+#      type: sk_nd_user_profile
+#  resetting:
+#    email:
+#      from_email:
+#        address:        noodledig@gmail.com
+#        sender_name:    noodleDig Password reset
+     
 stof_doctrine_extensions:
   default_locale: "%locale%"
   orm:

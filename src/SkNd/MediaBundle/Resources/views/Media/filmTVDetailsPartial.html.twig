@@ -74,12 +74,11 @@
         
     <div id="youtubeVideos" class="full-width fl">
     <h2>YouTube videos</h2>
-    {% 
-        render "SkNdMediaBundle:Media:youTubeRequest" with {
+    {{ render(controller('SkNdMediaBundle:Media:youTubeRequest', {
             'title'     :   item.ItemAttributes.Title|url_encode, 
             'mrid'      :   mediaResource.id,  
-            }
-    %}
+            }))
+    }}
     </div>
 
 {#%<div id="googleImagesTopresults">

@@ -11,10 +11,8 @@ vendor/*
 */logs/*
 */cache/*
 web/uploads/*
-web/bundles/framework
-web/bundles/sensiodistribution
-web/bundles/webprofiler
-web/bundles/sonatajquery
+web/bundles/*
+!web/bundles/SkNd
 
 # Configuration files
 app/config/parameters.yml
@@ -23,5 +21,4 @@ app/config/parameters.yml
 nbproject/*
 
 #misc files
-web/bundles/*/Thumbs.db
 app/Resources/ZendFramework
