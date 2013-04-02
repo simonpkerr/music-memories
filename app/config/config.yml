@@ -62,9 +62,9 @@ doctrine:
                 connection:       default
                 mappings:
                     FOSUserBundle: ~
-                    #ApplicationSonataUserBundle: ~
+                    ApplicationSonataUserBundle: ~
                     SonataUserBundle: ~
-                    #SkNdUserBundle: ~
+                    SkNdUserBundle: ~
                     SkNdMediaBundle: ~
                     
                     

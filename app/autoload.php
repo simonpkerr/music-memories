@@ -4,7 +4,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 //ini_set("include_path", ".:/usr/lib/php:/usr/local/lib/php:/home/simonker/public_html/SkNd/app/Resources/ZendFramework/library");
 
 $loader = require __DIR__.'/../vendor/autoload.php';
-//$loader->add('Application', __DIR__);
+$loader->add('Application', __DIR__);
 
 // intl
 if (!function_exists('intl_get_error_code')) {

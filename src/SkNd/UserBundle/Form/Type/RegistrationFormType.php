@@ -21,7 +21,7 @@ class RegistrationFormType extends BaseType {
         $startYear = $startYear->sub(date_interval_create_from_date_string('90 years'));
         $yearRange = range($startYear->format('Y'), date('Y'));
         arsort($yearRange);
-        $builder->add('dateofbirth', 'birthday', array(
+        $builder->add('date_of_birth', 'birthday', array(
             'years' => $yearRange,
             'format'=> 'MMM-dd-yyyy',
             'label'     => 'form.dob',
@@ -33,7 +33,7 @@ class RegistrationFormType extends BaseType {
             'label'     => 'form.firstname',
             'translation_domain' => 'FOSUserBundle',
         ));
-        $builder->add('surname', 'text', array(
+        $builder->add('lastname', 'text', array(
             'required'  => false,
             'label'     => 'form.surname',
             'translation_domain' => 'FOSUserBundle',

@@ -9,7 +9,8 @@
  */
 namespace SkNd\UserBundle\Entity;
     
-use FOS\UserBundle\Entity\User as BaseUser;
+//use FOS\UserBundle\Entity\User as BaseUser;
+use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use SkNd\UserBundle\Entity\MemoryWall;
@@ -19,8 +20,8 @@ class User extends BaseUser {
 
     protected $id;
     protected $firstname;
-    protected $surname;
-    protected $dateofbirth;
+    protected $lastname;
+    protected $date_of_birth;
     protected $memoryWalls;
     protected $tacagreement;
     const ND_ROLE = 'ND_USER';
@@ -77,24 +78,24 @@ class User extends BaseUser {
         return $this->firstname;
     }
 
-    public function setSurname($surname = null)
+    public function setLastname($lastname = null)
     {
-        $this->surname = $surname;
+        $this->lastname = $lastname;
     }
 
-    public function getSurname()
+    public function getLastname()
     {
-        return $this->surname;
+        return $this->lastname;
     }
 
-    public function setDateofbirth($dateofbirth)
+    public function setDateOfbirth($date_of_birth)
     {
-        $this->dateofbirth = $dateofbirth;
+        $this->date_of_birth = $date_of_birth;
     }
 
-    public function getDateofbirth()
+    public function getDateOfbirth()
     {
-        return $this->dateofbirth;
+        return $this->date_of_birth;
     }
 
 }
