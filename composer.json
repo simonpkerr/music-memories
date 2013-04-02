@@ -23,7 +23,12 @@
         "friendsofsymfony/user-bundle": "*",
         "doctrine/data-fixtures": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "stof/doctrine-extensions-bundle": "dev-master"
+        "stof/doctrine-extensions-bundle": "dev-master",
+        "sonata-project/cache-bundle": "dev-master",
+        "sonata-project/block-bundle": "dev-master",
+        "sonata-project/jquery-bundle": "dev-master",
+        "knplabs/knp-menu-bundle": "1.1.*",
+        "sonata-project/exporter": "dev-master"
         
     },
     "scripts": {

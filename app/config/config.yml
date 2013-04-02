@@ -77,6 +77,43 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+sonata_cache:
+    caches:
+        esi:
+            token: ~
+            servers:
+                - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
+
+        ssi:
+            token: ~
+
+        #mongo:
+        #    database:   cache
+        #    collection: cache
+        #    servers:
+        #        - {host: 127.0.0.1, port: 27017, user: username, password: pASS'}
+        #        - {host: 127.0.0.2}
+
+        #memcached:
+        #    prefix: sknd_mem_cache
+        #    servers:
+        #        - {host: 127.0.0.1, port: 11211, weight: 0}
+
+        apc:
+            token:  s3cur3   # token used to clear the related cache
+            prefix: test     # prefix to ensure there is no clash between instances
+            servers:
+                - { domain: kooqit.local, ip: 127.0.0.1, port: 80}
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+
+        sonata.block.service.text:
+        sonata.block.service.rss:
+
 fos_user:
   db_driver: orm
   firewall_name: main

@@ -14,6 +14,7 @@ web/uploads/*
 web/bundles/framework
 web/bundles/sensiodistribution
 web/bundles/webprofiler
+web/bundles/sonatajquery
 
 # Configuration files
 app/config/parameters.yml
