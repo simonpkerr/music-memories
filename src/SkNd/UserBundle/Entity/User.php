@@ -19,16 +19,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 class User extends BaseUser {
 
     protected $id;
-    protected $firstname;
+    /*protected $firstname;
     protected $lastname;
-    protected $date_of_birth;
+    protected $date_of_birth;*/
     protected $memoryWalls;
     protected $tacagreement;
-    const ND_ROLE = 'ND_USER';
+    //const ND_ROLE = 'ND_USER';
 
     public function __construct(){
         parent::__construct();
-        $this->addRole(self::ND_ROLE);
+        //$this->addRole(self::ND_ROLE);
         $this->memoryWalls = new ArrayCollection();
         $this->createDefaultMemoryWall();
     }
@@ -68,7 +68,7 @@ class User extends BaseUser {
         return $this->tacagreement;
     }
     
-    public function setFirstname($firstname = null)
+    /*public function setFirstname($firstname = null)
     {
         $this->firstname = $firstname;
     }
@@ -96,6 +96,6 @@ class User extends BaseUser {
     public function getDateOfbirth()
     {
         return $this->date_of_birth;
-    }
+    }*/
 
 }
