@@ -9,6 +9,7 @@ services:
     arguments: [%fos_user.model.user.class%]
     tags:
       - { name: form.type, alias: sk_nd_user_profile }
-
+  
+      
 
 

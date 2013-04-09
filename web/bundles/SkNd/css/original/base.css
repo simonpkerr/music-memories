@@ -130,7 +130,7 @@ form input[type="text"],
 form input[type="email"],
 form input[type="password"]
 {
-    width: 97.6%;
+    width: 90%;
 }
 
 .borderradius form select,
@@ -168,6 +168,7 @@ span.required {
     margin-left: 0.5em;
     color: #ff0000;
     font-weight: bold;
+    float: right;
 }
 
 ul.form-errors {

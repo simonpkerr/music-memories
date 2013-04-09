@@ -66,7 +66,7 @@ doctrine:
                 connection:       default
                 mappings:
                     FOSUserBundle: ~
-                    ApplicationSonataUserBundle: ~
+                    #ApplicationSonataUserBundle: ~
                     SonataUserBundle: ~
                     SkNdUserBundle: ~
                     SkNdMediaBundle: ~
@@ -109,8 +109,8 @@ sonata_block:
         sonata.block.service.rss:
 
 sonata_user:
-  class:
-    user: SkNd\UserBundle\Entity\User
+  #class:
+  #  user: SkNd\UserBundle\Entity\User
   security_acl: true
   manager_type: orm 
 
@@ -119,25 +119,25 @@ fos_user:
   firewall_name: main
   user_class: SkNd\UserBundle\Entity\User
   #user_class: Application\Sonata\UserBundle\Entity\User
-  group:
-    group_class: Application\Sonata\UserBundle\Entity\Group
+  #group:
+  #  group_class: Application\Sonata\UserBundle\Entity\Group
       
-#  registration:
-#    form:
-#      type: sk_nd_user_registration
-#    confirmation:
-#      enabled: true
-#      from_email:
-#        address:        noodledig@gmail.com
-#        sender_name:    noodleDig Registration
-#  profile:
-#    form:
-#      type: sk_nd_user_profile
-#  resetting:
-#    email:
-#      from_email:
-#        address:        noodledig@gmail.com
-#        sender_name:    noodleDig Password reset
+  registration:
+    form:
+      type: sk_nd_user_registration
+    confirmation:
+      enabled: true
+      from_email:
+        address:        contact@noodledig.com
+        sender_name:    noodleDig Registration
+  profile:
+    form:
+      type: sk_nd_user_profile
+  resetting:
+    email:
+      from_email:
+        address:        contact@noodledig.com
+        sender_name:    noodleDig Password reset
      
 stof_doctrine_extensions:
   default_locale: "%locale%"

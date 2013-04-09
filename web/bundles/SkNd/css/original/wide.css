@@ -441,19 +441,19 @@ div#content form div.date_widget {
 }
 
 div#content form div.date_widget select {
-    width: 4.3em;
+    width: 4.6em;
     margin-right: 1px;
 }
 
 div#content form input,
 div#content form textarea{
-    width: 13em;
+    width: 14em;
 }
 
 div#content input[type="submit"],
 div#content input#_submit
 /*div#content .button*/ {
-    width: 13.8em;
+    width: 15em;
     margin-left: 8.9em;
     font-weight: bold;
 }
