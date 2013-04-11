@@ -6,17 +6,17 @@ SkNd\UserBundle\Entity\User:
      type: integer
      generator: { strategy: AUTO }
   fields:
-    firstname:
-      type: string
-      length: 80
-      nullable: true
-    lastname:
-      type: string
-      length: 80
-      nullable: true
-    dateOfBirth:
-      type: date
-      column: date_of_birth
+#    firstname:
+#      type: string
+#      length: 80
+#      nullable: true
+#    lastname:
+#      type: string
+#      length: 80
+#      nullable: true
+#    dateOfBirth:
+#      type: date
+#      column: date_of_birth
   oneToMany:
     memoryWalls:
       targetEntity: MemoryWall
