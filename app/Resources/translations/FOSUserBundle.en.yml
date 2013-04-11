@@ -27,7 +27,7 @@ profile:
         username: Username
         email: Email
         firstname: First name
-        surname: Surname
+        lastname: Last name
         dateofbirth: Date of birth
     edit:
         submit: Update

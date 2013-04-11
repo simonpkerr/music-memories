@@ -1,0 +1,1 @@
+the actual edit and show template files are now in Application folder since they are being referenced by the sonata user bundle.
