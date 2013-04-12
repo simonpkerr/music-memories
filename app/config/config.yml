@@ -87,17 +87,17 @@ swiftmailer:
 
 sonata_cache:
     caches:
-        esi:
-            token: ~
-            servers:
-                - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
-        ssi:
-            token: ~
+#        esi:
+#            token: ~
+#            servers:
+#                - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
+#        ssi:
+#            token: ~
         apc:
             token:  s3cur3   # token used to clear the related cache
             prefix: sknd_apc     # prefix to ensure there is no clash between instances
             servers:
-                - { domain: kooqit.local, ip: 127.0.0.1, port: 80}
+                - { domain: localhost, ip: 127.0.0.1, port: 80}
 
 sonata_block:
     default_contexts: [cms]
@@ -113,11 +113,17 @@ sonata_user:
     user: SkNd\UserBundle\Entity\User
   security_acl: true
   manager_type: orm 
+#  profile:
+#    form:
+#      type: sonata_user_profile
+#      handler: sonata.user.profile.form.handler.default
+#      name: sonata_user_profile_form
+#      validation_groups: [Profile]
   profile:
     form:
-      type: sonata_user_profile
-      handler: sonata.user.profile.form.handler.default
-      name: sonata_user_profile_form
+      type: fos_user_profile
+      handler: fos_user.profile.form.handler.default
+      name: fos_user_profile_form
       validation_groups: [Profile]
      
 
@@ -142,7 +148,7 @@ fos_user:
       type: sk_nd_user_profile
       handler: fos_user.profile.form.handler.default
       name: fos_user_profile_form
-      validation_groups: [Authentication]
+      validation_groups: [Profile,Authentication]
   resetting:
     email:
       from_email:

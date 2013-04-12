@@ -3,7 +3,7 @@
         <li><span class="button orange" id="logged-in-user">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</span>
             <ul>
                 <li>
-                    <a href="{{ path('sonata_user_profile_edit_authentication') }}">
+                    <a href="{{ path('sonata_user_profile_edit') }}">
                         {{ 'layout.edit_profile'|trans({}, 'FOSUserBundle') }}
                     </a>
                 </li>
