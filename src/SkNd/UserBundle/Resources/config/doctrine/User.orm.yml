@@ -5,7 +5,7 @@ SkNd\UserBundle\Entity\User:
    id:
      type: integer
      generator: { strategy: AUTO }
-  fields:
+#  fields:
 #    firstname:
 #      type: string
 #      length: 80

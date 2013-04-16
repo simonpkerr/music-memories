@@ -1,6 +1,6 @@
 {#% form_theme form theme %#}
 <h1>Edit your profile</h1>
-<form id="fos_user_profile_edit" action="{{ path('sonata_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="half-width left fl">
+<form id="fos_user_profile_edit" action="{{ path('sonata_user_profile_edit_authentication') }}" {{ form_enctype(form) }} method="POST" class="half-width left fl">
     <fieldset>
         <legend>Profile details</legend>
         {{ form_widget(form) }}

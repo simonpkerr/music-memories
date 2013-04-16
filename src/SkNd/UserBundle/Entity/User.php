@@ -17,9 +17,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 class User extends BaseUser {
 
     protected $id;
-    /*protected $firstname;
-    protected $lastname;
-    protected $dateOfBirth;*/
+//    protected $firstname;
+//    protected $lastname;
+//    protected $dateOfBirth;
     protected $memoryWalls;
     protected $tacagreement;
     //const ND_ROLE = 'ND_USER';
@@ -66,34 +66,34 @@ class User extends BaseUser {
         return $this->tacagreement;
     }
     
-   /* public function setFirstname($firstname = null)
-    {
-        $this->firstname = $firstname;
-    }
-
-    public function getFirstname()
-    {
-        return $this->firstname;
-    }
-
-    public function setLastname($lastname = null)
-    {
-        $this->lastname = $lastname;
-    }
-
-    public function getLastname()
-    {
-        return $this->lastname;
-    }
-
-    public function setDateOfbirth($dateOfBirth)
-    {
-        $this->dateOfBirth = $dateOfBirth;
-    }
-
-    public function getDateOfbirth()
-    {
-        return $this->dateOfBirth;
-    }*/
+//    public function setFirstname($firstname = null)
+//    {
+//        $this->firstname = $firstname;
+//    }
+//
+//    public function getFirstname()
+//    {
+//        return $this->firstname;
+//    }
+//
+//    public function setLastname($lastname = null)
+//    {
+//        $this->lastname = $lastname;
+//    }
+//
+//    public function getLastname()
+//    {
+//        return $this->lastname;
+//    }
+//
+//    public function setDateOfbirth($dateOfBirth)
+//    {
+//        $this->dateOfBirth = $dateOfBirth;
+//    }
+//
+//    public function getDateOfbirth()
+//    {
+//        return $this->dateOfBirth;
+//    }
 
 }

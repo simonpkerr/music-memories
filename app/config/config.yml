@@ -132,9 +132,7 @@ fos_user:
   firewall_name: main
   user_class: SkNd\UserBundle\Entity\User
   #user_class: Application\Sonata\UserBundle\Entity\User
-  #group:
-  #  group_class: Application\Sonata\UserBundle\Entity\Group
-      
+        
   registration:
     form:
       type: sk_nd_user_registration
