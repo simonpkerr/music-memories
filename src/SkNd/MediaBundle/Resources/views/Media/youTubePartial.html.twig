@@ -32,14 +32,14 @@
     {# add a form to allow users to put a more relevant search #}
 
 {% else %}
-        {% if app.session.getFlashes('yt-notice') %}    
-        <div class="flashMessages">
-            <ul>
-            {% for key, message in app.session.getFlashes() %}
-            <li class="{{ key }}">{{ message|trans({}, 'SkNdMediaBundle')|raw }}</li>
-            {% endfor %}   
-            </ul>
-        </div>
-        {% endif %}
+    {% if app.session.flashbag.peek('notice') %}    
+            <div class="flashMessages">
+                <ul>
+                {% for message in app.session.flashbag.get('notice') %}
+                    <li class="notice">{{ message|trans({},'SkNdMediaBundle')|raw }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
         
 {% endif %}        

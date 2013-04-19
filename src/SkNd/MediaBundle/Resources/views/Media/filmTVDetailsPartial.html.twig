@@ -47,13 +47,11 @@
             %}
 
             <li class="buy-it">
-                <a class="orange button" target="_blank" href="{{item.DetailPageURL}}"><span>Buy this from Amazon{% if item.OfferSummary.LowestUsedPrice is defined %} for {{ item.OfferSummary.LowestUsedPrice.FormattedPrice }}{% elseif item.OfferSummary.LowestNewPrice is defined %} for {{ item.OfferSummary.LowestNewPrice.FormattedPrice }}{% endif %}</span></a>
-                {% if item.OfferSummary.LowestUsedPrice is defined or item.OfferSummary.LowestUsedPrice is defined %}
-                <span class="note">Price on Amazon.co.uk: GBP (as of {{ 'now'|date("d/m/Y g:ia", "Europe/London") }}). Product prices and availability are accurate as of the date/time indicated and are subject to change. Any price and availability information displayed on Amazon.co.uk at the time of purchase will apply to the purchase of this product.</span>
-                <span class="note"><strong>&hellip;however, the prices on Amazon are often much cheaper. Please check out the price by clicking on the buy button.</strong></span>
-                {% else %}
-                 <span class="note">Click on the buy button to check prices on Amazon.co.uk.</span>
-                {% endif %}
+                <a class="orange button" target="_blank" href="{{item.DetailPageURL}}">
+                    <span>Buy this from Amazon {% if item.OfferSummary.LowestUsedPrice is defined %}for {{ item.OfferSummary.LowestUsedPrice.FormattedPrice }}{% elseif item.OfferSummary.LowestNewPrice is defined %}for {{ item.OfferSummary.LowestNewPrice.FormattedPrice }}{% endif %}
+                    </span>
+                </a>
+                    <span><a href="#pricesDisclaimer" class="fl" title="Amazon Prices Disclaimer message"><strong>*</strong></a></span>
             </li>
         </ul>
 
@@ -92,7 +90,6 @@
     }
 
 </div>        %#}
-
 </div>        
         
 <div id="recommendations" class="third-width fr">
@@ -126,10 +123,19 @@
         </div>
         {% endif %}
     {% endif %}
-            
-    
-        
 </div>
+
+
+{% if item.OfferSummary.LowestUsedPrice is defined or item.OfferSummary.LowestUsedPrice is defined %}
+<div class="fl cf full-width note">
+<p id="pricesDisclaimer">*Price on Amazon.co.uk: GBP (as of {{ 'now'|date("d/m/Y g:ia", "Europe/London") }}). Product prices and availability are accurate as of the date/time indicated and are subject to change. Any price and availability information displayed on Amazon.co.uk at the time of purchase will apply to the purchase of this product.</p>
+<p><strong>&hellip;however, the prices on Amazon are often much cheaper. Please check out the price by clicking on the buy button.</strong></p>
+</div>
+{% else %}
+<p>Click on the buy button to check prices on Amazon.co.uk.</p>
+</div>
+{% endif %}
+
 
 {% endif %}
 

@@ -93,7 +93,7 @@ class MemoryWallController extends Controller
         $this->em = $this->getEntityManager();
         $this->currentUser = $this->getCurrentUser();
         if(!$this->currentUserIsAuthenticated($this->currentUser)){
-            $this->get('session')->setFlash('notice', 'memoryWall.showOwnWalls.flash.accessDenied');
+            $this->get('session')->getFlashBag()->add('notice', 'memoryWall.showOwnWalls.flash.accessDenied');
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
@@ -106,7 +106,7 @@ class MemoryWallController extends Controller
         $this->userManager = $this->getUserManager();
         $this->currentUser = $this->getCurrentUser();
         if(!$this->currentUserIsAuthenticated($this->currentUser)){
-            $session->setFlash('notice', 'memoryWall.create.flash.accessDenied');
+            $session->getFlashBag()->add('notice', 'memoryWall.create.flash.accessDenied');
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
@@ -121,7 +121,7 @@ class MemoryWallController extends Controller
                 $this->userManager->updateUser($this->currentUser);
                 
                 //persist data and redirect to new memory wall
-                $session->setFlash('notice', 'memoryWall.create.flash.success');
+                $session->getFlashBag()->add('notice', 'memoryWall.create.flash.success');
                 return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
             }            
         }
@@ -138,7 +138,7 @@ class MemoryWallController extends Controller
         $mw = $this->getMemoryWall($slug);
         $wallBelongsToCurrentUser = $this->memoryWallBelongsToUser($mw);
         if(!$mw->getIsPublic() && !$wallBelongsToCurrentUser){
-            $session->setFlash('notice', 'memoryWall.show.flash.accessDenied');
+            $session->getFlashBag()->add('notice', 'memoryWall.show.flash.accessDenied');
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
@@ -173,7 +173,7 @@ class MemoryWallController extends Controller
         
         //if the wall belongs to this user allow edit
         if(!$this->memoryWallBelongsToUser($mw)){
-            $session->setFlash('notice', 'memoryWall.edit.flash.accessDenied');
+            $session->getFlashBag()->add('notice', 'memoryWall.edit.flash.accessDenied');
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
@@ -186,7 +186,7 @@ class MemoryWallController extends Controller
                 $mw = $form->getData();
                 $this->em->persist($mw);
                 $this->em->flush();
-                $session->setFlash('notice', 'memoryWall.edit.flash.success');
+                $session->getFlashBag()->add('notice', 'memoryWall.edit.flash.success');
                 return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
             }    
         }
@@ -223,10 +223,10 @@ class MemoryWallController extends Controller
         
         //if this was the last wall, delete but create a new default one
         if($this->getCurrentUser()->getMemoryWalls()->count() == 1){
-            $session->setFlash('notice', 'memoryWall.delete.flash.successCreatedDefault');
+            $session->getFlashBag()->add('notice', 'memoryWall.delete.flash.successCreatedDefault');
             $this->getCurrentUser()->createDefaultMemoryWall();
         }else{
-            $session->setFlash('notice', 'memoryWall.delete.flash.success');
+            $session->getFlashBag()->add('notice', 'memoryWall.delete.flash.success');
         }
         
         $this->em->flush();
@@ -244,7 +244,7 @@ class MemoryWallController extends Controller
         $this->em = $this->getEntityManager();
         $this->currentUser = $this->getCurrentUser();
         if(!$this->currentUserIsAuthenticated($this->currentUser)){
-            $session->setFlash('notice', 'mediaResource.add.flash.accessDenied');
+            $session->getFlashBag()->add('notice', 'mediaResource.add.flash.accessDenied');
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
@@ -253,7 +253,7 @@ class MemoryWallController extends Controller
             if($this->currentUser->getMemoryWalls()->count() == 1){
                 $mw = $this->currentUser->getMemoryWalls()->first();
             }else{
-                $session->setFlash('notice', 'mediaResource.add.flash.selectWall');
+                $session->getFlashBag()->add('notice', 'mediaResource.add.flash.selectWall');
                 $viewParams = $this->getViewParams($this->currentUser->getUsernameCanonical());
                 $viewParams = array_merge($viewParams, array(
                     'api'   => $api,
@@ -283,13 +283,13 @@ class MemoryWallController extends Controller
             $mw->addMediaResource($mediaResource);
             $this->em->flush();
         }catch(\InvalidArgumentException $ex){
-            $session->setFlash('notice', 'mediaResource.add.flash.identicalResourceError');
+            $session->getFlashBag()->add('notice', 'mediaResource.add.flash.identicalResourceError');
             return $this->redirect($this->getRequest()->headers->get('referer'));
         }catch(\RuntimeException $ex){
-            $session->setFlash('notice', 'mediaResource.add.flash.amazonResourcesThresholdError');
+            $session->getFlashBag()->add('notice', 'mediaResource.add.flash.amazonResourcesThresholdError');
             return $this->redirect($this->getRequest()->headers->get('referer'));
         }
-        $session->setFlash('notice', 'mediaResource.add.flash.success');
+        $session->getFlashBag()->add('notice', 'mediaResource.add.flash.success');
         $session->set('tokens/SkNd-added-resource', true);
         
         return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
@@ -309,7 +309,7 @@ class MemoryWallController extends Controller
         if($confirmed){ 
             $mw->deleteMediaResourceById($id);
             $this->em->flush();
-            $this->get('session')->setFlash('notice', 'mediaResource.delete.flash.success');
+            $this->get('session')->getFlashBag()->add('notice', 'mediaResource.delete.flash.success');
             return $this->redirect($this->generateUrl('memoryWallShow', array('slug' => $mw->getSlug())));
             
         } else {
@@ -330,7 +330,7 @@ class MemoryWallController extends Controller
     private function getOwnWall($slug, $exceptionMessage = 'memoryWall.delete.flash.accessDenied'){
         $mw = $this->getMemoryWall($slug);
         if(!$this->memoryWallBelongsToUser($mw)){
-            $this->get('session')->setFlash('notice', $exceptionMessage);
+            $this->get('session')->getFlashBag()->add('notice', $exceptionMessage);
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         return $mw;

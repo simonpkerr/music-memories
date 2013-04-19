@@ -276,7 +276,7 @@ ul#memoryWalls {
 ul#memoryWalls li a {
     float: left;
     padding: 5px 7px;
-    width: 9em;
+    width: 8em;
     color: #fff;
 }
 
@@ -290,12 +290,12 @@ div#headerMediaSelection a.button {
     position: relative;
     display: block;
     z-index: 3;
-    width: 11.4em;
+    width: 8.4em;
 }
 
 div#headerMediaSelection ul li form {
     padding: 3em 10px 1em 10px;
-    width: 11em;
+    width: 8em;
 }
 
 
@@ -621,7 +621,8 @@ div.two-thirds-width ul#listings > li ul li ul {
 }
 
 #itemOverview ul.actions li > a{ 
-    width: 80%;
+    float: left;
+    width: 90%;
 }
 
 #itemOverview ul.actions > li ul {
@@ -630,7 +631,7 @@ div.two-thirds-width ul#listings > li ul li ul {
     top: -9999em;
     padding: 50px 10px 10px 10px;
     background-color: #6A99DF;
-    width: 75.2%;
+    width: 85.2%;
     text-align: left;
     z-index: 1;
     height: auto;

@@ -711,7 +711,7 @@ img.mw-MediaResource {
     font-size: 1em;
     padding: 5px 0 5px 0;
     height: auto;
-    margin-top: 10px;
+    margin-top: 0;
 }
 
 #itemOverview ul.actions li.add-it > a {
