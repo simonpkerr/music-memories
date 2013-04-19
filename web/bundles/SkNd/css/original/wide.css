@@ -453,7 +453,7 @@ div#content form textarea{
 div#content input[type="submit"],
 div#content input#_submit
 /*div#content .button*/ {
-    width: 13.8em;
+    width: 14em;
     margin-left: 8.9em;
     font-weight: bold;
 }

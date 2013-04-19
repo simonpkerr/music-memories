@@ -2,7 +2,7 @@ fos_user:
     firstname:
         short: This firstname is too short
         long: This firstname is too long
-    surname:
+    lastname:
         short: This surname is too short
         long: This surname is too long
     username:

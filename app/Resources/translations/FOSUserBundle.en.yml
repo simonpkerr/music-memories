@@ -27,7 +27,7 @@ profile:
         username: Username
         email: Email
         firstname: First name
-        surname: Surname
+        lastname: Last name
         dateofbirth: Date of birth
     edit:
         submit: Update
@@ -99,7 +99,7 @@ form:
     new_password: "New password:"
     new_password_confirmation: "Verification:"
     firstname: "Firstname:"
-    surname: "Surname:"
+    lastname: "Last name:"
     dob: "Date of birth:"
     tac: "Tick the box to agree:"
     

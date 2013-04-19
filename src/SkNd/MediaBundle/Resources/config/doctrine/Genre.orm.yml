@@ -32,4 +32,5 @@ SkNd\MediaBundle\Entity\Genre:
   manyToOne:
     mediaType:
       targetEntity: MediaType
+      inversedBy: genres
     

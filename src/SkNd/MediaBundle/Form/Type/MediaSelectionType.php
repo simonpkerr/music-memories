@@ -14,6 +14,7 @@ namespace SkNd\MediaBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MediaSelectionType extends AbstractType{
     
@@ -70,13 +71,14 @@ class MediaSelectionType extends AbstractType{
         return 'mediaSelection';
     }
     
-    public function getDefaultOptions(array $options){
-        return array(
-          'data_class' => 'SkNd\MediaBundle\Entity\MediaSelection',  
-        );
+    public function setDefaultOptions(OptionsResolverInterface $resolver){
+        $resolver->setDefaults(array(
+            'data_class' => 'SkNd\MediaBundle\Entity\MediaSelection',
+        ));
+
     }
     
-    
+
     
     
 }

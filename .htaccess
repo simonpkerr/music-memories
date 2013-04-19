@@ -1,0 +1,24 @@
+# -FrontPage-
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^/?(.*)$ /SkNd/web/app.php/$1 [QSA,L]
+</IfModule>
+
+IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
+
+<Limit GET POST>
+order deny,allow
+deny from all
+allow from all
+</Limit>
+<Limit PUT DELETE>
+order deny,allow
+deny from all
+</Limit>
+AuthName noodledig.com
+AuthUserFile /home/simonker/public_html/_vti_pvt/service.pwd
+AuthGroupFile /home/simonker/public_html/_vti_pvt/service.grp
+SetEnv PHPRC /home/simonker/public_html/php.ini
+

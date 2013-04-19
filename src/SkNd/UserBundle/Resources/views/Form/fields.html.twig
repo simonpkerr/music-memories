@@ -21,10 +21,11 @@
     <div class="form-row {% if errors %}error{% endif %}">
         {{ form_errors(form) }}    
         {{ form_label(form, label|default(null)) }}
-        {{ form_widget(form) }}
         {% if required %}
             <span class="required" title="This field is required">*</span>
-        {% endif %}
+        {% endif %}        
+        {{ form_widget(form) }}
+        
         
     </div>
 {% endspaceless %}

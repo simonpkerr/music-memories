@@ -9,25 +9,24 @@
  */
 namespace SkNd\UserBundle\Entity;
     
-use FOS\UserBundle\Entity\User as BaseUser;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+//use FOS\UserBundle\Entity\User as BaseUser;
+use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 use SkNd\UserBundle\Entity\MemoryWall;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class User extends BaseUser {
 
     protected $id;
-    protected $firstname;
-    protected $surname;
-    protected $dateofbirth;
+//    protected $firstname;
+//    protected $lastname;
+//    protected $dateOfBirth;
     protected $memoryWalls;
     protected $tacagreement;
-    const ND_ROLE = 'ND_USER';
+    //const ND_ROLE = 'ND_USER';
 
     public function __construct(){
         parent::__construct();
-        $this->addRole(self::ND_ROLE);
+        //$this->addRole(self::ND_ROLE);
         $this->memoryWalls = new ArrayCollection();
         $this->createDefaultMemoryWall();
     }
@@ -67,34 +66,34 @@ class User extends BaseUser {
         return $this->tacagreement;
     }
     
-    public function setFirstname($firstname = null)
-    {
-        $this->firstname = $firstname;
-    }
-
-    public function getFirstname()
-    {
-        return $this->firstname;
-    }
-
-    public function setSurname($surname = null)
-    {
-        $this->surname = $surname;
-    }
-
-    public function getSurname()
-    {
-        return $this->surname;
-    }
-
-    public function setDateofbirth($dateofbirth)
-    {
-        $this->dateofbirth = $dateofbirth;
-    }
-
-    public function getDateofbirth()
-    {
-        return $this->dateofbirth;
-    }
+//    public function setFirstname($firstname = null)
+//    {
+//        $this->firstname = $firstname;
+//    }
+//
+//    public function getFirstname()
+//    {
+//        return $this->firstname;
+//    }
+//
+//    public function setLastname($lastname = null)
+//    {
+//        $this->lastname = $lastname;
+//    }
+//
+//    public function getLastname()
+//    {
+//        return $this->lastname;
+//    }
+//
+//    public function setDateOfbirth($dateOfBirth)
+//    {
+//        $this->dateOfBirth = $dateOfBirth;
+//    }
+//
+//    public function getDateOfbirth()
+//    {
+//        return $this->dateOfBirth;
+//    }
 
 }

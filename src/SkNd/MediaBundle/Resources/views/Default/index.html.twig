@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
-{% block title %}Index{% endblock %}
+{% block title %}Helps you find stuff you loved{% endblock %}
 {% block content %}
-<h1>Helping you find stuff you loved&hellip;</h1>
+<h1>Helps you find stuff you loved</h1>
 <div id="introPanel" class="cf">
     <ul>
         <li class="third-width left cf">
@@ -29,7 +29,7 @@
             <h2>Find it now</h2>
             <div id="mediaSelection">
                 <p>Just choose the options you want from below, and away you go.</p>
-                {% render "SkNdMediaBundle:Media:mediaSelection" %}
+                {{ render(controller('SkNdMediaBundle:Media:mediaSelection')) }}
             </div>
         </li>
         {#<li id="tab2">

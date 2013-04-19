@@ -42,7 +42,7 @@ class ProfileFormType extends BaseType
         $startYear = $startYear->sub(date_interval_create_from_date_string('90 years'));
         $yearRange = range($startYear->format('Y'), date('Y'));
         arsort($yearRange);
-        $builder->add('dateofbirth', 'birthday', array(
+        $builder->add('dateOfBirth', 'birthday', array(
             'years' => $yearRange,
             'label' => 'form.dob',
             'translation_domain' => 'FOSUserBundle',
@@ -53,9 +53,10 @@ class ProfileFormType extends BaseType
             'label'     => 'form.firstname',
             'translation_domain' => 'FOSUserBundle',
         ));
-        $builder->add('surname', 'text', array(
+        
+        $builder->add('lastname', 'text', array(
             'required'  => false,
-            'label'     => 'form.surname',
+            'label'     => 'form.lastname',
             'translation_domain' => 'FOSUserBundle',
         ));
     }

@@ -12,7 +12,11 @@ framework:
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
-    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    templating:      
+      engines: ['twig']
+      #assets_version: SomeVersionScheme
+      assets_base_urls:
+        http: ["/SkNd/web"]
     default_locale:  "%locale%"
     trust_proxy_headers: false # Deprecated in 2.0; will be removed in 2.3 (used trusted_proxies instead)
     trusted_proxies: ~
@@ -40,7 +44,6 @@ assetic:
         yui_js:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
-
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -51,6 +54,8 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
+        types:
+          json: Sonata\Doctrine\Types\JsonType
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -61,8 +66,11 @@ doctrine:
                 connection:       default
                 mappings:
                     FOSUserBundle: ~
+                    ApplicationSonataUserBundle: ~
+                    SonataUserBundle: ~
                     SkNdUserBundle: ~
                     SkNdMediaBundle: ~
+                    
                     
 #        mappings:
 #          sluggable: ~
@@ -72,38 +80,24 @@ doctrine:
 swiftmailer:
     transport: "%mailer_transport%"
     host:      "%mailer_host%"
-#    auth_mode: "%mailer_authmode%"
+    #auth_mode: "%mailer_authmode%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
 
 sonata_cache:
     caches:
-        esi:
-            token: ~
-            servers:
-                - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
-
-        ssi:
-            token: ~
-
-        #mongo:
-        #    database:   cache
-        #    collection: cache
-        #    servers:
-        #        - {host: 127.0.0.1, port: 27017, user: username, password: pASS'}
-        #        - {host: 127.0.0.2}
-
-        #memcached:
-        #    prefix: sknd_mem_cache
-        #    servers:
-        #        - {host: 127.0.0.1, port: 11211, weight: 0}
-
+#        esi:
+#            token: ~
+#            servers:
+#                - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
+#        ssi:
+#            token: ~
         apc:
             token:  s3cur3   # token used to clear the related cache
-            prefix: test     # prefix to ensure there is no clash between instances
+            prefix: sknd_apc     # prefix to ensure there is no clash between instances
             servers:
-                - { domain: kooqit.local, ip: 127.0.0.1, port: 80}
+                - { domain: localhost, ip: 127.0.0.1, port: 80}
 
 sonata_block:
     default_contexts: [cms]
@@ -114,27 +108,51 @@ sonata_block:
         sonata.block.service.text:
         sonata.block.service.rss:
 
+sonata_user:
+  class:
+    user: SkNd\UserBundle\Entity\User
+  security_acl: true
+  manager_type: orm 
+#  profile:
+#    form:
+#      type: sonata_user_profile
+#      handler: sonata.user.profile.form.handler.default
+#      name: sonata_user_profile_form
+#      validation_groups: [Profile]
+  profile:
+    form:
+      type: fos_user_profile
+      handler: fos_user.profile.form.handler.default
+      name: fos_user_profile_form
+      validation_groups: [Profile]
+     
+
 fos_user:
   db_driver: orm
   firewall_name: main
   user_class: SkNd\UserBundle\Entity\User
+  #user_class: Application\Sonata\UserBundle\Entity\User
+        
   registration:
     form:
       type: sk_nd_user_registration
     confirmation:
       enabled: true
       from_email:
-        address:        noodledig@gmail.com
+        address:        contact@noodledig.com
         sender_name:    noodleDig Registration
   profile:
     form:
       type: sk_nd_user_profile
+      handler: fos_user.profile.form.handler.default
+      name: fos_user_profile_form
+      validation_groups: [Profile,Authentication]
   resetting:
     email:
       from_email:
-        address:        noodledig@gmail.com
+        address:        contact@noodledig.com
         sender_name:    noodleDig Password reset
-      
+     
 stof_doctrine_extensions:
   default_locale: "%locale%"
   orm:

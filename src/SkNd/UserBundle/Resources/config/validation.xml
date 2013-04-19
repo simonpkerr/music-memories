@@ -12,17 +12,11 @@
         </getter>
         
         <property name="firstname">
-            <constraint name="MinLength">
-                <option name="limit">2</option>
-                <option name="message">fos_user.firstname.short</option>
-                <option name="groups">
-                    <value>Registration</value>
-                    <value>Profile</value>
-                </option>
-            </constraint>
-            <constraint name="MaxLength">
-                <option name="limit">80</option>
-                <option name="message">fos_user.firstname.long</option>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="max">80</option>
+                <option name="minMessage">fos_user.firstname.short</option>
+                <option name="maxMessage">fos_user.firstname.long</option>
                 <option name="groups">
                     <value>Registration</value>
                     <value>Profile</value>
@@ -30,51 +24,39 @@
             </constraint>
         </property>
         
-        <property name="surname">
-            <constraint name="MinLength">
-                <option name="limit">2</option>
-                <option name="message">fos_user.surname.short</option>
-                <option name="groups">
-                    <value>Registration</value>
-                    <value>Profile</value>
-                </option>
-            </constraint>
-            <constraint name="MaxLength">
-                <option name="limit">80</option>
-                <option name="message">fos_user.surname.long</option>
+        <property name="lastname">
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="max">80</option>
+                <option name="minMessage">fos_user.lastname.short</option>
+                <option name="maxMessage">fos_user.lastname.long</option>
                 <option name="groups">
                     <value>Registration</value>
                     <value>Profile</value>
                 </option>
             </constraint>
         </property>
-        
-        
-        
+
     </class>
     
     <class name="SkNd\UserBundle\Entity\MemoryWall">
         <property name="name">
-            <constraint name="MinLength">
-                <option name="limit">5</option>
-                <option name="message">memory_wall.name.short</option>
-            </constraint>
-            <constraint name="MaxLength">
-                <option name="limit">35</option>
-                <option name="message">memory_wall.name.long</option>
+            <constraint name="Length">
+                <option name="min">5</option>
+                <option name="max">35</option>
+                <option name="minMessage">memory_wall.name.short</option>
+                <option name="maxMessage">memory_wall.name.long</option>
             </constraint>
             <constraint name="NotBlank">
                 <option name="message">memory_wall.name.blank</option>
             </constraint>
         </property>
         <property name="description">
-            <constraint name="MinLength">
-                <option name="limit">5</option>
-                <option name="message">memory_wall.description.short</option>
-            </constraint>
-            <constraint name="MaxLength">
-                <option name="limit">100</option>
-                <option name="message">memory_wall.description.long</option>
+            <constraint name="Length">
+                <option name="min">5</option>
+                <option name="minMessage">memory_wall.description.short</option>
+                <option name="max">100</option>
+                <option name="maxMessage">memory_wall.description.long</option>
             </constraint>
         </property>
     </class>
