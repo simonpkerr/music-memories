@@ -10,7 +10,7 @@ namespace SkNd\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Doctrine\ORM\EntityRepository;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MemoryWallType extends AbstractType{
     
@@ -55,13 +55,13 @@ class MemoryWallType extends AbstractType{
         return 'memoryWall';
     }
     
-    public function getDefaultOptions(array $options){
-        return array(
-          'data_class'  =>  'SkNd\UserBundle\Entity\MemoryWall',  
-          'intention'   =>  'memory_wall'
-        );
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class'  =>  'SkNd\UserBundle\Entity\MemoryWall',  
+            'intention'   =>  'memory_wall'
+        ));
     }
-    
     
     
     

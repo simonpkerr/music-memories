@@ -38,13 +38,26 @@ class MemoryWall
         
         $this->setName('My Memory Wall');
         $this->setIsPublic(true);
-        if($user != null)
+        if($user != null){
+            $this->setName($this->getRandomName($user));
             $this->setUser($user);
+
+        }
     }
  
     public function getId()
     {
         return $this->id;
+    }
+    
+    private function getRandomName(User $user){
+        $randomAdjectives = array(
+            'cool','funky','nice','ace','well-good','rockin','original','awesome','bodacious','wick','tasty', 'old school', 'memorable'
+        );
+        $wallname = !is_null($user->getFirstname()) ? $user->getFirstname() : $user->getUsername();
+        $wallname .= 's ' . $randomAdjectives[rand(0, count($randomAdjectives)-1)] . ' wall';
+
+        return $wallname;
     }
     
     /**

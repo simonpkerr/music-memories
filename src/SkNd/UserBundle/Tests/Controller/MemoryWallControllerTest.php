@@ -203,6 +203,14 @@ class MemoryWallControllerTest extends WebTestCase
         
     }
     
+    public function testCreateMemoryWallUsesFirstnameIfAvailable(){
+        
+    }
+    
+    public function testCreateMemoryWallUsesUsernameIfNecessary(){
+        
+    }
+    
     public function testEditNonExistentMemoryWallThrowsException(){
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();

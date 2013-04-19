@@ -110,7 +110,7 @@ class MemoryWallController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
         
-        $mw = new MemoryWall();
+        $mw = new MemoryWall($this->currentUser);
         $form = $this->createForm(new MemoryWallType(), $mw); 
         if($request->getMethod() == 'POST'){
             $form->bindRequest($request);

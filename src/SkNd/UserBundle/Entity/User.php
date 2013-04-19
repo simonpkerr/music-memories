@@ -28,7 +28,7 @@ class User extends BaseUser {
         parent::__construct();
         //$this->addRole(self::ND_ROLE);
         $this->memoryWalls = new ArrayCollection();
-        $this->createDefaultMemoryWall();
+        //$this->createDefaultMemoryWall();
     }
     
     public function getMemoryWalls($includePrivateWalls = true){
@@ -45,6 +45,7 @@ class User extends BaseUser {
     public function createDefaultMemoryWall(){
         $mw = new MemoryWall($this);
         $this->addMemoryWall($mw);
+        
     }
 
     
