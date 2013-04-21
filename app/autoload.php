@@ -16,6 +16,8 @@ if (!function_exists('intl_get_error_code')) {
 require_once 'Zend/Loader.php';
 \Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
+//require_once 'FirePHPCore/FirePHP.class.php';
+
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 return $loader;

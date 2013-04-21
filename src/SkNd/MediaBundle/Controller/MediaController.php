@@ -164,9 +164,9 @@ class MediaController extends Controller
 
             $responseParams = array_merge($responseParams, $listings);
         }catch(\RunTimeException $re){
-            $this->get('session')->setFlash('notice', 'media.amazon.runtime_exception');
+            $this->get('session')->getFlashBag()->add('notice', 'media.amazon.runtime_exception');
         }catch(\LengthException $le){
-            $this->get('session')->setFlash('notice', 'media.amazon.length_exception');
+            $this->get('session')->getFlashBag()->add('notice', 'media.amazon.length_exception');
         }
        //}
        
@@ -224,9 +224,9 @@ class MediaController extends Controller
             $responseParams['mediaResource'] = $this->mediaapi->getMedia($processDetailsStrategy);
 
         }catch(\RunTimeException $re){
-            $this->get('session')->setFlash('notice', 'media.amazon.runtime_exception');
+            $this->get('session')->getFlashBag()->add('notice', 'media.amazon.runtime_exception');
         }catch(\LengthException $le){
-            $this->get('session')->setFlash('notice', 'media.amazon.length_exception');
+            $this->get('session')->getFlashBag()->add('notice', 'media.amazon.length_exception');
         }
       
        
@@ -272,9 +272,9 @@ class MediaController extends Controller
             //merge the listings and responseParams and remove null entries
             $responseParams = Utilities::removeNullEntries(array_merge($responseParams, $listings));
         }catch(\RuntimeException $re){
-            $this->get('session')->setFlash('notice', 'media.youtube.runtime_exception');
+            $this->get('session')->getFlashBag()->add('notice', 'media.youtube.runtime_exception');
         }catch(\LengthException $le){
-            $this->get('session')->setFlash('notice', 'media.youtube.length_exception');
+            $this->get('session')->getFlashBag()->add('notice', 'media.youtube.length_exception');
         }
 
         return $this->render('SkNdMediaBundle:Media:youTubePartial.html.twig', $responseParams);        

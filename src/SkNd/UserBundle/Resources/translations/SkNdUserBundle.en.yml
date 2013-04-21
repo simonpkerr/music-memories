@@ -50,6 +50,6 @@ mediaResource:
       success: The item was successfully deleted. 
   
 registration:
-  memoryWallReminder: By the way, we&rsquo;ve set up a Memory Wall for you just to save you a bit of hassle! You can start adding stuff to it straight away
+  memoryWallReminder: By the way, we&rsquo;ve set up a Memory Wall for you just to save you a bit of hassle. You can start adding stuff to it straight away. Just find something, and click the add button!
 
 

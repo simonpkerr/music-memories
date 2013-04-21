@@ -61,12 +61,6 @@ class ProfileFormType extends BaseType
         ));
     }
 
-    public function getDefaultOptions(array $options){
-        return array(
-            'data_class' => 'SkNd\UserBundle\Entity\User',
-        );
-    }
-    
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(

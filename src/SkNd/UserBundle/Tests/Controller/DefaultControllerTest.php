@@ -129,6 +129,26 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('html:contains("Please enter an email")')->count() > 0);
     }
     
+    public function testRegisterWithValidCredentialsCreatesRandomMemoryWallUsingUserDetails(){
+        $crawler = $this->client->request('GET', '/register');
+        $form = $crawler->selectButton('Get noodling')->form();
+        $params = array(
+            'fos_user_registration_form[username]'              => 'testUserCreateWall',
+            'fos_user_registration_form[email]'                 => 'test@test.com',
+            'fos_user_registration_form[plainPassword][first]'  => 'test',
+            'fos_user_registration_form[plainPassword][second]' => 'test',
+        );
+        
+        //NEED TO TICK TAC AGREEMENT
+        
+       
+        $crawler = $this->client->submit($form, $params);
+        
+        //GO TO THE PERSONAL MEMORY WALL INDEX AND LOOK AT THE NAME
+        $this->assertTrue($crawler->filter()->count() > 0);
+        $this->assertTrue($crawler->filter()->count() > 0);
+    }
+    
     public function testResetPasswordWithInvalidCredentialsShowsErrors(){
         $crawler = $this->client->request('GET', '/resetting/request');
         $form = $crawler->selectButton('Reset password')->form();
