@@ -1,18 +1,22 @@
 {
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
     "hash": "bf627ed91bda35c1e138e6a2c577e035",
     "packages": [
         {
             "name": "doctrine/annotations",
-            "version": "v1.1",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "v1.1"
+                "reference": "v1.1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/v1.1",
-                "reference": "v1.1",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/v1.1.1",
+                "reference": "v1.1.1",
                 "shasum": ""
             },
             "require": {
@@ -23,6 +27,11 @@
                 "doctrine/cache": "1.*"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Doctrine\\Common\\Annotations\\": "lib/"
@@ -54,7 +63,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -65,7 +74,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2013-03-17 14:03:10"
+            "time": "2013-04-20 08:30:17"
         },
         {
             "name": "doctrine/cache",
@@ -275,12 +284,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/data-fixtures.git",
-                "reference": "eef10f6b92706bdae2841a8fdeb45ad8999b15b3"
+                "reference": "6924952026b77ff492da559b04ad166d25c611cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/eef10f6b92706bdae2841a8fdeb45ad8999b15b3",
-                "reference": "eef10f6b92706bdae2841a8fdeb45ad8999b15b3",
+                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/6924952026b77ff492da559b04ad166d25c611cb",
+                "reference": "6924952026b77ff492da559b04ad166d25c611cb",
                 "shasum": ""
             },
             "require": {
@@ -322,7 +331,7 @@
             "keywords": [
                 "database"
             ],
-            "time": "2013-03-11 00:25:48"
+            "time": "2013-04-11 23:14:04"
         },
         {
             "name": "doctrine/dbal",
@@ -389,30 +398,30 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "v1.2.0-beta1",
+            "version": "v1.2.0",
             "target-dir": "Doctrine/Bundle/DoctrineBundle",
             "source": {
                 "type": "git",
-                "url": "git://github.com/doctrine/DoctrineBundle.git",
-                "reference": "v1.2.0-beta1"
+                "url": "https://github.com/doctrine/DoctrineBundle.git",
+                "reference": "v1.2.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/v1.2.0-beta1",
-                "reference": "v1.2.0-beta1",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/v1.2.0",
+                "reference": "v1.2.0",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": ">=2.2,<2.5-dev",
                 "jdorn/sql-formatter": ">=1.1,<2.0",
                 "php": ">=5.3.2",
-                "symfony/doctrine-bridge": "2.2.*",
-                "symfony/framework-bundle": ">=2.2.0-beta2,<2.3-dev"
+                "symfony/doctrine-bridge": ">=2.2,<3.0",
+                "symfony/framework-bundle": ">=2.2,<3.0"
             },
             "require-dev": {
                 "doctrine/orm": ">=2.2,<2.5-dev",
-                "symfony/validator": "2.2.*",
-                "symfony/yaml": "2.2.*"
+                "symfony/validator": ">=2.2,<3.0",
+                "symfony/yaml": ">=2.2,<3.0"
             },
             "suggest": {
                 "doctrine/orm": "The Doctrine ORM integration is optional in the bundle.",
@@ -455,7 +464,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2013-01-12 14:41:19"
+            "time": "2013-03-25 20:13:59"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -771,12 +780,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "db0585625f6944a755534688e971b86d1d33ec45"
+                "reference": "673a8dfb05875e8512e3aab2cf10476f537db4cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/db0585625f6944a755534688e971b86d1d33ec45",
-                "reference": "db0585625f6944a755534688e971b86d1d33ec45",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/673a8dfb05875e8512e3aab2cf10476f537db4cd",
+                "reference": "673a8dfb05875e8512e3aab2cf10476f537db4cd",
                 "shasum": ""
             },
             "require": {
@@ -842,7 +851,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-04-07 10:44:07"
+            "time": "2013-04-17 16:42:34"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1682,12 +1691,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "d42d79d2dcbb3f47fcbce58363447e05c6177469"
+                "reference": "f6dfcf0a45a1099dcae84561d8355768c0d76f2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/d42d79d2dcbb3f47fcbce58363447e05c6177469",
-                "reference": "d42d79d2dcbb3f47fcbce58363447e05c6177469",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/f6dfcf0a45a1099dcae84561d8355768c0d76f2a",
+                "reference": "f6dfcf0a45a1099dcae84561d8355768c0d76f2a",
                 "shasum": ""
             },
             "require": {
@@ -1748,7 +1757,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2013-04-06 12:01:08"
+            "time": "2013-04-11 21:40:47"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1934,12 +1943,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-                "reference": "5e27b299e0fd8dfd63a52e62751a251497c7c3c8"
+                "reference": "c5c263af5a4effa93267c2a3207eafe442e34aba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/5e27b299e0fd8dfd63a52e62751a251497c7c3c8",
-                "reference": "5e27b299e0fd8dfd63a52e62751a251497c7c3c8",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/c5c263af5a4effa93267c2a3207eafe442e34aba",
+                "reference": "c5c263af5a4effa93267c2a3207eafe442e34aba",
                 "shasum": ""
             },
             "require": {
@@ -1986,7 +1995,7 @@
                 "generator",
                 "sonata"
             ],
-            "time": "2013-04-05 15:44:24"
+            "time": "2013-04-08 14:44:41"
         },
         {
             "name": "sonata-project/easy-extends-bundle",
@@ -2267,22 +2276,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
-                "reference": "721f56f40127207d113c477cd05e0692fc6d3e76"
+                "reference": "62b1dd67fadb6fdd72d6606cafa6260c18896b61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/721f56f40127207d113c477cd05e0692fc6d3e76",
-                "reference": "721f56f40127207d113c477cd05e0692fc6d3e76",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/62b1dd67fadb6fdd72d6606cafa6260c18896b61",
+                "reference": "62b1dd67fadb6fdd72d6606cafa6260c18896b61",
                 "shasum": ""
             },
             "require": {
                 "gedmo/doctrine-extensions": "2.3.*",
                 "php": ">=5.3.2",
-                "symfony/framework-bundle": ">=2.1,<2.3-dev"
+                "symfony/framework-bundle": ">=2.1,<3.0"
             },
             "suggest": {
-                "doctrine/doctrine-bundle": "*",
-                "doctrine/mongodb-odm-bundle": "2.1.*"
+                "doctrine/doctrine-bundle": "to use the ORM extensions",
+                "doctrine/mongodb-odm-bundle": "to use the MongoDB ODM extensions"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -2320,20 +2329,20 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2013-04-04 09:21:30"
+            "time": "2013-04-07 18:16:23"
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v4.3.0",
+            "version": "v4.3.1",
             "source": {
                 "type": "git",
-                "url": "git://github.com/swiftmailer/swiftmailer.git",
-                "reference": "v4.3.0"
+                "url": "https://github.com/swiftmailer/swiftmailer.git",
+                "reference": "v4.3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/swiftmailer/swiftmailer/archive/v4.3.0.zip",
-                "reference": "v4.3.0",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/v4.3.1",
+                "reference": "v4.3.1",
                 "shasum": ""
             },
             "require": {
@@ -2369,7 +2378,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2013-01-08 15:50:34"
+            "time": "2013-04-11 10:22:09"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -2695,16 +2704,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.12.2",
+            "version": "v1.12.3",
             "source": {
                 "type": "git",
-                "url": "git://github.com/fabpot/Twig.git",
-                "reference": "v1.12.2"
+                "url": "https://github.com/fabpot/Twig.git",
+                "reference": "v1.12.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/v1.12.2",
-                "reference": "v1.12.2",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/v1.12.3",
+                "reference": "v1.12.3",
                 "shasum": ""
             },
             "require": {
@@ -2740,7 +2749,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-02-09 18:21:53"
+            "time": "2013-04-08 12:40:11"
         }
     ],
     "packages-dev": [

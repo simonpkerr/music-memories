@@ -7,7 +7,8 @@
 {% block fos_user_content %}
 <h1>You&rsquo;re all signed up</h1>
 <div class="half-width fl">
-    <p class="strapline">{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
+    <p class="strapline">Just one final thing&hellip;</p>
+<p>{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
     <p>{{ 'registration.memoryWallReminder'|trans({}, 'SkNdUserBundle')|raw }}</p>
     {% if app.session is not empty %}
         {% set targetUrl = app.session.get('_security.target_path') %}

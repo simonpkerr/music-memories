@@ -42,7 +42,7 @@ change_password:
 
 # Registration
 registration:
-  check_email: An email has been sent to %email%. It contains an activation link you must click to activate your account.
+  check_email: An email has been sent to %email%. It contains an activation link you must click to activate your account (its probably in your junk mail!)
   confirmed: Nice one %username%! Your account is now active.
   back: Go back to the original page.
   submit: Get noodling
