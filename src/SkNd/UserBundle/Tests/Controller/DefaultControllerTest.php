@@ -134,19 +134,18 @@ class DefaultControllerTest extends WebTestCase
         $form = $crawler->selectButton('Get noodling')->form();
         $params = array(
             'fos_user_registration_form[username]'              => 'testUserCreateWall',
-            'fos_user_registration_form[email]'                 => 'test@test.com',
-            'fos_user_registration_form[plainPassword][first]'  => 'test',
-            'fos_user_registration_form[plainPassword][second]' => 'test',
+            'fos_user_registration_form[email]'                 => 'testUserCreateWall@testUserCreateWall.com',
+            'fos_user_registration_form[plainPassword][first]'  => 'testUserCreateWall',
+            'fos_user_registration_form[plainPassword][second]' => 'testUserCreateWall',
         );
         
         //NEED TO TICK TAC AGREEMENT
-        
+        $form['fos_user_registration_form[tacagreement]']->tick();
        
         $crawler = $this->client->submit($form, $params);
+        $crawler = $this->client->request('GET', '/memorywalls/personal/index');
         
-        //GO TO THE PERSONAL MEMORY WALL INDEX AND LOOK AT THE NAME
-        $this->assertTrue($crawler->filter()->count() > 0);
-        $this->assertTrue($crawler->filter()->count() > 0);
+        $this->assertTrue($crawler->filter('ul#memoryWallGallery li:first-child > div:contains("testUserCreateWall")')->count() > 0);
     }
     
     public function testResetPasswordWithInvalidCredentialsShowsErrors(){

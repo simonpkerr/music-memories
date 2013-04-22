@@ -32,14 +32,17 @@ class MemoryWall
     protected $mediaResources;
     protected $memoryWallMediaResources;
 
-    public function __construct(User $user = null){
+    public function __construct(User $user = null, $memoryWallName = null){
         $this->mediaResources = new ArrayCollection();
         $this->memoryWallMediaResources = new ArrayCollection();
         
-        $this->setName('My Memory Wall');
         $this->setIsPublic(true);
         if($user != null){
-            $this->setName($this->getRandomName($user));
+            if(!is_null($memoryWallName)){
+                $this->setName($memoryWallName);
+            }else {
+                $this->setName($this->getRandomName($user));
+            }
             $this->setUser($user);
 
         }

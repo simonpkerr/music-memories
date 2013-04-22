@@ -60,7 +60,10 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface {
         $user->setUsername('testuser');
         $user->setEmail('test@test.com');
         $user->setPlainPassword('testuser');
+        $user->setFirstname('testuserFirstname');
         $user->setEnabled(true);
+        $user->createDefaultMemoryWall('my-memory-wall');
+        
         //create a private memory wall 
         $privateMw = new MemoryWall($user);
         $privateMw->setIsPublic(false);
@@ -76,6 +79,7 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface {
         $user->setEmail('test2@test.com');
         $user->setPlainPassword('testuser2');
         $user->setEnabled(true);
+        $user->createDefaultMemoryWall('my-memory-wall-1');
         $this->userManager->updateUser($user, true);
         $mw = $user->getMemoryWalls()->first();
         $mw->addMediaResource($mrs[0]);
@@ -87,6 +91,7 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface {
         $user->setEmail('test3@test3.com');
         $user->setPlainPassword('testuser3');
         $user->setEnabled(true);
+        $user->createDefaultMemoryWall('my-memory-wall-2');
         $this->userManager->updateUser($user, true);
         $mw = $user->getMemoryWalls()->first();
         $mw->addMediaResource($mrs[2]);

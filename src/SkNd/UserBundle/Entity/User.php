@@ -42,8 +42,8 @@ class User extends BaseUser {
         }
     }
     
-    public function createDefaultMemoryWall(){
-        $mw = new MemoryWall($this);
+    public function createDefaultMemoryWall($name = null){
+        $mw = new MemoryWall($this, $name);
         $this->addMemoryWall($mw);
         
     }
