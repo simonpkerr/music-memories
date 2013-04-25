@@ -93,6 +93,22 @@ class AmazonAPI implements IAPIStrategy {
         }
     }
     
+    public function getDecadeFromXML(SimpleXMLElement $xmlData) {
+        try{
+            $title = (string)$xmlData->ItemAttributes->Title;
+            $yearParts = array();
+            preg_match('/[\[|\(](\d{4})[\]|\)]/i', $title, $yearParts);
+            $year = isset($yearParts[1]) ? $yearParts[1] : null;
+            if(!is_null($year)){
+                return substr($year, 0, 2) . '0s';
+            }
+            
+            return null;
+        }catch(\RuntimeException $re){
+            return null;
+        }
+    }
+    
     public function getListings(MediaSelection $mediaSelection){
         $browseNodeArray = array(); 
             

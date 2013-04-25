@@ -127,6 +127,14 @@ class AmazonAPITest extends WebTestCase {
         $response = $api->getDetails(array());
     }
     
+    public function testGetDecadeFromXMLReturnsDecadeSlugForExistingYear(){
+        
+    }
+    
+    public function testGetDecadeFromXMLReturnsNullForNonexistentDecadeInTitle(){
+        
+    }
+    
     /*public function testBatchProcessMoreThanThresholdNumberOfItemsTrimsArray(){
         $ids = array(1,2,3,4,5,6,7,8,9,10,11);
         $api = new AmazonAPI($this->access_params, $this->testASR);

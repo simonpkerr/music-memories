@@ -1,10 +1,193 @@
 <?xml version="1.0" ?>
 <ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">
     <OperationRequest>
-        <RequestId>007abf64-ecda-4f03-bff0-daa36a00bc37</RequestId><Arguments><Argument Name="ItemId" Value="B0073FCA94"></Argument><Argument Name="Operation" Value="ItemLookup"></Argument><Argument Name="Service" Value="AWSECommerceService"></Argument><Argument Name="AWSAccessKeyId" Value="AKIAJVJZWBLIJ353LQ2Q"></Argument><Argument Name="Timestamp" Value="2012-06-26T08:15:34Z"></Argument><Argument Name="Signature" Value="JKgIed9ThIy4ODipfbQNnM2Qi1VdULojV733dEt7eCU="></Argument><Argument Name="ResponseGroup" Value="Images,ItemAttributes,SalesRank,Request,Similarities"></Argument><Argument Name="AssociateTag" Value="noodledig-21"></Argument><Argument Name="Version" Value="2009-03-31"></Argument></Arguments>
+        <RequestId>007abf64-ecda-4f03-bff0-daa36a00bc37</RequestId>
+        <Arguments>
+            <Argument Name="ItemId" Value="B0073FCA94"></Argument>
+            <Argument Name="Operation" Value="ItemLookup"></Argument>
+            <Argument Name="Service" Value="AWSECommerceService"></Argument>
+            <Argument Name="AWSAccessKeyId" Value="AKIAJVJZWBLIJ353LQ2Q"></Argument>
+            <Argument Name="Timestamp" Value="2012-06-26T08:15:34Z"></Argument>
+            <Argument Name="Signature" Value="JKgIed9ThIy4ODipfbQNnM2Qi1VdULojV733dEt7eCU="></Argument>
+            <Argument Name="ResponseGroup" Value="Images,ItemAttributes,SalesRank,Request,Similarities"></Argument>
+            <Argument Name="AssociateTag" Value="noodledig-21"></Argument>
+            <Argument Name="Version" Value="2009-03-31"></Argument>
+        </Arguments>
         <RequestProcessingTime>0.1062980000000000</RequestProcessingTime>
-        </OperationRequest>
-        <Items>
-            <Request>
-                <IsValid>True</IsValid>
-                <ItemLookupRequest><IdType>ASIN</IdType><ItemId>B0073FCA94</ItemId><ResponseGroup>Images</ResponseGroup><ResponseGroup>ItemAttributes</ResponseGroup><ResponseGroup>SalesRank</ResponseGroup><ResponseGroup>Request</ResponseGroup><ResponseGroup>Similarities</ResponseGroup><VariationPage>All</VariationPage></ItemLookupRequest></Request><Item><ASIN>B0073FCA94</ASIN><DetailPageURL>http://www.amazon.co.uk/The-Return-Living-Dead-Steelbook/dp/B0073FCA94%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB0073FCA94</DetailPageURL><ItemLinks><ItemLink><Description>Add To Wishlist</Description><URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB0073FCA94%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0073FCA94</URL></ItemLink><ItemLink><Description>Tell A Friend</Description><URL>http://www.amazon.co.uk/gp/pdp/taf/B0073FCA94%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0073FCA94</URL></ItemLink><ItemLink><Description>All Customer Reviews</Description><URL>http://www.amazon.co.uk/review/product/B0073FCA94%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0073FCA94</URL></ItemLink><ItemLink><Description>All Offers</Description><URL>http://www.amazon.co.uk/gp/offer-listing/B0073FCA94%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0073FCA94</URL></ItemLink></ItemLinks><SalesRank>579</SalesRank><SmallImage><URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL75_.jpg</URL><Height Units="pixels">75</Height><Width Units="pixels">62</Width></SmallImage><MediumImage><URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL160_.jpg</URL><Height Units="pixels">160</Height><Width Units="pixels">132</Width></MediumImage><LargeImage><URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL.jpg</URL><Height Units="pixels">500</Height><Width Units="pixels">413</Width></LargeImage><ImageSets><ImageSet Category="primary"><SwatchImage><URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL30_.jpg</URL><Height Units="pixels">30</Height><Width Units="pixels">25</Width></SwatchImage><SmallImage><URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL75_.jpg</URL><Height Units="pixels">75</Height><Width Units="pixels">62</Width></SmallImage><ThumbnailImage><URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL75_.jpg</URL><Height Units="pixels">75</Height><Width Units="pixels">62</Width></ThumbnailImage><TinyImage><URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL110_.jpg</URL><Height Units="pixels">110</Height><Width Units="pixels">91</Width></TinyImage><MediumImage><URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL160_.jpg</URL><Height Units="pixels">160</Height><Width Units="pixels">132</Width></MediumImage><LargeImage><URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL.jpg</URL><Height Units="pixels">500</Height><Width Units="pixels">413</Width></LargeImage></ImageSet></ImageSets><ItemAttributes><Actor>Clu Galager</Actor><Actor>James Karen</Actor><AudienceRating>Suitable for 15 years and over</AudienceRating><Binding>Blu-ray</Binding><Brand>SECOND SIGHT</Brand><Creator Role="Primary Contributor">Clu Galager</Creator><Creator Role="Primary Contributor">James Karen</Creator><Director>Dan O'Bannon</Director><EAN>5028836040064</EAN><EANList><EANListElement>5028836040064</EANListElement></EANList><Format>Anamorphic</Format><Format>Dolby</Format><Format>PAL</Format><Format>Surround Sound</Format><Format>Widescreen</Format><Label>Second Sight Films</Label><Languages><Language><Name>None</Name><Type>Subtitles For The Hearing Impaired</Type></Language><Language><Name>English</Name><Type>Unknown</Type></Language><Language><Name>None</Name><Type>Subtitled</Type></Language><Language><Name>English</Name><Type>Original Language</Type></Language><Language><Name>None</Name><Type>Dubbed</Type></Language></Languages><ListPrice><Amount>2299</Amount><CurrencyCode>GBP</CurrencyCode><FormattedPrice>£22.99</FormattedPrice></ListPrice><Manufacturer>Second Sight Films</Manufacturer><MPN>5028836040064</MPN><NumberOfDiscs>1</NumberOfDiscs><NumberOfItems>1</NumberOfItems><PackageDimensions><Height Units="hundredths-inches">185</Height><Length Units="hundredths-inches">866</Length><Weight Units="hundredths-pounds">57</Weight><Width Units="hundredths-inches">807</Width></PackageDimensions><PartNumber>5028836040064</PartNumber><ProductGroup>DVD</ProductGroup><ProductTypeName>ABIS_DVD</ProductTypeName><Publisher>Second Sight Films</Publisher><RegionCode>2</RegionCode><ReleaseDate>2012-06-04</ReleaseDate><RunningTime Units="minutes">90</RunningTime><Studio>Second Sight Films</Studio><Title>The Return of the Living Dead : Limited Special Edition Steelbook [Blu-ray] [1985]</Title></ItemAttributes><SimilarProducts><SimilarProduct><ASIN>B0002W12LW</ASIN><Title>Return of The Living Dead 2 [DVD] [1988]</Title></SimilarProduct><SimilarProduct><ASIN>B005DDIUYW</ASIN><Title>Island of Lost Souls [Masters of Cinema] (Dual Format) [Blu-ray] [1932]</Title></SimilarProduct><SimilarProduct><ASIN>B0038KGLZC</ASIN><Title>City of the Living Dead [Blu-ray][Region Free]</Title></SimilarProduct><SimilarProduct><ASIN>B004Z132V4</ASIN><Title>The Funhouse [Blu-ray]</Title></SimilarProduct><SimilarProduct><ASIN>B006C19NQI</ASIN><Title>Plague Of The Zombies (DVD + Blu-ray Double Play) [1966]</Title></SimilarProduct></SimilarProducts></Item></Items></ItemLookupResponse>
+    </OperationRequest>
+    <Items>
+        <Request>
+            <IsValid>True</IsValid>
+            <ItemLookupRequest>
+                <IdType>ASIN</IdType>
+                <ItemId>B0073FCA94</ItemId>
+                <ResponseGroup>Images</ResponseGroup>
+                <ResponseGroup>ItemAttributes</ResponseGroup>
+                <ResponseGroup>SalesRank</ResponseGroup>
+                <ResponseGroup>Request</ResponseGroup>
+                <ResponseGroup>Similarities</ResponseGroup>
+                <VariationPage>All</VariationPage>
+            </ItemLookupRequest>
+        </Request>
+        <Item>
+            <ASIN>B0073FCA94</ASIN>
+            <DetailPageURL>http://www.amazon.co.uk/The-Return-Living-Dead-Steelbook/dp/B0073FCA94%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB0073FCA94</DetailPageURL>
+            <ItemLinks>
+                <ItemLink>
+                    <Description>Add To Wishlist</Description>
+                    <URL>http://www.amazon.co.uk/gp/registry/wishlist/add-item.html%3Fasin.0%3DB0073FCA94%26SubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0073FCA94</URL>
+                </ItemLink>
+                <ItemLink>
+                    <Description>Tell A Friend</Description>
+                    <URL>http://www.amazon.co.uk/gp/pdp/taf/B0073FCA94%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0073FCA94</URL>
+                </ItemLink>
+                <ItemLink>
+                    <Description>All Customer Reviews</Description>
+                    <URL>http://www.amazon.co.uk/review/product/B0073FCA94%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0073FCA94</URL>
+                </ItemLink>
+                <ItemLink>
+                    <Description>All Offers</Description>
+                    <URL>http://www.amazon.co.uk/gp/offer-listing/B0073FCA94%3FSubscriptionId%3DAKIAJVJZWBLIJ353LQ2Q%26tag%3Dnoodledig-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12734%26creativeASIN%3DB0073FCA94</URL>
+                </ItemLink>
+            </ItemLinks>
+            <SalesRank>579</SalesRank>
+            <SmallImage>
+                <URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL75_.jpg</URL>
+                <Height Units="pixels">75</Height>
+                <Width Units="pixels">62</Width>
+            </SmallImage>
+            <MediumImage>
+                <URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL160_.jpg</URL>
+                <Height Units="pixels">160</Height>
+                <Width Units="pixels">132</Width>
+            </MediumImage>
+            <LargeImage>
+                <URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL.jpg</URL>
+                <Height Units="pixels">500</Height>
+                <Width Units="pixels">413</Width>
+            </LargeImage>
+            <ImageSets>
+                <ImageSet Category="primary">
+                    <SwatchImage>
+                        <URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL30_.jpg</URL>
+                        <Height Units="pixels">30</Height>
+                        <Width Units="pixels">25</Width>
+                    </SwatchImage>
+                    <SmallImage>
+                        <URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL75_.jpg</URL>
+                        <Height Units="pixels">75</Height>
+                        <Width Units="pixels">62</Width>
+                    </SmallImage>
+                    <ThumbnailImage>
+                        <URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL75_.jpg</URL>
+                        <Height Units="pixels">75</Height>
+                        <Width Units="pixels">62</Width>
+                    </ThumbnailImage>
+                    <TinyImage>
+                        <URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL110_.jpg</URL>
+                        <Height Units="pixels">110</Height>
+                        <Width Units="pixels">91</Width>
+                    </TinyImage>
+                    <MediumImage>
+                        <URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL._SL160_.jpg</URL>
+                        <Height Units="pixels">160</Height>
+                        <Width Units="pixels">132</Width>
+                    </MediumImage>
+                    <LargeImage>
+                        <URL>http://ecx.images-amazon.com/images/I/51c1uh6bgWL.jpg</URL>
+                        <Height Units="pixels">500</Height>
+                        <Width Units="pixels">413</Width>
+                    </LargeImage>
+                </ImageSet>
+            </ImageSets>
+            <ItemAttributes>
+                <Actor>Clu Galager</Actor>
+                <Actor>James Karen</Actor>
+                <AudienceRating>Suitable for 15 years and over</AudienceRating>
+                <Binding>Blu-ray</Binding>
+                <Brand>SECOND SIGHT</Brand>
+                <Creator Role="Primary Contributor">Clu Galager</Creator>
+                <Creator Role="Primary Contributor">James Karen</Creator>
+                <Director>Dan O'Bannon</Director>
+                <EAN>5028836040064</EAN>
+                <EANList>
+                    <EANListElement>5028836040064</EANListElement>
+                </EANList>
+                <Format>Anamorphic</Format>
+                <Format>Dolby</Format>
+                <Format>PAL</Format>
+                <Format>Surround Sound</Format>
+                <Format>Widescreen</Format>
+                <Label>Second Sight Films</Label>
+                <Languages>
+                    <Language>
+                        <Name>None</Name>
+                        <Type>Subtitles For The Hearing Impaired</Type>
+                    </Language>
+                    <Language>
+                        <Name>English</Name>
+                        <Type>Unknown</Type>
+                    </Language>
+                    <Language>
+                        <Name>None</Name>
+                        <Type>Subtitled</Type>
+                    </Language>
+                    <Language>
+                        <Name>English</Name>
+                        <Type>Original Language</Type>
+                    </Language>
+                    <Language>
+                        <Name>None</Name>
+                        <Type>Dubbed</Type>
+                    </Language>
+                </Languages>
+                <ListPrice>
+                    <Amount>2299</Amount>
+                    <CurrencyCode>GBP</CurrencyCode>
+                    <FormattedPrice>£22.99</FormattedPrice>
+                </ListPrice>
+                <Manufacturer>Second Sight Films</Manufacturer>
+                <MPN>5028836040064</MPN>
+                <NumberOfDiscs>1</NumberOfDiscs>
+                <NumberOfItems>1</NumberOfItems>
+                <PackageDimensions>
+                    <Height Units="hundredths-inches">185</Height>
+                    <Length Units="hundredths-inches">866</Length>
+                    <Weight Units="hundredths-pounds">57</Weight>
+                    <Width Units="hundredths-inches">807</Width>
+                </PackageDimensions>
+                <PartNumber>5028836040064</PartNumber>
+                <ProductGroup>DVD</ProductGroup>
+                <ProductTypeName>ABIS_DVD</ProductTypeName>
+                <Publisher>Second Sight Films</Publisher>
+                <RegionCode>2</RegionCode>
+                <ReleaseDate>2012-06-04</ReleaseDate>
+                <RunningTime Units="minutes">90</RunningTime>
+                <Studio>Second Sight Films</Studio>
+                <Title>The Return of the Living Dead : Limited Special Edition Steelbook [Blu-ray] [1985]</Title>
+            </ItemAttributes>
+            <SimilarProducts>
+                <SimilarProduct>
+                    <ASIN>B0002W12LW</ASIN>
+                    <Title>Return of The Living Dead 2 [DVD] [1988]</Title>
+                </SimilarProduct>
+                <SimilarProduct>
+                    <ASIN>B005DDIUYW</ASIN>
+                    <Title>Island of Lost Souls [Masters of Cinema] (Dual Format) [Blu-ray] [1932]</Title>
+                </SimilarProduct>
+                <SimilarProduct>
+                    <ASIN>B0038KGLZC</ASIN>
+                    <Title>City of the Living Dead [Blu-ray][Region Free]</Title>
+                </SimilarProduct>
+                <SimilarProduct>
+                    <ASIN>B004Z132V4</ASIN>
+                    <Title>The Funhouse [Blu-ray]</Title>
+                </SimilarProduct>
+                <SimilarProduct>
+                    <ASIN>B006C19NQI</ASIN>
+                    <Title>Plague Of The Zombies (DVD + Blu-ray Double Play) [1966]</Title>
+                </SimilarProduct>
+            </SimilarProducts>
+        </Item>
+    </Items>
+</ItemLookupResponse>
