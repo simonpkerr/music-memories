@@ -138,9 +138,11 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
             $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($this->apiResponse));
             $cachedResource->setXmlData($this->apiResponse->asXML());
             $cachedResource->setDateCreated(new \DateTime("now"));
-            $decade = $this->apiStrategy->getDecadeFromXML($this->apiResponse);
-            if(!is_null($decade)){
-                $this->mediaResource->setDecade($this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decade));
+            if(is_null($this->mediaResource->getDecade())){
+                $decade = $this->apiStrategy->getDecadeFromXML($this->apiResponse);
+                if(!is_null($decade)){
+                    $this->mediaResource->setDecade($this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decade));
+                }
             }
             $this->mediaResource->setMediaResourceCache($cachedResource);
         }

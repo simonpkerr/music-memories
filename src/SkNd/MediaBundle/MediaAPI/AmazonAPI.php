@@ -100,7 +100,7 @@ class AmazonAPI implements IAPIStrategy {
             preg_match('/[\[|\(](\d{4})[\]|\)]/i', $title, $yearParts);
             $year = isset($yearParts[1]) ? $yearParts[1] : null;
             if(!is_null($year)){
-                return substr($year, 0, 2) . '0s';
+                return substr($year, 0, 3) . '0s';
             }
             
             return null;

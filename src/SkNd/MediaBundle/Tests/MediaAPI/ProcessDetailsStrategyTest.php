@@ -474,7 +474,13 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         
     }
     
-    public function testCacheMediaWithItemContainingDecadeDataUpdatedMediaResource(){
+    public function testCacheMediaResourceWithNullDecadeAndXmlContainingDecadeUpdatesMediaResource(){
+        //when caching a media resource, if a decade is not set, the api strategy will try to find a title based on 
+        //which api it is and use that to categorise the media resource.
+        
+    }
+    
+    public function testCacheMediaResourceWithNullDecadeAndNonExistentDecadeInXmlDoesNotUpdateMediaResource(){
         
     }
     

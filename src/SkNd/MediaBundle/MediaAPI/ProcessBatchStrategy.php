@@ -123,6 +123,12 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                     $cachedResource->setTitle($api->getItemTitleFromXML($itemXml));
                     $cachedResource->setXmlData($api->getXML($itemXml));
                     $cachedResource->setDateCreated(new \DateTime("now"));
+                    if(is_null($mr->getDecade())){
+                        $decade = $api->getDecadeFromXML($itemXml);
+                        if(!is_null($decade)){
+                            $mr->setDecade($this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decade));
+                        }
+                    }
                     try{
                         $mr->setMediaResourceCache($cachedResource);
                         $this->persistMergeFlush($mr, false);

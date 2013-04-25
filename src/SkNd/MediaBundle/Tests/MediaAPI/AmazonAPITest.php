@@ -128,7 +128,16 @@ class AmazonAPITest extends WebTestCase {
     }
     
     public function testGetDecadeFromXMLReturnsDecadeSlugForExistingYear(){
+        $valid_xml_data_set = simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\valid_xml_response.xml');
         
+        $this->testASR->expects($this->any())
+                ->method('aws_signed_request')
+                ->will($this->returnValue($valid_xml_data_set));
+        
+        $api = new AmazonAPI($this->access_params, $this->testASR);
+        
+        $response = $api->getDecadeFromXML($valid_xml_data_set);
+        $this->assertEquals($response, '2000s', "didn't return valid decade");
     }
     
     public function testGetDecadeFromXMLReturnsNullForNonexistentDecadeInTitle(){

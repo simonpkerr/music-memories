@@ -377,6 +377,13 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $this->assertEquals((string)$mrs['liveData']->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData', 'amazon media resource was not updated');
     }
     
+    public function testCacheMediaWithXmlContainingDecadeUpdatesMediaResource(){
+        
+    }
+    
+    public function testCacheMediaResourceWithNullDecadeAndNonExistentDecadeInXmlDoesNotUpdateMediaResource(){
+        
+    }
     
 }
 
