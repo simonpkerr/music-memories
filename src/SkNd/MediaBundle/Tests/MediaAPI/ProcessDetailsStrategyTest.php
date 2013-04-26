@@ -477,11 +477,103 @@ class ProcessDetailsStrategyTest extends WebTestCase {
     public function testCacheMediaResourceWithNullDecadeAndXmlContainingDecadeUpdatesMediaResource(){
         //when caching a media resource, if a decade is not set, the api strategy will try to find a title based on 
         //which api it is and use that to categorise the media resource.
+        $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><Item id="liveData"><ItemAttributes><Title>A title with a year [1965]</Title></ItemAttributes></Item>');
+        $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
+                ->disableOriginalConstructor()
+                ->setMethods(array(
+                    'getListings',
+                    'getDetails',
+                    'getImageUrlFromXML',
+                    'getItemTitleFromXML',
+                ))
+                ->getMock();
         
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getDetails')
+                ->will($this->returnValue($this->liveXMLResponse));
+       
+        $this->mediaResource = new MediaResource();
+        $this->mediaResource->setId('testMediaResourceWithNoCache');
+        $this->mediaResource->setAPI($this->mediaSelection->getAPI());
+        $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+        
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+            'itemId'            =>      'testMediaResourceWithNoCache',
+        );
+        
+        $this->processDetailsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsStrategy')
+                ->setConstructorArgs(array($this->constructorParams))
+                ->setMethods(array(
+                    'getMediaResource',
+                    'persistMergeFlush'
+                ))
+                ->getMock();
+        
+        $this->processDetailsStrategy->expects($this->once())
+                ->method('getMediaResource')
+                ->will($this->returnValue($this->mediaResource));
+        $this->processDetailsStrategy->expects($this->any())
+                ->method('persistMergeFlush')
+                ->will($this->returnValue(true));
+
+        $this->processDetailsStrategy->processMedia();
+        $this->processDetailsStrategy->cacheMedia();
+        $mr = $this->processDetailsStrategy->getMedia();
+        
+        $this->assertEquals((string)$mr->getDecade()->getSlug(), '1960s');
     }
     
     public function testCacheMediaResourceWithNullDecadeAndNonExistentDecadeInXmlDoesNotUpdateMediaResource(){
+        $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><Item id="liveData"><ItemAttributes><Title>A title with no year [dvd]</Title></ItemAttributes></Item>');
+        $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
+                ->disableOriginalConstructor()
+                ->setMethods(array(
+                    'getListings',
+                    'getDetails',
+                    'getImageUrlFromXML',
+                    'getItemTitleFromXML',
+                ))
+                ->getMock();
         
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getDetails')
+                ->will($this->returnValue($this->liveXMLResponse));
+       
+        $this->mediaResource = new MediaResource();
+        $this->mediaResource->setId('testMediaResourceWithNoCacheAndNoDecade');
+        $this->mediaResource->setAPI($this->mediaSelection->getAPI());
+        $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+        
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+            'itemId'            =>      'testMediaResourceWithNoCacheAndNoDecade',
+        );
+        
+        $this->processDetailsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsStrategy')
+                ->setConstructorArgs(array($this->constructorParams))
+                ->setMethods(array(
+                    'getMediaResource',
+                    'persistMergeFlush'
+                ))
+                ->getMock();
+        
+        $this->processDetailsStrategy->expects($this->once())
+                ->method('getMediaResource')
+                ->will($this->returnValue($this->mediaResource));
+        $this->processDetailsStrategy->expects($this->any())
+                ->method('persistMergeFlush')
+                ->will($this->returnValue(true));
+
+        $this->processDetailsStrategy->processMedia();
+        $this->processDetailsStrategy->cacheMedia();
+        $mr = $this->processDetailsStrategy->getMedia();
+        
+        $this->assertNull($mr->getDecade(), 'media resource decade is not null');
     }
     
     /*public function testProcessMediaWhenSessionExpiredAddsResourceToDB(){
