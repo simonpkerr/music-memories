@@ -378,13 +378,158 @@ class ProcessBatchStrategyTest extends WebTestCase {
     }
     
     public function testCacheMediaWithXmlContainingDecadeUpdatesMediaResource(){
+        $this->liveXMLResponse = new \SimpleXMLElement(
+        '<?xml version="1.0" ?>
+        <Items>
+            <Item id="liveData">
+                <ASIN>liveData</ASIN>
+                <ItemAttributes>
+                    <Title>Something with a decade [1959]</Title>
+                </ItemAttributes>
+            </Item>
+        </Items>');
+        
+        $this->mediaResource->setId('liveData');
+        $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
+                ->disableOriginalConstructor()
+                ->setMethods(array(
+                    'getListings',
+                    'getDetails',
+                    'getImageUrlFromXML',
+                    'getItemTitleFromXML',
+                ))
+                ->getMock();
+                
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getDetails')
+                ->will($this->returnValue($this->liveXMLResponse));
+        
+        $this->constructorParams['mediaResources'] = array(
+            'liveData' => $this->mediaResource,
+        );
+        $this->constructorParams['apis'] = array(
+            'amazonapi'     =>  $this->testAmazonAPI,
+            'youtubeapi'    =>  $this->testYouTubeAPI,
+        );
+        
+        $this->pbs = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\ProcessBatchStrategy')
+                ->setConstructorArgs(array(
+                    $this->constructorParams
+                ))
+                ->setMethods(array(
+                    'persistMergeFlush',
+                ))->getMock();
+        
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+                
+        $this->assertEquals((string)array_pop($mrs)->getDecade()->getSlug(), '1950s', 'media resource was not updated');
         
     }
     
     public function testCacheMediaResourceWithNullDecadeAndNonExistentDecadeInXmlDoesNotUpdateMediaResource(){
+        $this->liveXMLResponse = new \SimpleXMLElement(
+        '<?xml version="1.0" ?>
+        <Items>
+            <Item id="liveData">
+                <ASIN>liveData</ASIN>
+                <ItemAttributes>
+                    <Title>Something with no decade [dvd]</Title>
+                </ItemAttributes>
+            </Item>
+        </Items>');
+        
+        $this->mediaResource->setId('liveData');
+        $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
+                ->disableOriginalConstructor()
+                ->setMethods(array(
+                    'getListings',
+                    'getDetails',
+                    'getImageUrlFromXML',
+                    'getItemTitleFromXML',
+                ))
+                ->getMock();
+                
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getDetails')
+                ->will($this->returnValue($this->liveXMLResponse));
+        
+        $this->constructorParams['mediaResources'] = array(
+            'liveData' => $this->mediaResource,
+        );
+        $this->constructorParams['apis'] = array(
+            'amazonapi'     =>  $this->testAmazonAPI,
+            'youtubeapi'    =>  $this->testYouTubeAPI,
+        );
+        
+        $this->pbs = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\ProcessBatchStrategy')
+                ->setConstructorArgs(array(
+                    $this->constructorParams
+                ))
+                ->setMethods(array(
+                    'persistMergeFlush',
+                ))->getMock();
+        
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+                
+        $this->assertNull(array_pop($mrs)->getDecade(), 'media resource decade exists');
         
     }
     
+    //if the decade in the title is not in the db (e.g. 1920)
+    public function testCacheMediaResourceWithNullDecadeAndInvalidDecadeInXmlDoesNotUpdateMediaResource(){
+        $this->liveXMLResponse = new \SimpleXMLElement(
+        '<?xml version="1.0" ?>
+        <Items>
+            <Item id="liveData">
+                <ASIN>liveData</ASIN>
+                <ItemAttributes>
+                    <Title>Something with invalid decade [1919]</Title>
+                </ItemAttributes>
+            </Item>
+        </Items>');
+        
+        $this->mediaResource->setId('liveData');
+        $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
+                ->disableOriginalConstructor()
+                ->setMethods(array(
+                    'getListings',
+                    'getDetails',
+                    'getImageUrlFromXML',
+                    'getItemTitleFromXML',
+                ))
+                ->getMock();
+                
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getDetails')
+                ->will($this->returnValue($this->liveXMLResponse));
+        
+        $this->constructorParams['mediaResources'] = array(
+            'liveData' => $this->mediaResource,
+        );
+        $this->constructorParams['apis'] = array(
+            'amazonapi'     =>  $this->testAmazonAPI,
+            'youtubeapi'    =>  $this->testYouTubeAPI,
+        );
+        
+        $this->pbs = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\ProcessBatchStrategy')
+                ->setConstructorArgs(array(
+                    $this->constructorParams
+                ))
+                ->setMethods(array(
+                    'persistMergeFlush',
+                ))->getMock();
+        
+        $this->pbs->processMedia();
+        $this->pbs->cacheMedia();
+        $mrs = $this->pbs->getMedia();
+                
+        $this->assertNull(array_pop($mrs)->getDecade(), 'media resource decade was updated');
+        
+    }
 }
 
 ?>

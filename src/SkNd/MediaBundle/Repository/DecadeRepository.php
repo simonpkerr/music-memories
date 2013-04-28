@@ -19,6 +19,7 @@ class DecadeRepository extends EntityRepository
     
     public function getDecadeBySlug($slug){
         return $this->findOneBy(array('slug' => $slug));
+        
     }
     
     public function getDefaultDecade(){
