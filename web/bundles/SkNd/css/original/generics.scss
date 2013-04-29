@@ -1,0 +1,74 @@
+ul.bullet-list,
+ol.bullet-list {
+    margin-left: 1em;
+
+    li {
+        margin-bottom: 0.5em;    
+    }
+}
+
+ul.bullet-list li {
+    list-style-type: circle;
+}
+
+ol.bullet-list li {
+    list-style-type: decimal;
+}
+
+.search-form-label {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+}
+
+div.errors {
+    color: #CC514F;
+    font-size: 0.9em;
+
+    p {
+        margin-bottom: 15px;
+        color: inherit;
+    }
+
+    strong {
+        font-weight: bold;  
+    }   
+}
+
+.note {
+    font-size: 0.7em;
+    line-height: 1.1em;
+}
+
+p.note {
+    margin-bottom: 5px;
+}
+
+li.note {
+    list-style-type: none;
+}
+
+.strapline {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.hide {
+    display: none;
+}
+
+/********** LINK FONT STYLES ***********/
+a {
+    color: #29478D;
+    text-decoration: none;
+}
+a:visited {
+    color: #3967AC;
+}
+a:hover {
+    text-decoration: underline;
+}

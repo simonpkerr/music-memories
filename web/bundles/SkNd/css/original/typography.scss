@@ -20,14 +20,11 @@ Ideal line-height for this is 1.5em
  
 }
 
-.fontface h1,
-.fontface h2,
-.fontface h3,
-.heading {
-    font-family: 'KGStrawberryLimeadeRegular';
+.fontface {
+    h1, h2, h3 {
+        font-family: 'KGStrawberryLimeadeRegular';
+    }
 }
-
-
 
 h1,h2,h3,.heading {
     font-family: 'Segoe Print', sans-serif, cursive, arial;
@@ -81,8 +78,8 @@ h5, h6 {
 
 
 
-form select,
-form input,
-form textarea {
-    font-family: Tahoma, sans-serif, Arial;
+form {
+    select, input, textarea {
+        font-family: Tahoma, sans-serif, Arial;
+    }
 }

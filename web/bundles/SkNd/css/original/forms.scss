@@ -1,0 +1,225 @@
+include "mixins.scss";
+
+/********** FORM ELEMENT GENERICS ***********/
+form {
+    fieldset {
+        border: 1px solid #7AA4E2;
+        padding: 1em;
+
+        > div {
+            padding-top: 0.5em;    
+        }
+
+        legend {
+            font-size: 0.8em;
+            font-style: italic;
+            margin: 0 0.5em 0.5em 3.3em;
+            padding: 0 0.5em;
+            color: #3A6289;
+        }
+    }
+    label {
+        font-size: 0.85em;
+        line-height: 1.2em;
+        font-style: italic;
+        display: block;
+        margin: 0 0 3px 0;
+        width: 100%;
+    }
+    select, input, textarea {
+        border: 1px solid #808DA0;
+        margin-bottom: 0.5em;
+        padding: 7px 5px;
+        font-size: 1em;
+        width: 100%;
+
+        &:focus {
+            border: 1px solid #E5961D;
+        }
+    }
+
+    input {
+        &[type="text"],
+        &[type="email"],
+        &[type="password"]
+        {
+            width: 90%;
+        }
+        &[type="submit"],
+        &#_submit
+        {
+            font-size: 1em;
+            margin-top: 0.2em;
+            border: 2px solid #fff;
+            width: 100%;
+        }
+    }
+
+    div.date_widget select {
+        margin-right: 1px;
+        width: 30%;
+    }
+
+    div.error input {
+        border: 1px solid #dd0000;
+    }
+
+}
+
+.borderradius {
+    form {
+        select,
+        input,
+        fieldset,
+        textarea
+        {
+            //mixin for border radius
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+        }    
+}
+
+
+span {
+    .required {
+        margin-left: 0.5em;
+        color: #ff0000;
+        font-weight: bold;
+        float: right;
+    }
+    .form-errors {
+        float: right;
+        color: #dd0000;
+        font-size: 0.7em;
+        margin-bottom: 2px;
+    }
+}
+
+ul.form-errors {
+    clear: both;
+    font-size: 0.85em;
+    margin: 0 0 5px;
+
+    li {
+        color: #dd0000;
+    }
+}
+
+
+/********** BUTTON ELEMENTS ***********/
+.button,
+.basic-button,
+input#_submit,
+input[type="submit"] {
+    background-color: #6B94CE;
+    border: 2px solid #fff;
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 7px;
+    text-decoration: none;
+    text-align: center;
+
+    &:hover,
+    .selected,
+    {
+        //maybe use a variable here since its used numerous times
+        background-color: #5174A5;
+        background-image: none;
+    }
+}
+
+.basic-button {
+    border: 3px solid #ACC5EC;
+    color: #fff;
+}
+
+.orange {
+    background-color: #F57621;
+}
+
+a.button {
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+       color: #fff;
+       text-decoration: none;
+    }    
+}
+
+
+.cssgradients {
+    .button,
+    .blue,
+    input#_submit {
+        //use mixin
+        background-image: linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
+        background-image: -o-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
+        background-image: -moz-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
+        background-image: -webkit-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
+        background-image: -ms-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
+
+        background-image: -webkit-gradient(
+                linear,
+                left top,
+                left bottom,
+                color-stop(0, rgb(165,190,222)),
+                color-stop(1, rgb(110,152,215))
+        );
+    }
+
+    .orange {
+        background-image: linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+        background-image: -o-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+        background-image: -moz-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+        background-image: -webkit-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
+        background-image: -ms-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33)  100%);
+
+        background-image: -webkit-gradient(
+                linear,
+                left top,
+                left bottom,
+                color-stop(0, rgb(245,146,54)),
+                color-stop(1, rgb(245,118,33))
+        );
+
+        &:hover
+        {
+            background-color: #E05316;
+            background-image: none;
+        }
+
+    }
+}
+
+.boxshadow {
+    .button,
+    input#_submit,
+    input[type="submit"]{
+        //use mixin
+        -moz-box-shadow: 0 0 5px rgba(15,15,15,0.5);
+        -webkit-box-shadow: 0 0 5px rgba(15,15,15,0.5);
+        box-shadow: 0 0 5px rgba(15,15,15,0.5);
+    }
+
+    .button:hover,
+    .selected,
+    input#_submit:hover,
+    input[type="submit"]:hover{
+        -moz-box-shadow: 0 0 5px rgba(15,15,15,0);
+        -webkit-box-shadow: 0 0 5px rgba(15,15,15,0);
+        box-shadow: 0 0 5px rgba(15,15,15,0);
+    }    
+}
+
+.borderradius {
+    .button,
+    .basic-button,
+    input#_submit,
+    input[type="submit"]{
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }    
+}

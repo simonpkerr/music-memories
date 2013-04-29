@@ -1,0 +1,14 @@
+/*
+Document   : main
+Created on : 29-Apr-2013, 18:33:19
+Author     : Simon Kerr
+Description:
+Pulls in all the separate style sheets
+*/
+
+import "mixins.scss","normalize","boilerplate.scss","generics.scss",typography.scss","forms.scss";
+
+//main styles for all width devices
+
+
+import "helpers.scss";
