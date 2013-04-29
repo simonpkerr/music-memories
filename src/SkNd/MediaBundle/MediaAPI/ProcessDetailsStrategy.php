@@ -94,6 +94,15 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
     }
     
     private function categoriseMediaResource(MediaResource $mr){
+        //if decade null, try to refine based on title
+        if(is_null($mr->getDecade())){
+            $decade = Utilities::getDecadeSlugFromUrl($this->title);
+            $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decade);
+            if(!is_null($decade)){
+                $mr->setDecade($decade);
+            }
+        }
+        
         /**
          * if the media resource exists but was discovered using more specific parameters (i.e. mediatype, decade and genre)
          * set these parameters on the media resource. This means that items discovered using vague parameters become 
@@ -114,14 +123,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
                 $mr->setGenre($this->mediaSelection->getSelectedMediaGenre());
         }
         
-        //if decade still null, try to refine based on title
-        if(is_null($mr->getDecade())){
-            $decade = Utilities::getDecadeSlugFromUrl($this->title);
-            $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decade);
-            if(!is_null($decade)){
-                $mr->setDecade($decade);
-            }
-        }
+        
         
         return $mr;
     }
@@ -131,8 +133,9 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         $mediaResource->setId($itemId);
         $mediaResource->setAPI($this->apiStrategy->getAPIEntity()); 
         $mediaResource->setMediaType($this->mediaSelection->getMediaType());
-        $mediaResource->setDecade($this->mediaSelection->getDecade());
-        $mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());
+        //decade classification is now done in the categoriseMediaResource method
+        //$mediaResource->setDecade($this->mediaSelection->getDecade());
+        //$mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());
         
         return $mediaResource;
     }

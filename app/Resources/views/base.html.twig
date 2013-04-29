@@ -15,15 +15,18 @@
         {# use the stylesheets tag for when assetic is working, meaning that files can be minified
         for production environment. Use the '?' inside the filter to run the app in debug mode 
         #}
-        {% stylesheets  output='bundles/SkNd/css/compiled/main.css' filter='?yui_css' 
-        'bundles/SkNd/css/original/reset.css'
-        'bundles/SkNd/css/original/typography.css'
-        'bundles/SkNd/css/original/base.css'  
-        'bundles/SkNd/css/original/wide.css'
+        {% stylesheets output='bundles/SkNd/css/compiled/main.css' filter='scss,?yui_css' 
+            'bundles/SkNd/css/original/boilerplate.scss'
         %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />    
         {% endstylesheets %}
                             
+        {#
+'bundles/SkNd/css/original/reset.css'
+        'bundles/SkNd/css/original/typography.css'
+        'bundles/SkNd/css/original/base.css'  
+        'bundles/SkNd/css/original/wide.css'
+#}
         
         <script src="{{ asset('bundles/SkNd/js/compiled/modernizr.js') }}" type="text/javascript"></script>    
         <script type="text/javascript">

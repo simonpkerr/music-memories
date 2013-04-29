@@ -656,6 +656,11 @@ div.two-thirds-width ul#listings > li ul li ul {
     float: left;
 }
 
+ul.userMemoryWalls li  {
+    float: left;
+    width: 100%;
+}
+
 
 /*----- youtube player -----*/
 div#ytapiplayerContainer {

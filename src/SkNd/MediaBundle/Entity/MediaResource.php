@@ -192,7 +192,7 @@ class MediaResource
     }
     
     public function urlize($title){
-        return Util\Urlizer::urlize($title);
+        return Util\Urlizer::urlize((string)$title);
     }
         
     

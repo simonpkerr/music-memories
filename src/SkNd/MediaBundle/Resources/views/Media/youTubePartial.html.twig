@@ -19,6 +19,7 @@
                     'itemId'    : ytResult.id,
                     'itemTitle' : ytResult.title,
                     'linkType'  : 'button',
+                    'titleSlug' : listings.urlize(ytResult.title)
                     } 
                     %}    
                     {#% debug(ytResult.title|escape) %#}
