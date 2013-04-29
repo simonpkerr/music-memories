@@ -27,7 +27,7 @@ memoryWallCreate:
     _method: GET|POST
 
 memoryWallShow:
-  pattern: /memorywall/{slug}/show/{page}
+  pattern: /memorywall/show/{id}/{slug}/{page}
   defaults:
     _controller: SkNdUserBundle:MemoryWall:show
     page: 1
@@ -35,32 +35,33 @@ memoryWallShow:
     _method: GET
       
 memoryWallEdit:
-  pattern: /memorywall/{slug}/edit
+  pattern: /memorywall/edit/{id}/{slug}
   defaults: { _controller: SkNdUserBundle:MemoryWall:edit }
   requirements:
     _method: GET|POST
       
 memoryWallDelete:
-  pattern: /memorywall/{slug}/delete
+  pattern: /memorywall/delete/{id}/{slug}
   defaults: { _controller: SkNdUserBundle:MemoryWall:delete }
 
 memoryWallDeleteConfirm:
-  pattern: /memorywall/{slug}/delete/confirm
+  pattern: /memorywall/delete/confirm/{id}/{slug}
   defaults: { _controller: SkNdUserBundle:MemoryWall:deleteConfirm }
 
 memoryWallAddMediaResource:
-  pattern: /memorywall/{slug}/add/{api}/{id}
+  pattern: /memorywall/{mwid}/{slug}/add/{api}/{id}/{title}
   defaults:
     _controller: SkNdUserBundle:MemoryWall:addMediaResource
     slug: personal
+    mwid: "-"
 
 memoryWallDeleteMediaResource:
-  pattern: /memorywall/{slug}/delete/{id}
+  pattern: /memorywall/{mwid}/{slug}/delete/{id}
   defaults:
     _controller: SkNdUserBundle:MemoryWall:deleteMediaResource
 
 memoryWallDeleteMediaResourceConfirm:
-  pattern: /memorywall/{slug}/delete/{id}/{confirmed}
+  pattern: /memorywall/{mwid}/{slug}/delete/{id}/{confirmed}
   defaults:
     _controller: SkNdUserBundle:MemoryWall:deleteMediaResource
   requirements:

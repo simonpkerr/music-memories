@@ -42,6 +42,7 @@
                 'api'       : mediaResource.api.name,
                 'itemId'    : item.ASIN,
                 'itemTitle' : item.ItemAttributes.Title,
+                'titleSlug' : mediaResource.urlize(item.ItemAttributes.Title),
                 'linkType'  : 'button',
                 } 
             %}
@@ -62,7 +63,7 @@
             <ul class="bullet-list">
             {% for similarItem in item.SimilarProducts.SimilarProduct %}
                 <li>
-                    <a title="see more details for {{similarItem.Title}}" href="{{path('mediaDetails', {'id':similarItem.ASIN , 'api': mediaResource.api.name, 'title':mr.urlize(similarItem.Title) })}}">{{similarItem.Title}}</a>
+                    <a title="see more details for {{similarItem.Title}}" href="{{path('mediaDetails', {'id':similarItem.ASIN , 'api': mediaResource.api.name, 'title':mediaResource.urlize(similarItem.Title) })}}">{{similarItem.Title}}</a>
                 </li>
             {% endfor %}
             </ul>

@@ -47,7 +47,7 @@
                     {% endif %}
                     {% if wallBelongsToThisUser %}
                     {#<li class="edit-it">Edit</li>#}
-                    <li class="delete-it"><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span>Remove</span></a></li>
+                    <li class="delete-it"><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'mwid':mw.id, 'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span>Remove</span></a></li>
                     {% endif %}
                 </ul>
             </li>

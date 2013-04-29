@@ -1,6 +1,6 @@
 <h1>Edit Memory Wall</h1>
 
-<form action="{{ path('memoryWallEdit', {'slug':slug }) }}" {{ form_enctype(form) }} method="POST" class="half-width left fl">
+<form action="{{ path('memoryWallEdit', {'id':mw.id, 'slug':mw.slug }) }}" {{ form_enctype(form) }} method="POST" class="half-width left fl">
 <fieldset>
 <legend>Wall details</legend>
 {{ form_errors(form) }}    

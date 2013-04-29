@@ -83,7 +83,7 @@ class Utilities {
      */
     public static function getDecadeSlugFromUrl($url){
         $yearParts = array();
-        preg_match('/\-((19|20)(\d{2}))\-/i', $url, $yearParts);
+        preg_match('/\-((19|20)(\d{2}))\-?/i', $url, $yearParts);
         $decade = isset($yearParts[1]) ? $yearParts[1] : null;
         if(!is_null($decade)){
             return substr($decade, 0, 3) . '0s';

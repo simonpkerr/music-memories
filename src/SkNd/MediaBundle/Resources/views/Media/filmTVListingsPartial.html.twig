@@ -31,7 +31,8 @@ with
         with {
         'api'       : api,
         'itemId'    : item.ASIN,
-        'itemTitle' : item.ItemAttributes.Title
+        'itemTitle' : item.ItemAttributes.Title,
+        'titleSlug' : listings.urlize(item.ItemAttributes.Title)
         } 
         %}
         <li class="buy-it bottom-action">

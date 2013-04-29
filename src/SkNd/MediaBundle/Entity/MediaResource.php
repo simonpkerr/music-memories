@@ -10,6 +10,7 @@
 
 namespace SkNd\MediaBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Sluggable\Util;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use SkNd\MediaBundle\Entity\Genre;
@@ -191,7 +192,7 @@ class MediaResource
     }
     
     public function urlize($title){
-        return Gedmo\Sluggable\Util\Urlizer::urlize($title);
+        return Util\Urlizer::urlize($title);
     }
         
     

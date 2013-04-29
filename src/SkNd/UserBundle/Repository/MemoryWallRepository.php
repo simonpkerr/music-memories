@@ -33,6 +33,10 @@ class MemoryWallRepository extends EntityRepository
                 ->getOneOrNullResult();
     }
     
+     public function getMemoryWallById($id){
+        return $this->findOneBy(array('id' => $id));
+    }
+    
     /**
      * gets memory walls based on a specified decade
      * for use in making recommendations

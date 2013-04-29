@@ -9,7 +9,7 @@
 {% for mw in mws %}
         <li>
             <div>
-                <strong><a href="{{path('memoryWallAddMediaResource', {'slug': mw.slug, 'api': api, 'id':id })}}" title="Add to &ldquo;{{ mw.name }}&rdquo;">{{ mw.name }}</a></strong>
+                <strong><a href="{{path('memoryWallAddMediaResource', {'mwid':mw.id, 'slug': mw.slug, 'api': api, 'id':id, 'title':title })}}" title="Add to &ldquo;{{ mw.name }}&rdquo;">{{ mw.name }}</a></strong>
                 <span class="note"> ({{ mw.memoryWallMediaResources|length }} {{ mw.memoryWallMediaResources|length == 1 ? "item" : "items" }})</span>
                 <p class="note">
                 {% if pageTitle == 'All Public' %}

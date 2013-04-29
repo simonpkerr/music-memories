@@ -381,7 +381,11 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         self::$em->flush();
     }
     
-    public function testGetMediaResourceWithNoMediaSelectionUpdatesDecadeFromTitle(){
+    public function testGetMediaResourceWithNoMediaSelectionUpdates1990sDecadeFromTitle(){
+        
+    }
+    
+    public function testGetMediaResourceWithNoMediaSelectionUpdates2000sDecadeFromTitle(){
         
     }
     

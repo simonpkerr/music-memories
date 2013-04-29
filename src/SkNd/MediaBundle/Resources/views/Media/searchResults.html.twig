@@ -1,7 +1,7 @@
 {% extends 'SkNdMediaBundle::layout.html.twig' %}
-{% block metadescription %} Search results for {{media}} ({{ decade }}, {{ genre }}){% endblock %}
-{% block metakeywords %}{{media}},{{ decade }},{{ genre }}{% endblock %}
-{% block title %}Search results for {{media}} ({{ decade }}, {{ genre }}){% endblock %}
+{% block metadescription %} Search results for {{media}} ({{ decade }}, {{ genre }}) {% if keywords is defined %} and {{keywords}} {% endif %}. noodleDig helps you explore the Films and TV Shows you used to love, capture them and share them with your friends.{% endblock %}
+{% block metakeywords %}{{media}},{{ decade }},{{ genre }}{% if keywords is defined %},{{keywords}}{% endif %}{% endblock %}
+{% block title %}Search results for {{media}} ({{ decade }}, {{ genre }}) {% if keywords is defined %} and {{keywords}} {% endif %}{% endblock %}
 
 {% block content %}
 <h1>
