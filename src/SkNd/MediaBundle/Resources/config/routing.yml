@@ -27,7 +27,7 @@ search:
     api: amazonapi
     
 mediaDetails:
-  pattern: /mediadetails/{id}/{api}
+  pattern: /details/{api}/{id}/{title}
   defaults:
     _controller: SkNdMediaBundle:Media:mediaDetails
 

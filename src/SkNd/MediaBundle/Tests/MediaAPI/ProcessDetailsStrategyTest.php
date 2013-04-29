@@ -115,6 +115,7 @@ class ProcessDetailsStrategyTest extends WebTestCase {
             'apiStrategy'       =>      $this->testAmazonAPI,
             'itemId'            =>      'testItemId',
             'referrer'          =>      'search',
+            'title'             =>      'willy-wonka-chocolate-factory-1978',
         );
         
         $this->processDetailsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsStrategy')
@@ -180,6 +181,18 @@ class ProcessDetailsStrategyTest extends WebTestCase {
                     $this->constructorParams
                 ))->getMock();
     }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testConstructWithoutItemTitleThrowsException(){
+        unset($this->constructorParams['title']);
+        $this->processDetailsStrategy = $this->processDetailsStrategy->setConstructorArgs(
+                array(
+                    $this->constructorParams
+                ))->getMock();
+    }
+    
     
     /**
      * @expectedException RuntimeException
@@ -366,6 +379,18 @@ class ProcessDetailsStrategyTest extends WebTestCase {
         
         self::$em->remove($mr);
         self::$em->flush();
+    }
+    
+    public function testGetMediaResourceWithNoMediaSelectionUpdatesDecadeFromTitle(){
+        
+    }
+    
+    public function testGetMediaResourceWithNoMediaSelectionAndInvalidDecadeInTitleDoesNotUpdateDecade(){
+        
+    }
+    
+    public function testGetMediaResourceWithNoMediaSelectionAndNoDecadeInTitleDoesNotUpdateDecade(){
+        
     }
     
     public function testGetMediaResourceWithExpiredCacheDeletesCache(){

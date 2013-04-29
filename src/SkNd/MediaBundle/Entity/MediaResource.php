@@ -189,6 +189,10 @@ class MediaResource
     {
         return $this->dateCreated;
     }
+    
+    public function urlize($title){
+        return Gedmo\Sluggable\Util\Urlizer::urlize($title);
+    }
         
     
 }

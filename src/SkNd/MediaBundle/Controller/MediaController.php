@@ -186,7 +186,7 @@ class MediaController extends Controller
      * (should this use partials or just process all from the main details action?)
      * 
      */
-    public function mediaDetailsAction($id, $api){
+    public function mediaDetailsAction($id, $api, $title){
         /*
          * set the mediaSelection object if it doesn't exist - user may have gone straight to the page
          * without going through the selection process
@@ -210,6 +210,7 @@ class MediaController extends Controller
             'apiStrategy'   =>      $apiStrategy, 
             'mediaSelection'=>      $mediaSelection,
             'itemId'        =>      $id,
+            'title'         =>      $title,
             'referrer'      =>      $referrer,
         ));
         
@@ -220,16 +221,13 @@ class MediaController extends Controller
             'apis'                  => $this->mediaapi->getAPIs()));
 
         try{  
-
             $responseParams['mediaResource'] = $this->mediaapi->getMedia($processDetailsStrategy);
-
         }catch(\RunTimeException $re){
             $this->get('session')->getFlashBag()->add('notice', 'media.amazon.runtime_exception');
         }catch(\LengthException $le){
             $this->get('session')->getFlashBag()->add('notice', 'media.amazon.length_exception');
         }
-      
-       
+
         return $this->render('SkNdMediaBundle:Media:mediaDetails.html.twig', $responseParams);
         
     }

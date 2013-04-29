@@ -27,6 +27,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $itemId;
     private $apiResponse;
     private $referrer;
+    private $title;
     
     /**
      *
@@ -38,13 +39,15 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         if(!isset($params['em'])||
             !isset($params['mediaSelection'])||
             !isset($params['apiStrategy'])||
-            !isset($params['itemId']))
+            !isset($params['itemId'])||
+            !isset($params['title']))
             throw new \RuntimeException('required params not supplied for ' . get_class($this));
         
         $this->em = $params['em'];
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
         $this->itemId = $params['itemId'];
+        $this->title = $params['title'];
         $this->referrer = isset($params['referrer']) ? $params['referrer'] : null;
         
         $this->utilities = new Utilities();
@@ -83,28 +86,44 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         else {
             //is it necessary to delete immediately the cache or simply merge and updated version?
             $this->mediaResource = $this->processCache($this->mediaResource);
-            /**
-             * if the media resource exists but was discovered using more specific parameters (i.e. mediatype, decade and genre)
-             * set these parameters on the media resource. This means that items discovered using vague parameters become 
-             * more precise over time
-             * 
-             * IMPORTANT - only update the media resource if the referrer was the search method, otherwise could cause
-             * wrong categorisation of resources. (if a vague search was performed, an item added, a more specific search done,
-             * then the item viewed again through a memory wall or direct referral, it could potentially be refined wrongly.
-             **/ 
-            if(!is_null($this->referrer) && strpos($this->referrer, 'search') !== false){
-                if($this->mediaResource->getMediaType()->getSlug() == 'film-and-tv' && $this->mediaSelection->getMediaType()->getSlug() != 'film-and-tv')
-                    $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
+        }
+        
+        $this->mediaResource = $this->categoriseMediaResource($this->mediaResource);
+        
+        return $this->mediaResource;
+    }
+    
+    private function categoriseMediaResource(MediaResource $mr){
+        /**
+         * if the media resource exists but was discovered using more specific parameters (i.e. mediatype, decade and genre)
+         * set these parameters on the media resource. This means that items discovered using vague parameters become 
+         * more precise over time
+         * 
+         * IMPORTANT - only update the media resource if the referrer was the search method, otherwise could cause
+         * wrong categorisation of resources. (if a vague search was performed, an item added, a more specific search done,
+         * then the item viewed again through a memory wall or direct referral, it could potentially be refined wrongly.
+         **/ 
+        if(!is_null($this->referrer) && strpos($this->referrer, 'search') !== false){
+            if($mr->getMediaType()->getSlug() == 'film-and-tv' && $this->mediaSelection->getMediaType()->getSlug() != 'film-and-tv')
+                $mr->setMediaType($this->mediaSelection->getMediaType());
 
-                if($this->mediaResource->getDecade() == null && $this->mediaSelection->getDecade() != null)
-                    $this->mediaResource->setDecade($this->mediaSelection->getDecade());
+            if($mr->getDecade() == null && $this->mediaSelection->getDecade() != null)
+                $mr->setDecade($this->mediaSelection->getDecade());
 
-                if($this->mediaResource->getGenre() == null && $this->mediaSelection->getSelectedMediaGenre() != null)
-                    $this->mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());
+            if($mr->getGenre() == null && $this->mediaSelection->getSelectedMediaGenre() != null)
+                $mr->setGenre($this->mediaSelection->getSelectedMediaGenre());
+        }
+        
+        //if decade still null, try to refine based on title
+        if(is_null($mr->getDecade())){
+            $decade = Utilities::getDecadeSlugFromUrl($this->title);
+            $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decade);
+            if(!is_null($decade)){
+                $mr->setDecade($decade);
             }
         }
         
-        return $this->mediaResource;
+        return $mr;
     }
     
     private function createNewMediaResource($itemId){

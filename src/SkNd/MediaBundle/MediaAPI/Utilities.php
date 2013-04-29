@@ -29,7 +29,7 @@ class Utilities {
     public static function formatSearchString(array $params){
         $keywords = $params['keywords'];
         $media = $params['media'];
-        
+        $yearParts = array();
         //this version removes any references to disc set, box set etc
         preg_match('/[\[|\(](\d{4})[\]|\)]/i', $keywords, $yearParts);
         $yearPart = isset($yearParts[1]) ? $yearParts[1] : null;
@@ -76,6 +76,20 @@ class Utilities {
         );
     }
         
+    /*
+     * this function expects a url in the slugified format (word-word-word)
+     * it looks for a 4 digit number in the url and uses that if the first
+     * 2 characters are either 19 or 20
+     */
+    public static function getDecadeSlugFromUrl($url){
+        $yearParts = array();
+        preg_match('/\-((19|20)(\d{2}))\-/i', $url, $yearParts);
+        $decade = isset($yearParts[1]) ? $yearParts[1] : null;
+        if(!is_null($decade)){
+            return substr($decade, 0, 3) . '0s';
+        }
+    }
+    
     public static function is_NotNull($v){
         return !is_null($v);
     }

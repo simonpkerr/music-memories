@@ -12,6 +12,7 @@ namespace SkNd\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Sluggable\Util;
 use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaType;
@@ -174,5 +175,9 @@ class MediaResourceListingsCache
     public function getLastModified()
     {
         return $this->lastModified;
+    }
+    
+    public function urlize($title){
+        return Util\Urlizer::urlize($title);
     }
 }
