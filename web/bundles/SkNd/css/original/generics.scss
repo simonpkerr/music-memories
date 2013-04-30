@@ -157,3 +157,14 @@ a:hover {
         }
     }
 }
+
+
+.drop-down {
+    position: absolute;
+    left: -9999em;
+    @media #{$desktop}{
+        position: static;
+        left: auto;
+    }
+}
+

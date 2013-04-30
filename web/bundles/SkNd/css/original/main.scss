@@ -28,6 +28,12 @@ body {
     }
 }
 
+%contentHeader {
+    padding-bottom: 0.3em;
+    border-bottom: 2px solid #E5961D;
+    margin-bottom: 0.3em;
+}
+
 div#wrapper {
     min-width: 250px;
     border: 2px solid #E5961D;
@@ -36,6 +42,11 @@ div#wrapper {
     padding: 10px;
     .borderradius & {
         @include border-radius(5px);
+    }
+    
+    h3 {
+        @extend %contentHeader;
+        border: none;
     }
     
     @media #{$desktop} {
@@ -337,6 +348,138 @@ div#headerMediaSelection{
                 }
             }
         }   
+    }
+}
+
+/********** CONTENT ***********/
+div#content {
+    margin: 0 0 20px 0;
+    @media #{$desktop}{
+        position: relative;
+        z-index: 1;
+        width: 95.9%;
+        margin: 20px;
+    }
+    
+    h1 {
+        @extend %contentHeader;
+        @media #{$desktop}{
+            line-height: 1.3em;
+            margin: 5px 0 15px 10em;
+        }
+    }
+    h2 {
+        @extend %contentHeader;
+    }
+    
+    div#introPanel {
+        @media #{$desktop}{
+            margin-bottom: 1em;
+        }
+        h2 {
+            border: none;
+            padding: 0;
+            margin-bottom: 0.2em;
+        }
+        li {
+            @media #{$desktop}{
+                float: left;
+                p {
+                    margin-left: 7em;
+                }
+            }
+            img {
+                float: left;
+                width: 48%;
+                max-width: 143px;
+                margin-right: 20px;
+            }
+        }
+    }
+    
+    #news {
+        p {
+           font-size: 0.9em;
+        }
+    }
+}
+
+/*---------- content searches --------*/
+div#contentSearches {
+    @media #{$desktop}{
+        border: 2px solid #E5961D;
+        width: 28.6em;
+        height: 24em;
+        background-color: #fff;
+    }
+    ul {
+        @media #{$desktop}{
+            position: relative;
+            &:first-child {
+                li {
+                    > div {
+                        position: absolute;
+                        top: -9999em;
+                        left: -9999em;
+                        padding: 20px;
+                        background-color: #fff;
+                        height: 17.5em;
+                    }
+                    &:hover,
+                    &.selected {
+                        > div {
+                            top: 3.2em;
+                            left: 0;
+                        }
+                    }
+
+                }
+
+            }
+        }
+        li {
+            background-color: #fff;
+            @media #{$desktop}{
+                float: left;
+                width: 100%;
+                background-color: #E5961D;
+                &:hover h2,
+                &.selected h2 {
+                    color: #fff;
+                }
+    
+                
+                h2 {
+                    border: none;
+                    text-align: center;
+                    padding: 7px 0 12px 0;
+                    color: #fff;
+                    margin: 0;
+                }
+            }
+            
+        }
+    }
+    .borderradius & {
+        @media #{$desktop}{
+            @include border-radius(15px);
+            li { 
+                &#tab1 {
+                    @include border-radius-specific(10px, 10px, 0, 0);
+                }
+                //&#tab2 {
+                //    -moz-border-radius: 0 10px 0 0;
+                //    border-radius: 0 10px 0 0;
+                //}
+                
+            }
+            ul:first-child li {
+                margin-bottom: 1em;
+                @media #{$desktop}{
+                    margin-bottom: 0;
+                }
+            }
+        }
     }
 }
 

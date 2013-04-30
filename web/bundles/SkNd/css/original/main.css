@@ -739,6 +739,12 @@ a:hover {
   }
 }
 /********** FLASH MESSAGES ***********/
+@media only screen and (min-width: 600px) {
+  .flashMessages {
+    margin: -10px 0;
+    width: 65.2%;
+  }
+}
 .flashMessages ul {
   background-color: #C9E9A9;
   border: 1px solid #86b121;
@@ -755,6 +761,17 @@ a:hover {
   -moz-box-shadow: 2px 2px 0 0 rgba(15, 15, 15, 0.2);
   -webkit-box-shadow: 2px 2px 0 0 rgba(15, 15, 15, 0.2);
   box-shadow: 2px 2px 0 0 rgba(15, 15, 15, 0.2);
+}
+
+.drop-down {
+  position: absolute;
+  left: -9999em;
+}
+@media only screen and (min-width: 600px) {
+  .drop-down {
+    position: static;
+    left: auto;
+  }
 }
 
 /*----- all typography related styles ----------*/
@@ -1044,6 +1061,12 @@ body {
   }
 }
 
+div#wrapper h3, div#content h1, div#content h2 {
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid #e5961d;
+  margin-bottom: 0.3em;
+}
+
 div#wrapper {
   min-width: 250px;
   border: 2px solid #e5961d;
@@ -1055,6 +1078,9 @@ div#wrapper {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+}
+div#wrapper h3 {
+  border: none;
 }
 @media only screen and (min-width: 600px) {
   div#wrapper {
@@ -1353,6 +1379,119 @@ ul#loginPanel li ul a {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+  }
+}
+
+/********** CONTENT ***********/
+div#content {
+  margin: 0 0 20px 0;
+}
+@media only screen and (min-width: 600px) {
+  div#content {
+    position: relative;
+    z-index: 1;
+    width: 95.9%;
+    margin: 20px;
+  }
+}
+@media only screen and (min-width: 600px) {
+  div#content h1 {
+    line-height: 1.3em;
+    margin: 5px 0 15px 10em;
+  }
+}
+@media only screen and (min-width: 600px) {
+  div#content div#introPanel {
+    margin-bottom: 1em;
+  }
+}
+div#content div#introPanel h2 {
+  border: none;
+  padding: 0;
+  margin-bottom: 0.2em;
+}
+@media only screen and (min-width: 600px) {
+  div#content div#introPanel li {
+    float: left;
+  }
+  div#content div#introPanel li p {
+    margin-left: 7em;
+  }
+}
+div#content div#introPanel li img {
+  float: left;
+  width: 48%;
+  max-width: 143px;
+  margin-right: 20px;
+}
+div#content #news p {
+  font-size: 0.9em;
+}
+
+/*---------- content searches --------*/
+@media only screen and (min-width: 600px) {
+  div#contentSearches {
+    border: 2px solid #e5961d;
+    width: 28.6em;
+    height: 24em;
+    background-color: #fff;
+  }
+}
+@media only screen and (min-width: 600px) {
+  div#contentSearches ul {
+    position: relative;
+  }
+  div#contentSearches ul:first-child li > div {
+    position: absolute;
+    top: -9999em;
+    left: -9999em;
+    padding: 20px;
+    background-color: #fff;
+    height: 17.5em;
+  }
+  div#contentSearches ul:first-child li:hover > div, div#contentSearches ul:first-child li.selected > div {
+    top: 3.2em;
+    left: 0;
+  }
+}
+div#contentSearches ul li {
+  background-color: #fff;
+}
+@media only screen and (min-width: 600px) {
+  div#contentSearches ul li {
+    float: left;
+    width: 100%;
+    background-color: #E5961D;
+  }
+  div#contentSearches ul li:hover h2, div#contentSearches ul li.selected h2 {
+    color: #fff;
+  }
+  div#contentSearches ul li h2 {
+    border: none;
+    text-align: center;
+    padding: 7px 0 12px 0;
+    color: #fff;
+    margin: 0;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .borderradius div#contentSearches {
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+  }
+  .borderradius div#contentSearches li#tab1 {
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
+  }
+  .borderradius div#contentSearches ul:first-child li {
+    margin-bottom: 1em;
+  }
+}
+@media only screen and (min-width: 600px) and (min-width: 600px) {
+  .borderradius div#contentSearches ul:first-child li {
+    margin-bottom: 0;
   }
 }
 

@@ -12,6 +12,12 @@
     border-radius: $radius;
 }
 
+@mixin border-radius-specific ($tl, $tr, $br, $bl){
+    -webkit-border-radius: $tl $tr $br $bl;
+    -moz-border-radius: $tl $tr $br $bl;
+    border-radius: $tl $tr $br $bl;
+} 
+
 @mixin box-shadow($x, $y, $blur, $spread, $rgba, $inset: null){
     -moz-box-shadow: $inset $x $y $blur $spread $rgba;
     -webkit-box-shadow: $inset $x $y $spread $blur $rgba;

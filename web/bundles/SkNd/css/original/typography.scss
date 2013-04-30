@@ -1,3 +1,5 @@
+$desktop: "only screen and (min-width: 600px)";
+
 /*----- all typography related styles ----------*/
 /*
 150% is the ideal line-height value
@@ -75,8 +77,6 @@ h5, h6 {
    font-size: 1.125em; 
    line-height: 1.35em;
 }
-
-
 
 form {
     select, input, textarea {
