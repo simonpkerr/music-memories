@@ -1,0 +1,42 @@
+/*
+    Document   : _mixins
+    Created on : 07-Feb-2013, 16:00:13
+    Author     : simon kerr
+    Description:
+    mixins to avoid vendor prefixes.
+*/
+
+@mixin border-radius( $radius: 3px ) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin box-shadow($x, $y, $blur, $spread, $rgba, $inset: null){
+    -moz-box-shadow: $inset $x $y $blur $spread $rgba;
+    -webkit-box-shadow: $inset $x $y $spread $blur $rgba;
+    box-shadow: $inset $x $y $blur $spread $rgba; 
+}
+
+@mixin css-gradient($bottomColour, $topColour, $fallbackColour) {
+    background-color: $fallbackColour;
+    
+    /* Safari 4-5, Chrome 1-9 */ 
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($bottomColour), to($topColour)); 
+    /* Safari 5.1, Chrome 10+ */ 
+    background: -webkit-linear-gradient(top, $bottomColour, $topColour); 
+    /* Firefox 3.6+ */ 
+    background: -moz-linear-gradient(top, $bottomColour, $topColour);
+    /* IE 10 */ 
+    background: -ms-linear-gradient(top, $bottomColour, $topColour); 
+    /* Opera 11.10+ */ 
+    background: -o-linear-gradient(top, $bottomColour, $topColour);
+    /*W3C*/
+    background-image: linear-gradient(0deg,$bottomColour 0%, $topColour 100%);
+    
+    /*IE6-9*/
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr="+$bottomColour+",endColorstr="+$topColour+",GradientType=0)";
+    filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr="+$bottomColour+",endColorstr="+$topColour+",GradientType=0)";
+    
+    
+}

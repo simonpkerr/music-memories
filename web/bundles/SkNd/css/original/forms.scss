@@ -1,15 +1,15 @@
-include "mixins.scss";
+@import "mixins";
 
 /********** FORM ELEMENT GENERICS ***********/
 form {
     fieldset {
         border: 1px solid #7AA4E2;
         padding: 1em;
-
+        
         > div {
             padding-top: 0.5em;    
         }
-
+        
         legend {
             font-size: 0.8em;
             font-style: italic;
@@ -32,38 +32,36 @@ form {
         padding: 7px 5px;
         font-size: 1em;
         width: 100%;
-
+        
         &:focus {
             border: 1px solid #E5961D;
         }
     }
-
+    
     input {
         &[type="text"],
         &[type="email"],
-        &[type="password"]
-        {
+        &[type="password"] {
             width: 90%;
         }
         &[type="submit"],
-        &#_submit
-        {
+        &#_submit {
             font-size: 1em;
             margin-top: 0.2em;
             border: 2px solid #fff;
             width: 100%;
         }
     }
-
+    
     div.date_widget select {
         margin-right: 1px;
         width: 30%;
     }
-
+    
     div.error input {
         border: 1px solid #dd0000;
     }
-
+    
 }
 
 .borderradius {
@@ -71,15 +69,11 @@ form {
         select,
         input,
         fieldset,
-        textarea
-        {
-            //mixin for border radius
-            -moz-border-radius: 5px;
-            -webkit-border-radius: 5px;
-            border-radius: 5px;
+        textarea {
+            @include border-radius(5px);
         }    
+    }
 }
-
 
 span {
     .required {
@@ -100,7 +94,7 @@ ul.form-errors {
     clear: both;
     font-size: 0.85em;
     margin: 0 0 5px;
-
+    
     li {
         color: #dd0000;
     }
@@ -120,11 +114,10 @@ input[type="submit"] {
     padding: 5px 7px;
     text-decoration: none;
     text-align: center;
-
+    
     &:hover,
-    .selected,
+    &.selected,
     {
-        //maybe use a variable here since its used numerous times
         background-color: #5174A5;
         background-image: none;
     }
@@ -144,8 +137,8 @@ a.button {
     &:visited,
     &:hover,
     &:active {
-       color: #fff;
-       text-decoration: none;
+        color: #fff;
+        text-decoration: none;
     }    
 }
 
@@ -155,42 +148,17 @@ a.button {
     .blue,
     input#_submit {
         //use mixin
-        background-image: linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
-        background-image: -o-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
-        background-image: -moz-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
-        background-image: -webkit-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
-        background-image: -ms-linear-gradient(top, rgb(165,190,222) 0%, rgb(110,152,215) 100%);
-
-        background-image: -webkit-gradient(
-                linear,
-                left top,
-                left bottom,
-                color-stop(0, rgb(165,190,222)),
-                color-stop(1, rgb(110,152,215))
-        );
+        @include css-gradient(rgb(165,190,222),rgb(110,152,215),rgb(165,190,222));
     }
-
+    
     .orange {
-        background-image: linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
-        background-image: -o-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
-        background-image: -moz-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
-        background-image: -webkit-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33) 100%);
-        background-image: -ms-linear-gradient(top, rgb(245,146,54) 0%, rgb(245,118,33)  100%);
-
-        background-image: -webkit-gradient(
-                linear,
-                left top,
-                left bottom,
-                color-stop(0, rgb(245,146,54)),
-                color-stop(1, rgb(245,118,33))
-        );
-
+        @include css-gradient(rgb(245,146,54),rgb(245,118,33),rgb(245,146,54));
         &:hover
         {
             background-color: #E05316;
             background-image: none;
         }
-
+        
     }
 }
 
@@ -198,19 +166,14 @@ a.button {
     .button,
     input#_submit,
     input[type="submit"]{
-        //use mixin
-        -moz-box-shadow: 0 0 5px rgba(15,15,15,0.5);
-        -webkit-box-shadow: 0 0 5px rgba(15,15,15,0.5);
-        box-shadow: 0 0 5px rgba(15,15,15,0.5);
+        @include box-shadow(0, 0, 5px, 0, rgba(15, 15, 15, 0.5));
     }
-
+    
     .button:hover,
     .selected,
     input#_submit:hover,
-    input[type="submit"]:hover{
-        -moz-box-shadow: 0 0 5px rgba(15,15,15,0);
-        -webkit-box-shadow: 0 0 5px rgba(15,15,15,0);
-        box-shadow: 0 0 5px rgba(15,15,15,0);
+    input[type="submit"]:hover {
+        @include box-shadow(0, 0, 5px, 0, rgba(15, 15, 15, 0));
     }    
 }
 
@@ -218,8 +181,7 @@ a.button {
     .button,
     .basic-button,
     input#_submit,
-    input[type="submit"]{
-        -moz-border-radius: 10px;
-        border-radius: 10px;
+    input[type="submit"] {
+        @include border-radius(10px);
     }    
 }
