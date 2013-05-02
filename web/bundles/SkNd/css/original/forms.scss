@@ -1,4 +1,5 @@
 @import "mixins";
+$desktop: "only screen and (min-width: 600px)";
 
 /********** FORM ELEMENT GENERICS ***********/
 form {
@@ -18,6 +19,7 @@ form {
             color: #3A6289;
         }
     }
+    
     label {
         font-size: 0.85em;
         line-height: 1.2em;
@@ -43,6 +45,9 @@ form {
         &[type="email"],
         &[type="password"] {
             width: 90%;
+            @media #{$desktop}{
+                width: 95%;
+            }
         }
         &[type="submit"],
         &#_submit {
@@ -60,6 +65,12 @@ form {
     
     div.error input {
         border: 1px solid #dd0000;
+    }
+    
+    .form-errors {
+        @media #{$desktop}{
+            margin: 0 0 3px 10.5em;
+        }
     }
     
 }
@@ -185,3 +196,6 @@ a.button {
         @include border-radius(10px);
     }    
 }
+
+
+/*-------- FORMS IN CONTENT -------*/

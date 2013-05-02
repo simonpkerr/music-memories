@@ -891,6 +891,11 @@ form select:focus, form input:focus, form textarea:focus {
 form input[type="text"], form input[type="email"], form input[type="password"] {
   width: 90%;
 }
+@media only screen and (min-width: 600px) {
+  form input[type="text"], form input[type="email"], form input[type="password"] {
+    width: 95%;
+  }
+}
 form input[type="submit"], form input#_submit {
   font-size: 1em;
   margin-top: 0.2em;
@@ -903,6 +908,11 @@ form div.date_widget select {
 }
 form div.error input {
   border: 1px solid #dd0000;
+}
+@media only screen and (min-width: 600px) {
+  form .form-errors {
+    margin: 0 0 3px 10.5em;
+  }
 }
 
 .borderradius form select,
