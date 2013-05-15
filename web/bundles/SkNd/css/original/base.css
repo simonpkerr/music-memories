@@ -161,9 +161,9 @@ div#introPanel h2 {
     margin-bottom: 0.2em;
 }
 
-#news p {
+/*#news p {
     font-size: 0.9em;
-}
+}*/
 
 .drop-down {
     position: absolute;
@@ -171,36 +171,36 @@ div#introPanel h2 {
 }
 
 /*---------- content searches --------*/
-div#contentSearches li {
+/*div#contentSearches li {
     background-color: #fff;
-}
+}*/
 
-.borderradius div#contentSearches ul:first-child li {
+/*.borderradius div#contentSearches ul:first-child li {
     margin-bottom: 1em;
-}
+}*/
 
 /*---------- profile page --------*/
-div.fos_user_user_show dl {
+/*div.fos_user_user_show dl {
     border: 1px solid #7AA4E2;
     padding: 20px;
-}
-.borderradius div.fos_user_user_show dl {
+}*/
+/*.borderradius div.fos_user_user_show dl {
     -moz-border-radius: 5px;
     border-radius: 5px;
-}
+}*/
 
-div#content dt {
+/*div#content dt {
     font-size: 0.8em;
     margin-bottom: 3px;
 }
 div#content dd {
-   /* font-weight: bold;*/
+  
     margin-bottom: 1em;
-}
+}*/
 
 
 /*----------- listings ---------*/
-div.pagingControls {
+/*div.pagingControls {
     margin-bottom: 20px;
 }
 
@@ -208,70 +208,70 @@ div.pagingControls p {
     margin-bottom: 0.5em;
     font-weight: bold;
     font-size: 0.7em;
-}
+}*/
 
-div.pagingControls li {
+/*div.pagingControls li {
     display: inline;
-}
+}*/
 
-div.pagingControls a {
+/*div.pagingControls a {
     float: left;
     width: auto;
     padding: 3px 8px;
     margin: 0 5px 0 0;
-}
+}*/
 
-ul#listings {
+/*ul#listings {
     margin-top: 20px;
-}
+}*/
 
-ul#listings > li {
+/*ul#listings > li {
     border: 2px solid #ACC5EC;
     background: #fff;
     margin-bottom: 10px;
-}
+}*/
 
-ul#listings > li:hover {
+/*ul#listings > li:hover {
     background-color: #E4EAF1;
     border: 2px solid #6A99DF;
-}
+}*/
 
-.borderradius ul#listings > li,
+/*.borderradius ul#listings > li,
 .borderradius ul#memoryWallGallery li
  {
     -moz-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
-}
+}*/
 
-ul.actions > li ul {
+/*ul.actions > li ul {
     padding: 10px
-}
+}*/
 
-.borderradius ul.actions > li ul {
+/*.borderradius ul.actions > li ul {
     -moz-border-radius: 6px 0 0 6px;
     border-radius: 6px 0 0 6px;
-}
+}*/
 
-ul#listings > li > div {
+/*ul#listings > li > div {
     padding: 20px;
-}
+}*/
 
-ul#listings > li img {
+/*ul#listings > li img {
     float: left;
     margin: 0 20px 20px 0;
-}
+}*/
 
-ul#listings > li > ul.actions {
+/*ul#listings > li > ul.actions {
     clear: both;
-}
+}*/
 
-ul#listings ul.actions > li {
+/*ul#listings ul.actions > li {
     background-color: #ACC5EC;
     margin-bottom: 5px;
     padding: 5px 10px;
-}
+}*/
 
-ul.actions > li > a {
+/*ul.actions > li > a {
     display: block;
     font-weight: bold;
     color: #fff;
@@ -280,13 +280,13 @@ ul.actions > li > a {
     text-transform: lowercase;
     background-position: -9999px top;
     background-repeat: no-repeat;
-}
+}*/
 
-.cssgradients ul.actions > li > a {
+/*.cssgradients ul.actions > li > a {
     background-position: left 50%;
-}
+}*/
 
-ul.actions > li > a.button {
+/*ul.actions > li > a.button {
     display: block;
     height: auto;
     margin: 0 0 10px 0;
@@ -294,62 +294,63 @@ ul.actions > li > a.button {
     width: auto;
     text-align: left;
     font-size: 0.9em;
-}
+}*/
 
-ul.actions > li > a.button:hover {
+/*ul.actions > li > a.button:hover {
     background-image: none;
-}
+}*/
 
 
-ul#listings ul.actions > li > a,
+/*ul#listings ul.actions > li > a,
 ul#listings ul.actions > li > a:hover {
     background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
-}
+}*/
 
-ul#listings ul.actions > li.explore-it > a,
+/*ul#listings ul.actions > li.explore-it > a,
 ul#listings ul.actions > li.explore-it > a:hover{
     background-position: 0 -145px;
-}
+}*/
 
-ul#listings ul.actions > li.add-it > a,
+/*ul#listings ul.actions > li.add-it > a,
 ul#listings ul.actions > li.add-it > a:hover
 {
     z-index: 2;
     position: relative;
     background-position: 0 -176px;
-}
+}*/
 
-ul#listings ul.actions > li.buy-it > a,
+/*ul#listings ul.actions > li.buy-it > a,
 ul#listings ul.actions > li.buy-it > a:hover {
     background-position: 0 -208px;
-}
+}*/
 
-ul.actions li a > span {
+/*ul.actions li a > span {
     background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
     background-repeat: no-repeat;
     display: block;
     height: 24px;
     padding-left: 40px;
-}
+}*/
 
-ul.actions > li ul a {
+/*ul.actions > li ul a {
     color: #fff;
-}
+}*/
 
-ul.actions li.explore-it a > span,
+/*ul.actions li.explore-it a > span,
 ul.actions li.explore-it a:hover > span
 {
     background-position: 0 -147px;
-}
+}*/
 
-ul.actions li.add-it a > span,
+/*ul.actions li.add-it a > span,
 ul.actions li.add-it a:hover > span{
     background-position: 0 -178px;
-}
-ul.actions li.buy-it a > span,
+}*/
+
+/*ul.actions li.buy-it a > span,
 ul.actions li.buy-it a:hover > span{
     background-position: 0 -210px;
-}
+}*/
 
 ul.actions > li.edit-it > a span,
 ul.actions > li.edit-it > a:hover span{

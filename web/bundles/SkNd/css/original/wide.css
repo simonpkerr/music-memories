@@ -356,11 +356,11 @@ div#contentSearches ul {
     position: relative;
 }
 
-div#contentSearches li {
+/*div#contentSearches li {
     float: left;
     width: 100%;
     background-color: #E5961D;
-}
+}*/
 
 /*div#contentSearches li:hover,
 div#contentSearches li.selected {
@@ -411,148 +411,149 @@ div#contentSearches ul:first-child li > div {
     height: 17.5em;
 }
 
-div#contentSearches ul:first-child li:hover > div,
+/*div#contentSearches ul:first-child li:hover > div,
 div#contentSearches ul:first-child li.selected > div
 {
     top: 3.2em;
     left: 0;
-}
+}*/
 
 /*--- ALL CONTENT FORMS ---*/
-ul.form-errors {
+/*ul.form-errors {
     margin: 0 0 3px 10.5em;
-}
+}*/
 
-form input[type="text"] {
+/*form input[type="text"] {
     width: 95%;
-}
+}*/
 
-div#content form label {
+/*div#content form label {
     float: left;
     text-align: right;
     width: 9em;
     margin: 0 20px 0 0;
-}
+}*/
 
-div#content form select {
+/*div#content form select {
     width: 13.75em;
-}
+}*/
 
-div#content form div.date_widget {
+/*div#content form div.date_widget {
     float: left;
-}
+}*/
 
-div#content form div.date_widget select {
+/*div#content form div.date_widget select {
     width: 4.3em;
     margin-right: 1px;
-}
+}*/
 
-div#content form input,
+/*div#content form input,
 div#content form textarea{
     width: 13em;
-}
+}*/
 
-div#content input[type="submit"],
+/*div#content input[type="submit"],
 div#content input#_submit
-/*div#content .button*/ {
+{
     width: 14em;
     margin-left: 8.9em;
     font-weight: bold;
-}
+}*/
 
 /*----------- news ---------*/
-div#news {
+/*div#news {
     width: 48.7%;
     margin-top: 0.5em;
 }
 
 div#news li span {
     font-size: 0.85em;
-}
+}*/
 
 /*---------- profile page --------*/
 
 /*----------- admins dl's ---------*/
-dt,
+/*dt,
 dd {
     margin-bottom: 1em;
-}
+}*/
 
-dt {
+/*dt {
     float: left;
     margin-right: 20px;
     text-align: right;
     width: 22em;
-}
+}*/
 
 /*----------- listings and memory wall index ---------*/
 
-div#searchResults ul#listings {
+/*div#searchResults ul#listings {
     margin: 20px 0 0 -20px;
-}
+}*/
 
-ul#listings > li
+/*ul#listings > li
 {
     position: relative;
     float: left;
     height: 12.5em;
     margin: 0 0 20px 20px;
-}
+}*/
 
-ul#listings > li > div {
+/*ul#listings > li > div {
     float: left;
     width: 75%;  
     
-}
+}*/
 
-ul#listings > li > ul.actions {
+/*ul#listings > li > ul.actions {
     height: 12.5em;
     float: right;
     width: 3.6em;
     text-align: center;
     clear: none;
-}
+}*/
 
-ul#listings ul.actions > li {
+/*ul#listings ul.actions > li {
     border-top: 1px solid #FFFFFF;
     padding: 13px 0 23px 0;
     margin: 0;
-}
+}*/
 
-ul#listings ul.actions > li:hover {
+/*ul#listings ul.actions > li:hover {
     background-color: #6A99DF;
-}
+}*/
 
-ul#listings ul.actions > li:first-child {
+/*ul#listings ul.actions > li:first-child {
     border-top: none;
-}
+}*/
 
-.borderradius ul#listings ul.actions > li.top-action {
+/*.borderradius ul#listings ul.actions > li.top-action {
     -moz-border-radius: 0 6px 0 0;
     border-radius: 0 6px 0 0;
-}
-.borderradius ul#listings ul.actions > li.bottom-action {
+}*/
+
+/*.borderradius ul#listings ul.actions > li.bottom-action {
     -moz-border-radius: 0 0 6px 0;
     border-radius: 0 0 6px 0;
-}
+}*/
 
-div#recommendations ul#memoryWallGallery > li {
+/*div#recommendations ul#memoryWallGallery > li {
     display: block;
     height: auto;
     margin: 0 0 20px;
     padding: 10px 15px;
     width: 89%;
-}
+}*/
 
-ul.actions > li > a {
+/*ul.actions > li > a {
     height: 0.45em;
     margin-top: 0;
     padding: 25px 0 0;
     width: 5em;
     font-size: 0.7em;
-}
+}*/
 
-ul.actions > li ul {
+/*ul.actions > li ul {
     position: absolute;
     left: -9999em;
     top: -9999em;
@@ -561,27 +562,27 @@ ul.actions > li ul {
     width: 78.8%;
     height: 80%;
     text-align: left;
-}
+}*/
 
 
 
-ul#listings ul.actions > li.explore-it > a,
+/*ul#listings ul.actions > li.explore-it > a,
 ul#listings ul.actions > li.explore-it > a:hover{
     background-position: 10px -145px;
-}
+}*/
 
-ul#listings ul.actions > li.add-it > a,
+/*ul#listings ul.actions > li.add-it > a,
 ul#listings ul.actions > li.add-it > a:hover
 {
     z-index: 2;
     position: relative;
     background-position: 10px -178px;
-}
+}*/
 
-ul#listings ul.actions > li.buy-it > a,
+/*ul#listings ul.actions > li.buy-it > a,
 ul#listings ul.actions > li.buy-it > a:hover {
     background-position: 10px -210px;
-}
+}*/
 
 
 ul.actions > li:hover ul {

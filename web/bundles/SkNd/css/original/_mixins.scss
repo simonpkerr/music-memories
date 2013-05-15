@@ -1,11 +1,8 @@
-/*
-    Document   : _mixins
-    Created on : 07-Feb-2013, 16:00:13
-    Author     : simon kerr
-    Description:
-    mixins to avoid vendor prefixes.
-*/
-
+//    Document   : _mixins
+//    Created on : 07-Feb-2013, 16:00:13
+//    Author     : simon kerr
+//    Description:
+//    mixins to avoid vendor prefixes.
 @mixin border-radius( $radius: 3px ) {
     -webkit-border-radius: $radius;
     -moz-border-radius: $radius;

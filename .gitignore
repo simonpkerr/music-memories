@@ -12,7 +12,10 @@ vendor/*
 */cache/*
 web/uploads/*
 web/bundles/*
+
+web/bundles/SkNd/css/original/.sass-cache
 !web/bundles/SkNd
+
 
 # Configuration files
 app/config/parameters.yml

@@ -185,7 +185,6 @@ a#siteLogo img {
 /*------ header drop down panels ------------*/
 
 @media #{$desktop}{
-    //has to be in the desktop media otherwise won't be recognized
     %hiddenPanel {
         position: absolute;
         top: -9999em;
@@ -371,37 +370,51 @@ div#content {
     h2 {
         @extend %contentHeader;
     }
+	
+	dl {
+		
+	}
     
-    div#introPanel {
-        @media #{$desktop}{
-            margin-bottom: 1em;
-        }
-        h2 {
-            border: none;
-            padding: 0;
-            margin-bottom: 0.2em;
-        }
-        li {
-            @media #{$desktop}{
-                float: left;
-                p {
-                    margin-left: 7em;
-                }
-            }
-            img {
-                float: left;
-                width: 48%;
-                max-width: 143px;
-                margin-right: 20px;
-            }
-        }
-    }
+	dt {
+		font-size: 0.8em;
+    	margin-bottom: 3px;
+		@media #{$desktop}{
+			margin: 0 20px 1em 0;
+			float: left;
+			text-align: right;
+			width: 22em;
+		}
+	}
     
-    #news {
-        p {
-           font-size: 0.9em;
-        }
-    }
+	dd {
+		margin-bottom: 1em;
+	}
+
+}
+
+div#introPanel {
+	@media #{$desktop}{
+		margin-bottom: 1em;
+	}
+	h2 {
+		border: none;
+		padding: 0;
+		margin-bottom: 0.2em;
+	}
+	li {
+		@media #{$desktop}{
+			float: left;
+			p {
+				margin-left: 7em;
+			}
+		}
+		img {
+			float: left;
+			width: 48%;
+			max-width: 143px;
+			margin-right: 20px;
+		}
+	}
 }
 
 /*---------- content searches --------*/
@@ -483,6 +496,254 @@ div#contentSearches {
     }
 }
 
+/*--------- news --------*/
+#news {
+	@media #{$desktop}{
+		width: 48.7%;
+    	margin-top: 0.5em;
+		li span {
+			font-size: 0.85em;
+		}
+	}
+	p {
+		font-size: 0.9em;
+	}
+}
 
+
+/*---------- profile page --------*/
+div.fos_user_user_show {
+	dl {
+		border: 1px solid #7AA4E2;
+		padding: 20px;
+		
+		.borderradius & {
+			@include border-radius(5px);
+		}
+	}
+}
+
+/*------------- listings --------------*/
+div.pagingControls {
+    margin-bottom: 20px;
+	p {
+		margin-bottom: 0.5em;
+		font-weight: bold;
+		font-size: 0.7em;
+	}
+	
+	li {
+		display: inline;
+	}
+	
+	a {
+		float: left;
+		width: auto;
+		padding: 3px 8px;
+		margin: 0 5px 0 0;
+	}
+}
+
+ul#listings {
+    margin-top: 20px;
+	@media #{$desktop}{
+		margin: 20px 0 0 -20px;
+	}
+	> li {
+		border: 2px solid #ACC5EC;
+		background: #fff;
+		margin-bottom: 10px;
+		&:hover {
+			background-color: #E4EAF1;
+    		border: 2px solid #6A99DF;
+		}
+		.borderradius & {
+			@include border-radius(10px);
+		}
+		@media #{$desktop}{
+			position: relative;
+			float: left;
+			height: 12.5em;
+			margin: 0 0 20px 20px;
+			> div {
+				float: left;
+				width: 75%;  	
+			}
+		}
+		
+		ul.actions {
+			clear: both;
+			@media #{$desktop}{
+				height: 12.5em;
+				float: right;
+				width: 3.6em;
+				text-align: center;
+				clear: none;
+			}
+			
+			> li {
+				background-color: #ACC5EC;
+				margin-bottom: 5px;
+				padding: 5px 10px;
+				@media #{$desktop}{
+					border-top: 1px solid #FFFFFF;
+					padding: 13px 0 23px 0;
+					margin: 0;
+					&:hover {
+						background-color: #6A99DF;
+					}
+					&:first-child {
+						border-top: none;
+					}
+					
+					.borderradius &.top-action {
+						@include border-radius-specific(0,6px,0,0);
+					}
+					.borderradius &.bottom-action {
+						@include border-radius-specific(0,0,6px,0);
+					}	
+				}			
+				
+				> a {
+					display: block;
+					font-weight: bold;
+					color: #fff;
+					font-size: 1em;
+					padding: 5px 0 5px 40px;
+					text-transform: lowercase;
+					background-position: -9999px top;
+					background-repeat: no-repeat;
+					background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
+					&:hover {
+						background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
+					}
+					
+					&.button {
+						display: block;
+						height: auto;
+						margin: 0 0 10px 0;
+						padding: 3px 5px;
+						width: auto;
+						text-align: left;
+						font-size: 0.9em;
+						
+						&:hover {
+							background-image: none;
+						}
+					}
+					
+					.cssgradients & {
+						background-position: left 50%;
+					}
+					
+					> span {
+						background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
+						background-repeat: no-repeat;
+						display: block;
+						height: 24px;
+						padding-left: 40px;
+					}
+					
+					@media #{$desktop}{
+						height: 0.45em;
+						margin-top: 0;
+						padding: 25px 0 0;
+						width: 5em;
+						font-size: 0.7em;
+					}
+					
+				}
+				
+				&.explore-it a,
+				&.explore-it a:hover {
+					background-position: 0 -145px;
+					@media #{$desktop}{
+						background-position: 10px -145px;	
+					}
+					> span {
+						background-position: 0 -147px;
+					}	
+				}
+
+				&.add-it a,
+				&.add-it a:hover {
+					z-index: 2;
+					position: relative;
+					background-position: 0 -176px;
+					@media #{$desktop}{
+						z-index: 2;
+						position: relative;
+						background-position: 10px -178px;
+					}
+					> span {
+						background-position: 0 -178px;
+					}
+				}
+				
+				&.buy-it a,
+				&.buy-it a:hover {
+					background-position: 0 -208px;
+					@media #{$desktop}{
+						background-position: 10px -210px;
+					}
+					> span {
+						background-position: 0 -210px;
+					}
+				}
+								
+				ul {
+					padding: 10px;
+					.borderradius & {
+						@include border-radius-specific(6px,0,0,6px);
+					}
+					
+					@media #{$desktop}{
+						position: absolute;
+						left: -9999em;
+						top: -9999em;
+						padding: 20px;
+						background-color: #6A99DF;
+						width: 78.8%;
+						height: 80%;
+						text-align: left;
+					}
+					
+					a {
+						color: #fff;
+					}
+					
+				}
+			}
+		}
+		
+		> div {
+			padding: 20px;
+		}
+		
+		img {
+			float: left;
+			margin: 0 20px 20px 0;
+		}
+	}
+}
+
+//div#recommendations {
+	
+//}
+
+ul#memoryWallGallery {
+	> li {
+		.borderradius & {
+			@include border-radius(10px);
+		}
+		@media #{$desktop}{
+			display: block;
+			height: auto;
+			margin: 0 0 20px;
+			padding: 10px 15px;
+			width: 89%;
+		}
+	}
+}
 
 @import "helpers.scss";

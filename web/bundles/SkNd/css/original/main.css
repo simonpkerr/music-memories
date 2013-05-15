@@ -5,13 +5,6 @@
     Description:
     Pulls in all the separate style sheets
 */
-/*
-    Document   : _mixins
-    Created on : 07-Feb-2013, 16:00:13
-    Author     : simon kerr
-    Description:
-    mixins to avoid vendor prefixes.
-*/
 /* normalize.css v1.1.1 | MIT License | git.io/normalize */
 /* ==========================================================================
    HTML5 display definitions
@@ -848,13 +841,6 @@ form select, form input, form textarea {
   font-family: Tahoma, sans-serif, Arial;
 }
 
-/*
-    Document   : _mixins
-    Created on : 07-Feb-2013, 16:00:13
-    Author     : simon kerr
-    Description:
-    mixins to avoid vendor prefixes.
-*/
 /********** FORM ELEMENT GENERICS ***********/
 form fieldset {
   border: 1px solid #7aa4e2;
@@ -878,23 +864,31 @@ form label {
   margin: 0 0 3px 0;
   width: 100%;
 }
-form select, form input, form textarea {
+@media only screen and (min-width: 600px) {
+  form label {
+    float: left;
+    text-align: right;
+    width: 9em;
+    margin: 0 20px 0 0;
+  }
+}
+form input, form textarea, form select {
   border: 1px solid #808da0;
   margin-bottom: 0.5em;
   padding: 7px 5px;
   font-size: 1em;
   width: 100%;
 }
-form select:focus, form input:focus, form textarea:focus {
+form input:focus, form textarea:focus, form select:focus {
   border: 1px solid #e5961d;
+}
+@media only screen and (min-width: 600px) {
+  form input[type="text"], form input[type="email"], form input[type="password"], form textarea, form select {
+    width: 13em;
+  }
 }
 form input[type="text"], form input[type="email"], form input[type="password"] {
   width: 90%;
-}
-@media only screen and (min-width: 600px) {
-  form input[type="text"], form input[type="email"], form input[type="password"] {
-    width: 95%;
-  }
 }
 form input[type="submit"], form input#_submit {
   font-size: 1em;
@@ -902,9 +896,27 @@ form input[type="submit"], form input#_submit {
   border: 2px solid white;
   width: 100%;
 }
+@media only screen and (min-width: 600px) {
+  form input[type="submit"], form input#_submit {
+    width: 14em;
+    margin-left: 8.9em;
+    font-weight: bold;
+  }
+}
+@media only screen and (min-width: 600px) {
+  form div.date_widget {
+    float: left;
+  }
+}
 form div.date_widget select {
   margin-right: 1px;
   width: 30%;
+}
+@media only screen and (min-width: 600px) {
+  form div.date_widget select {
+    width: 4.3em;
+    margin-right: 1px;
+  }
 }
 form div.error input {
   border: 1px solid #dd0000;
@@ -935,15 +947,6 @@ span .form-errors {
   color: #dd0000;
   font-size: 0.7em;
   margin-bottom: 2px;
-}
-
-ul.form-errors {
-  clear: both;
-  font-size: 0.85em;
-  margin: 0 0 5px;
-}
-ul.form-errors li {
-  color: #dd0000;
 }
 
 /********** BUTTON ELEMENTS ***********/
@@ -1410,32 +1413,45 @@ div#content {
     margin: 5px 0 15px 10em;
   }
 }
+div#content dt {
+  font-size: 0.8em;
+  margin-bottom: 3px;
+}
 @media only screen and (min-width: 600px) {
-  div#content div#introPanel {
+  div#content dt {
+    margin: 0 20px 1em 0;
+    float: left;
+    text-align: right;
+    width: 22em;
+  }
+}
+div#content dd {
+  margin-bottom: 1em;
+}
+
+@media only screen and (min-width: 600px) {
+  div#introPanel {
     margin-bottom: 1em;
   }
 }
-div#content div#introPanel h2 {
+div#introPanel h2 {
   border: none;
   padding: 0;
   margin-bottom: 0.2em;
 }
 @media only screen and (min-width: 600px) {
-  div#content div#introPanel li {
+  div#introPanel li {
     float: left;
   }
-  div#content div#introPanel li p {
+  div#introPanel li p {
     margin-left: 7em;
   }
 }
-div#content div#introPanel li img {
+div#introPanel li img {
   float: left;
   width: 48%;
   max-width: 143px;
   margin-right: 20px;
-}
-div#content #news p {
-  font-size: 0.9em;
 }
 
 /*---------- content searches --------*/
@@ -1502,6 +1518,252 @@ div#contentSearches ul li {
 @media only screen and (min-width: 600px) and (min-width: 600px) {
   .borderradius div#contentSearches ul:first-child li {
     margin-bottom: 0;
+  }
+}
+
+/*--------- news --------*/
+@media only screen and (min-width: 600px) {
+  #news {
+    width: 48.7%;
+    margin-top: 0.5em;
+  }
+  #news li span {
+    font-size: 0.85em;
+  }
+}
+#news p {
+  font-size: 0.9em;
+}
+
+/*---------- profile page --------*/
+div.fos_user_user_show dl {
+  border: 1px solid #7aa4e2;
+  padding: 20px;
+}
+.borderradius div.fos_user_user_show dl {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+/*------------- listings --------------*/
+div.pagingControls {
+  margin-bottom: 20px;
+}
+div.pagingControls p {
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  font-size: 0.7em;
+}
+div.pagingControls li {
+  display: inline;
+}
+div.pagingControls a {
+  float: left;
+  width: auto;
+  padding: 3px 8px;
+  margin: 0 5px 0 0;
+}
+
+ul#listings {
+  margin-top: 20px;
+}
+@media only screen and (min-width: 600px) {
+  ul#listings {
+    margin: 20px 0 0 -20px;
+  }
+}
+ul#listings > li {
+  border: 2px solid #acc5ec;
+  background: #fff;
+  margin-bottom: 10px;
+}
+ul#listings > li:hover {
+  background-color: #E4EAF1;
+  border: 2px solid #6a99df;
+}
+.borderradius ul#listings > li {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+@media only screen and (min-width: 600px) {
+  ul#listings > li {
+    position: relative;
+    float: left;
+    height: 12.5em;
+    margin: 0 0 20px 20px;
+  }
+  ul#listings > li > div {
+    float: left;
+    width: 75%;
+  }
+}
+ul#listings > li ul.actions {
+  clear: both;
+}
+@media only screen and (min-width: 600px) {
+  ul#listings > li ul.actions {
+    height: 12.5em;
+    float: right;
+    width: 3.6em;
+    text-align: center;
+    clear: none;
+  }
+}
+ul#listings > li ul.actions > li {
+  background-color: #ACC5EC;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+}
+@media only screen and (min-width: 600px) {
+  ul#listings > li ul.actions > li {
+    border-top: 1px solid white;
+    padding: 13px 0 23px 0;
+    margin: 0;
+  }
+  ul#listings > li ul.actions > li:hover {
+    background-color: #6A99DF;
+  }
+  ul#listings > li ul.actions > li:first-child {
+    border-top: none;
+  }
+  .borderradius ul#listings > li ul.actions > li.top-action {
+    -webkit-border-radius: 0 6px 0 0;
+    -moz-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+  }
+  .borderradius ul#listings > li ul.actions > li.bottom-action {
+    -webkit-border-radius: 0 0 6px 0;
+    -moz-border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 0;
+  }
+}
+ul#listings > li ul.actions > li > a {
+  display: block;
+  font-weight: bold;
+  color: #fff;
+  font-size: 1em;
+  padding: 5px 0 5px 40px;
+  text-transform: lowercase;
+  background-position: -9999px top;
+  background-repeat: no-repeat;
+  background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
+}
+ul#listings > li ul.actions > li > a:hover {
+  background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
+}
+ul#listings > li ul.actions > li > a.button {
+  display: block;
+  height: auto;
+  margin: 0 0 10px 0;
+  padding: 3px 5px;
+  width: auto;
+  text-align: left;
+  font-size: 0.9em;
+}
+ul#listings > li ul.actions > li > a.button:hover {
+  background-image: none;
+}
+.cssgradients ul#listings > li ul.actions > li > a {
+  background-position: left 50%;
+}
+ul#listings > li ul.actions > li > a > span {
+  background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
+  background-repeat: no-repeat;
+  display: block;
+  height: 24px;
+  padding-left: 40px;
+}
+@media only screen and (min-width: 600px) {
+  ul#listings > li ul.actions > li > a {
+    height: 0.45em;
+    margin-top: 0;
+    padding: 25px 0 0;
+    width: 5em;
+    font-size: 0.7em;
+  }
+}
+ul#listings > li ul.actions > li.explore-it a, ul#listings > li ul.actions > li.explore-it a:hover {
+  background-position: 0 -145px;
+}
+@media only screen and (min-width: 600px) {
+  ul#listings > li ul.actions > li.explore-it a, ul#listings > li ul.actions > li.explore-it a:hover {
+    background-position: 10px -145px;
+  }
+}
+ul#listings > li ul.actions > li.explore-it a > span, ul#listings > li ul.actions > li.explore-it a:hover > span {
+  background-position: 0 -147px;
+}
+ul#listings > li ul.actions > li.add-it a, ul#listings > li ul.actions > li.add-it a:hover {
+  z-index: 2;
+  position: relative;
+  background-position: 0 -176px;
+}
+@media only screen and (min-width: 600px) {
+  ul#listings > li ul.actions > li.add-it a, ul#listings > li ul.actions > li.add-it a:hover {
+    z-index: 2;
+    position: relative;
+    background-position: 10px -178px;
+  }
+}
+ul#listings > li ul.actions > li.add-it a > span, ul#listings > li ul.actions > li.add-it a:hover > span {
+  background-position: 0 -178px;
+}
+ul#listings > li ul.actions > li.buy-it a, ul#listings > li ul.actions > li.buy-it a:hover {
+  background-position: 0 -208px;
+}
+@media only screen and (min-width: 600px) {
+  ul#listings > li ul.actions > li.buy-it a, ul#listings > li ul.actions > li.buy-it a:hover {
+    background-position: 10px -210px;
+  }
+}
+ul#listings > li ul.actions > li.buy-it a > span, ul#listings > li ul.actions > li.buy-it a:hover > span {
+  background-position: 0 -210px;
+}
+ul#listings > li ul.actions > li ul {
+  padding: 10px;
+}
+.borderradius ul#listings > li ul.actions > li ul {
+  -webkit-border-radius: 6px 0 0 6px;
+  -moz-border-radius: 6px 0 0 6px;
+  border-radius: 6px 0 0 6px;
+}
+@media only screen and (min-width: 600px) {
+  ul#listings > li ul.actions > li ul {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+    padding: 20px;
+    background-color: #6A99DF;
+    width: 78.8%;
+    height: 80%;
+    text-align: left;
+  }
+}
+ul#listings > li ul.actions > li ul a {
+  color: #fff;
+}
+ul#listings > li > div {
+  padding: 20px;
+}
+ul#listings > li img {
+  float: left;
+  margin: 0 20px 20px 0;
+}
+
+.borderradius ul#memoryWallGallery > li {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+@media only screen and (min-width: 600px) {
+  ul#memoryWallGallery > li {
+    display: block;
+    height: auto;
+    margin: 0 0 20px;
+    padding: 10px 15px;
+    width: 89%;
   }
 }
 
