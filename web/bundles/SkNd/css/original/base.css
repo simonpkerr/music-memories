@@ -352,40 +352,40 @@ ul.actions li.buy-it a:hover > span{
     background-position: 0 -210px;
 }*/
 
-ul.actions > li.edit-it > a span,
+/*ul.actions > li.edit-it > a span,
 ul.actions > li.edit-it > a:hover span{
     background-position: 0 -309px;    
-}
+}*/
 
-ul.actions > li.delete-it > a span,
+/*ul.actions > li.delete-it > a span,
 ul.actions > li.delete-it > a:hover span {
     background-position: 0 -345px;    
-}
+}*/
 
-ul.userMemoryWalls li a span {
+/*ul.userMemoryWalls li a span {
     background-image: none;
-}
+}*/
 
 
 /********** DETAILS **********/
 
-#itemOverview {
+/*#itemOverview {
     margin-top: 10px;
-}
+}*/
 
-#similarItems,
+/*#similarItems,
 #youtubeVideos {
     margin-top: 20px;
-}
+}*/
 
 
-#itemOverview > img,
+/*#itemOverview > img,
 #recommendations img,
-.mw-MediaResource img,
-img.mw-MediaResource {
+.mw-MediaResource img,*/
+/*img.mw-MediaResource {
     background-color: #E1E8F0;
     padding: 12px;
-}
+}*/
 
 .borderradius #itemOverview > img,
 .borderradius #recommendations img,

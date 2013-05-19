@@ -585,43 +585,43 @@ ul#listings ul.actions > li.buy-it > a:hover {
 }*/
 
 
-ul.actions > li:hover ul {
+/*ul.actions > li:hover ul {
     left: 0;
     top: 0;
-}
+}*/
 
-ul.actions > li ul .note {
+/*ul.actions > li ul .note {
    display: block;
    color: #fff;
        
-}
+}*/
 /* if no recommendations exist display each listing as half-width */
-div.full-width ul#listings > li {
+/*div.full-width ul#listings > li {
     width: 47.5%;
-}
+}*/
 
 /* if recommendations exist display each listing as 2/3 width */
-div.two-thirds-width ul#listings > li {
+/*div.two-thirds-width ul#listings > li {
     width: 96.6%;
-}
+}*/
 
 /* submenus on the 2/3s width listings panels */
-div.two-thirds-width ul#listings > li ul li ul {
+/*div.two-thirds-width ul#listings > li ul li ul {
     width: 84.1%;
-}
+}*/
     
 
 /********** DETAILS **********/
-#itemOverview {
+/*#itemOverview {
     position: relative;
-}
+}*/
 
-#itemOverview > img,
+/*#itemOverview > img,
 #recommendations img {  
     margin-right: 20px;
     float: left;
     max-width: 120px;
-}
+}*/
 
 #itemOverview ul.actions li > a{ 
     float: left;
