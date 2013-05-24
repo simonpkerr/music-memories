@@ -623,12 +623,12 @@ ul#listings ul.actions > li.buy-it > a:hover {
     max-width: 120px;
 }*/
 
-#itemOverview ul.actions li > a{ 
+/*#itemOverview ul.actions li > a{ 
     float: left;
     width: 90%;
-}
+}*/
 
-#itemOverview ul.actions > li ul {
+/*#itemOverview ul.actions > li ul {
     position: absolute;
     left: -9999em;
     top: -9999em;
@@ -638,67 +638,68 @@ ul#listings ul.actions > li.buy-it > a:hover {
     text-align: left;
     z-index: 1;
     height: auto;
-}
+}*/
 
-.borderradius #itemOverview ul.actions > li ul {
+/*.borderradius #itemOverview ul.actions > li ul {
     border-radius: 10px;
     -moz-border-radius: 10px;
-}
+}*/
 
-#itemOverview ul.actions > li:hover ul {
+/*#itemOverview ul.actions > li:hover ul {
     left: 0;
     top: 0;
-}
+}*/
 
-#recommendations li > a {
+/*#recommendations li > a {
     width: 10em;
-}
+}*/
 
-#recommendations li div {
+/*#recommendations li div {
     width: 8.5em;
     float: left;
-}
+}*/
 
-ul.userMemoryWalls li  {
+/*ul.userMemoryWalls li  {
     float: left;
     width: 100%;
-}
+}*/
 
 
 /*----- youtube player -----*/
-div#ytapiplayerContainer {
+/*div#ytapiplayerContainer {
     padding: 20px;
-    background-color: #E1E8F0;
-}
+    background-color: #E1E8F0
+}*/
 
-#youtubeVideos > ul {
+/*#youtubeVideos > ul {
     padding: 0;
     height: 19.3em;
     overflow: scroll;
     overflow-y: scroll;
     overflow-x: hidden;
-}
+}*/
 
-#youTubeCarousel > li {
+/*#youTubeCarousel > li {
     float: left;
     height: 8em;
     margin: 12px 15px 5px 0;
     padding: 5px 10px;
     width: 7em;
 }
+*/
 
-#youTubeCarousel img {
+/*#youTubeCarousel img {
     height: 6.5em;
-}
+}*/
 
-#youTubeCarousel a {
+/*#youTubeCarousel a {
     display: block;
     font-size: 0.8em;
     line-height: 1.1em;
     word-wrap: break-word;
-}
+}*/
 
-#youtubeVideos li ul.userMemoryWalls {
+/*#youtubeVideos li ul.userMemoryWalls {
     position: absolute;
     top: -9999em;
     height: 8em;
@@ -707,20 +708,20 @@ div#ytapiplayerContainer {
     padding: 5px;
     width: 7.5em;
     z-index: 1;
-}
+}*/
 
-#youTubeCarousel ul.actions {
+/*#youTubeCarousel ul.actions {
     position: absolute;
     right: -0.5em;
     top: -0.5em;
-}
+}*/
 
-#youtubeVideos ul.actions li:hover ul.userMemoryWalls {
+/*#youtubeVideos ul.actions li:hover ul.userMemoryWalls {
     right: 5px;
     top: 5px;
-}
+}*/
 
-#youTubeCarousel ul.actions > li > a {
+/*#youTubeCarousel ul.actions > li > a {
     background-position: 0 center;
     height: 2.2em;
     padding: 3px 0 0;
@@ -728,45 +729,45 @@ div#ytapiplayerContainer {
     width: 2.7em;
     position: relative;
     z-index: 2;
-}
+}*/
 
 /*#youTubeCarousel ul.actions > li > a span {
     background-image: none;
 }*/
 
-div#ytapiplayerContainer h4 {
+/*div#ytapiplayerContainer h4 {
     float: right;
     width: 7em;
     margin-left: 10px;
-}
+}*/
 
-#ytPlayer object,
+/*#ytPlayer object,
 #ytapiplayerContainer object {
     width: 420px;
-}
+}*/
 
 /*---------- MEMORY WALLS ---------*/
-ul#memoryWallGallery {
+/*ul#memoryWallGallery {
     margin: 20px 0 0 -20px;
-}
+}*/
 
-ul#memoryWallGallery > li {
+/*ul#memoryWallGallery > li {
     float: left;
     height: 12.5em;
     margin: 0 0 20px 20px;
     padding: 10px 15px;
     width: 27.7%;
-}
+}*/
 
-ul#memoryWallGallery li ul.actions li,
+/*ul#memoryWallGallery li ul.actions li,
 div#memoryWallContents ul.actions li {
     float: left;
     margin-right: 0.5em;
-}
+}*/
 
 /*------- memory wall details page --------*/
 
-div#memoryWallContents > div > ul {
+/*div#memoryWallContents > div > ul {
      margin: 0 0 0 -20px;
 }
 
@@ -776,36 +777,36 @@ li.mw-MediaResource {
     height: 15.5em;
     margin: 0 0 20px 20px;
     width: 43.1%;
-}
+}*/
 
-div#youtubeapiItems .mw-MediaResource {
+/*div#youtubeapiItems .mw-MediaResource {
     height: 12.5em;
-}
+}*/
 
-div#memoryWallContents li#ytPlayer {
+/*div#memoryWallContents li#ytPlayer {
     margin: 0 0 20px 20px;
     
-}
+}*/
 
-li.mw-MediaResource img,
+/*li.mw-MediaResource img,
 img.mw-MediaResource {
     float: left;
-}
+}*/
 
 
 /********** FOOTER ***********/
-.borderradius div#footer {
+/*.borderradius div#footer {
     -moz-border-radius: 0 0 10px 10px;
     border-radius: 0 0 10px 10px;
-}
+}*/
 
-div#footer ul:first-child > li {
+/*div#footer ul:first-child > li {
     float: left;
-    margin-bottom: 0;
-}
+    margin-bottom: 0
+}*/
 
-div#footer .right p {
+/*div#footer .right p {
     margin-left: 4.5em;
-}
+}*/
 
 }

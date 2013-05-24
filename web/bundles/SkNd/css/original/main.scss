@@ -6,9 +6,10 @@
     Pulls in all the separate style sheets
 */
 
+$desktop: "only screen and (min-width: 600px)";
 @import "mixins","normalize.scss","boilerplate.scss","generics.scss","typography.scss","forms.scss";
 //$tablet: "only screen and (min-width: 481px)";
-$desktop: "only screen and (min-width: 600px)";
+
 
 /*------ main styles for all width devices -----------*/
 body {
@@ -16,7 +17,7 @@ body {
     @media #{$desktop}{
         background: #CEDEE8 url("/SkNd/web/bundles/SkNd/images/bg-v2.jpg") 50% top no-repeat;    
         min-height: 623px;
-        padding: 0 3em;
+        padding: 4em 5em;
         
         .multiplebgs & {
             background-color: #CEDEE8;
@@ -51,10 +52,11 @@ div#wrapper {
     
     @media #{$desktop} {
         position: relative;
-        margin: 5em auto;
-        width: 61.3em; // equiv of 980px 
-        min-width: 740px;
-        max-width: 980px;
+        margin: 0 auto;
+        
+        //width: 61.3em; // equiv of 980px 
+        //min-width: 740px;
+        max-width: 1280px;
         padding: 0;
         border: 2px solid #E5961D;
         background-color: #fff;
@@ -68,8 +70,8 @@ div#wrapper {
 }
 
 /********** HEADER ***********/
-@media #{$desktop} {
-    div#header {
+div#header {
+    @media #{$desktop} {
         position: absolute;
         margin: -61px 0 0 0;
         width: 100%;
@@ -87,19 +89,23 @@ div#wrapper {
 
 /*------ sm sharing -----------*/
 div#sm-sharing {
-    position: absolute;
-    right: 0;
+    position: relative;
+    float: right;
+    margin: 0;
+    padding: 0;
+    width: 6em;
     @media #{$desktop} {
         float: none;
-        position: relative;
-        margin: 5em auto;
-        width: 61.3em; // equiv of 980px 
-        min-width: 740px;
-        max-width: 980px;   
+        margin: 0 auto;
+        width: 100%;
+        //width: 61.3em; // equiv of 980px 
+        //min-width: 740px;
+        max-width: 1280px;   
     }
     
     ul {
         margin: 5px 15px 0 0;
+        padding: 0;
         @media #{$desktop} {
             position: absolute;
             margin: 7.4em 0 0 -3em;
@@ -111,7 +117,7 @@ div#sm-sharing {
             background-color: #D5E1E4;
             border: 2px solid #FFFFFF;
             display: block;
-            height: 2.3em;
+            height: 3em;
             margin-bottom: 0.3em;
             padding: 5px;
             width: 4em;   
@@ -770,7 +776,11 @@ ul#listings {
 }
 
 ul.userMemoryWalls {
-    li {
+    li { 
+        @media #{$desktop}{ 
+            float: left;
+            width: 100%;
+        }
         a {
             span {
                 background-image: none;
@@ -798,23 +808,77 @@ ul#memoryWallGallery {
     background-color: #E1E8F0;
     padding: 12px;
     
-    //note quite right yet
-    //.border-radius & {
-    //    @include border-radius(10px);
-    //}
 }
+
+a.go-back { 
+    background: url("/SkNd/web/bundles/SkNd/images/nd-icons.png") no-repeat scroll -10px -242px transparent;
+    display: block;
+    font-size: 0.9em;
+    padding-left: 20px;
+}
+
 
 
 #recommendations {
     img {
         @extend %details-images;
+        .borderradius & {
+            @include border-radius(10px);
+        }
         @media #{$desktop}{ 
             margin-right: 20px;
             float: left;
             max-width: 120px;
         }
     }
+    
+    ul { 
+        &.actions { 
+            > li { 
+                a { 
+                    margin-top: 10px;
+                    width: 80%;
+                    @media #{$desktop}{ 
+                        width: 10em;
+                    }
+                }
+
+                div { 
+                    @media #{$desktop}{ 
+                        width: 8.5em;
+                        float: left;
+                    }
+                }
+            }
+        }
+        &#memoryWallGallery {
+            margin: 0 0 20px 0;
+            
+            > li {
+                display: block;
+                height: auto;
+                margin: 0 0 20px;
+                padding: 10px 15px;
+                width: auto;
+
+            }
+        }
+    }
+    
+    > div {
+        > ul { 
+            > li {
+                border-top: 1px solid #E1E8F0;
+                padding: 10px 0;
+                &:first-child { 
+                    border: none;
+                }
+            }
+        }
+    }
 }
+
+
 
 /*----------- DETAILS --------------*/
 #itemOverview {
@@ -822,28 +886,462 @@ ul#memoryWallGallery {
     margin-top: 10px;
     > img {
         @extend %details-images;
+        .borderradius & {
+            @include border-radius(10px);
+        }
         @media #{$desktop}{ 
             margin-right: 20px;
             float: left;
             max-width: 120px;
         }
     }
-}
-
-.mw-MediaResource {
-    @extend %details-images;
-    img {
-        @extend %details-images;
-             
+    
+    ul.actions { 
+        > li { 
+            position: relative;
+            margin-bottom: 10px;
+            background: none;
+            
+            > a { 
+                display: block;
+                width: 99%;
+                text-align: left;
+                font-size: 1em;
+                padding: 5px 0 5px 0;
+                height: auto;
+                margin-top: 0;
+                
+                @media #{$desktop} { 
+                    float: left;
+                    width: 90%;
+                }
+  
+            }
+            
+            &.add-it { 
+                a { 
+                    position: relative;
+                    z-index: 2;
+                }
+            }
+            
+            &:hover ul {
+                @media #{$desktop} { 
+                    left: 0;
+                    top: 0;
+                }
+            }
+            
+            ul { 
+                @media #{$desktop} { 
+                    position: absolute;
+                    left: -9999em;
+                    top: -9999em;
+                    padding: 50px 10px 10px 10px;
+                    background-color: #6A99DF;
+                    width: 85.2%;
+                    text-align: left;
+                    z-index: 1;
+                    height: auto;
+                    
+                    .borderradius & { 
+                        @include border-radius(10px);
+                    }
+                }
+                li { 
+                    a { 
+                        display: block;
+                        width: auto;
+                        padding-left: 0;   
+                    }
+                }
+            }
+        }
     }
 }
-
-
 
 #similarItems,
 #youtubeVideos {
     margin-top: 20px;
 }
+
+/*----------- YT Player --------------*/
+#youtubeVideos {
+    
+    ul.actions { 
+        li {
+            > a { 
+                @media #{$desktop}{ 
+                    background-position: 0 center;
+                    height: 2.2em;
+                    padding: 3px 0 0;
+                    text-indent: -9999em;
+                    width: 2.7em;
+                    position: relative;
+                    z-index: 2;
+                }
+            }
+            ul {
+                &.userMemoryWalls {
+                    .borderradius & { 
+                        @include border-radius(10px);
+                    }
+                    li { 
+                        margin-bottom: 10px; 
+                    }
+                    @media #{$desktop}{  
+                        position: absolute;
+                        top: -9999em;
+                        height: 8em;
+                        left: auto;
+                        overflow-y: scroll;
+                        padding: 5px;
+                        width: 7.5em;
+                        z-index: 1;
+                    }
+
+                }
+                @media #{$desktop}{  
+                    padding: 0;
+                    height: 19.3em;
+                    overflow: scroll;
+                    overflow-y: scroll;
+                    overflow-x: hidden;
+                }
+           }
+           
+           &:hover { 
+               ul.userMemoryWalls { 
+                   @media #{$desktop}{                     
+                       right: 5px;
+                       top: 5px;
+                   }
+               }
+           }
+        }
+    }
+}
+
+#youTubeCarousel { 
+    ul {
+        &.actions {
+            @media #{$desktop}{ 
+                position: absolute;
+                right: -0.5em;
+                top: -0.5em;
+            }
+        }
+        > li {
+            background-color: #E1E8F0;
+            margin-top: 10px;
+            padding: 10px;
+            position: relative;
+            width: 95%;
+            .borderradius & { 
+                @include border-radius(10px);
+            }
+
+            @media #{$desktop}{ 
+                float: left;
+                height: 8em;
+                margin: 12px 15px 5px 0;
+                padding: 5px 10px;
+                width: 7em;
+            }
+        }
+    }
+    
+    img { 
+        margin-right: 10px;
+        @media #{$desktop}{ 
+            height: 6.5em;
+        }
+    }
+    
+    a { 
+       @media #{$desktop}{ 
+            display: block;
+            font-size: 0.8em;
+            line-height: 1.1em;
+            word-wrap: break-word;
+       }
+    }
+}
+
+#ytPlayer { 
+    object { 
+        width: 100%;
+        @media #{$desktop}{ 
+            width: 420px;
+        }
+    }
+}
+
+#ytapiplayerContainer {
+    .borderradius & { 
+        @include border-radius(10px);
+    }
+    
+    @media #{$desktop}{ 
+        padding: 20px;
+        background-color: #E1E8F0;
+        
+        h4 { 
+            float: right;
+            width: 7em;
+            margin-left: 10px;
+        }
+    }
+    
+    object { 
+        width: 100%;
+        @media #{$desktop}{ 
+            width: 420px;
+        }
+    }
+    
+}
+
+#itemOverview,
+#youTubeCarousel,
+#recommendations,
+#memoryWallGallery
+{
+    ul.actions li > a:hover { 
+        background-image: none;
+    }
+}
+
+/*--------------- MEMORY WALLS -------------*/
+ul#memoryWallGallery {
+    @media #{$desktop}{ 
+        margin: 20px 0 0 -20px;
+    }
+    > li {
+        border: 2px solid #ACC5EC;
+        background-color: #fff;
+        margin: 0 0 20px;
+        min-height: 7em;
+        padding: 10px 15px;
+        position: relative;
+        width: 92%;
+        
+        &:hover { 
+            background-color: #E4EAF1;
+            border: 2px solid #6A99DF;
+        }
+        
+        @media #{$desktop}{ 
+            float: left;
+            height: 12.5em;
+            margin: 0 0 20px 20px;
+            padding: 10px 15px;
+            width: 27.7%;
+        }
+        
+        ul { 
+            font-size: 0.9em;
+            margin-top: 5px; 
+            &.actions { 
+                clear: both;
+
+                li {
+                    @media #{$desktop}{ 
+                        float: left;
+                        margin-right: 0.5em;
+                    }
+                    > a {
+                        height: auto;
+                        padding: 3px 10px 3px 0;
+                        width: auto;
+                        font-size: 1em;
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+        }
+        
+        div {
+            width: auto;
+            float: none;
+            p {
+                margin: 0 0 10px 0;
+                text-indent: 0;
+            }
+        }
+    }
+    
+    img { 
+        &.mw-image { 
+            float: left; 
+            margin-right: 20px;
+        }
+         
+    }
+}
+
+/*------- memory wall details page --------*/
+
+dl#memoryWallDetails { 
+    dt { 
+        float: none;
+        font-size: 0.9em;
+        margin: 10px 0 5px 0;
+        text-align: left;
+        width: auto;
+    }
+    
+    dd {
+        line-height: 1.3em;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        font-size: 1.1em;
+    }
+}
+
+div#memoryWallActions {
+    margin-top: 20px;
+    ul.actions {
+        a {
+            font-size: 1em;
+            display: block;
+            height: auto;
+            margin: 20px 0 10px;
+            padding: 5px;
+        }
+    }
+}
+
+#memoryWallContents {
+    > div {
+        margin-top: 20px;
+        
+        > ul { 
+            @media #{$desktop}{ 
+                margin: 0 0 0 -20px;
+            }
+        }
+    }
+    ul.actions { 
+        li { 
+            @media #{$desktop}{ 
+                float: left;
+                margin-right: 0.5em;
+            }
+        }
+    }
+    li#ytPlayer {
+        margin-bottom: 20px;
+        @media #{$desktop}{ 
+            margin: 0 0 20px 20px;
+        }
+   }
+}
+
+li.mw-MediaResource {
+    width: 94%;
+    border: 2px solid #ACC5EC;
+    background: #fff;
+    padding: 10px;
+    margin: 0 0 20px 0;
+    .border-radius & {
+        @include border-radius(10px);
+    }
+    &:hover {
+        background-color: #E4EAF1;
+        border: 2px solid #6A99DF;
+    }
+    
+    @media #{$desktop}{ 
+        position: relative;
+        float: left;
+        height: 15.5em;
+        margin: 0 0 20px 20px;
+        width: 43.1%;
+    }
+    
+    div#youtubeapiItems & { 
+        @media #{$desktop}{ 
+            height: 12.5em;
+        }
+    }
+    
+    img {
+        @extend %details-images;
+        margin-right: 10px;
+        .border-radius & {
+            @include border-radius(10px);
+        }
+        @media #{$desktop}{ 
+            float: left;
+        }
+    }
+    ul.actions {
+        margin-top: 10px;
+    }
+}
+
+img.mw-MediaResource {
+    margin-right: 10px; 
+    @media #{$desktop}{ 
+        float: left;
+    }
+}
+
+/********** FOOTER ***********/
+div#footer {
+    padding: 20px;
+    background-color: #E5961D;
+    
+    .borderradius & { 
+        @include border-radius(5px);
+        @media #{$desktop}{ 
+            @include border-radius-specific(0,0,10px,10px);
+        }
+    }
+    
+    .right p { 
+        margin-left: 4.5em;
+    }
+    
+    ul { 
+        &:first-child { 
+            > li {
+                margin-bottom: 1em;
+                @media #{$desktop}{ 
+                    float: left;
+                    margin-bottom: 0; 
+                }
+            }
+        }
+        
+        &.bullet-list li { 
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        li {
+            margin-bottom: 0.5em;
+        }
+    }
+    
+    h3, p, a {
+        color: #fff;
+        word-wrap: break-word;
+    }
+    
+    a.button { 
+        display: block;
+        width: 50%;
+    }
+    
+    img { 
+       float: left; 
+    }
+}
+
+
+
 
 
 @import "helpers.scss";

@@ -1,5 +1,3 @@
-$desktop: "only screen and (min-width: 600px)";
-
 .fl {
     margin-bottom: 0.5em;
     @media #{$desktop}{
@@ -19,12 +17,21 @@ $desktop: "only screen and (min-width: 600px)";
 }
 
 
-ul.bullet-list,
-ol.bullet-list {
-    margin-left: 1em;
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+    
+    li { 
+        list-style-type: none;
+    }
+    
+    .bullet-list {
+        margin-left: 1em;
 
-    li {
-        margin-bottom: 0.5em;    
+        li {
+            margin-bottom: 0.5em;    
+        }
     }
 }
 
