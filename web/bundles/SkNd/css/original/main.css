@@ -898,7 +898,7 @@ form input:focus, form textarea:focus, form select:focus {
   border: 1px solid #e5961d;
 }
 form input[type="text"], form input[type="email"], form input[type="password"], form textarea, form select {
-  width: 90%;
+  width: 96%;
 }
 @media only screen and (min-width: 600px) {
   form input[type="text"], form input[type="email"], form input[type="password"], form textarea, form select {
