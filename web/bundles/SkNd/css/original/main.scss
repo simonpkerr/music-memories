@@ -30,9 +30,9 @@ body {
 }
 
 %contentHeader {
-    padding-bottom: 0.3em;
+    padding: 0.3em 0;
     border-bottom: 2px solid #E5961D;
-    margin-bottom: 0.3em;
+    margin: 0;
 }
 
 div#wrapper {
@@ -54,7 +54,7 @@ div#wrapper {
         position: relative;
         margin: 0 auto;
         
-        //width: 61.3em; // equiv of 980px 
+        width: 61.3em; // equiv of 980px 
         //min-width: 740px;
         max-width: 1280px;
         padding: 0;
@@ -73,7 +73,7 @@ div#wrapper {
 div#header {
     @media #{$desktop} {
         position: absolute;
-        margin: -61px 0 0 0;
+        margin: -3.3em 0 0 0;
         width: 100%;
         height: 6em;
         z-index: 2;
@@ -97,8 +97,8 @@ div#sm-sharing {
     @media #{$desktop} {
         float: none;
         margin: 0 auto;
-        width: 100%;
-        //width: 61.3em; // equiv of 980px 
+        //width: 100%;
+        width: 61.3em; // equiv of 980px 
         //min-width: 740px;
         max-width: 1280px;   
     }
@@ -212,7 +212,7 @@ a#siteLogo img {
         padding: 5px 7px;
         margin: 0.3em 0 0.3em 0;
         text-align: center;
-        min-width: 6em;
+        min-width: 9em;
     }
 }
 
@@ -235,7 +235,8 @@ ul#memoryWalls {
             @media #{$desktop}{
                 float: left;
                 padding: 5px 7px;
-                width: 8em;
+                width: auto;
+                min-width: 9em;
                 color: #fff;
             }
         }
@@ -358,12 +359,13 @@ div#headerMediaSelection{
 
 /********** CONTENT ***********/
 div#content {
-    margin: 0 0 20px 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
     @media #{$desktop}{
         position: relative;
         z-index: 1;
-        width: 95.9%;
-        margin: 20px;
+        padding: 20px;
     }
     
     h1 {
@@ -427,7 +429,7 @@ div#introPanel {
 div#contentSearches {
     @media #{$desktop}{
         border: 2px solid #E5961D;
-        width: 28.6em;
+        width: 50%;
         height: 24em;
         background-color: #fff;
     }
@@ -440,7 +442,7 @@ div#contentSearches {
                         position: absolute;
                         top: -9999em;
                         left: -9999em;
-                        padding: 20px;
+                        padding: 0 20px;
                         background-color: #fff;
                         height: 17.5em;
                     }
@@ -505,8 +507,9 @@ div#contentSearches {
 /*--------- news --------*/
 #news {
     @media #{$desktop}{
-        width: 48.7%;
-        margin-top: 0.5em;
+        width: 50%;
+        margin: 0;
+        padding: 0 0 0 20px;
         li span {
             font-size: 0.85em;
         }

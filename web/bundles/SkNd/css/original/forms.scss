@@ -25,39 +25,39 @@ form {
         display: block;
         margin: 0 0 3px 0;
         width: 100%;
-		@media #{$desktop}{
-			float: left;
-			text-align: right;
-			width: 9em;
-			margin: 0 20px 0 0;
-		}
+            @media #{$desktop}{
+                float: left;
+                text-align: right;
+                width: 9em;
+                margin: 0 20px 0 0;
+            }
     }
 	
-	%inputs {
-		border: 1px solid #808DA0;
+    %inputs {
+        border: 1px solid #808DA0;
         margin-bottom: 0.5em;
         padding: 7px 5px;
         font-size: 1em;
         width: 100%;
-        
         &:focus {
             border: 1px solid #E5961D;
         }
-	}
+    }
 	
-	%input-wide-widths {
-		@media #{$desktop}{
-			width: 13em;
-		}
-	}
+    %input-wide-widths {
+        width: 90%;
+        @media #{$desktop}{
+            width: 13em;
+        }
+    }
 	
-	input {
-		@extend %inputs;
-		&[type="text"],
+    input {
+        @extend %inputs;
+        
+        &[type="text"],
         &[type="email"],
         &[type="password"] {
-            width: 90%;
-          	@extend %input-wide-widths
+            @extend %input-wide-widths
         }
         &[type="submit"],
         &#_submit {
@@ -65,35 +65,35 @@ form {
             margin-top: 0.2em;
             border: 2px solid #fff;
             width: 100%;
-			@media #{$desktop}{
-				width: 14em;
-				margin-left: 8.9em;
-				font-weight: bold;
-			}
+            @media #{$desktop}{
+                width: 13em;
+                margin-left: 8.9em;
+                font-weight: bold;
+            }
         }
-	}
-	textarea {
-		@extend %inputs;
-		@extend %input-wide-widths
-	}
+    }
+    textarea {
+        @extend %inputs;
+        @extend %input-wide-widths;
+    }
     select {
         @extend %inputs;
-		@extend %input-wide-widths
+        @extend %input-wide-widths;
     }	
     
     div.date_widget {
-		@media #{$desktop}{
-			float: left;
-		}
-		select {
-			margin-right: 1px;
-			width: 30%;
-			@media #{$desktop}{
-				width: 4.3em;
-    			margin-right: 1px;
-			}
+        @media #{$desktop}{
+                float: left;
+        }
+        select {
+                margin-right: 1px;
+                width: 30%;
+                @media #{$desktop}{
+                    width: 4.3em;
+                    margin-right: 1px;
+                }
     	}
-	}
+    }
     
     div.error input {
         border: 1px solid #dd0000;
@@ -101,13 +101,13 @@ form {
     
     .form-errors {
         //clear: both;
-		//font-size: 0.85em;
-		//margin: 0 0 5px;
-		
-		//li {
-		//	color: #dd0000;
-		//}
-		@media #{$desktop}{
+        //font-size: 0.85em;
+        //margin: 0 0 5px;
+
+        //li {
+        //	color: #dd0000;
+        //}
+        @media #{$desktop}{
             margin: 0 0 3px 10.5em;
         }
     }
@@ -126,13 +126,13 @@ form {
 }
 
 span {
-    .required {
+    &.required {
         margin-left: 0.5em;
         color: #ff0000;
         font-weight: bold;
         float: right;
     }
-    .form-errors {
+    &.form-errors {
         float: right;
         color: #dd0000;
         font-size: 0.7em;
@@ -189,6 +189,11 @@ a.button {
     input#_submit {
         //use mixin
         @include css-gradient(rgb(165,190,222),rgb(110,152,215),rgb(165,190,222));
+        &:hover
+        {
+            background-color: #6384B5;
+            background-image: none;
+        }
     }
     
     .orange {

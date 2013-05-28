@@ -897,13 +897,13 @@ form input, form textarea, form select {
 form input:focus, form textarea:focus, form select:focus {
   border: 1px solid #e5961d;
 }
+form input[type="text"], form input[type="email"], form input[type="password"], form textarea, form select {
+  width: 90%;
+}
 @media only screen and (min-width: 600px) {
   form input[type="text"], form input[type="email"], form input[type="password"], form textarea, form select {
     width: 13em;
   }
-}
-form input[type="text"], form input[type="email"], form input[type="password"] {
-  width: 90%;
 }
 form input[type="submit"], form input#_submit {
   font-size: 1em;
@@ -913,7 +913,7 @@ form input[type="submit"], form input#_submit {
 }
 @media only screen and (min-width: 600px) {
   form input[type="submit"], form input#_submit {
-    width: 14em;
+    width: 13em;
     margin-left: 8.9em;
     font-weight: bold;
   }
@@ -951,13 +951,13 @@ form div.error input {
   border-radius: 5px;
 }
 
-span .required {
+span.required {
   margin-left: 0.5em;
   color: #ff0000;
   font-weight: bold;
   float: right;
 }
-span .form-errors {
+span.form-errors {
   float: right;
   color: #dd0000;
   font-size: 0.7em;
@@ -1022,6 +1022,12 @@ a.button:link, a.button:visited, a.button:hover, a.button:active {
   /*IE6-9*/
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#a5bede,endColorstr=#6e98d7,GradientType=0)";
   filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#a5bede,endColorstr=#6e98d7,GradientType=0)";
+}
+.cssgradients .button:hover,
+.cssgradients .blue:hover,
+.cssgradients input#_submit:hover {
+  background-color: #6384B5;
+  background-image: none;
 }
 .cssgradients .orange {
   background-color: #f59236;
@@ -1090,9 +1096,9 @@ body {
 }
 
 div#wrapper h3, div#content h1, div#content h2 {
-  padding-bottom: 0.3em;
+  padding: 0.3em 0;
   border-bottom: 2px solid #e5961d;
-  margin-bottom: 0.3em;
+  margin: 0;
 }
 
 div#wrapper {
@@ -1114,6 +1120,7 @@ div#wrapper h3 {
   div#wrapper {
     position: relative;
     margin: 0 auto;
+    width: 61.3em;
     max-width: 1280px;
     padding: 0;
     border: 2px solid #e5961d;
@@ -1135,7 +1142,7 @@ div#wrapper h3 {
 @media only screen and (min-width: 600px) {
   div#header {
     position: absolute;
-    margin: -61px 0 0 0;
+    margin: -3.3em 0 0 0;
     width: 100%;
     height: 6em;
     z-index: 2;
@@ -1159,7 +1166,7 @@ div#sm-sharing {
   div#sm-sharing {
     float: none;
     margin: 0 auto;
-    width: 100%;
+    width: 61.3em;
     max-width: 1280px;
   }
 }
@@ -1181,7 +1188,7 @@ div#sm-sharing li {
     background-color: #D5E1E4;
     border: 2px solid white;
     display: block;
-    height: 2.3em;
+    height: 3em;
     margin-bottom: 0.3em;
     padding: 5px;
     width: 4em;
@@ -1289,7 +1296,7 @@ a#siteLogo img {
     padding: 5px 7px;
     margin: 0.3em 0 0.3em 0;
     text-align: center;
-    min-width: 6em;
+    min-width: 9em;
   }
 }
 ul#memoryWalls {
@@ -1315,7 +1322,8 @@ ul#memoryWalls li a {
   ul#memoryWalls li a {
     float: left;
     padding: 5px 7px;
-    width: 8em;
+    width: auto;
+    min-width: 9em;
     color: #fff;
   }
 }
@@ -1413,14 +1421,15 @@ ul#loginPanel li ul a {
 
 /********** CONTENT ***********/
 div#content {
-  margin: 0 0 20px 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 @media only screen and (min-width: 600px) {
   div#content {
     position: relative;
     z-index: 1;
-    width: 95.9%;
-    margin: 20px;
+    padding: 20px;
   }
 }
 @media only screen and (min-width: 600px) {
@@ -1474,7 +1483,7 @@ div#introPanel li img {
 @media only screen and (min-width: 600px) {
   div#contentSearches {
     border: 2px solid #e5961d;
-    width: 28.6em;
+    width: 50%;
     height: 24em;
     background-color: #fff;
   }
@@ -1487,7 +1496,7 @@ div#introPanel li img {
     position: absolute;
     top: -9999em;
     left: -9999em;
-    padding: 20px;
+    padding: 0 20px;
     background-color: #fff;
     height: 17.5em;
   }
@@ -1540,8 +1549,9 @@ div#contentSearches ul li {
 /*--------- news --------*/
 @media only screen and (min-width: 600px) {
   #news {
-    width: 48.7%;
-    margin-top: 0.5em;
+    width: 50%;
+    margin: 0;
+    padding: 0 0 0 20px;
   }
   #news li span {
     font-size: 0.85em;
