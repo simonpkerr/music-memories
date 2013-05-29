@@ -89,7 +89,7 @@ form {
                 margin-right: 1px;
                 width: 30%;
                 @media #{$desktop}{
-                    width: 4.3em;
+                    width: 4em;
                     margin-right: 1px;
                 }
     	}
@@ -100,15 +100,16 @@ form {
     }
     
     .form-errors {
-        //clear: both;
-        //font-size: 0.85em;
+        clear: both;
+        font-size: 0.8em;
         //margin: 0 0 5px;
 
-        //li {
-        //	color: #dd0000;
-        //}
+        li {
+            color: #dd0000;
+        }
+        
         @media #{$desktop}{
-            margin: 0 0 3px 10.5em;
+            margin: 0 0 3px 11em;
         }
     }
     

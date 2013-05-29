@@ -34,7 +34,7 @@ assetic:
     debug:          "%kernel.debug%"
     use_controller: false
     bundles:        [ ]
-    java:           "C:/Program Files (x86)/Java/jre6/bin/java.exe" 
+    java:           "C:/Program Files/Java/jre7/bin/java.exe" 
     #write_to:       "%kernel.root_dir%/Resources/assets/"
     #read_from:      "%kernel.root_dir%/Resources/assets/"
     filters:
