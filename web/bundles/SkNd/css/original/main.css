@@ -600,7 +600,7 @@ div.errors {
   line-height: 1.1em; }
 
 p.note {
-  margin-bottom: 5px; }
+  margin: 0 0 5px 0; }
 
 li.note {
   list-style-type: none; }
@@ -646,7 +646,7 @@ a:hover {
   .left,
   .right,
   .centre {
-    padding: 0 20px; }
+    padding: 0 10px; }
 
   .left {
     padding-left: 0; }
@@ -704,8 +704,11 @@ Ideal line-height for this is 1.5em
 
 h1, h2, h3, .heading {
   font-family: "Segoe Print", sans-serif, cursive, arial;
-  font-style: italic;
+  font-weight: normal;
   color: #2B1B4C; }
+
+h4, h5, h6 {
+  font-weight: normal; }
 
 dt {
   color: #2B1B4C; }
@@ -778,10 +781,10 @@ form input, form textarea, form select {
   width: 100%; }
   form input:focus, form textarea:focus, form select:focus {
     border: 1px solid #e5961d; }
-form input[type="text"], form input[type="email"], form input[type="password"], form textarea, form select {
-  width: 96%; }
+form input[type="text"], form input[type="email"], form input[type="password"], form input[type="checkbox"], form textarea, form select {
+  width: 95%; }
   @media only screen and (min-width: 600px) {
-    form input[type="text"], form input[type="email"], form input[type="password"], form textarea, form select {
+    form input[type="text"], form input[type="email"], form input[type="password"], form input[type="checkbox"], form textarea, form select {
       width: 13em; } }
 form input[type="submit"], form input#_submit {
   font-size: 1em;
@@ -1147,8 +1150,7 @@ ul#loginPanel {
   display: block; }
   @media only screen and (min-width: 600px) {
     ul#loginPanel {
-      float: right;
-      margin-left: 10px; }
+      float: right; }
       ul#loginPanel span {
         position: relative;
         z-index: 2;
@@ -1163,7 +1165,7 @@ ul#loginPanel {
   @media only screen and (min-width: 600px) {
     ul#loginPanel li {
       float: left;
-      margin: 0;
+      margin: 0 0 0 10px;
       position: relative; } }
   ul#loginPanel li a {
     display: block;
@@ -1177,6 +1179,8 @@ ul#loginPanel {
     text-align: center;
     margin: 0;
     padding: 0.5em 0; }
+  ul#loginPanel li ul li {
+    margin: 0; }
   @media only screen and (min-width: 600px) {
     .borderradius ul#loginPanel li ul {
       -webkit-border-radius: 10px;
@@ -1226,7 +1230,7 @@ div#content {
   @media only screen and (min-width: 600px) {
     div#content h1 {
       line-height: 1.3em;
-      margin: 5px 20px 15px 10.5em; } }
+      margin: 5px 0 15px 10em; } }
   div#content dt {
     font-size: 0.8em;
     margin-bottom: 3px; }
@@ -1342,11 +1346,136 @@ div.pagingControls {
     padding: 3px 8px;
     margin: 0 5px 0 0; }
 
+ul.actions {
+  clear: both; }
+  ul.actions > li > a {
+    display: block;
+    font-weight: bold;
+    color: #fff;
+    font-size: 1em;
+    padding: 5px 0 5px 40px;
+    text-transform: lowercase;
+    background-position: -9999px top;
+    background-repeat: no-repeat;
+    background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png"); }
+    ul.actions > li > a:hover {
+      background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png"); }
+    ul.actions > li > a.button {
+      display: block;
+      height: auto;
+      margin: 0 0 10px 0;
+      padding: 3px 5px;
+      width: auto;
+      text-align: left;
+      font-size: 0.9em; }
+      ul.actions > li > a.button:hover {
+        background-image: none; }
+    .cssgradients ul.actions > li > a {
+      background-position: left 50%; }
+    ul.actions > li > a > span {
+      background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
+      background-repeat: no-repeat;
+      display: block;
+      height: 24px;
+      padding-left: 40px; }
+    @media only screen and (min-width: 600px) {
+      ul.actions > li > a {
+        margin-top: 0;
+        font-size: 0.7em; } }
+  ul.actions > li.explore-it a, ul.actions > li.explore-it a:hover {
+    background-position: 0 -145px; }
+    @media only screen and (min-width: 600px) {
+      ul.actions > li.explore-it a, ul.actions > li.explore-it a:hover {
+        background-position: 10px -145px; } }
+    ul.actions > li.explore-it a > span, ul.actions > li.explore-it a:hover > span {
+      background-position: 0 -147px; }
+  ul.actions > li.add-it a, ul.actions > li.add-it a:hover {
+    z-index: 2;
+    position: relative;
+    background-position: 0 -176px; }
+    @media only screen and (min-width: 600px) {
+      ul.actions > li.add-it a, ul.actions > li.add-it a:hover {
+        z-index: 2;
+        position: relative;
+        background-position: 10px -178px; } }
+    ul.actions > li.add-it a > span, ul.actions > li.add-it a:hover > span {
+      background-position: 0 -178px; }
+  ul.actions > li.buy-it a, ul.actions > li.buy-it a:hover {
+    background-position: 0 -208px; }
+    @media only screen and (min-width: 600px) {
+      ul.actions > li.buy-it a, ul.actions > li.buy-it a:hover {
+        background-position: 10px -210px; } }
+    ul.actions > li.buy-it a > span, ul.actions > li.buy-it a:hover > span {
+      background-position: 0 -210px; }
+  ul.actions > li.edit-it a > span, ul.actions > li.edit-it a:hover > span {
+    background-position: 0 -309px; }
+  ul.actions > li.delete-it a > span, ul.actions > li.delete-it a:hover > span {
+    background-position: 0 -345px; }
+
 ul#listings {
   margin-top: 20px; }
   @media only screen and (min-width: 600px) {
     ul#listings {
       margin: 20px 0 0 -20px; } }
+  ul#listings ul.actions {
+    clear: both; }
+    @media only screen and (min-width: 600px) {
+      ul#listings ul.actions {
+        height: 12.5em;
+        float: right;
+        width: 3.6em;
+        text-align: center;
+        clear: none; } }
+    ul#listings ul.actions > li {
+      background-color: #ACC5EC;
+      margin-bottom: 5px;
+      padding: 5px 10px; }
+      @media only screen and (min-width: 600px) {
+        ul#listings ul.actions > li {
+          border-top: 1px solid white;
+          padding: 13px 0 27px 0;
+          margin: 0; }
+          ul#listings ul.actions > li:hover {
+            background-color: #6A99DF; }
+            ul#listings ul.actions > li:hover ul {
+              left: 0;
+              top: 0; }
+          ul#listings ul.actions > li:first-child {
+            border-top: none; }
+          ul#listings ul.actions > li ul .note {
+            display: block;
+            color: #fff; }
+          .borderradius ul#listings ul.actions > li.top-action {
+            -webkit-border-radius: 0 6px 0 0;
+            -moz-border-radius: 0 6px 0 0;
+            border-radius: 0 6px 0 0; }
+          .borderradius ul#listings ul.actions > li.bottom-action {
+            -webkit-border-radius: 0 0 6px 0;
+            -moz-border-radius: 0 0 6px 0;
+            border-radius: 0 0 6px 0; } }
+      @media only screen and (min-width: 600px) {
+        ul#listings ul.actions > li > a {
+          height: 0.45em;
+          padding: 25px 0 0;
+          width: 5em; } }
+      ul#listings ul.actions > li ul {
+        padding: 10px; }
+        .borderradius ul#listings ul.actions > li ul {
+          -webkit-border-radius: 6px 0 0 6px;
+          -moz-border-radius: 6px 0 0 6px;
+          border-radius: 6px 0 0 6px; }
+        @media only screen and (min-width: 600px) {
+          ul#listings ul.actions > li ul {
+            position: absolute;
+            left: -9999em;
+            top: -9999em;
+            padding: 20px;
+            background-color: #6A99DF;
+            width: 87%;
+            height: 100%;
+            text-align: left; } }
+        ul#listings ul.actions > li ul a {
+          color: #fff; }
   ul#listings > li {
     border: 2px solid #acc5ec;
     background: #fff;
@@ -1369,130 +1498,10 @@ ul#listings {
         .two-thirds-width ul#listings > li {
           width: 96.6%; }
           .two-thirds-width ul#listings > li ul li ul {
-            width: 84.1%; }
+            width: 90.7%; }
         ul#listings > li > div {
           float: left;
           width: 75%; } }
-    ul#listings > li ul.actions {
-      clear: both; }
-      @media only screen and (min-width: 600px) {
-        ul#listings > li ul.actions {
-          height: 12.5em;
-          float: right;
-          width: 3.6em;
-          text-align: center;
-          clear: none; } }
-      ul#listings > li ul.actions > li {
-        background-color: #ACC5EC;
-        margin-bottom: 5px;
-        padding: 5px 10px; }
-        @media only screen and (min-width: 600px) {
-          ul#listings > li ul.actions > li {
-            border-top: 1px solid white;
-            padding: 13px 0 27px 0;
-            margin: 0; }
-            ul#listings > li ul.actions > li:hover {
-              background-color: #6A99DF; }
-              ul#listings > li ul.actions > li:hover ul {
-                left: 0;
-                top: 0; }
-            ul#listings > li ul.actions > li:first-child {
-              border-top: none; }
-            ul#listings > li ul.actions > li ul .note {
-              display: block;
-              color: #fff; }
-            .borderradius ul#listings > li ul.actions > li.top-action {
-              -webkit-border-radius: 0 6px 0 0;
-              -moz-border-radius: 0 6px 0 0;
-              border-radius: 0 6px 0 0; }
-            .borderradius ul#listings > li ul.actions > li.bottom-action {
-              -webkit-border-radius: 0 0 6px 0;
-              -moz-border-radius: 0 0 6px 0;
-              border-radius: 0 0 6px 0; } }
-        ul#listings > li ul.actions > li > a {
-          display: block;
-          font-weight: bold;
-          color: #fff;
-          font-size: 1em;
-          padding: 5px 0 5px 40px;
-          text-transform: lowercase;
-          background-position: -9999px top;
-          background-repeat: no-repeat;
-          background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png"); }
-          ul#listings > li ul.actions > li > a:hover {
-            background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png"); }
-          ul#listings > li ul.actions > li > a.button {
-            display: block;
-            height: auto;
-            margin: 0 0 10px 0;
-            padding: 3px 5px;
-            width: auto;
-            text-align: left;
-            font-size: 0.9em; }
-            ul#listings > li ul.actions > li > a.button:hover {
-              background-image: none; }
-          .cssgradients ul#listings > li ul.actions > li > a {
-            background-position: left 50%; }
-          ul#listings > li ul.actions > li > a > span {
-            background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
-            background-repeat: no-repeat;
-            display: block;
-            height: 24px;
-            padding-left: 40px; }
-          @media only screen and (min-width: 600px) {
-            ul#listings > li ul.actions > li > a {
-              height: 0.45em;
-              margin-top: 0;
-              padding: 25px 0 0;
-              width: 5em;
-              font-size: 0.7em; } }
-        ul#listings > li ul.actions > li.explore-it a, ul#listings > li ul.actions > li.explore-it a:hover {
-          background-position: 0 -145px; }
-          @media only screen and (min-width: 600px) {
-            ul#listings > li ul.actions > li.explore-it a, ul#listings > li ul.actions > li.explore-it a:hover {
-              background-position: 10px -145px; } }
-          ul#listings > li ul.actions > li.explore-it a > span, ul#listings > li ul.actions > li.explore-it a:hover > span {
-            background-position: 0 -147px; }
-        ul#listings > li ul.actions > li.add-it a, ul#listings > li ul.actions > li.add-it a:hover {
-          z-index: 2;
-          position: relative;
-          background-position: 0 -176px; }
-          @media only screen and (min-width: 600px) {
-            ul#listings > li ul.actions > li.add-it a, ul#listings > li ul.actions > li.add-it a:hover {
-              z-index: 2;
-              position: relative;
-              background-position: 10px -178px; } }
-          ul#listings > li ul.actions > li.add-it a > span, ul#listings > li ul.actions > li.add-it a:hover > span {
-            background-position: 0 -178px; }
-        ul#listings > li ul.actions > li.buy-it a, ul#listings > li ul.actions > li.buy-it a:hover {
-          background-position: 0 -208px; }
-          @media only screen and (min-width: 600px) {
-            ul#listings > li ul.actions > li.buy-it a, ul#listings > li ul.actions > li.buy-it a:hover {
-              background-position: 10px -210px; } }
-          ul#listings > li ul.actions > li.buy-it a > span, ul#listings > li ul.actions > li.buy-it a:hover > span {
-            background-position: 0 -210px; }
-        ul#listings > li ul.actions > li.edit-it a > span, ul#listings > li ul.actions > li.edit-it a:hover > span {
-          background-position: 0 -309px; }
-        ul#listings > li ul.actions > li.delete-it a > span, ul#listings > li ul.actions > li.delete-it a:hover > span {
-          background-position: 0 -345px; }
-        ul#listings > li ul.actions > li ul {
-          padding: 10px; }
-          .borderradius ul#listings > li ul.actions > li ul {
-            -webkit-border-radius: 6px 0 0 6px;
-            -moz-border-radius: 6px 0 0 6px;
-            border-radius: 6px 0 0 6px; }
-          @media only screen and (min-width: 600px) {
-            ul#listings > li ul.actions > li ul {
-              position: absolute;
-              left: -9999em;
-              top: -9999em;
-              padding: 20px;
-              background-color: #6A99DF;
-              width: 87%;
-              height: 100%;
-              text-align: left; } }
-          ul#listings > li ul.actions > li ul a {
-            color: #fff; }
     ul#listings > li > div {
       padding: 20px; }
     ul#listings > li img {
@@ -1520,7 +1529,8 @@ ul.userMemoryWalls li a span {
 
 #recommendations img, #itemOverview > img, li.mw-MediaResource img {
   background-color: #E1E8F0;
-  padding: 12px; }
+  padding: 12px;
+  max-width: 120px; }
 
 a.go-back {
   background: url("/SkNd/web/bundles/SkNd/images/nd-icons.png") no-repeat scroll -10px -242px transparent;
@@ -1535,18 +1545,21 @@ a.go-back {
 @media only screen and (min-width: 600px) {
   #recommendations img {
     margin-right: 20px;
-    float: left;
-    max-width: 120px; } }
-#recommendations ul.actions > li a {
-  margin-top: 10px;
-  width: 80%; }
-  @media only screen and (min-width: 600px) {
-    #recommendations ul.actions > li a {
-      width: 10em; } }
-@media only screen and (min-width: 600px) {
-  #recommendations ul.actions > li div {
-    width: 8.5em;
     float: left; } }
+#recommendations ul.actions {
+  clear: none;
+  float: left; }
+  #recommendations ul.actions > li a {
+    margin-top: 10px;
+    width: 80%;
+    background-position: left 50%; }
+    @media only screen and (min-width: 600px) {
+      #recommendations ul.actions > li a {
+        width: 10em; } }
+  @media only screen and (min-width: 600px) {
+    #recommendations ul.actions > li div {
+      width: 8.5em;
+      float: left; } }
 #recommendations ul#memoryWallGallery {
   margin: 0 0 20px 0; }
   #recommendations ul#memoryWallGallery > li {
@@ -1554,7 +1567,7 @@ a.go-back {
     height: auto;
     margin: 0 0 20px;
     padding: 10px 15px;
-    width: auto; }
+    width: 100%; }
 #recommendations > div > ul > li {
   border-top: 1px solid #e1e8f0;
   padding: 10px 0; }
@@ -1573,49 +1586,53 @@ a.go-back {
     #itemOverview > img {
       margin-right: 20px;
       float: left;
-      max-width: 120px; } }
-  #itemOverview ul.actions > li {
-    position: relative;
-    margin-bottom: 10px;
-    background: none; }
-    #itemOverview ul.actions > li > a {
-      display: block;
-      width: 99%;
-      text-align: left;
-      font-size: 1em;
-      padding: 5px 0 5px 0;
-      height: auto;
-      margin-top: 0; }
-      @media only screen and (min-width: 600px) {
-        #itemOverview ul.actions > li > a {
-          float: left;
-          width: 90%; } }
-    #itemOverview ul.actions > li.add-it a {
+      max-width: 150px; } }
+  #itemOverview ul.actions {
+    clear: none; }
+    #itemOverview ul.actions > li {
       position: relative;
-      z-index: 2; }
-    @media only screen and (min-width: 600px) {
-      #itemOverview ul.actions > li:hover ul {
-        left: 0;
-        top: 0; } }
-    @media only screen and (min-width: 600px) {
-      #itemOverview ul.actions > li ul {
-        position: absolute;
-        left: -9999em;
-        top: -9999em;
-        padding: 50px 10px 10px 10px;
-        background-color: #6A99DF;
-        width: 85.2%;
+      margin-bottom: 10px;
+      background: none; }
+      #itemOverview ul.actions > li > a {
+        display: block;
+        width: 99%;
         text-align: left;
-        z-index: 1;
-        height: auto; }
-        .borderradius #itemOverview ul.actions > li ul {
-          -webkit-border-radius: 10px;
-          -moz-border-radius: 10px;
-          border-radius: 10px; } }
-    #itemOverview ul.actions > li ul li a {
-      display: block;
-      width: auto;
-      padding-left: 0; }
+        font-size: 1em;
+        padding: 5px 0 5px 0;
+        height: auto;
+        margin-top: 0;
+        background-position: left 50%; }
+        @media only screen and (min-width: 600px) {
+          #itemOverview ul.actions > li > a {
+            float: left;
+            width: 90%; } }
+      #itemOverview ul.actions > li.add-it a {
+        position: relative;
+        z-index: 2; }
+      @media only screen and (min-width: 600px) {
+        #itemOverview ul.actions > li:hover ul {
+          left: 0;
+          top: 0; } }
+      @media only screen and (min-width: 600px) {
+        #itemOverview ul.actions > li ul {
+          position: absolute;
+          left: -9999em;
+          top: -9999em;
+          padding: 50px 10px 10px 10px;
+          background-color: #6A99DF;
+          width: 90%;
+          text-align: left;
+          z-index: 1;
+          height: auto; }
+          .borderradius #itemOverview ul.actions > li ul {
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px; } }
+      #itemOverview ul.actions > li ul li a {
+        display: block;
+        width: auto;
+        padding-left: 0;
+        color: #fff; }
 
 #similarItems,
 #youtubeVideos {
@@ -1625,10 +1642,10 @@ a.go-back {
 @media only screen and (min-width: 600px) {
   #youtubeVideos ul.actions li > a {
     background-position: 0 center;
-    height: 2.2em;
+    height: 2.5em;
     padding: 3px 0 0;
     text-indent: -9999em;
-    width: 2.7em;
+    width: 3.1em;
     position: relative;
     z-index: 2; } }
 .borderradius #youtubeVideos ul.actions li ul.userMemoryWalls {
@@ -1637,15 +1654,21 @@ a.go-back {
   border-radius: 10px; }
 #youtubeVideos ul.actions li ul.userMemoryWalls li {
   margin-bottom: 10px; }
+#youtubeVideos ul.actions li ul.userMemoryWalls a {
+  color: #fff;
+  text-indent: 0;
+  width: auto;
+  height: auto;
+  text-align: left; }
 @media only screen and (min-width: 600px) {
   #youtubeVideos ul.actions li ul.userMemoryWalls {
     position: absolute;
     top: -9999em;
-    height: 8em;
+    height: auto;
     left: auto;
     overflow-y: scroll;
     padding: 5px;
-    width: 7.5em;
+    width: 8.5em;
     z-index: 1; } }
 @media only screen and (min-width: 600px) {
   #youtubeVideos ul.actions li ul {
@@ -1660,27 +1683,35 @@ a.go-back {
     top: 5px; } }
 
 @media only screen and (min-width: 600px) {
-  #youTubeCarousel ul.actions {
-    position: absolute;
-    right: -0.5em;
-    top: -0.5em; } }
-#youTubeCarousel ul > li {
+  #youTubeCarousel {
+    float: left;
+    margin-left: -20px;
+    width: 103%;
+    height: 26em;
+    overflow-y: scroll; } }
+#youTubeCarousel > li {
   background-color: #E1E8F0;
   margin-top: 10px;
   padding: 10px;
   position: relative;
   width: 95%; }
-  .borderradius #youTubeCarousel ul > li {
+  .borderradius #youTubeCarousel > li {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px; }
   @media only screen and (min-width: 600px) {
-    #youTubeCarousel ul > li {
+    #youTubeCarousel > li {
       float: left;
-      height: 8em;
-      margin: 12px 15px 5px 0;
-      padding: 5px 10px;
-      width: 7em; } }
+      height: 11em;
+      margin: 20px 0 0 20px;
+      padding: 10px;
+      position: relative;
+      width: 8em; } }
+@media only screen and (min-width: 600px) {
+  #youTubeCarousel ul.actions {
+    position: absolute;
+    right: -0.5em;
+    top: -0.5em; } }
 #youTubeCarousel img {
   margin-right: 10px; }
   @media only screen and (min-width: 600px) {
@@ -1691,7 +1722,8 @@ a.go-back {
     display: block;
     font-size: 0.8em;
     line-height: 1.1em;
-    word-wrap: break-word; } }
+    word-wrap: break-word;
+    margin-top: 5px; } }
 
 #ytPlayer object {
   width: 100%; }
@@ -1699,23 +1731,25 @@ a.go-back {
     #ytPlayer object {
       width: 420px; } }
 
-.borderradius #ytapiplayerContainer {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px; }
-@media only screen and (min-width: 600px) {
-  #ytapiplayerContainer {
-    padding: 20px;
-    background-color: #E1E8F0; }
-    #ytapiplayerContainer h4 {
-      float: right;
-      width: 7em;
-      margin-left: 10px; } }
-#ytapiplayerContainer object {
-  width: 100%; }
+#ytapiplayerContainer {
+  margin-top: 20px; }
+  .borderradius #ytapiplayerContainer {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px; }
   @media only screen and (min-width: 600px) {
-    #ytapiplayerContainer object {
-      width: 420px; } }
+    #ytapiplayerContainer {
+      padding: 20px;
+      background-color: #E1E8F0; }
+      #ytapiplayerContainer h4 {
+        float: right;
+        width: 7em;
+        margin-left: 10px; } }
+  #ytapiplayerContainer object {
+    width: 100%; }
+    @media only screen and (min-width: 600px) {
+      #ytapiplayerContainer object {
+        width: 420px; } }
 
 #itemOverview ul.actions li > a:hover,
 #youTubeCarousel ul.actions li > a:hover,
@@ -1813,7 +1847,7 @@ li.mw-MediaResource {
   background: #fff;
   padding: 10px;
   margin: 0 0 20px 0; }
-  .border-radius li.mw-MediaResource {
+  .borderradius li.mw-MediaResource {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px; }

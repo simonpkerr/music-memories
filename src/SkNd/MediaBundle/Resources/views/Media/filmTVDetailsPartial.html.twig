@@ -30,7 +30,7 @@
 {% set item = mediaResource.mediaResourceCache.xmlData %}
 
 {#% debug item %#}
-<div class="two-thirds-width fl">
+<div class="two-thirds-width fl left">
     <div id="itemOverview">
         <img src="{{item.MediumImage.URL}}" alt="{{item.ItemAttributes.Title}}" />
         {#% if item.EditorialReviews is defined %}
@@ -93,7 +93,7 @@
 </div>        %#}
 </div>        
         
-<div id="recommendations" class="third-width fr">
+<div id="recommendations" class="third-width fr right">
     {% set recommendations = mediaResource.relatedMediaResources %}
     {% if recommendations is null %}   
         <h2>Recommended</h2>

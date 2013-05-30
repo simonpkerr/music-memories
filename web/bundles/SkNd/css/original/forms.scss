@@ -45,7 +45,7 @@ form {
     }
 	
     %input-wide-widths {
-        width: 96%;
+        width: 95%;
         @media #{$desktop}{
             width: 13em;
         }
@@ -56,7 +56,8 @@ form {
         
         &[type="text"],
         &[type="email"],
-        &[type="password"] {
+        &[type="password"],
+        &[type="checkbox"] {
             @extend %input-wide-widths
         }
         &[type="submit"],

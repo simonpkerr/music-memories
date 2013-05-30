@@ -1,6 +1,6 @@
   
 <h1>Create a new Memory Wall</h1>
-<div class="half-width fr">
+<div class="half-width fr right">
 <p class="strapline">Memory walls are ace. Here&rsquo;s why&hellip;</p>
 <ul class="bullet-list">
     <li>You get to save all your favourite things here, including Amazon products and YouTube clips.</li>
@@ -9,7 +9,7 @@
 </ul>
 </div>
 
-<form class="half-width" action="{{ path('memoryWallCreate') }}" {{ form_enctype(form) }} method="POST">
+<form class="half-width left" action="{{ path('memoryWallCreate') }}" {{ form_enctype(form) }} method="POST">
     <fieldset>
     <legend>Wall details</legend>
 {{ form_widget(form) }}

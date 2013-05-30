@@ -30,8 +30,12 @@ Ideal line-height for this is 1.5em
 
 h1,h2,h3,.heading {
     font-family: 'Segoe Print', sans-serif, cursive, arial;
-    font-style: italic;
+    font-weight: normal;
     color: #2B1B4C;
+}
+
+h4,h5,h6 { 
+    font-weight: normal;
 }
 
 dt {

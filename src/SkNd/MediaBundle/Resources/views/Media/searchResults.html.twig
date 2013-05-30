@@ -13,7 +13,7 @@
 {% if listings is defined %}
 
 {% if recommendations is not null %}
-<div id="recommendations" class="third-width fr">
+<div id="recommendations" class="third-width fr right">
     <h2>Recommendations</h2>
     <p>We&rsquo;ve found some Memory Walls that are associated with the decade you chose. Here they are&hellip;</p>
     {% include 'SkNdUserBundle:MemoryWall:memoryWallGalleryPartial.html.twig' with {
@@ -24,7 +24,7 @@
 </div>
 {% endif %}
 
-<div id="searchResults" class="{% if recommendations is not null %}two-thirds-width{% else %}full-width{% endif %} fl">
+<div id="searchResults" class="{% if recommendations is not null %}two-thirds-width left{% else %}full-width{% endif %} fl">
     
     {% if media == 'music' %}
         {% include 'SkNdMediaBundle:Media:musicListingsPartial.html.twig'%}

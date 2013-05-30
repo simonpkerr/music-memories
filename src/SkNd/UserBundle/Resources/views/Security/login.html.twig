@@ -24,8 +24,9 @@
     <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
     <input type="password" id="password" name="_password" />
 
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
     <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+    
 
     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
     </fieldset>

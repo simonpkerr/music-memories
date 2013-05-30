@@ -53,7 +53,6 @@ div#wrapper {
     @media #{$desktop} {
         position: relative;
         margin: 0 auto;
-        
         width: 61.3em; // equiv of 980px 
         //min-width: 740px;
         max-width: 1280px;
@@ -267,7 +266,7 @@ ul#loginPanel {
     display: block;
     @media #{$desktop}{
         float: right;
-        margin-left: 10px;
+        //margin-left: 10px;
         span {
             position: relative;
             z-index: 2;
@@ -285,7 +284,7 @@ ul#loginPanel {
     li {
         @media #{$desktop}{
             float: left;
-            margin: 0;
+            margin: 0 0 0 10px;
             position: relative;
         }
         a {
@@ -303,6 +302,9 @@ ul#loginPanel {
                 text-align: center;
                 margin: 0;
                 padding: 0.5em 0;
+            }
+            li { 
+                margin: 0;
             }
             @media #{$desktop}{
                 @extend %hiddenPanel;
@@ -575,11 +577,200 @@ div.pagingControls {
     }
 }
 
+
+ul.actions {
+    clear: both;
+    > li {
+        > a {
+            display: block;
+            font-weight: bold;
+            color: #fff;
+            font-size: 1em;
+            padding: 5px 0 5px 40px;
+            text-transform: lowercase;
+            background-position: -9999px top;
+            background-repeat: no-repeat;
+            background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
+            &:hover {
+                background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
+            }
+
+            &.button {
+                display: block;
+                height: auto;
+                margin: 0 0 10px 0;
+                padding: 3px 5px;
+                width: auto;
+                text-align: left;
+                font-size: 0.9em;
+
+                &:hover {
+                    background-image: none;
+                }
+            }
+
+            .cssgradients & {
+                background-position: left 50%;
+            }
+
+            > span {
+                background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
+                background-repeat: no-repeat;
+                display: block;
+                height: 24px;
+                padding-left: 40px;
+            }
+
+            @media #{$desktop}{
+                //height: 0.45em;
+                margin-top: 0;
+                //padding: 25px 0 0;
+                //width: 5em;
+                font-size: 0.7em;
+            }
+
+        }
+
+        &.explore-it a,
+        &.explore-it a:hover {
+            background-position: 0 -145px;
+            @media #{$desktop}{
+                background-position: 10px -145px;	
+            }
+            > span {
+                background-position: 0 -147px;
+            }	
+        }
+
+        &.add-it a,
+        &.add-it a:hover {
+            z-index: 2;
+            position: relative;
+            background-position: 0 -176px;
+            @media #{$desktop}{
+                z-index: 2;
+                position: relative;
+                background-position: 10px -178px;
+            }
+            > span {
+                background-position: 0 -178px;
+            }
+        }
+
+        &.buy-it a,
+        &.buy-it a:hover {
+            background-position: 0 -208px;
+            @media #{$desktop}{
+                background-position: 10px -210px;
+            }
+            > span {
+                background-position: 0 -210px;
+            }
+        }
+
+        &.edit-it a,
+        &.edit-it a:hover {
+            > span {
+                background-position: 0 -309px;
+            }
+        }
+
+        &.delete-it a,
+        &.delete-it a:hover {
+            > span {
+                background-position: 0 -345px;
+            }
+        }
+    }
+}
+
+
+
 ul#listings {
     margin-top: 20px;
     @media #{$desktop}{
         margin: 20px 0 0 -20px;
     }
+    
+    //actions for panels extended from above
+    //@extend %actions;
+    ul.actions {
+        clear: both;
+        @media #{$desktop}{
+            height: 12.5em;
+            float: right;
+            width: 3.6em;
+            text-align: center;
+            clear: none;
+        }
+
+        > li {
+            background-color: #ACC5EC;
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            @media #{$desktop}{
+                border-top: 1px solid #FFFFFF;
+                padding: 13px 0 27px 0;
+                margin: 0;
+                &:hover {
+                    background-color: #6A99DF;
+                    ul {
+                        left: 0;
+                        top: 0;
+                    }
+                }
+                &:first-child {
+                    border-top: none;
+                }
+
+                ul { 
+                    .note {
+                        display: block;
+                        color: #fff;
+                    }
+                }
+
+                .borderradius &.top-action {
+                    @include border-radius-specific(0,6px,0,0);
+                }
+                .borderradius &.bottom-action {
+                    @include border-radius-specific(0,0,6px,0);
+                }	
+            }			
+
+            > a {
+                @media #{$desktop}{
+                    height: 0.45em;
+                    padding: 25px 0 0;
+                    width: 5em;
+                }
+            }
+
+            ul {
+                padding: 10px;
+                .borderradius & {
+                    @include border-radius-specific(6px,0,0,6px);
+                }
+
+                @media #{$desktop}{
+                    position: absolute;
+                    left: -9999em;
+                    top: -9999em;
+                    padding: 20px;
+                    background-color: #6A99DF;
+                    width: 87%;
+                    height: 100%;
+                    text-align: left;
+                }
+
+                a {
+                    color: #fff;
+                }
+
+            }
+        }
+    }
+    
     > li {
         border: 2px solid #ACC5EC;
         background: #fff;
@@ -606,7 +797,7 @@ ul#listings {
                 width: 96.6%;
                 // submenus on the 2/3s width listings panels 
                 ul li ul { 
-                    width: 84.1%;
+                    width: 90.7%;
                 }
             }
             
@@ -615,180 +806,6 @@ ul#listings {
                 width: 75%;  	
             }
         }
-        
-        ul.actions {
-            clear: both;
-            @media #{$desktop}{
-                height: 12.5em;
-                float: right;
-                width: 3.6em;
-                text-align: center;
-                clear: none;
-            }
-            
-            > li {
-                background-color: #ACC5EC;
-                margin-bottom: 5px;
-                padding: 5px 10px;
-                @media #{$desktop}{
-                    border-top: 1px solid #FFFFFF;
-                    padding: 13px 0 27px 0;
-                    margin: 0;
-                    &:hover {
-                        background-color: #6A99DF;
-                        ul {
-                            left: 0;
-                            top: 0;
-                            
-                        }
-                    }
-                    &:first-child {
-                        border-top: none;
-                    }
-                    
-                    ul { 
-                        .note {
-                            display: block;
-                            color: #fff;
-                            
-                            
-                        }
-                    }
-                    
-                    .borderradius &.top-action {
-                        @include border-radius-specific(0,6px,0,0);
-                    }
-                    .borderradius &.bottom-action {
-                        @include border-radius-specific(0,0,6px,0);
-                    }	
-                }			
-                
-                > a {
-                    display: block;
-                    font-weight: bold;
-                    color: #fff;
-                    font-size: 1em;
-                    padding: 5px 0 5px 40px;
-                    text-transform: lowercase;
-                    background-position: -9999px top;
-                    background-repeat: no-repeat;
-                    background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
-                    &:hover {
-                        background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
-                    }
-                    
-                    &.button {
-                        display: block;
-                        height: auto;
-                        margin: 0 0 10px 0;
-                        padding: 3px 5px;
-                        width: auto;
-                        text-align: left;
-                        font-size: 0.9em;
-                        
-                        &:hover {
-                            background-image: none;
-                        }
-                    }
-                    
-                    .cssgradients & {
-                        background-position: left 50%;
-                    }
-                    
-                    > span {
-                        background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
-                        background-repeat: no-repeat;
-                        display: block;
-                        height: 24px;
-                        padding-left: 40px;
-                    }
-                    
-                    @media #{$desktop}{
-                        height: 0.45em;
-                        margin-top: 0;
-                        padding: 25px 0 0;
-                        width: 5em;
-                        font-size: 0.7em;
-                    }
-                    
-                }
-                
-                &.explore-it a,
-                &.explore-it a:hover {
-                    background-position: 0 -145px;
-                    @media #{$desktop}{
-                        background-position: 10px -145px;	
-                    }
-                    > span {
-                        background-position: 0 -147px;
-                    }	
-                }
-                
-                &.add-it a,
-                &.add-it a:hover {
-                    z-index: 2;
-                    position: relative;
-                    background-position: 0 -176px;
-                    @media #{$desktop}{
-                        z-index: 2;
-                        position: relative;
-                        background-position: 10px -178px;
-                    }
-                    > span {
-                        background-position: 0 -178px;
-                    }
-                }
-                
-                &.buy-it a,
-                &.buy-it a:hover {
-                    background-position: 0 -208px;
-                    @media #{$desktop}{
-                        background-position: 10px -210px;
-                    }
-                    > span {
-                        background-position: 0 -210px;
-                    }
-                }
-                
-                &.edit-it a,
-                &.edit-it a:hover {
-                    > span {
-                        background-position: 0 -309px;
-                    }
-                }
-                
-                &.delete-it a,
-                &.delete-it a:hover {
-                    > span {
-                        background-position: 0 -345px;
-                    }
-                }
-                
-                ul {
-                    padding: 10px;
-                    .borderradius & {
-                        @include border-radius-specific(6px,0,0,6px);
-                    }
-                    
-                    @media #{$desktop}{
-                        position: absolute;
-                        left: -9999em;
-                        top: -9999em;
-                        padding: 20px;
-                        background-color: #6A99DF;
-                        width: 87%;
-                        height: 100%;
-                        text-align: left;
-                    }
-                    
-                    a {
-                        color: #fff;
-                    }
-                    
-                }
-            }
-        }
-        
         > div {
             padding: 20px;
         }
@@ -832,6 +849,7 @@ ul#memoryWallGallery {
 %details-images {
     background-color: #E1E8F0;
     padding: 12px;
+    max-width: 120px;
     
 }
 
@@ -853,16 +871,18 @@ a.go-back {
         @media #{$desktop}{ 
             margin-right: 20px;
             float: left;
-            max-width: 120px;
         }
     }
     
     ul { 
         &.actions { 
+            clear: none;
+            float: left;
             > li { 
                 a { 
                     margin-top: 10px;
                     width: 80%;
+                    background-position: left 50%;
                     @media #{$desktop}{ 
                         width: 10em;
                     }
@@ -884,7 +904,7 @@ a.go-back {
                 height: auto;
                 margin: 0 0 20px;
                 padding: 10px 15px;
-                width: auto;
+                width: 100%;
 
             }
         }
@@ -917,11 +937,12 @@ a.go-back {
         @media #{$desktop}{ 
             margin-right: 20px;
             float: left;
-            max-width: 120px;
+            max-width: 150px;
         }
     }
     
     ul.actions { 
+        clear: none;
         > li { 
             position: relative;
             margin-bottom: 10px;
@@ -935,6 +956,7 @@ a.go-back {
                 padding: 5px 0 5px 0;
                 height: auto;
                 margin-top: 0;
+                background-position: left 50%;
                 
                 @media #{$desktop} { 
                     float: left;
@@ -964,7 +986,7 @@ a.go-back {
                     top: -9999em;
                     padding: 50px 10px 10px 10px;
                     background-color: #6A99DF;
-                    width: 85.2%;
+                    width: 90%;
                     text-align: left;
                     z-index: 1;
                     height: auto;
@@ -977,7 +999,8 @@ a.go-back {
                     a { 
                         display: block;
                         width: auto;
-                        padding-left: 0;   
+                        padding-left: 0;
+                        color: #fff;                                               
                     }
                 }
             }
@@ -998,10 +1021,10 @@ a.go-back {
             > a { 
                 @media #{$desktop}{ 
                     background-position: 0 center;
-                    height: 2.2em;
+                    height: 2.5em;
                     padding: 3px 0 0;
                     text-indent: -9999em;
-                    width: 2.7em;
+                    width: 3.1em;
                     position: relative;
                     z-index: 2;
                 }
@@ -1014,14 +1037,21 @@ a.go-back {
                     li { 
                         margin-bottom: 10px; 
                     }
+                    a {
+                        color: #fff;
+                        text-indent: 0;
+                        width: auto;
+                        height: auto;
+                        text-align: left;
+                    }
                     @media #{$desktop}{  
                         position: absolute;
                         top: -9999em;
-                        height: 8em;
+                        height: auto;
                         left: auto;
                         overflow-y: scroll;
                         padding: 5px;
-                        width: 7.5em;
+                        width: 8.5em;
                         z-index: 1;
                     }
 
@@ -1048,31 +1078,38 @@ a.go-back {
 }
 
 #youTubeCarousel { 
-    ul {
-        &.actions {
-            @media #{$desktop}{ 
-                position: absolute;
-                right: -0.5em;
-                top: -0.5em;
-            }
+    @media #{$desktop}{ 
+        float: left;
+        margin-left: -20px;
+        width: 103%;
+        height: 26em;
+        overflow-y: scroll;
+    }
+    > li {
+        background-color: #E1E8F0;
+        margin-top: 10px;
+        padding: 10px;
+        position: relative;
+        width: 95%;
+        .borderradius & { 
+            @include border-radius(10px);
         }
-        > li {
-            background-color: #E1E8F0;
-            margin-top: 10px;
+
+        @media #{$desktop}{ 
+            float: left;
+            height: 11em;
+            margin: 20px 0 0 20px;
             padding: 10px;
             position: relative;
-            width: 95%;
-            .borderradius & { 
-                @include border-radius(10px);
-            }
-
-            @media #{$desktop}{ 
-                float: left;
-                height: 8em;
-                margin: 12px 15px 5px 0;
-                padding: 5px 10px;
-                width: 7em;
-            }
+            width: 8em;
+        }
+    }
+    
+    ul.actions {
+        @media #{$desktop}{ 
+            position: absolute;
+            right: -0.5em;
+            top: -0.5em;
         }
     }
     
@@ -1089,6 +1126,7 @@ a.go-back {
             font-size: 0.8em;
             line-height: 1.1em;
             word-wrap: break-word;
+            margin-top: 5px;
        }
     }
 }
@@ -1103,6 +1141,7 @@ a.go-back {
 }
 
 #ytapiplayerContainer {
+    margin-top: 20px;
     .borderradius & { 
         @include border-radius(10px);
     }
@@ -1269,7 +1308,7 @@ li.mw-MediaResource {
     background: #fff;
     padding: 10px;
     margin: 0 0 20px 0;
-    .border-radius & {
+    .borderradius & {
         @include border-radius(10px);
     }
     &:hover {

@@ -17,7 +17,7 @@
        
 {% endmacro %}
 
-<div id="memoryWallContents" class="two-thirds-width fl">
+<div id="memoryWallContents" class="two-thirds-width fl left">
 {% if mw.memoryWallMediaResources|length > 0 %}
 {% for api in apis %}
     {% set mwmrs = mw.getMemoryWallMediaResources(api.id) %}
