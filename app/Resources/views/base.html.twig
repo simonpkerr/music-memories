@@ -40,13 +40,16 @@
     </head>
     <body>
         {% include 'SkNdMediaBundle:Default:socialMediaSharing.html.twig' %}
-        
         <div id="wrapper" class="">
+            
             <div id="header">
                 {# the 'path' function can be used to target any particular route defined in the routing config file #}
                 <a id="siteLogo" href="{{path('index')}}" title="Go back to noodleDig home page">
                     <img src="{{ asset('bundles/SkNd/images/site-logo-v2.png') }}" alt="noodleDig" />
                 </a>
+                <ul id="top-nav">
+                    <li><a href="#" id="menu-popup" class="button" title="Menu">Menu</a>
+                        <div id="menu-options">
                 {% block topNavLinks %}
                 {% include 'SkNdUserBundle:Default:loginPanel.html.twig' %}
                 <ul id="memoryWalls">
@@ -56,10 +59,13 @@
                             <li><a href="{{path('memoryWallCreate')}}">{{'memoryWall.links.add_wall'|trans({}, 'SkNdUserBundle' )}}</a></li>
                         </ul>
                     </li>
-                    
                 </ul>
+                
 
                 {% endblock %}
+                        </div>
+                    </li>
+                </ul>
             </div>
                 {#{ dump(app.session.flashbag.peekAll()) }#}
             {% if app.session.flashbag.peekAll() %}    

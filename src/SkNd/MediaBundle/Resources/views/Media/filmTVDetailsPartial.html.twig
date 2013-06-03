@@ -113,7 +113,7 @@
         {% endif %}
 
         {% if recommendations.genericMatches is not empty %}
-            <div id="generic-recommendations" class="clear">
+        <div id="generic-recommendations" class="clear">
             <h2>You might also like</h2>
             <p class="strapline">Here&rsquo;s some other stuff from the same decade.</p>
             <ul>
@@ -127,15 +127,10 @@
 </div>
 
 
-{% if item.OfferSummary.LowestUsedPrice is defined or item.OfferSummary.LowestUsedPrice is defined %}
 <div class="fl cf full-width note">
-<p id="pricesDisclaimer">*Price on Amazon.co.uk: GBP (as of {{ 'now'|date("d/m/Y g:ia", "Europe/London") }}). Product prices and availability are accurate as of the date/time indicated and are subject to change. Any price and availability information displayed on Amazon.co.uk at the time of purchase will apply to the purchase of this product.</p>
-<p><strong>&hellip;however, the prices on Amazon are often much cheaper. Please check out the price by clicking on the buy button.</strong></p>
+    <p id="pricesDisclaimer">*Price on Amazon.co.uk: GBP (as of {{ 'now'|date("d/m/Y g:ia", "Europe/London") }}). Product prices and availability are accurate as of the date/time indicated and are subject to change. Any price and availability information displayed on Amazon.co.uk at the time of purchase will apply to the purchase of this product.</p>
+    <p><strong>&hellip;however, the prices on Amazon are often much cheaper. Please check out the price by clicking on the buy button.</strong></p>
 </div>
-{% else %}
-<p>Click on the buy button to check prices on Amazon.co.uk.</p>
-</div>
-{% endif %}
 
 
 {% endif %}

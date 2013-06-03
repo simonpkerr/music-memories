@@ -7,6 +7,7 @@
 */
 
 $desktop: "only screen and (min-width: 600px)";
+$mobile: "only screen and (max-width: 599px)";
 @import "mixins","normalize.scss","boilerplate.scss","generics.scss","typography.scss","forms.scss";
 //$tablet: "only screen and (min-width: 481px)";
 
@@ -39,8 +40,9 @@ div#wrapper {
     min-width: 250px;
     border: 2px solid #E5961D;
     background-color: #fff;
-    margin: 10px;
+    margin: 0 10px;
     padding: 10px;
+    z-index: 2;
     .borderradius & {
         @include border-radius(5px);
     }
@@ -76,7 +78,7 @@ div#header {
         width: 100%;
         height: 6em;
         z-index: 2;
-        li {
+        li li {
             ul, form {
                 .boxshadow & {
                     @include box-shadow(0, 0, 5px,0, rgba(15, 15, 15, 0.52));
@@ -84,17 +86,99 @@ div#header {
             }
         }
     }
+    
+    ul#top-nav {
+        position: absolute;
+        top: 4.5em;
+        left: 0;
+        width: 95%;
+        @media #{$desktop} {
+            top: 0;
+            width: 100%;
+        }
+        li {
+            a#menu-popup {
+                float: right;
+                @media #{$desktop} { 
+                    display: none;
+                }
+            }
+            div#menu-options { 
+                display: none;
+                @media #{$desktop} { 
+                    display: block;
+                }
+            }
+            
+            &:hover { 
+                div#menu-options { 
+                    display: block;
+                }   
+            }
+        }
+    }
 }
 
 /*------ sm sharing -----------*/
+ul#sm-sharing-menu {
+    position: absolute;
+    width: 95%;
+    top: 1.5em;
+    z-index: 1;
+    @media #{$desktop} { 
+        position: relative;
+        width: 100%;
+        top: auto;
+    }
+    li { 
+        a#sm-sharing-popup { 
+            float: right;
+            position: relative;
+            z-index: 2;
+            @media #{$desktop} {
+                display: none;
+            }
+        }
+        
+        div { 
+            display: none;
+            @media #{$desktop} {
+                display: block;
+            }   
+        }
+        
+        &:hover { 
+            div {
+                display: block;
+            }
+        }
+    }
+        
+}
+
 div#sm-sharing {
-    position: relative;
-    float: right;
+    float: none;
     margin: 0;
     padding: 0;
-    width: 6em;
+    z-index: 1;
+    @media #{$mobile} { 
+        position: absolute;
+        width: 85%;
+        right: -16px;
+        top: -14px;
+        border: 2px solid #E5961D;
+        padding: 32px 0 0;
+        background: #fff;
+        .borderradius & { 
+            @include border-radius(5px);
+        } 
+    }
+    
     @media #{$desktop} {
-        float: none;
+        border: none;
+        top: 0;
+        right: 0;
+        position: relative;
         margin: 0 auto;
         //width: 100%;
         width: 61.3em; // equiv of 980px 
@@ -105,6 +189,9 @@ div#sm-sharing {
     ul {
         margin: 5px 15px 0 0;
         padding: 0;
+        @media #{$mobile} { 
+            padding: 20px;
+        }
         @media #{$desktop} {
             position: absolute;
             margin: 7.4em 0 0 -3em;
@@ -147,6 +234,14 @@ div#sm-sharing {
             height: 35px;
             width: 35px;
             margin-right: 3px;
+            @media #{$mobile} { 
+                width: auto;
+                height: auto;
+                float: none;
+                margin: 0 0 20px 0;
+                padding: 0 0 0 3em;
+                min-height: 35px;
+            }
             
             &#facebookShare {
                 background-position: 0 0;
@@ -165,9 +260,11 @@ div#sm-sharing {
             }
             
             span {
-                position: absolute;
-                left: -9999em;
-                top: -9999em;
+                @media #{$desktop} { 
+                    position: absolute;
+                    left: -9999em;
+                    top: -9999em;
+                }
             }
         }
     }
@@ -394,6 +491,7 @@ div#content {
     
     h1 {
         @extend %contentHeader;
+        margin: 0 0 10px 0;
         @media #{$desktop}{
             line-height: 1.3em;
             margin: 5px 0 15px 10em;
@@ -581,6 +679,7 @@ div.pagingControls {
 ul.actions {
     clear: both;
     > li {
+        text-align: left;
         > a {
             display: block;
             font-weight: bold;
@@ -996,11 +1095,12 @@ a.go-back {
                     }
                 }
                 li { 
+                    color: #fff;
                     a { 
                         display: block;
                         width: auto;
                         padding-left: 0;
-                        color: #fff;                                               
+                        color: #fff;
                     }
                 }
             }

@@ -570,7 +570,7 @@ ol {
     list-style-type: none; }
   ul.bullet-list,
   ol.bullet-list {
-    margin-left: 1em; }
+    margin: 0.5em 0 0.5em 1em; }
     ul.bullet-list li,
     ol.bullet-list li {
       margin-bottom: 0.5em; }
@@ -961,7 +961,8 @@ div#wrapper {
   border: 2px solid #e5961d;
   background-color: #fff;
   margin: 10px;
-  padding: 10px; }
+  padding: 10px;
+  z-index: 2; }
   .borderradius div#wrapper {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -994,27 +995,91 @@ div#wrapper {
     width: 100%;
     height: 6em;
     z-index: 2; }
-    .boxshadow div#header li ul, .boxshadow div#header li form {
+    .boxshadow div#header li li ul, .boxshadow div#header li li form {
       -moz-box-shadow: 0 0 5px 0 rgba(15, 15, 15, 0.52);
       -webkit-box-shadow: 0 0 0 5px rgba(15, 15, 15, 0.52);
       box-shadow: 0 0 5px 0 rgba(15, 15, 15, 0.52); } }
+div#header ul#top-nav {
+  position: absolute;
+  top: 4.5em;
+  left: 0;
+  width: 95%; }
+  @media only screen and (min-width: 600px) {
+    div#header ul#top-nav {
+      top: 0;
+      width: 100%; } }
+  div#header ul#top-nav li a#menu-popup {
+    float: right; }
+    @media only screen and (min-width: 600px) {
+      div#header ul#top-nav li a#menu-popup {
+        display: none; } }
+  div#header ul#top-nav li div#menu-options {
+    display: none; }
+    @media only screen and (min-width: 600px) {
+      div#header ul#top-nav li div#menu-options {
+        display: block; } }
+  div#header ul#top-nav li:hover div#menu-options {
+    display: block; }
 
 /*------ sm sharing -----------*/
+ul#sm-sharing-menu {
+  position: absolute;
+  width: 95%;
+  top: 1.5em;
+  z-index: 1; }
+  @media only screen and (min-width: 600px) {
+    ul#sm-sharing-menu {
+      position: relative;
+      width: 100%;
+      top: auto; } }
+  ul#sm-sharing-menu li a#sm-sharing-popup {
+    float: right;
+    position: relative;
+    z-index: 2; }
+    @media only screen and (min-width: 600px) {
+      ul#sm-sharing-menu li a#sm-sharing-popup {
+        display: none; } }
+  ul#sm-sharing-menu li div {
+    display: none; }
+    @media only screen and (min-width: 600px) {
+      ul#sm-sharing-menu li div {
+        display: block; } }
+  ul#sm-sharing-menu li:hover div {
+    display: block; }
+
 div#sm-sharing {
-  position: relative;
-  float: right;
+  float: none;
   margin: 0;
   padding: 0;
-  width: 6em; }
+  z-index: 1; }
+  @media only screen and (max-width: 599px) {
+    div#sm-sharing {
+      position: absolute;
+      width: 85%;
+      right: -16px;
+      top: -14px;
+      border: 2px solid #e5961d;
+      padding: 32px 0 0;
+      background: #fff; }
+      .borderradius div#sm-sharing {
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px; } }
   @media only screen and (min-width: 600px) {
     div#sm-sharing {
-      float: none;
+      border: none;
+      top: 0;
+      right: 0;
+      position: relative;
       margin: 0 auto;
       width: 61.3em;
       max-width: 1280px; } }
   div#sm-sharing ul {
     margin: 5px 15px 0 0;
     padding: 0; }
+    @media only screen and (max-width: 599px) {
+      div#sm-sharing ul {
+        padding: 20px; } }
     @media only screen and (min-width: 600px) {
       div#sm-sharing ul {
         position: absolute;
@@ -1068,6 +1133,14 @@ div#sm-sharing {
       height: 35px;
       width: 35px;
       margin-right: 3px; }
+      @media only screen and (max-width: 599px) {
+        div#sm-sharing li a {
+          width: auto;
+          height: auto;
+          float: none;
+          margin: 0 0 20px 0;
+          padding: 0 0 0 3em;
+          min-height: 35px; } }
       div#sm-sharing li a#facebookShare {
         background-position: 0 0; }
       div#sm-sharing li a#twitterShare {
@@ -1076,10 +1149,11 @@ div#sm-sharing {
         background-position: 0 -72px; }
       div#sm-sharing li a#emailShare {
         background-position: 0 -113px; }
-      div#sm-sharing li a span {
-        position: absolute;
-        left: -9999em;
-        top: -9999em; }
+      @media only screen and (min-width: 600px) {
+        div#sm-sharing li a span {
+          position: absolute;
+          left: -9999em;
+          top: -9999em; } }
 
 /*------ logo -------------------------*/
 a#siteLogo img {
@@ -1227,10 +1301,12 @@ div#content {
       position: relative;
       z-index: 1;
       padding: 20px; } }
-  @media only screen and (min-width: 600px) {
-    div#content h1 {
-      line-height: 1.3em;
-      margin: 5px 0 15px 10em; } }
+  div#content h1 {
+    margin: 0 0 10px 0; }
+    @media only screen and (min-width: 600px) {
+      div#content h1 {
+        line-height: 1.3em;
+        margin: 5px 0 15px 10em; } }
   div#content dt {
     font-size: 0.8em;
     margin-bottom: 3px; }
@@ -1348,69 +1424,71 @@ div.pagingControls {
 
 ul.actions {
   clear: both; }
-  ul.actions > li > a {
-    display: block;
-    font-weight: bold;
-    color: #fff;
-    font-size: 1em;
-    padding: 5px 0 5px 40px;
-    text-transform: lowercase;
-    background-position: -9999px top;
-    background-repeat: no-repeat;
-    background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png"); }
-    ul.actions > li > a:hover {
-      background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png"); }
-    ul.actions > li > a.button {
+  ul.actions > li {
+    text-align: left; }
+    ul.actions > li > a {
       display: block;
-      height: auto;
-      margin: 0 0 10px 0;
-      padding: 3px 5px;
-      width: auto;
-      text-align: left;
-      font-size: 0.9em; }
-      ul.actions > li > a.button:hover {
-        background-image: none; }
-    .cssgradients ul.actions > li > a {
-      background-position: left 50%; }
-    ul.actions > li > a > span {
-      background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
+      font-weight: bold;
+      color: #fff;
+      font-size: 1em;
+      padding: 5px 0 5px 40px;
+      text-transform: lowercase;
+      background-position: -9999px top;
       background-repeat: no-repeat;
-      display: block;
-      height: 24px;
-      padding-left: 40px; }
-    @media only screen and (min-width: 600px) {
-      ul.actions > li > a {
-        margin-top: 0;
-        font-size: 0.7em; } }
-  ul.actions > li.explore-it a, ul.actions > li.explore-it a:hover {
-    background-position: 0 -145px; }
-    @media only screen and (min-width: 600px) {
-      ul.actions > li.explore-it a, ul.actions > li.explore-it a:hover {
-        background-position: 10px -145px; } }
-    ul.actions > li.explore-it a > span, ul.actions > li.explore-it a:hover > span {
-      background-position: 0 -147px; }
-  ul.actions > li.add-it a, ul.actions > li.add-it a:hover {
-    z-index: 2;
-    position: relative;
-    background-position: 0 -176px; }
-    @media only screen and (min-width: 600px) {
-      ul.actions > li.add-it a, ul.actions > li.add-it a:hover {
-        z-index: 2;
-        position: relative;
-        background-position: 10px -178px; } }
-    ul.actions > li.add-it a > span, ul.actions > li.add-it a:hover > span {
-      background-position: 0 -178px; }
-  ul.actions > li.buy-it a, ul.actions > li.buy-it a:hover {
-    background-position: 0 -208px; }
-    @media only screen and (min-width: 600px) {
-      ul.actions > li.buy-it a, ul.actions > li.buy-it a:hover {
-        background-position: 10px -210px; } }
-    ul.actions > li.buy-it a > span, ul.actions > li.buy-it a:hover > span {
-      background-position: 0 -210px; }
-  ul.actions > li.edit-it a > span, ul.actions > li.edit-it a:hover > span {
-    background-position: 0 -309px; }
-  ul.actions > li.delete-it a > span, ul.actions > li.delete-it a:hover > span {
-    background-position: 0 -345px; }
+      background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png"); }
+      ul.actions > li > a:hover {
+        background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png"); }
+      ul.actions > li > a.button {
+        display: block;
+        height: auto;
+        margin: 0 0 10px 0;
+        padding: 3px 5px;
+        width: auto;
+        text-align: left;
+        font-size: 0.9em; }
+        ul.actions > li > a.button:hover {
+          background-image: none; }
+      .cssgradients ul.actions > li > a {
+        background-position: left 50%; }
+      ul.actions > li > a > span {
+        background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
+        background-repeat: no-repeat;
+        display: block;
+        height: 24px;
+        padding-left: 40px; }
+      @media only screen and (min-width: 600px) {
+        ul.actions > li > a {
+          margin-top: 0;
+          font-size: 0.7em; } }
+    ul.actions > li.explore-it a, ul.actions > li.explore-it a:hover {
+      background-position: 0 -145px; }
+      @media only screen and (min-width: 600px) {
+        ul.actions > li.explore-it a, ul.actions > li.explore-it a:hover {
+          background-position: 10px -145px; } }
+      ul.actions > li.explore-it a > span, ul.actions > li.explore-it a:hover > span {
+        background-position: 0 -147px; }
+    ul.actions > li.add-it a, ul.actions > li.add-it a:hover {
+      z-index: 2;
+      position: relative;
+      background-position: 0 -176px; }
+      @media only screen and (min-width: 600px) {
+        ul.actions > li.add-it a, ul.actions > li.add-it a:hover {
+          z-index: 2;
+          position: relative;
+          background-position: 10px -178px; } }
+      ul.actions > li.add-it a > span, ul.actions > li.add-it a:hover > span {
+        background-position: 0 -178px; }
+    ul.actions > li.buy-it a, ul.actions > li.buy-it a:hover {
+      background-position: 0 -208px; }
+      @media only screen and (min-width: 600px) {
+        ul.actions > li.buy-it a, ul.actions > li.buy-it a:hover {
+          background-position: 10px -210px; } }
+      ul.actions > li.buy-it a > span, ul.actions > li.buy-it a:hover > span {
+        background-position: 0 -210px; }
+    ul.actions > li.edit-it a > span, ul.actions > li.edit-it a:hover > span {
+      background-position: 0 -309px; }
+    ul.actions > li.delete-it a > span, ul.actions > li.delete-it a:hover > span {
+      background-position: 0 -345px; }
 
 ul#listings {
   margin-top: 20px; }
@@ -1628,11 +1706,13 @@ a.go-back {
             -webkit-border-radius: 10px;
             -moz-border-radius: 10px;
             border-radius: 10px; } }
-      #itemOverview ul.actions > li ul li a {
-        display: block;
-        width: auto;
-        padding-left: 0;
+      #itemOverview ul.actions > li ul li {
         color: #fff; }
+        #itemOverview ul.actions > li ul li a {
+          display: block;
+          width: auto;
+          padding-left: 0;
+          color: #fff; }
 
 #similarItems,
 #youtubeVideos {
