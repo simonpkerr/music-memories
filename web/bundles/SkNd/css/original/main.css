@@ -937,6 +937,74 @@ a.button:link, a.button:visited, a.button:hover, a.button:active {
   -moz-border-radius: 10px;
   border-radius: 10px; }
 
+.sprites {
+  background: url("/SkNd/web/bundles/SkNd/images/sprites.png") top left no-repeat; }
+
+.share-icon {
+  width: 26px;
+  height: 21px;
+  background-position: -10px -10px; }
+
+.menu-icon {
+  width: 26px;
+  height: 21px;
+  background-position: -10px -41px; }
+
+.edit-icon {
+  width: 24px;
+  height: 26px;
+  background-position: -10px -72px; }
+
+.close-icon {
+  width: 14px;
+  height: 14px;
+  background-position: -10px -108px; }
+
+.right-icon {
+  width: 10px;
+  height: 19px;
+  background-position: -10px -132px; }
+
+.left-icon {
+  width: 10px;
+  height: 19px;
+  background-position: -10px -161px; }
+
+.buy-icon {
+  width: 24px;
+  height: 23px;
+  background-position: -10px -190px; }
+
+.add-icon {
+  width: 20px;
+  height: 20px;
+  background-position: -10px -223px; }
+
+.explore-icon {
+  width: 21px;
+  height: 20px;
+  background-position: -10px -253px; }
+
+.email-share-icon {
+  width: 36px;
+  height: 36px;
+  background-position: -10px -283px; }
+
+.p-share-icon {
+  width: 36px;
+  height: 36px;
+  background-position: -10px -329px; }
+
+.t-share-icon {
+  width: 36px;
+  height: 36px;
+  background-position: -10px -375px; }
+
+.fb-share-icon {
+  width: 36px;
+  height: 36px;
+  background-position: -10px -421px; }
+
 /*------ main styles for all width devices -----------*/
 body {
   background-color: #CEDEE8; }
@@ -960,7 +1028,7 @@ div#wrapper {
   min-width: 250px;
   border: 2px solid #e5961d;
   background-color: #fff;
-  margin: 10px;
+  margin: 0 10px;
   padding: 10px;
   z-index: 2; }
   .borderradius div#wrapper {
@@ -1001,7 +1069,7 @@ div#wrapper {
       box-shadow: 0 0 5px 0 rgba(15, 15, 15, 0.52); } }
 div#header ul#top-nav {
   position: absolute;
-  top: 4.5em;
+  top: 3.5em;
   left: 0;
   width: 95%; }
   @media only screen and (min-width: 600px) {
@@ -1009,10 +1077,16 @@ div#header ul#top-nav {
       top: 0;
       width: 100%; } }
   div#header ul#top-nav li a#menu-popup {
-    float: right; }
+    float: right;
+    position: relative;
+    text-indent: -999em;
+    width: 40px;
+    z-index: 2; }
     @media only screen and (min-width: 600px) {
       div#header ul#top-nav li a#menu-popup {
         display: none; } }
+    div#header ul#top-nav li a#menu-popup span {
+      float: left; }
   div#header ul#top-nav li div#menu-options {
     display: none; }
     @media only screen and (min-width: 600px) {
@@ -1025,7 +1099,7 @@ div#header ul#top-nav {
 ul#sm-sharing-menu {
   position: absolute;
   width: 95%;
-  top: 1.5em;
+  top: 0.9em;
   z-index: 1; }
   @media only screen and (min-width: 600px) {
     ul#sm-sharing-menu {
@@ -1035,10 +1109,14 @@ ul#sm-sharing-menu {
   ul#sm-sharing-menu li a#sm-sharing-popup {
     float: right;
     position: relative;
+    text-indent: -999em;
+    width: 40px;
     z-index: 2; }
     @media only screen and (min-width: 600px) {
       ul#sm-sharing-menu li a#sm-sharing-popup {
         display: none; } }
+    ul#sm-sharing-menu li a#sm-sharing-popup span {
+      float: left; }
   ul#sm-sharing-menu li div {
     display: none; }
     @media only screen and (min-width: 600px) {
@@ -1126,12 +1204,8 @@ div#sm-sharing {
           display: block;
           width: auto; } }
     div#sm-sharing li a {
-      background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
-      background-repeat: no-repeat;
       display: block;
       float: left;
-      height: 35px;
-      width: 35px;
       margin-right: 3px; }
       @media only screen and (max-width: 599px) {
         div#sm-sharing li a {
@@ -1141,14 +1215,6 @@ div#sm-sharing {
           margin: 0 0 20px 0;
           padding: 0 0 0 3em;
           min-height: 35px; } }
-      div#sm-sharing li a#facebookShare {
-        background-position: 0 0; }
-      div#sm-sharing li a#twitterShare {
-        background-position: 0 -36px; }
-      div#sm-sharing li a#pinterestShare {
-        background-position: 0 -72px; }
-      div#sm-sharing li a#emailShare {
-        background-position: 0 -113px; }
       @media only screen and (min-width: 600px) {
         div#sm-sharing li a span {
           position: absolute;

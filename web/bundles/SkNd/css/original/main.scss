@@ -8,7 +8,7 @@
 
 $desktop: "only screen and (min-width: 600px)";
 $mobile: "only screen and (max-width: 599px)";
-@import "mixins","normalize.scss","boilerplate.scss","generics.scss","typography.scss","forms.scss";
+@import "mixins","normalize.scss","boilerplate.scss","generics.scss","typography.scss","forms.scss","sprites.scss";
 //$tablet: "only screen and (min-width: 481px)";
 
 
@@ -89,7 +89,7 @@ div#header {
     
     ul#top-nav {
         position: absolute;
-        top: 4.5em;
+        top: 3.5em;
         left: 0;
         width: 95%;
         @media #{$desktop} {
@@ -99,9 +99,20 @@ div#header {
         li {
             a#menu-popup {
                 float: right;
+                position: relative;
+                text-indent: -999em;
+                width: 40px;
+                z-index: 2;
+                
                 @media #{$desktop} { 
                     display: none;
                 }
+                
+                span {
+                    float: left;
+                }
+                
+                
             }
             div#menu-options { 
                 display: none;
@@ -123,7 +134,7 @@ div#header {
 ul#sm-sharing-menu {
     position: absolute;
     width: 95%;
-    top: 1.5em;
+    top: 0.9em;
     z-index: 1;
     @media #{$desktop} { 
         position: relative;
@@ -134,10 +145,17 @@ ul#sm-sharing-menu {
         a#sm-sharing-popup { 
             float: right;
             position: relative;
+            text-indent: -999em;
+            width: 40px;
             z-index: 2;
             @media #{$desktop} {
                 display: none;
             }
+            span {
+                float: left;
+            }
+            
+            
         }
         
         div { 
@@ -227,12 +245,8 @@ div#sm-sharing {
             }
         }
         a {
-            background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
-            background-repeat: no-repeat;
             display: block;
             float: left;
-            height: 35px;
-            width: 35px;
             margin-right: 3px;
             @media #{$mobile} { 
                 width: auto;
@@ -241,22 +255,6 @@ div#sm-sharing {
                 margin: 0 0 20px 0;
                 padding: 0 0 0 3em;
                 min-height: 35px;
-            }
-            
-            &#facebookShare {
-                background-position: 0 0;
-            } 
-            
-            &#twitterShare {
-                background-position: 0 -36px;
-            }
-            
-            &#pinterestShare {
-                background-position: 0 -72px;
-            }
-            
-            &#emailShare {
-                background-position: 0 -113px;
             }
             
             span {
