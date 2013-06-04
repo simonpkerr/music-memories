@@ -1,6 +1,6 @@
 
-{% macro detailsLinkOpeningTag(listings, item, api) %}
-<a title="See more details for {{item.ItemAttributes.Title}}" href="{{ path('mediaDetails', {'id':item.ASIN, 'api':api, 'title': listings.urlize(item.ItemAttributes.Title) }) }}">
+{% macro detailsLinkOpeningTag(listings, item, api, class) %}
+<a title="See more details for {{item.ItemAttributes.Title}}" href="{{ path('mediaDetails', {'id':item.ASIN, 'api':api, 'title': listings.urlize(item.ItemAttributes.Title) }) }}" class="{{ class|default('')}}">
 {% endmacro %}
 
 
@@ -24,8 +24,8 @@ with
         <strong>{{ _self.detailsLinkOpeningTag(listings,item, api) }}{{item.ItemAttributes.Title}}</a></strong>
     </div>
     <ul class="actions">
-        <li class="explore-it top-action">
-            {{ _self.detailsLinkOpeningTag(listings,item, api) }}Explore</a>
+        <li class="top-action">
+            {{ _self.detailsLinkOpeningTag(listings,item,api,'sprites explore-icon') }}Explore</a>
         </li>
         {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
         with {
@@ -35,8 +35,8 @@ with
         'titleSlug' : listings.urlize(item.ItemAttributes.Title)
         } 
         %}
-        <li class="buy-it bottom-action">
-            <a href="{{item.DetailPageURL}}" target="_blank" title="Buy it from Amazon">Buy</a>
+        <li class="bottom-action">
+            <a href="{{item.DetailPageURL}}" target="_blank" title="Buy it from Amazon" class="sprites buy-icon">Buy</a>
             <ul>
                 <li>
                     <strong><a target="_blank" href="{{item.DetailPageURL}}">Buy this from Amazon {% if item.ItemAttributes.ListPrice is defined %}for {{ item.ItemAttributes.ListPrice.FormattedPrice }}{% endif %}</a></strong>

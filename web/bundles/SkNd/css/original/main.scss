@@ -88,22 +88,26 @@ div#header {
     }
     
     ul#top-nav {
-        position: absolute;
-        top: 3.5em;
-        left: 0;
-        width: 95%;
+        //position: absolute;
+        float: right;
+        //top: 4em;
+        //left: 0;
+        width: auto;
         @media #{$desktop} {
             top: 0;
             width: 100%;
+            float: none;
         }
         li {
             a#menu-popup {
                 float: right;
-                position: relative;
+                position: absolute;
                 text-indent: -999em;
                 width: 40px;
                 z-index: 2;
-                
+                top: 4em;
+                right: 1.6em;
+                padding: 3px 4px 1px;
                 @media #{$desktop} { 
                     display: none;
                 }
@@ -119,11 +123,42 @@ div#header {
                 @media #{$desktop} { 
                     display: block;
                 }
+                @media #{$mobile} { 
+                    position: absolute;
+                    width: 85%;
+                    right: 2.1em;
+                    top: 4.5em;
+                    border: 2px solid #E5961D;
+                    padding: 20px;
+                    background: #fff;
+                    z-index: 1;
+                    .borderradius & { 
+                        @include border-radius(5px);
+                    } 
+                    
+                    li { 
+                        width: 100%;
+                        display: block;
+                        padding: 5px 0;
+                        border-top: 1px solid #ddd;
+                        text-align: center;
+                        
+                        a, span { 
+                            display: block;
+                            width: 100%;
+                           
+                        }
+                    }
+                }
             }
             
             &:hover { 
                 div#menu-options { 
-                    display: block;
+                    @media #{$mobile} {
+                        display: block;
+                        position: absolute;
+                    }
+                    
                 }   
             }
         }
@@ -132,10 +167,10 @@ div#header {
 
 /*------ sm sharing -----------*/
 ul#sm-sharing-menu {
-    position: absolute;
-    width: 95%;
-    top: 0.9em;
+    width: auto;
+    margin: 1em 0.6em;
     z-index: 1;
+    float: right;
     @media #{$desktop} { 
         position: relative;
         width: 100%;
@@ -148,14 +183,14 @@ ul#sm-sharing-menu {
             text-indent: -999em;
             width: 40px;
             z-index: 2;
+            margin: 0 1em;
+            padding: 3px 2px 7px 2px;
             @media #{$desktop} {
                 display: none;
             }
             span {
                 float: left;
             }
-            
-            
         }
         
         div { 
@@ -167,7 +202,13 @@ ul#sm-sharing-menu {
         
         &:hover { 
             div {
-                display: block;
+                @media #{$mobile} { 
+                    position: absolute;
+                    display: block;
+                    top: 1.6em;
+                    right: 2.1em;
+                }
+                
             }
         }
     }
@@ -185,7 +226,7 @@ div#sm-sharing {
         right: -16px;
         top: -14px;
         border: 2px solid #E5961D;
-        padding: 32px 0 0;
+        padding: 20px;
         background: #fff;
         .borderradius & { 
             @include border-radius(5px);
@@ -224,7 +265,7 @@ div#sm-sharing {
             height: 3em;
             margin-bottom: 0.3em;
             padding: 5px;
-            width: 4em;   
+            width: 5em;   
             .borderradius & {
                 @include border-radius(10px);
             }
@@ -685,12 +726,13 @@ ul.actions {
             font-size: 1em;
             padding: 5px 0 5px 40px;
             text-transform: lowercase;
-            background-position: -9999px top;
-            background-repeat: no-repeat;
-            background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
-            &:hover {
-                background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
-            }
+            text-align: center;
+            //background-position: -9999px top;
+            //background-repeat: no-repeat;
+            //background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
+            //&:hover {
+            //    background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
+            //}
 
             &.button {
                 display: block;
@@ -706,16 +748,17 @@ ul.actions {
                 }
             }
 
-            .cssgradients & {
-                background-position: left 50%;
-            }
+            //.cssgradients & {
+            //    background-position: left 50%;
+            //}
 
             > span {
-                background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
-                background-repeat: no-repeat;
+                //background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
+                //background-repeat: no-repeat;
                 display: block;
-                height: 24px;
-                padding-left: 40px;
+                //height: 27px;
+                width: auto;
+                padding: 3px 0 0 30px;
             }
 
             @media #{$desktop}{
@@ -728,7 +771,7 @@ ul.actions {
 
         }
 
-        &.explore-it a,
+        /*&.explore-it a,
         &.explore-it a:hover {
             background-position: 0 -145px;
             @media #{$desktop}{
@@ -763,9 +806,9 @@ ul.actions {
             > span {
                 background-position: 0 -210px;
             }
-        }
+        }*/
 
-        &.edit-it a,
+        /*&.edit-it a,
         &.edit-it a:hover {
             > span {
                 background-position: 0 -309px;
@@ -777,7 +820,7 @@ ul.actions {
             > span {
                 background-position: 0 -345px;
             }
-        }
+        }*/
     }
 }
 
@@ -807,7 +850,7 @@ ul#listings {
             padding: 5px 10px;
             @media #{$desktop}{
                 border-top: 1px solid #FFFFFF;
-                padding: 13px 0 27px 0;
+                padding: 10px 0 30px 0;
                 margin: 0;
                 &:hover {
                     background-color: #6A99DF;
@@ -839,7 +882,9 @@ ul#listings {
                 @media #{$desktop}{
                     height: 0.45em;
                     padding: 25px 0 0;
-                    width: 5em;
+                    width: 4em;
+                    margin-left: 12px;
+                    text-indent: -10px;
                 }
             }
 

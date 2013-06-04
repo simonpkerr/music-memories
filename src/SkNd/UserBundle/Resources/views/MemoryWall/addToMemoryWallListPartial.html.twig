@@ -1,8 +1,8 @@
-<li class="add-it">
+<li>
     {% if linkType is defined and linkType == 'button' %}
-    <a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId, 'title': titleSlug })}}" class="add-it button" title="Add this to a Memory wall"><span>Add</span></a>
+    <a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId, 'title': titleSlug })}}" class="add-it button" title="Add this to a Memory wall"><span class="sprites add-icon">&nbsp;</span>Add</a>
     {% else %}
-    <a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId, 'title': titleSlug })}}" class="add-it" title="Add this to a Memory wall">Add</a>
+    <a href="{{path('memoryWallAddMediaResource', {'api': api, 'id':itemId, 'title': titleSlug })}}" class="add-it sprites add-icon" title="Add this to a Memory wall">Add</a>
     {% endif %}
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     <ul class="userMemoryWalls {% if linkType is defined and linkType == 'button' %}button{% endif %}">    
