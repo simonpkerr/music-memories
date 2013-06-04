@@ -1140,7 +1140,7 @@ ul#sm-sharing-menu {
     width: 40px;
     z-index: 2;
     margin: 0 1em;
-    padding: 3px 2px 7px 2px; }
+    padding: 2px; }
     @media only screen and (min-width: 600px) {
       ul#sm-sharing-menu li a#sm-sharing-popup {
         display: none; } }

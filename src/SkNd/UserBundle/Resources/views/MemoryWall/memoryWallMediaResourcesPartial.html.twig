@@ -43,11 +43,11 @@
                 {{ _self.mrLinkAndPic(mr, api) }}
                 <ul class="actions fl full-width">
                     {% if api.name == 'amazonapi' and mr.mediaResourceCache.xmlData.DetailPageURL is defined %} 
-                        <li class="buy-it"><a class="orange button" title="buy this from Amazon" target="_blank" href="{{mr.mediaResourceCache.xmlData.DetailPageURL}}"><span>Buy</span></a></li>    
+                        <li><a class="orange button" title="buy this from Amazon" target="_blank" href="{{mr.mediaResourceCache.xmlData.DetailPageURL}}"><span class="sprites buy-icon">Buy</span></a></li>    
                     {% endif %}
                     {% if wallBelongsToThisUser %}
                     {#<li class="edit-it">Edit</li>#}
-                    <li class="delete-it"><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'mwid':mw.id, 'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span>Remove</span></a></li>
+                    <li><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'mwid':mw.id, 'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span class="sprites close-icon">Remove</span></a></li>
                     {% endif %}
                 </ul>
             </li>
