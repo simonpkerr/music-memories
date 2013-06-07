@@ -331,10 +331,11 @@ a#siteLogo img {
         top: -9999em;
         padding-top: 2em;
         z-index: 1;
-    }
-    %hiddenPanelShow {
         left: 0;
         right: 0;
+    }
+    %hiddenPanelShow {
+        
         top: 0;
     }
     
@@ -392,8 +393,7 @@ ul#memoryWalls {
             @media #{$desktop}{
                 float: left;
                 padding: 5px 0;
-                width: auto;
-                min-width: 9em;
+                width: 9em;
                 color: #fff;
             }
         }
@@ -536,7 +536,7 @@ div#content {
         margin: 0 0 10px 0;
         @media #{$desktop}{
             line-height: 1.3em;
-            margin: 5px 0 15px 10em;
+            margin: 0 0 15px 10em;
         }
     }
     h2 {
@@ -961,9 +961,9 @@ a.go-back {
                     margin-top: 10px;
                     width: auto;
                     background-position: left 50%;
-                    @media #{$desktop}{ 
-                        width: 10em;
-                    }
+                    //@media #{$desktop}{ 
+                    //    width: 10em;
+                    //}
                 }
 
                 div { 
@@ -1332,7 +1332,7 @@ dl#memoryWallDetails {
         float: none;
         font-size: 0.9em;
         margin: 10px 0 5px 0;
-        text-align: left;
+        text-align: left!important;
         width: auto;
     }
     
@@ -1400,9 +1400,9 @@ li.mw-MediaResource {
     @media #{$desktop}{ 
         position: relative;
         float: left;
-        height: 15.5em;
+        height: 17em;
         margin: 0 0 20px 20px;
-        width: 43.1%;
+        width: 45%;
     }
     
     div#youtubeapiItems & { 
@@ -1419,6 +1419,7 @@ li.mw-MediaResource {
         }
         @media #{$desktop}{ 
             float: left;
+            width: 45%;
         }
     }
     ul.actions {

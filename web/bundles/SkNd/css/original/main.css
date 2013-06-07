@@ -1276,11 +1276,11 @@ a#siteLogo img {
     position: absolute;
     top: -9999em;
     padding-top: 2em;
-    z-index: 1; }
+    z-index: 1;
+    left: 0;
+    right: 0; }
 
   ul#memoryWalls li:hover ul, ul#loginPanel li:hover ul, div#headerMediaSelection ul li:hover form {
-    left: 0;
-    right: 0;
     top: 0; }
 
   ul#memoryWalls li ul, ul#loginPanel li ul, div#headerMediaSelection ul li form {
@@ -1323,8 +1323,7 @@ ul#memoryWalls {
       ul#memoryWalls li a {
         float: left;
         padding: 5px 0;
-        width: auto;
-        min-width: 9em;
+        width: 9em;
         color: #fff; } }
 
 ul#loginPanel {
@@ -1415,7 +1414,7 @@ div#content {
     @media only screen and (min-width: 600px) {
       div#content h1 {
         line-height: 1.3em;
-        margin: 5px 0 15px 10em; } }
+        margin: 0 0 15px 10em; } }
   div#content dt {
     font-size: 0.8em;
     margin-bottom: 3px; }
@@ -1706,9 +1705,6 @@ a.go-back {
     margin-top: 10px;
     width: auto;
     background-position: left 50%; }
-    @media only screen and (min-width: 600px) {
-      #recommendations ul.actions > li a {
-        width: 10em; } }
   @media only screen and (min-width: 600px) {
     #recommendations ul.actions > li div {
       width: 8.5em;
@@ -1967,7 +1963,7 @@ dl#memoryWallDetails dt {
   float: none;
   font-size: 0.9em;
   margin: 10px 0 5px 0;
-  text-align: left;
+  text-align: left!important;
   width: auto; }
 dl#memoryWallDetails dd {
   line-height: 1.3em;
@@ -2016,9 +2012,9 @@ li.mw-MediaResource {
     li.mw-MediaResource {
       position: relative;
       float: left;
-      height: 15.5em;
+      height: 17em;
       margin: 0 0 20px 20px;
-      width: 43.1%; } }
+      width: 45%; } }
   @media only screen and (min-width: 600px) {
     div#youtubeapiItems li.mw-MediaResource {
       height: 12.5em; } }
@@ -2030,7 +2026,8 @@ li.mw-MediaResource {
       border-radius: 10px; }
     @media only screen and (min-width: 600px) {
       li.mw-MediaResource img {
-        float: left; } }
+        float: left;
+        width: 45%; } }
   li.mw-MediaResource ul.actions {
     margin-top: 10px; }
 
