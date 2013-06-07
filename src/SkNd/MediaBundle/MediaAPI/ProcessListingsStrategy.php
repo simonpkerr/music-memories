@@ -58,6 +58,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     public function processMedia(){
         $this->listings = null;
            
+        //when getting cached listings, get the xml file. 
         $this->listings = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection);
         if(is_null($this->listings) || $this->listings->getLastModified()->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
             $this->listings = $this->createListings($this->apiStrategy->getListings($this->mediaSelection), $this->listings);
@@ -81,7 +82,10 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     private function createListings(SimpleXMLElement $xmlData, MediaResourceListingsCache $listings = null){
         //if listings object exists but cache is out of date
         if(!is_null($listings)){
-            $listings->setXmlData($xmlData->asXML());      
+            //$listings->setXmlData($xmlData->asXML());
+            //delete the old cached file and create a new one
+            //or load the cached file and overwrite it
+            $listings->setXmlRef($this->createXmlRef($xmlData), $listings->getXmlRef());
         } else {
             $listings = new MediaResourceListingsCache();
             $listings->setAPI($this->mediaSelection->getAPI());
@@ -91,10 +95,24 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
             $listings->setKeywords($this->mediaSelection->getKeywords());
             $listings->setComputedKeywords($this->mediaSelection->getComputedKeywords());
             $listings->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
-            $listings->setXmlData($xmlData->asXML());
+            //$listings->setXmlData($xmlData->asXML());
+            $listings->setXmlRef($this->createXmlRef($xmlData));
         }
         
         return $listings;
+    }
+    
+    private function createXmlRef(SimpleXMLElement $xmlData, $xmlRef = null){
+        //create the xml file and create a reference to it
+        //what is the reference based on?
+        //uniqid('listings_')
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->loadXML($xmlData);
+        if(is_null($xmlRef)){
+            $xmlRef = uniqid('ndl_');
+        }
+        $xmlDoc->saveXML($xmlRef);
+        return $xmlRef;
     }
     
     //check date created first, then either replace xmldata and re-cache or do nothing.

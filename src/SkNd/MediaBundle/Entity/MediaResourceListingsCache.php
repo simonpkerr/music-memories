@@ -42,6 +42,8 @@ class MediaResourceListingsCache
 
     protected $xmlData;
 
+    protected $xmlRef;
+    
     protected $dateCreated;
     
     protected $lastModified;
@@ -154,6 +156,15 @@ class MediaResourceListingsCache
         return new SimpleXMLElement($this->xmlData);
     }
 
+    public function setXmlRef($xmlRef){
+        $this->xmlRef = $xmlRef;
+    }
+    
+    public function getXmlRef(){
+        return $this->xmlRef;
+    }
+    
+    
     
     public function setDateCreated($dateCreated)
     {
