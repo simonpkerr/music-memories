@@ -146,8 +146,8 @@ a:hover {
 
 .flashMessages {
     @media #{$desktop}{
-        margin: -10px 0;
-        width: 65.2%;
+        margin: -20px 10px 0 0;
+        width: 65%;
     }
     ul {
         background-color: #C9E9A9;

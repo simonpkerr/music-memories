@@ -9,8 +9,8 @@
             <strong>{{item.ItemAttributes.Title}}</strong>
         </a>
         <ul class="actions">
-            <li class="explore-it"><a class="button" title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':item.ASIN, 'api':mr.api.name, 'title':mr.urlize(item.ItemAttributes.Title) })}}"><span>Explore</span></a></li>
-            <li class="buy-it"><a class="orange button" title="buy this from Amazon" target="_blank" href="{{item.DetailPageURL}}"><span>Buy</span></a></li>
+            <li><a class="button" title="see more details for {{item.ItemAttributes.Title}}" href="{{path('mediaDetails', {'id':item.ASIN, 'api':mr.api.name, 'title':mr.urlize(item.ItemAttributes.Title) })}}"><span class="sprites explore-icon">Explore</span></a></li>
+            <li><a class="orange button" title="buy this from Amazon" target="_blank" href="{{item.DetailPageURL}}"><span class="sprites buy-icon">Buy</span></a></li>
         </ul>
     </div>
 </li>
@@ -49,7 +49,7 @@
 
             <li class="buy-it">
                 <a class="orange button" target="_blank" href="{{item.DetailPageURL}}">
-                    <span>Buy this from Amazon {% if item.OfferSummary.LowestUsedPrice is defined %}for {{ item.OfferSummary.LowestUsedPrice.FormattedPrice }}{% elseif item.OfferSummary.LowestNewPrice is defined %}for {{ item.OfferSummary.LowestNewPrice.FormattedPrice }}{% endif %}
+                    <span class="sprites buy-icon">Buy this from Amazon {% if item.OfferSummary.LowestUsedPrice is defined %}for {{ item.OfferSummary.LowestUsedPrice.FormattedPrice }}{% elseif item.OfferSummary.LowestNewPrice is defined %}for {{ item.OfferSummary.LowestNewPrice.FormattedPrice }}{% endif %}
                     </span>
                 </a>
                     <span><a href="#pricesDisclaimer" class="fl" title="Amazon Prices Disclaimer message"><strong>*</strong></a></span>

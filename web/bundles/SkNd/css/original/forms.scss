@@ -56,10 +56,14 @@ form {
         
         &[type="text"],
         &[type="email"],
-        &[type="password"],
-        &[type="checkbox"] {
-            @extend %input-wide-widths
+        &[type="password"] {
+            @extend %input-wide-widths;
         }
+        &[type="checkbox"] {
+            @extend %input-wide-widths;
+            border: none;
+        }
+        
         &[type="submit"],
         &#_submit {
             font-size: 1em;
@@ -172,6 +176,9 @@ input[type="submit"] {
 
 .orange {
     background-color: #F57621;
+    &:hover { 
+        background-color: #E05316;
+    }
 }
 
 a.button {

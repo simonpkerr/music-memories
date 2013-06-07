@@ -131,7 +131,7 @@ div#header {
                     border: 2px solid #E5961D;
                     padding: 20px;
                     background: #fff;
-                    z-index: 1;
+                    z-index: 3;
                     .borderradius & { 
                         @include border-radius(5px);
                     } 
@@ -343,11 +343,11 @@ a#siteLogo img {
         border: 2px solid #fff;
     }
     %panelLink {
-        float: none;
+        float: right;
         padding: 0.5em 0;
         margin: 0;
         text-align: center;
-        min-width: 8.8em;
+        min-width: 9em;
     }
 }
 
@@ -358,25 +358,12 @@ ul#memoryWalls {
         position: relative;
         margin: 0 0 0 10px;
         z-index: 1;
+        width: 9em;
     }
     li {
-        a {
-            display: block;
-            margin-bottom: 0.5em;
-            position: relative;
-            z-index: 2;
-            display: block;
-            font-weight: bold;
-            @media #{$desktop}{
-                float: left;
-                padding: 5px 7px;
-                width: auto;
-                min-width: 9em;
-                color: #fff;
-            }
-        }
-        
         @media #{$desktop}{
+            float: right;
+            min-width: 9em;
             ul {
                 @extend %hiddenPanel;
                 @extend %headerPanelBG;
@@ -393,7 +380,22 @@ ul#memoryWalls {
             &:hover ul {
                 @extend %hiddenPanelShow;
             }
-            
+        }
+        
+        a {
+            display: block;
+            margin-bottom: 0.5em;
+            position: relative;
+            z-index: 2;
+            display: block;
+            font-weight: bold;
+            @media #{$desktop}{
+                float: left;
+                padding: 5px 0;
+                width: auto;
+                min-width: 9em;
+                color: #fff;
+            }
         }
     }
 }
@@ -445,6 +447,7 @@ ul#loginPanel {
             @media #{$desktop}{
                 @extend %hiddenPanel;
                 @extend %headerPanelBG;
+                max-width: 10em;
                 .borderradius & {
                     @include border-radius(10px);
                 }
@@ -727,13 +730,6 @@ ul.actions {
             padding: 5px 0 5px 40px;
             text-transform: lowercase;
             text-align: center;
-            //background-position: -9999px top;
-            //background-repeat: no-repeat;
-            //background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
-            //&:hover {
-            //    background-image: url('/SkNd/web/bundles/SkNd/images/nd-icons.png');
-            //}
-
             &.button {
                 display: block;
                 height: auto;
@@ -748,79 +744,19 @@ ul.actions {
                 }
             }
 
-            //.cssgradients & {
-            //    background-position: left 50%;
-            //}
-
             > span {
-                //background-image: url("/SkNd/web/bundles/SkNd/images/nd-icons.png");
-                //background-repeat: no-repeat;
                 display: block;
-                //height: 27px;
                 width: auto;
-                padding: 3px 0 0 30px;
+                padding: 3px 0 0 35px;
+                margin: 0 5px;
             }
 
             @media #{$desktop}{
-                //height: 0.45em;
                 margin-top: 0;
-                //padding: 25px 0 0;
-                //width: 5em;
                 font-size: 0.7em;
             }
 
         }
-
-        /*&.explore-it a,
-        &.explore-it a:hover {
-            background-position: 0 -145px;
-            @media #{$desktop}{
-                background-position: 10px -145px;	
-            }
-            > span {
-                background-position: 0 -147px;
-            }	
-        }
-
-        &.add-it a,
-        &.add-it a:hover {
-            z-index: 2;
-            position: relative;
-            background-position: 0 -176px;
-            @media #{$desktop}{
-                z-index: 2;
-                position: relative;
-                background-position: 10px -178px;
-            }
-            > span {
-                background-position: 0 -178px;
-            }
-        }
-
-        &.buy-it a,
-        &.buy-it a:hover {
-            background-position: 0 -208px;
-            @media #{$desktop}{
-                background-position: 10px -210px;
-            }
-            > span {
-                background-position: 0 -210px;
-            }
-        }*/
-
-        /*&.edit-it a,
-        &.edit-it a:hover {
-            > span {
-                background-position: 0 -309px;
-            }
-        }
-
-        &.delete-it a,
-        &.delete-it a:hover {
-            > span {
-                background-position: 0 -345px;
-            }
-        }*/
     }
 }
 
@@ -1023,7 +959,7 @@ a.go-back {
             > li { 
                 a { 
                     margin-top: 10px;
-                    width: 80%;
+                    width: auto;
                     background-position: left 50%;
                     @media #{$desktop}{ 
                         width: 10em;
@@ -1104,16 +1040,16 @@ a.go-back {
                     float: left;
                     width: 90%;
                 }
-  
-            }
-            
-            &.add-it { 
-                a { 
+                
+                &.add-it { 
                     position: relative;
                     z-index: 2;
                 }
+            
+  
             }
             
+                        
             &:hover ul {
                 @media #{$desktop} { 
                     left: 0;
@@ -1164,28 +1100,30 @@ a.go-back {
             > a { 
                 @media #{$desktop}{ 
                     background-position: 0 center;
-                    height: 2.5em;
-                    padding: 3px 0 0;
+                    height: 2.7em;
+                    padding: 1px 0 0;
                     text-indent: -9999em;
-                    width: 3.1em;
+                    width: 3.5em;
                     position: relative;
                     z-index: 2;
                 }
             }
             ul {
                 &.userMemoryWalls {
+                    text-align: center;
                     .borderradius & { 
                         @include border-radius(10px);
                     }
                     li { 
+                        color: #fff;
                         margin-bottom: 10px; 
+                        text-align: left;
                     }
                     a {
                         color: #fff;
                         text-indent: 0;
                         width: auto;
                         height: auto;
-                        text-align: left;
                     }
                     @media #{$desktop}{  
                         position: absolute;

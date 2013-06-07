@@ -1,6 +1,7 @@
 <ul id="loginPanel">
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        <li><span class="button orange" id="logged-in-user">{{'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle')|slice(0,20)}}{% if app.user.username|length > 20 %}&hellip;{% endif %}</span>
+        <li>
+            <span class="button orange" id="logged-in-user">{{'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle')|slice(0,20)}}{% if app.user.username|length > 20 %}&hellip;{% endif %}</span>
             <ul>
                 <li>
                     <a href="{{ path('sonata_user_profile_edit_authentication') }}">

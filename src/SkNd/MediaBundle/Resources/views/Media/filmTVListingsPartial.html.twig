@@ -1,3 +1,7 @@
+{% macro shortenTitle(title) %}
+{{ title|slice(0,75) }}{% if title|length > 75 %}&hellip;{%endif%}
+{% endmacro %}
+
 
 {% macro detailsLinkOpeningTag(listings, item, api, class) %}
 <a title="See more details for {{item.ItemAttributes.Title}}" href="{{ path('mediaDetails', {'id':item.ASIN, 'api':api, 'title': listings.urlize(item.ItemAttributes.Title) }) }}" class="{{ class|default('')}}">
@@ -21,7 +25,7 @@ with
         {{ _self.detailsLinkOpeningTag(listings,item, api) }}
             <img src="{{item.MediumImage is defined ? item.MediumImage.URL : asset('bundles/SkNd/images/image-placeholder.jpg') }}" alt="{{item.ItemAttributes.Title}}" />
         </a>
-        <strong>{{ _self.detailsLinkOpeningTag(listings,item, api) }}{{item.ItemAttributes.Title}}</a></strong>
+        <strong>{{ _self.detailsLinkOpeningTag(listings,item, api) }}{{ _self.shortenTitle(item.ItemAttributes.Title|e) }}</a></strong>
     </div>
     <ul class="actions">
         <li class="top-action">
