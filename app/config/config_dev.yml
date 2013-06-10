@@ -7,7 +7,7 @@ framework:
 
 doctrine:
     dbal:
-        dbname: "SkNd_dev"
+        dbname: "SkNd_dev2"
 
 web_profiler:
     toolbar: true

@@ -156,7 +156,7 @@ class MediaResourceListingsCache
         return new SimpleXMLElement($this->xmlData);
     }
 
-    public function setXmlRef($xmlRef){
+    public function setXmlRef($xmlRef = null){
         $this->xmlRef = $xmlRef;
     }
     

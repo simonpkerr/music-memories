@@ -102,6 +102,20 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
         return $listings;
     }
     
+    public function convertMedia(){
+        $listingsCollection = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->findAll();
+        foreach ($listingsCollection as $listings){
+            if($listings->getLastModified()->format("Y-m-d H:i:s") < $listings->getAPI()->getValidCreationTime()){
+                $listings->setXmlRef($this->createXmlRef($listings->getXmlData()));
+            } else {
+                $listings->setXmlData(null);
+                $listings->setXmlRef(null);
+            }
+            $this->em->persist($listings);
+        }
+        $this->em->flush();
+    }
+    
     private function createXmlRef(SimpleXMLElement $xmlData, $xmlRef = null){
         //create the xml file and create a reference to it
         //what is the reference based on?

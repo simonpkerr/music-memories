@@ -35,7 +35,13 @@ youTubeRequest:
   pattern: /youtuberequest/{title}/{mrid}
   defaults:
     _controller: SkNdMediaBundle:Media:youTubeRequest
-  
+
+convertMedia:
+  pattern: /convert/{media}
+  defaults:
+    _controller: SkNdMediaBundle:Media:convertMedia
+    media: 'listings'
+    
 #setSlugs:
 #  pattern: /setSlugs/{table}
 #  defaults: { _controller: SkNdMediaBundle:Media:setSlugs }

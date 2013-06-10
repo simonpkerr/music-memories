@@ -21,9 +21,11 @@ SkNd\MediaBundle\Entity\MediaResourceListingsCache:
       nullable: true
     xmlData:
       type: text
+      nullable: true
     xmlRef:
       type: string
       length: 255
+      nullable: true
     dateCreated:
       type: datetime
       gedmo:

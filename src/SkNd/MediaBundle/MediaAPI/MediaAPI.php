@@ -321,6 +321,10 @@ class MediaAPI {
         
         return $processStrategy->getMedia();     
         
-    } 
+    }
+    
+    public function convertMedia(IProcessMediaStrategy $processStrategy){
+        $processStrategy->convertMedia();
+    }
 }
 ?>
