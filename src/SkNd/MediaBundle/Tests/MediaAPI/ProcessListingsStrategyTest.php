@@ -164,7 +164,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
         $pls->getMedia();
     }
     
-    
+    //UPDATE - testNonExistentCachedListingsCallsLiveAPIAndSavesToXMLFile
     public function testNonExistentCachedListingsCallsLiveAPI(){
         $pls = $this->processListingsStrategy->getMock();
         
@@ -210,6 +210,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
         self::$em->flush();
     }
     
+    //UPDATE - testExistingOutOfDateCachedListingsCreatesNewXMLFileAndNewRefFromLiveAPI
     public function testExistingOutOfDateCachedListingsUpdatesCacheFromLiveAPI(){
         //insert some listings
         $listings = new MediaResourceListingsCache();
@@ -292,6 +293,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
         self::$em->flush();
                 
     }
+    
     
     
     

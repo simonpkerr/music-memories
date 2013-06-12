@@ -37,10 +37,11 @@ youTubeRequest:
     _controller: SkNdMediaBundle:Media:youTubeRequest
 
 convertMedia:
-  pattern: /convert/{media}
+  pattern: admin/convert/{media}/{api}
   defaults:
     _controller: SkNdMediaBundle:Media:convertMedia
     media: 'listings'
+    api: 'amazonapi'
     
 #setSlugs:
 #  pattern: /setSlugs/{table}

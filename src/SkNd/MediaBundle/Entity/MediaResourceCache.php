@@ -11,6 +11,7 @@
 namespace SkNd\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use SkNd\MediaBundle\MediaAPI\MediaAPI;
 
 class MediaResourceCache
 {
@@ -20,6 +21,7 @@ class MediaResourceCache
     private $slug;
     private $title;
     private $imageUrl;
+    protected $xmlRef;
     
     public function setId($id){
         $this->id = $id;
@@ -37,26 +39,35 @@ class MediaResourceCache
  
     public function getXmlData()
     {
-        return simplexml_load_string($this->xmlData);
+        try{
+            $this->setXmlData(simplexml_load_file(MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml'));
+        }catch(\Exception $e) {
+            throw new \Exception("error loading details");
+        }
+        
+        return $this->xmlData;
+        
     }
-
+    
+    public function setXmlRef($xmlRef)
+    {
+        $this->xmlRef = $xmlRef;
+    }
+ 
+    public function getXmlRef()
+    {
+        return $this->xmlRef;
+    }
     
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
     }
-
     
     public function getDateCreated()
     {
         return $this->dateCreated;
     }
-
-    /*public function setSlug($slug = null)
-    {
-        $this->slug = $slug;
-    }*/
-
 
     public function getSlug()
     {

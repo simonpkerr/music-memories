@@ -178,6 +178,39 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         $this->utilities->persistMergeFlush($this->em, $obj, $immediateFlush);
     }
     
+    public function convertMedia(){
+        $date = $this->apiStrategy->getValidCreationTime();
+        $mrCollection = $this->em->createQuery('select mr from SkNd\MediaBundle\Entity\MediaResource mr where mr.api = :api')
+                ->setParameter('api', $this->apiStrategy->getAPIEntity())
+                ->setMaxResults(5)
+                ->getResult();
+       
+        foreach ($mrCollection as $mr){
+            $cache = $mr->getMediaResourceCache();
+            if($cache->getDateCreated()->format("Y-m-d H:i:s") > $date){
+                $cache->setXmlRef($this->createXmlRef($cache->getXmlData()));
+                $cache->setXmlData(null);
+            } else {
+                //$cache->setXmlData(null);
+                //$cache->setXmlRef(null);
+                $mr->setMediaResourceCache(null);
+            }
+            $this->em->persist($mr);
+            
+        }
+        $this->em->flush();
+    }
+    
+    private function createXmlRef(SimpleXMLElement $xmlData){
+        //create the xml file and create a reference to it
+        $apiRef = substr($this->apiStrategy->getName(),0,1);
+        $timeStamp = new \DateTime("now");
+        $timeStamp = $timeStamp->format("Y-m-d_H-S");
+        $xmlRef = uniqid('l' . $apiRef . '-' . $timeStamp);
+        $xmlData->asXML(MediaAPI::CACHE_PATH . $xmlRef . '.xml');
+        
+        return $xmlRef;
+    }
     
 }
 

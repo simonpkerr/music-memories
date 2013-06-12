@@ -21,6 +21,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     protected $listings;
     protected $recommendations;
     protected $utilities;
+    
 
     /**
      * @param array $params includes -
@@ -58,7 +59,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     public function processMedia(){
         $this->listings = null;
            
-        //when getting cached listings, get the xml file. 
+        //when getting cached listings, get the xml file and store in the listings object as xmlData 
         $this->listings = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection);
         if(is_null($this->listings) || $this->listings->getLastModified()->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
             $this->listings = $this->createListings($this->apiStrategy->getListings($this->mediaSelection), $this->listings);
@@ -82,10 +83,13 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     private function createListings(SimpleXMLElement $xmlData, MediaResourceListingsCache $listings = null){
         //if listings object exists but cache is out of date
         if(!is_null($listings)){
-            //$listings->setXmlData($xmlData->asXML());
-            //delete the old cached file and create a new one
-            //or load the cached file and overwrite it
-            $listings->setXmlRef($this->createXmlRef($xmlData), $listings->getXmlRef());
+            try 
+            { 
+                unlink(MediaAPI::CACHE_PATH . $listings->getXmlRef() . '.xml');
+            }catch(\Exception $e){
+                throw new \Exception("error deleting old cached file");
+            }
+            //$listings->setXmlRef($this->createXmlRef($xmlData));
         } else {
             $listings = new MediaResourceListingsCache();
             $listings->setAPI($this->mediaSelection->getAPI());
@@ -96,36 +100,41 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
             $listings->setComputedKeywords($this->mediaSelection->getComputedKeywords());
             $listings->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
             //$listings->setXmlData($xmlData->asXML());
-            $listings->setXmlRef($this->createXmlRef($xmlData));
+            
         }
+        $listings->setXmlRef($this->createXmlRef($xmlData));
         
         return $listings;
     }
     
     public function convertMedia(){
-        $listingsCollection = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->findAll();
+        $date = $this->apiStrategy->getValidCreationTime();
+        $listingsCollection = $this->em->createQuery('select c from SkNd\MediaBundle\Entity\MediaResourceListingsCache c where c.api = :api AND c.xmlRef IS NULL')
+                ->setParameter('api', $this->apiStrategy->getAPIEntity())
+                ->setMaxResults(2000)
+                ->getResult();
+       
         foreach ($listingsCollection as $listings){
-            if($listings->getLastModified()->format("Y-m-d H:i:s") < $listings->getAPI()->getValidCreationTime()){
+            if($listings->getLastModified()->format("Y-m-d H:i:s") > $date){
                 $listings->setXmlRef($this->createXmlRef($listings->getXmlData()));
-            } else {
                 $listings->setXmlData(null);
-                $listings->setXmlRef(null);
+                $this->em->persist($listings);
+            } else {
+                $this->em->remove($listings);
             }
-            $this->em->persist($listings);
+            
         }
         $this->em->flush();
     }
     
-    private function createXmlRef(SimpleXMLElement $xmlData, $xmlRef = null){
+    private function createXmlRef(SimpleXMLElement $xmlData){
         //create the xml file and create a reference to it
-        //what is the reference based on?
-        //uniqid('listings_')
-        $xmlDoc = new DOMDocument();
-        $xmlDoc->loadXML($xmlData);
-        if(is_null($xmlRef)){
-            $xmlRef = uniqid('ndl_');
-        }
-        $xmlDoc->saveXML($xmlRef);
+        $apiRef = substr($this->apiStrategy->getName(),0,1);
+        $timeStamp = new \DateTime("now");
+        $timeStamp = $timeStamp->format("Y-m-d_H-S");
+        $xmlRef = uniqid('l' . $apiRef . '-' . $timeStamp);
+        $xmlData->asXML(MediaAPI::CACHE_PATH . $xmlRef . '.xml');
+        
         return $xmlRef;
     }
     

@@ -278,22 +278,22 @@ class MediaController extends Controller
         return $this->render('SkNdMediaBundle:Media:youTubePartial.html.twig', $responseParams);        
     }
     
-    public function convertMediaAction($media){
+    public function convertMediaAction($media = 'listings', $api = 'amazonapi'){
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $em = $this->mediaapi->getEntityManager();
-        
+        $apiStrategy = $this->mediaapi->getAPIStrategy($api);
         if($media == 'listings'){
             $mediaSelection = $this->mediaapi->getMediaSelection();
             $processMediaStrategy = new ProcessListingsStrategy(array(
                 'em'             => $em,
                 'mediaSelection' => $mediaSelection,
-                'apiStrategy'    => $this->mediaapi->getAPIStrategy('amazonapi'),
+                'apiStrategy'    => $apiStrategy,
             ));
             
         } else {
             $processMediaStrategy = new ProcessDetailsStrategy(array(
                 'em'            =>      $em,
-                'apiStrategy'   =>      $this->mediaapi->getAPIStrategy('amazonapi'), 
+                'apiStrategy'   =>      $apiStrategy, 
                 'mediaSelection'=>      $mediaSelection,
                 'itemId'        =>      'na',
                 'title'         =>      'na',

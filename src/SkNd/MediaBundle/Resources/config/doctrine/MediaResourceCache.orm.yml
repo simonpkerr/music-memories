@@ -10,6 +10,11 @@ SkNd\MediaBundle\Entity\MediaResourceCache:
         strategy: NONE
     xmlData:
       type: text
+      nullable: true
+    xmlRef:
+      type: string
+      length: 255
+      nullable: true
     dateCreated:
       type: datetime
       gedmo:

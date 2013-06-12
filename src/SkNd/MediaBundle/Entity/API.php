@@ -9,8 +9,6 @@
 
 namespace SkNd\MediaBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 class API
 {
     public static $default = 'amazonapi';

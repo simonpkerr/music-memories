@@ -31,6 +31,7 @@ use \SimpleXMLElement;
 class MediaAPI {
     const MEDIA_RESOURCE_RECOMMENDATION = 1;
     const MEMORY_WALL_RECOMMENDATION = 2;
+    const CACHE_PATH = 'bundles/SkNd/cache/';
     
     protected $session;
     protected $apiStrategy;

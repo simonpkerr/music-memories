@@ -17,6 +17,7 @@ use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\API;
+use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use \SimpleXMLElement;
 
 class MediaResourceListingsCache
@@ -40,7 +41,7 @@ class MediaResourceListingsCache
     
     protected $computedKeywords;
 
-    protected $xmlData;
+    private $xmlData;
 
     protected $xmlRef;
     
@@ -141,7 +142,7 @@ class MediaResourceListingsCache
      *
      * @param object $xmlData
      */
-    public function setXmlData($xmlData)
+    public function setXmlData($xmlData = null)
     {
         $this->xmlData = $xmlData;
     }
@@ -153,7 +154,13 @@ class MediaResourceListingsCache
      */
     public function getXmlData()
     {
-        return new SimpleXMLElement($this->xmlData);
+        try{
+            $this->setXmlData(simplexml_load_file(MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml'));
+        }catch(\Exception $e) {
+            throw new \Exception("error loading listings");
+        }
+        
+        return $this->xmlData;
     }
 
     public function setXmlRef($xmlRef = null){
