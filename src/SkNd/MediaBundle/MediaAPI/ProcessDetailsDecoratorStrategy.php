@@ -89,7 +89,11 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     public function persistMergeFlush($obj = null, $immediateFlush = true){
         parent::persistMergeFlush($obj, $immediateFlush);
     }
+    
+    public function createXmlRef(\SimpleXMLElement $xmlData, $apiKey) {
+        return $this->processDetailsStrategy->createXMLRef($xmlData, $apiKey);
         
+    }
    
     
 }

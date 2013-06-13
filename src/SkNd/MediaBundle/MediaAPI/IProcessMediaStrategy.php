@@ -9,8 +9,6 @@
  * @version 1.0
  */
 namespace SkNd\MediaBundle\MediaAPI;
-use SkNd\MediaBundle\Entity\MediaResource;
-use SkNd\MediaBundle\Entity\MediaResourceCache;
 use \SimpleXMLElement;
 
 interface IProcessMediaStrategy {
@@ -19,6 +17,7 @@ interface IProcessMediaStrategy {
     public function getAPIData();
     public function getMedia();
     public function persistMergeFlush($obj = null, $immediateFlush = true);
+    public function createXMLRef(SimpleXMLElement $xmlData, $apiKey);
     
 }
 

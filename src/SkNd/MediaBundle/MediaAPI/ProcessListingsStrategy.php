@@ -102,10 +102,9 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
             $listings->setKeywords($this->mediaSelection->getKeywords());
             $listings->setComputedKeywords($this->mediaSelection->getComputedKeywords());
             $listings->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
-            //$listings->setXmlData($xmlData->asXML());
-            
+                        
         }
-        $listings->setXmlRef($this->createXmlRef($xmlData));
+        $listings->setXmlRef($this->createXmlRef($xmlData, $this->apiStrategy->getName()));
         
         return $listings;
     }
@@ -130,9 +129,9 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
         $this->em->flush();
     }
     
-    private function createXmlRef(SimpleXMLElement $xmlData){
+    public function createXmlRef(SimpleXMLElement $xmlData, $apiKey){
         //create the xml file and create a reference to it
-        $apiRef = substr($this->apiStrategy->getName(),0,1);
+        $apiRef = substr($apiKey,0,1);
         $timeStamp = new \DateTime("now");
         $timeStamp = $timeStamp->format("Y-m-d_H-i-s");
         $xmlRef = uniqid('l' . $apiRef . '-' . $timeStamp);

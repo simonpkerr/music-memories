@@ -160,7 +160,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
         return null;
     }
     
-    private function createXmlRef(\SimpleXMLElement $xmlData, $apiKey){
+    public function createXmlRef(\SimpleXMLElement $xmlData, $apiKey){
         //create the xml file and create a reference to it
         $apiRef = substr($apiKey,0,1);
         $timeStamp = new \DateTime("now");

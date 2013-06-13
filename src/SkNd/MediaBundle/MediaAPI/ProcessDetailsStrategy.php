@@ -156,7 +156,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
             $cachedResource->setId($this->mediaResource->getId());
             $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($this->apiResponse));
             $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($this->apiResponse));
-            $cachedResource->setXmlRef($this->createXmlRef($this->apiResponse));
+            $cachedResource->setXmlRef($this->createXmlRef($this->apiResponse, $this->apiStrategy->getName()));
             $cachedResource->setDateCreated(new \DateTime("now"));
             if(is_null($this->mediaResource->getDecade())){
                 $decade = $this->apiStrategy->getDecadeFromXML($this->apiResponse);
@@ -199,9 +199,9 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         $this->em->flush();
     }
     
-    private function createXmlRef(SimpleXMLElement $xmlData){
+    public function createXmlRef(SimpleXMLElement $xmlData, $apiKey){
         //create the xml file and create a reference to it
-        $apiRef = substr($this->apiStrategy->getName(),0,1);
+        $apiRef = substr($apiKey,0,1);
         $timeStamp = new \DateTime("now");
         $timeStamp = $timeStamp->format("Y-m-d_H-i-s");
         $xmlRef = uniqid('d' . $apiRef . '-' . $timeStamp);

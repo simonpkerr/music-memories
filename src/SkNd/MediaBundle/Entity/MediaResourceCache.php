@@ -42,7 +42,7 @@ class MediaResourceCache
  
     public function getXmlData()
     {
-        $f = MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml';
+        $f = MediaAPI::CACHE_PATH . $this->xmlRef . '.xml';
         if(file_exists($f)){
             try{
                 $this->setXmlData(simplexml_load_file($f));
@@ -59,7 +59,7 @@ class MediaResourceCache
     
     public function deleteXmlRef(){
         //unlink cached xml file
-        $f = MediaAPI::CACHE_PATH . $this->getMediaResourceCache()->getXmlRef() . '.xml';
+        $f = MediaAPI::CACHE_PATH . $this->xmlRef . '.xml';
         if(file_exists($f)){
             try {
                 unlink($f);
