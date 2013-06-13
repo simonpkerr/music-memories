@@ -8,13 +8,13 @@ SkNd\MediaBundle\Entity\MediaResourceCache:
       unique: true
       generator:
         strategy: NONE
-    xmlData:
-      type: text
-      nullable: true
+    #xmlData:
+    #  type: text
+    #  nullable: true
     xmlRef:
       type: string
       length: 255
-      nullable: true
+    #  nullable: true
     dateCreated:
       type: datetime
       gedmo:

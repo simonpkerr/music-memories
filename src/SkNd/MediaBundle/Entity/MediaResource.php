@@ -13,6 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Util;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaType;
@@ -105,6 +106,7 @@ class MediaResource
     }
     
     public function deleteMediaResourceCache(){
+        $this->mediaResourceCache->deleteXmlRef();        
         $this->mediaResourceCache = null;
     }
     

@@ -83,11 +83,14 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     private function createListings(SimpleXMLElement $xmlData, MediaResourceListingsCache $listings = null){
         //if listings object exists but cache is out of date
         if(!is_null($listings)){
-            try 
-            { 
-                unlink(MediaAPI::CACHE_PATH . $listings->getXmlRef() . '.xml');
-            }catch(\Exception $e){
-                throw new \Exception("error deleting old cached file");
+            $f = MediaAPI::CACHE_PATH . $listings->getXmlRef() . '.xml';
+            if(file_exists($f)){
+                try 
+                {
+                    unlink($f);
+                } catch(\Exception $e){
+                    throw new \Exception("error deleting old cached file");
+                }
             }
             //$listings->setXmlRef($this->createXmlRef($xmlData));
         } else {
@@ -131,7 +134,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
         //create the xml file and create a reference to it
         $apiRef = substr($this->apiStrategy->getName(),0,1);
         $timeStamp = new \DateTime("now");
-        $timeStamp = $timeStamp->format("Y-m-d_H-S");
+        $timeStamp = $timeStamp->format("Y-m-d_H-i-s");
         $xmlRef = uniqid('l' . $apiRef . '-' . $timeStamp);
         $xmlData->asXML(MediaAPI::CACHE_PATH . $xmlRef . '.xml');
         

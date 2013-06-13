@@ -210,7 +210,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
         self::$em->flush();
     }
     
-    //UPDATE - testExistingOutOfDateCachedListingsCreatesNewXMLFileAndNewRefFromLiveAPI
+    //UPDATE - testExistingOutOfDateCachedListingsCreatesNewXMLFileDeletesOldAndNewRefFromLiveAPI
     public function testExistingOutOfDateCachedListingsUpdatesCacheFromLiveAPI(){
         //insert some listings
         $listings = new MediaResourceListingsCache();
@@ -232,6 +232,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
         self::$em->flush();
     }
     
+   
     public function testGetRecommendationsReturnsNullIfNoDecadeSet(){
         $pls = $this->processListingsStrategy->getMock();
         

@@ -21,6 +21,7 @@ class YouTubeAPI implements IAPIStrategy {
     protected $youTube;
     protected $apiEntity;
     private $query;
+    private $ids;
     
     public function __construct($youtube_request_object = null){
         $this->youTube = is_null($youtube_request_object) ? new \Zend_Gdata_YouTube() : $youtube_request_object;
@@ -100,6 +101,8 @@ class YouTubeAPI implements IAPIStrategy {
         if(count($ids) > self::BATCH_PROCESS_THRESHOLD)
             $ids = array_slice ($ids, 0, self::BATCH_PROCESS_THRESHOLD);
         
+        $this->ids = $ids;
+                
         $feed = '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"
 xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtube.com/schemas/2007"><batch:operation type="query" />';
         
@@ -197,9 +200,9 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
     private function getSimpleXml($videoFeed, $debugURL = false){
         $sxml = new SimpleXMLElement('<feed></feed>');
         //$feed = $sxml->addChild('feed');
-        foreach($videoFeed as $videoEntry){
+        foreach($videoFeed as $i=>$videoEntry){
             $entry = $sxml->addChild('entry');
-            $this->constructVideoEntry($entry, $videoEntry);
+            $this->constructVideoEntry($entry, $videoEntry, $i);
         }
         
         //debug - output the search url
@@ -210,18 +213,26 @@ xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:yt="http://gdata.youtu
         return $sxml;
     }
     
-    private function constructVideoEntry(SimpleXMLElement $entry, $videoEntry){
+    private function constructVideoEntry(SimpleXMLElement $entry, $videoEntry, $i = null){
         $id = $entry->addChild('id');
-        $id[0] = $videoEntry->getVideoId();
-
-        $thumbnails = $videoEntry->getVideoThumbnails();
-        $tn = end($thumbnails);
-
         $thumbnail = $entry->addChild('thumbnail');
-        $thumbnail[0] = $tn['url'];
-
         $title = $entry->addChild('title');
-        $title[0] = $videoEntry->getVideoTitle();
+        
+        if(!is_null($videoEntry->getVideoTitle())) {
+            $id[0] = $videoEntry->getVideoId();
+            $thumbnails = $videoEntry->getVideoThumbnails();
+            $tn = end($thumbnails);
+            $thumbnail[0] = $tn['url'];
+            $title[0] = $videoEntry->getVideoTitle();
+        } else {
+            if(!is_null($this->ids) && !is_null($i)){
+                $id[0] = $this->ids[$i];                        
+            } else {
+                $id[0] = '-1';
+            }
+            $thumbnail[0] = 'na';
+            $title[0] = 'Sorry, this video has been removed by YouTube';
+        }
         
         return $entry;
     }

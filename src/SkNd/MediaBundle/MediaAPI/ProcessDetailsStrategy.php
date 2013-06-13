@@ -10,9 +10,7 @@
  */
 
 namespace SkNd\MediaBundle\MediaAPI;
-use SkNd\MediaBundle\Entity\MediaSelection;
-use Doctrine\ORM\EntityManager;
-use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
+use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
@@ -158,7 +156,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
             $cachedResource->setId($this->mediaResource->getId());
             $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($this->apiResponse));
             $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($this->apiResponse));
-            $cachedResource->setXmlData($this->apiResponse->asXML());
+            $cachedResource->setXmlRef($this->createXmlRef($this->apiResponse));
             $cachedResource->setDateCreated(new \DateTime("now"));
             if(is_null($this->mediaResource->getDecade())){
                 $decade = $this->apiStrategy->getDecadeFromXML($this->apiResponse);
@@ -180,19 +178,19 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
     
     public function convertMedia(){
         $date = $this->apiStrategy->getValidCreationTime();
-        $mrCollection = $this->em->createQuery('select mr from SkNd\MediaBundle\Entity\MediaResource mr where mr.api = :api')
+        $mrCollection = $this->em->createQuery('select mr from SkNd\MediaBundle\Entity\MediaResource mr where mr.api = :api AND mr.mediaResourceCache IS NOT NULL')
                 ->setParameter('api', $this->apiStrategy->getAPIEntity())
-                ->setMaxResults(5)
+                ->setMaxResults(1000)
                 ->getResult();
        
         foreach ($mrCollection as $mr){
             $cache = $mr->getMediaResourceCache();
             if($cache->getDateCreated()->format("Y-m-d H:i:s") > $date){
-                $cache->setXmlRef($this->createXmlRef($cache->getXmlData()));
-                $cache->setXmlData(null);
+                if(!is_null($cache->getRawXmlData())){
+                    $cache->setXmlRef($this->createXmlRef($cache->getRawXmlData()));
+                    $cache->setXmlData(null);
+                }
             } else {
-                //$cache->setXmlData(null);
-                //$cache->setXmlRef(null);
                 $mr->setMediaResourceCache(null);
             }
             $this->em->persist($mr);
@@ -205,8 +203,8 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         //create the xml file and create a reference to it
         $apiRef = substr($this->apiStrategy->getName(),0,1);
         $timeStamp = new \DateTime("now");
-        $timeStamp = $timeStamp->format("Y-m-d_H-S");
-        $xmlRef = uniqid('l' . $apiRef . '-' . $timeStamp);
+        $timeStamp = $timeStamp->format("Y-m-d_H-i-s");
+        $xmlRef = uniqid('d' . $apiRef . '-' . $timeStamp);
         $xmlData->asXML(MediaAPI::CACHE_PATH . $xmlRef . '.xml');
         
         return $xmlRef;

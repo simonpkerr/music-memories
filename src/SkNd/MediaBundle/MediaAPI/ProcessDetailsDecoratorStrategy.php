@@ -9,11 +9,8 @@
 namespace SkNd\MediaBundle\MediaAPI;
 
 use Doctrine\ORM\EntityManager;
-use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
-use SkNd\MediaBundle\MediaAPI\MediaDetails;
 use SkNd\MediaBundle\MediaAPI\ProcessBatchStrategy;
 use SkNd\MediaBundle\Entity\MediaResource;
-use SkNd\MediaBundle\Entity\MediaSelection;
 
 class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $processDetailsStrategy;

@@ -8,11 +8,9 @@
  * @version 1.0
  */
 namespace SkNd\MediaBundle\MediaAPI;
-use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Doctrine\ORM\EntityManager;
-use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
-use SkNd\MediaBundle\MediaAPI\MediaDetails;
+use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 
 class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
@@ -121,7 +119,9 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                     $cachedResource->setId($id);
                     $cachedResource->setImageUrl($api->getImageUrlFromXML($itemXml));
                     $cachedResource->setTitle($api->getItemTitleFromXML($itemXml));
-                    $cachedResource->setXmlData($api->getXML($itemXml));
+                    //delete the old xml file
+                    $cachedResource->deleteXmlRef();
+                    $cachedResource->setXmlRef($this->createXmlRef($itemXml, $mr->getAPI()->getName()));
                     $cachedResource->setDateCreated(new \DateTime("now"));
                     if(is_null($mr->getDecade())){
                         $decade = $api->getDecadeFromXML($itemXml);
@@ -158,6 +158,17 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     //not needed
     public function getMediaResource(){
         return null;
+    }
+    
+    private function createXmlRef(\SimpleXMLElement $xmlData, $apiKey){
+        //create the xml file and create a reference to it
+        $apiRef = substr($apiKey,0,1);
+        $timeStamp = new \DateTime("now");
+        $timeStamp = $timeStamp->format("Y-m-d_H-i-s");
+        $xmlRef = uniqid('d' . $apiRef . '-' . $timeStamp);
+        $xmlData->asXML(MediaAPI::CACHE_PATH . $xmlRef . '.xml');
+        
+        return $xmlRef;
     }
 
     

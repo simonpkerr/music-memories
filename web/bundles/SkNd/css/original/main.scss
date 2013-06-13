@@ -986,6 +986,10 @@ a.go-back {
 
             }
         }
+        
+        div > a {
+            display: block;
+        }
     }
     
     > div {

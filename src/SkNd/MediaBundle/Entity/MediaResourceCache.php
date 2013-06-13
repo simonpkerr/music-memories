@@ -10,7 +10,6 @@
 
 namespace SkNd\MediaBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use SkNd\MediaBundle\MediaAPI\MediaAPI;
 
 class MediaResourceCache
@@ -36,17 +35,38 @@ class MediaResourceCache
     {
         $this->xmlData = $xmlData;
     }
+    
+    public function getRawXmlData(){
+        return simplexml_load_string($this->xmlData);
+    }
  
     public function getXmlData()
     {
-        try{
-            $this->setXmlData(simplexml_load_file(MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml'));
-        }catch(\Exception $e) {
-            throw new \Exception("error loading details");
+        $f = MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml';
+        if(file_exists($f)){
+            try{
+                $this->setXmlData(simplexml_load_file($f));
+            }catch(\Exception $e) {
+                throw new \Exception("error loading details");
+            }
+        } else {
+            throw new \RuntimeException ("error loading details - file does not exist");
         }
         
         return $this->xmlData;
         
+    }
+    
+    public function deleteXmlRef(){
+        //unlink cached xml file
+        $f = MediaAPI::CACHE_PATH . $this->getMediaResourceCache()->getXmlRef() . '.xml';
+        if(file_exists($f)){
+            try {
+                unlink($f);
+            } catch(\Exception $e){
+                throw new \Exception("error deleting cached media resource");
+            }
+        } 
     }
     
     public function setXmlRef($xmlRef)

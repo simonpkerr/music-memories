@@ -154,10 +154,15 @@ class MediaResourceListingsCache
      */
     public function getXmlData()
     {
-        try{
-            $this->setXmlData(simplexml_load_file(MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml'));
-        }catch(\Exception $e) {
-            throw new \Exception("error loading listings");
+        $f = MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml';
+        if(file_exists($f)){
+            try{
+                $this->setXmlData(simplexml_load_file(MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml'));
+            }catch(\Exception $e) {
+                throw new \Exception("error loading listings");
+            }
+        } else {
+            throw new \RuntimeException("cached listings file does not exist");
         }
         
         return $this->xmlData;

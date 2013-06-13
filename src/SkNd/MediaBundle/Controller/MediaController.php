@@ -282,8 +282,8 @@ class MediaController extends Controller
         $this->mediaapi = $this->get('sk_nd_media.mediaapi');
         $em = $this->mediaapi->getEntityManager();
         $apiStrategy = $this->mediaapi->getAPIStrategy($api);
+        $mediaSelection = $this->mediaapi->getMediaSelection();
         if($media == 'listings'){
-            $mediaSelection = $this->mediaapi->getMediaSelection();
             $processMediaStrategy = new ProcessListingsStrategy(array(
                 'em'             => $em,
                 'mediaSelection' => $mediaSelection,

@@ -299,7 +299,7 @@ class ProcessBatchStrategyTest extends WebTestCase {
         
     }
     
-    public function testProcessMediaResourcesWith1OutOfDateCachedYouTubeResourceCallsLiveAPI(){
+    public function testProcessMediaResourcesWith1OutOfDateCachedYouTubeResourceCallsLiveAPIAndDeletesCacheFile(){
         //for this to work the xml file loaded by TestYouTubeRequest must have a videoid param : ytBatch
         $this->mediaResource->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi'));
         $this->mediaResource->setId('ytBatch');
@@ -326,6 +326,8 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $this->assertEquals((string)$mrs['ytBatch']->getMediaResourceCache()->getXmlData()->id, 'ytBatch', 'media resources were not updated');
            
     }
+    
+    
     
     public function testProcessMediaResourcesWith1NonCachedYouTubeResourceCallsLiveAPI(){
         //for this to work the xml file loaded by TestYouTubeRequest must have a videoid param : ytBatch
