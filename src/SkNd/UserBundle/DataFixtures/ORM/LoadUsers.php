@@ -116,7 +116,8 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface {
         $mrc->setId($id);
         //$mrc->setDateCreated(new \DateTime("now"));
         $mrc->setTitle($id);
-        $mrc->setXmlData(simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\sampleAmazonDetails.xml')->asXml());
+        //$mrc->setXmlData(simplexml_load_file('src\SkNd\MediaBundle\Tests\MediaAPI\SampleResponses\sampleAmazonDetails.xml')->asXml());
+        $mrc->setXmlRef('sampleAmazonDetails.xml');
         return $mrc;
     }
        

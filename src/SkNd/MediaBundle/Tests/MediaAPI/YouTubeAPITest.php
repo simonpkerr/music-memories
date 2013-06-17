@@ -230,7 +230,29 @@ class YouTubeAPITest extends PHPUnit_Framework_TestCase {
     
     
     public function testGetBatchReturnsRemovedVideosAddsPlaceHolderRecord(){
+        $ytObj = $this->getMock('\Zend_Gdata_YouTube',
+                array(
+                    'getVideoEntry'
+                ));
+
+        $ve = $this->getMock('\Zend_Gdata_YouTube_VideoEntry',
+                array(
+                    'getVideoTitle'
+                ));
         
+        $ve->expects($this->any())
+                ->method('getVideoTitle')
+                ->will($this->returnValue(null));
+        
+        $ytObj->expects($this->any())
+                ->method('getVideoEntry')
+                ->will($this->returnValue($ve));
+        
+        $yt = new YouTubeAPI();
+        $yt->setRequestObject($ytObj);
+        $response = $yt->getDetails(array('ItemId' => '1'));
+        
+        $this->assertEquals('-1', $response->id, 'id was not -1' );
     }
 
 }

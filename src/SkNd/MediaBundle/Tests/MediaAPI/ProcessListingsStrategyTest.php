@@ -117,7 +117,8 @@ class ProcessListingsStrategyTest extends WebTestCase {
         $this->processListingsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessListingsStrategy')
         ->setConstructorArgs(array($this->constructorParams))
         ->setMethods(array(
-            'persistMergeFlush'
+            'persistMergeFlush',
+            'createXmlRef',
         ));
     }
     
@@ -164,13 +165,24 @@ class ProcessListingsStrategyTest extends WebTestCase {
         $pls->getMedia();
     }
     
-    //UPDATE - testNonExistentCachedListingsCallsLiveAPIAndSavesToXMLFile
     public function testNonExistentCachedListingsCallsLiveAPI(){
-        $pls = $this->processListingsStrategy->getMock();
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+        );
+        
+        $pls = $this->processListingsStrategy
+                ->setConstructorArgs(array($this->constructorParams))
+                ->getMock();
+        
+        $pls->expects($this->any())
+                ->method('createXmlRef')
+                ->will($this->returnValue('liveData'));
         
         $pls->processMedia();
         $listings = $pls->getMedia();
-        $this->assertEquals((string)$listings['listings']->getXmlData()->item->attributes()->id, 'liveData');
+        $this->assertEquals($listings['listings']->getXmlRef(), 'liveData', 'live api data was not returned');
     }
     
     public function testExistingCachedListingsReturnsCache(){
@@ -194,7 +206,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
         $listings->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
         $listings->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film'));
         $listings->setKeywords('testExistingCachedListingsReturnsCache');
-        $listings->setXmlData($this->cachedXMLResponse->asXML());
+        $listings->setXmlRef('cachedListings');
         $listings->setLastModified(new \DateTime("now"));
         
         self::$em->persist($listings);
@@ -204,7 +216,49 @@ class ProcessListingsStrategyTest extends WebTestCase {
         
         $pls->processMedia();
         $result = $pls->getMedia();
-        $this->assertEquals((string)$result['listings']->getXmlData()->item->attributes()->id, 'cachedData');
+        $this->assertEquals($result['listings']->getXmlRef(), 'cachedListings', 'results returned werent the cached listings');
+        
+        self::$em->remove($listings);
+        self::$em->flush();
+    }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testCallingCachedListingsWithNullFileReferenceThrowsException(){
+        $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
+            'api'     => 'amazonapi',
+            'media'   => 'film',
+            'keywords'=> 'testExistingCachedListingsReturnsCache',
+        ));
+        
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+        );
+        
+        $pls = $this->processListingsStrategy
+                ->setConstructorArgs(array($this->constructorParams))
+                ->getMock();
+        
+        $listings = new MediaResourceListingsCache();
+        $listings->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
+        $listings->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film'));
+        $listings->setKeywords('testExistingCachedListingsReturnsCache');
+        $listings->setXmlRef('nonExistentFileCachedListings');
+        $listings->setLastModified(new \DateTime("now"));
+        
+        self::$em->persist($listings);
+        self::$em->flush();
+        
+        $pls = $this->processListingsStrategy->getMock();
+        
+        $pls->processMedia();
+        $result = $pls->getMedia();
+        
+        //try to get the listings which tries to look for the cache file
+        $result['listings']->getXmlData();
         
         self::$em->remove($listings);
         self::$em->flush();
