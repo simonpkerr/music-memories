@@ -10,15 +10,11 @@
 
 namespace SkNd\MediaBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Util;
 use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\API;
-use SkNd\MediaBundle\MediaAPI\MediaAPI;
-use \SimpleXMLElement;
 
 class MediaResourceListingsCache
 {
@@ -137,34 +133,13 @@ class MediaResourceListingsCache
         return $this->computedKeywords;
     }
 
-    /**
-     * Set xmlData
-     *
-     * @param object $xmlData
-     */
     public function setXmlData($xmlData = null)
     {
         $this->xmlData = $xmlData;
     }
 
-    /**
-     * Get xmlData
-     *
-     * @return object 
-     */
     public function getXmlData()
     {
-        $f = MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml';
-        if(file_exists($f)){
-            try{
-                $this->setXmlData(simplexml_load_file(MediaAPI::CACHE_PATH . $this->getXmlRef() . '.xml'));
-            }catch(\Exception $e) {
-                throw new \Exception("error loading listings");
-            }
-        } else {
-            throw new \RuntimeException("cached listings file does not exist");
-        }
-        
         return $this->xmlData;
     }
 
@@ -175,8 +150,6 @@ class MediaResourceListingsCache
     public function getXmlRef(){
         return $this->xmlRef;
     }
-    
-    
     
     public function setDateCreated($dateCreated)
     {

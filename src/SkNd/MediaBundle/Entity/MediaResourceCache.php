@@ -9,9 +9,6 @@
  */
 
 namespace SkNd\MediaBundle\Entity;
-
-use SkNd\MediaBundle\MediaAPI\MediaAPI;
-
 class MediaResourceCache
 {
     private $id;
@@ -42,31 +39,8 @@ class MediaResourceCache
  
     public function getXmlData()
     {
-        $f = MediaAPI::CACHE_PATH . $this->xmlRef . '.xml';
-        if(file_exists($f)){
-            try{
-                $this->setXmlData(simplexml_load_file($f));
-            }catch(\Exception $e) {
-                throw new \Exception("error loading details");
-            }
-        } else {
-            throw new \RuntimeException ("error loading details - file does not exist");
-        }
-        
         return $this->xmlData;
         
-    }
-    
-    public function deleteXmlRef(){
-        //unlink cached xml file
-        $f = MediaAPI::CACHE_PATH . $this->xmlRef . '.xml';
-        if(file_exists($f)){
-            try {
-                unlink($f);
-            } catch(\Exception $e){
-                throw new \Exception("error deleting cached media resource");
-            }
-        } 
     }
     
     public function setXmlRef($xmlRef)

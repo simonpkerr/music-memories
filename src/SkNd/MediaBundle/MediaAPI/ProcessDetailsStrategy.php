@@ -10,11 +10,9 @@
  */
 
 namespace SkNd\MediaBundle\MediaAPI;
-use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\Utilities;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
-use \SimpleXMLElement;
 
 class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $apiStrategy;
@@ -26,6 +24,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
     private $apiResponse;
     private $referrer;
     private $title;
+    protected $xmlFileManager;
     
     /**
      *
@@ -47,9 +46,23 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         $this->itemId = $params['itemId'];
         $this->title = $params['title'];
         $this->referrer = isset($params['referrer']) ? $params['referrer'] : null;
+        if(isset($params['xmlFileManager']) && $params['xmlFileManager'] instanceof XMLFileManager){
+            $this->xmlFileManager = $params['xmlFileManager'];
+        }   
         
         $this->utilities = new Utilities();
         
+    }
+    
+    public function setXMLFileManager(XMLFileManager $xmlFileManager) {
+        $this->xmlFileManager = $xmlFileManager;
+    }
+    
+    public function getXMLFileManager() {
+        if(is_null($this->xmlFileManager))
+            throw new \RuntimeException("xml file manager has not been set for " . get_class($this));
+        
+        return $this->xmlFileManager;
     }
     
     public function getMediaSelection(){
@@ -139,13 +152,18 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
     }
     
     private function processCache(MediaResource $mediaResource){
-        if($mediaResource->getMediaResourceCache() != null){
+        if($mediaResource->getMediaResourceCache() != null ||
+                $mediaResource->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime() ||
+                !$this->getXMLFileManager()->xmlRefExists($mediaResource->getMediaResourceCache()->getXmlRef())){
             //if a cached resource exists and is older than the threshold for the current api, delete it
-            $dateCreated = $mediaResource->getMediaResourceCache()->getDateCreated();
-            if($dateCreated->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
+            //$dateCreated = $mediaResource->getMediaResourceCache()->getDateCreated();
+            //if($dateCreated->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
+                //delete the xml file and remove the cache
+                $this->getXMLFileManager()->deleteXmlData($mediaResource->getMediaResourceCache()->getXmlRef());
                 $mediaResource->deleteMediaResourceCache();
+                
                 $this->persistMergeFlush();
-            }
+            //}
         }
         return $mediaResource;
     }
@@ -156,7 +174,8 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
             $cachedResource->setId($this->mediaResource->getId());
             $cachedResource->setImageUrl($this->apiStrategy->getImageUrlFromXML($this->apiResponse));
             $cachedResource->setTitle($this->apiStrategy->getItemTitleFromXML($this->apiResponse));
-            $cachedResource->setXmlRef($this->createXmlRef($this->apiResponse, $this->apiStrategy->getName()));
+            $cachedResource->setXmlRef($this->getXMLFileManager()->createXmlRef($this->apiResponse, $this->apiStrategy->getName()));
+            $cachedResource->setXmlData($this->getXMLFileManager()->getXmlData($cachedResource->getXmlRef()));
             $cachedResource->setDateCreated(new \DateTime("now"));
             if(is_null($this->mediaResource->getDecade())){
                 $decade = $this->apiStrategy->getDecadeFromXML($this->apiResponse);
@@ -176,6 +195,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         $this->utilities->persistMergeFlush($this->em, $obj, $immediateFlush);
     }
     
+    //will be deprecated
     public function convertMedia(){
         $date = $this->apiStrategy->getValidCreationTime();
         $mrCollection = $this->em->createQuery('select mr from SkNd\MediaBundle\Entity\MediaResource mr where mr.api = :api AND mr.mediaResourceCache IS NOT NULL')
@@ -187,7 +207,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
             $cache = $mr->getMediaResourceCache();
             if($cache->getDateCreated()->format("Y-m-d H:i:s") > $date){
                 if(!is_null($cache->getRawXmlData())){
-                    $cache->setXmlRef($this->createXmlRef($cache->getRawXmlData()));
+                    $cache->setXmlRef($this->getXMLFileManager()->createXmlRef($cache->getRawXmlData(), $this->apiStrategy->getName()));
                     $cache->setXmlData(null);
                 }
             } else {
@@ -199,16 +219,7 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         $this->em->flush();
     }
     
-    public function createXmlRef(SimpleXMLElement $xmlData, $apiKey){
-        //create the xml file and create a reference to it
-        $apiRef = substr($apiKey,0,1);
-        $timeStamp = new \DateTime("now");
-        $timeStamp = $timeStamp->format("Y-m-d_H-i-s");
-        $xmlRef = uniqid('d' . $apiRef . '-' . $timeStamp);
-        $xmlData->asXML(MediaAPI::CACHE_PATH . $xmlRef . '.xml');
-        
-        return $xmlRef;
-    }
+    
     
 }
 

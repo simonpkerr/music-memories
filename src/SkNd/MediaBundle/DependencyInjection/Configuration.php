@@ -27,12 +27,12 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('SkNd_media');
-        
         $rootNode
         ->children()
             ->arrayNode('mediaapi')->isRequired()
                 ->children()
                     ->booleanNode('debug_mode')->defaultValue(false)->end()
+                    ->scalarNode('cache_path')->defaultValue('bundles/SkNd/cache/')->end()
                     ->arrayNode('apis')->isRequired()
                         ->children()
                             ->arrayNode('amazonapi')

@@ -37,6 +37,7 @@ class SkNdMediaExtension extends Extension
         //mediaapi params
         $container->setParameter('mediaapi.debug_mode', $config['mediaapi']['debug_mode']);
         $container->setParameter('mediaapi.apis', $config['mediaapi']['apis']);
+        $container->setParameter('mediaapi.cache_path', $config['mediaapi']['cache_path']);
 
         $apis = $config['mediaapi']['apis'];
         //amazon params

@@ -106,7 +106,6 @@ class MediaResource
     }
     
     public function deleteMediaResourceCache(){
-        $this->mediaResourceCache->deleteXmlRef();        
         $this->mediaResourceCache = null;
     }
     

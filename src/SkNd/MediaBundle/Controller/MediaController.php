@@ -9,21 +9,11 @@
 namespace SkNd\MediaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
 use SkNd\MediaBundle\Entity\MediaSelection;
-use SkNd\MediaBundle\Entity\MediaSearch;
-use SkNd\MediaBundle\Entity\Decade;
-use SkNd\MediaBundle\Entity\Genre;
-use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Form\Type\MediaSelectionType;
-use SkNd\MediaBundle\Form\Type\MediaSearchType;
 use SkNd\MediaBundle\MediaAPI\Utilities;
-use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
 use SkNd\MediaBundle\MediaAPI\ProcessDetailsDecoratorStrategy;
 use SkNd\MediaBundle\MediaAPI\ProcessListingsStrategy;

@@ -9,15 +9,17 @@
  * @version 1.0
  */
 namespace SkNd\MediaBundle\MediaAPI;
-use \SimpleXMLElement;
+
+use SkNd\MediaBundle\MediaAPI\XMLFileManager;
 
 interface IProcessMediaStrategy {
+    public function setXMLFileManager(XMLFileManager $xmlFileManager);
+    public function getXMLFileManager();
     public function processMedia();
     public function cacheMedia();
     public function getAPIData();
     public function getMedia();
     public function persistMergeFlush($obj = null, $immediateFlush = true);
-    public function createXMLRef(SimpleXMLElement $xmlData, $apiKey);
     
 }
 

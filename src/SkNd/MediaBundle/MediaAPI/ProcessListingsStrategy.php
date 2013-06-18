@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use SkNd\MediaBundle\Entity\MediaResourceListingsCache;
 use \SimpleXMLElement;
 use SkNd\MediaBundle\MediaAPI\Utilities;
+use SkNd\MediaBundle\MediaAPI\XMLFileManager;
 
 class ProcessListingsStrategy implements IProcessMediaStrategy {
     protected $apiStrategy;
@@ -21,7 +22,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     protected $listings;
     protected $recommendations;
     protected $utilities;
-    
+    protected $xmlFileManager;
 
     /**
      * @param array $params includes -
@@ -35,10 +36,24 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
                 !isset($params['apiStrategy']))
             throw new \RuntimeException('required params not supplied for '. get_class($this));
         
+        if(isset($params['xmlFileManager']) && $params['xmlFileManager'] instanceof XMLFileManager){
+            $this->xmlFileManager = $params['xmlFileManager'];
+        }        
         $this->em = $params['em'];
         $this->mediaSelection = $params['mediaSelection'];
         $this->apiStrategy = $params['apiStrategy'];
         $this->utilities = new Utilities();
+    }
+    
+    public function setXMLFileManager(XMLFileManager $xmlFileManager) {
+        $this->xmlFileManager = $xmlFileManager;
+    }
+    
+    public function getXMLFileManager(){
+        if(is_null($this->xmlFileManager))
+            throw new \RuntimeException("xml file manager has not been set for " . get_class($this));
+        
+        return $this->xmlFileManager;
     }
     
     //is this needed? its no longer referenced in mediaapi
@@ -61,8 +76,10 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
            
         //when getting cached listings, get the xml file and store in the listings object as xmlData 
         $this->listings = $this->em->getRepository('SkNdMediaBundle:MediaResourceListingsCache')->getCachedListings($this->mediaSelection);
-        if(is_null($this->listings) || $this->listings->getLastModified()->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
+        if(is_null($this->listings) || $this->listings->getLastModified()->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime() || !$this->getXMLFileManager()->xmlRefExists($this->listings->getXmlRef())){
             $this->listings = $this->createListings($this->apiStrategy->getListings($this->mediaSelection), $this->listings);
+        } else {
+            $this->listings->setXmlData($this->getXMLFileManager()->getXmlData($this->listings->getXmlRef()));
         }
         
         $this->recommendations = $this->getRecommendations();
@@ -83,16 +100,8 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
     private function createListings(SimpleXMLElement $xmlData, MediaResourceListingsCache $listings = null){
         //if listings object exists but cache is out of date
         if(!is_null($listings)){
-            $f = MediaAPI::CACHE_PATH . $listings->getXmlRef() . '.xml';
-            if(file_exists($f)){
-                try 
-                {
-                    unlink($f);
-                } catch(\Exception $e){
-                    throw new \Exception("error deleting old cached file");
-                }
-            }
-            //$listings->setXmlRef($this->createXmlRef($xmlData));
+            $this->getXMLFileManager()->deleteXmlData($listings->getXmlRef());
+          
         } else {
             $listings = new MediaResourceListingsCache();
             $listings->setAPI($this->mediaSelection->getAPI());
@@ -104,11 +113,13 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
             $listings->setPage($this->mediaSelection->getPage() != 1 ? $this->mediaSelection->getPage() : null);
                         
         }
-        $listings->setXmlRef($this->createXmlRef($xmlData, $this->apiStrategy->getName()));
+        $listings->setXmlRef($this->getXMLFileManager()->createXmlRef($xmlData, $this->apiStrategy->getName()));
+        $listings->setXmlData($this->getXMLFileManager()->getXmlData($listings->getXmlRef()));
         
         return $listings;
     }
     
+    //will be deprecated
     public function convertMedia(){
         $date = $this->apiStrategy->getValidCreationTime();
         $listingsCollection = $this->em->createQuery('select c from SkNd\MediaBundle\Entity\MediaResourceListingsCache c where c.api = :api AND c.xmlRef IS NULL')
@@ -118,7 +129,7 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
        
         foreach ($listingsCollection as $listings){
             if($listings->getLastModified()->format("Y-m-d H:i:s") > $date){
-                $listings->setXmlRef($this->createXmlRef($listings->getXmlData()));
+                $listings->setXmlRef($this->getXMLFileManager()->createXmlRef($listings->getXmlData(), $this->apiStrategy->getName()));
                 $listings->setXmlData(null);
                 $this->em->persist($listings);
             } else {
@@ -127,17 +138,6 @@ class ProcessListingsStrategy implements IProcessMediaStrategy {
             
         }
         $this->em->flush();
-    }
-    
-    public function createXmlRef(SimpleXMLElement $xmlData, $apiKey){
-        //create the xml file and create a reference to it
-        $apiRef = substr($apiKey,0,1);
-        $timeStamp = new \DateTime("now");
-        $timeStamp = $timeStamp->format("Y-m-d_H-i-s");
-        $xmlRef = uniqid('l' . $apiRef . '-' . $timeStamp);
-        $xmlData->asXML(MediaAPI::CACHE_PATH . $xmlRef . '.xml');
-        
-        return $xmlRef;
     }
     
     //check date created first, then either replace xmldata and re-cache or do nothing.

@@ -8,6 +8,7 @@
         <!--mediaapi params-->
         <parameter key="mediaapi.class">SkNd\MediaBundle\MediaAPI\MediaAPI</parameter>
         <parameter key="mediaapi.debug_mode" />
+        <parameter key="mediaapi.cache_path" />
                 
         <!--amazon params-->
         <parameter key="amazonapi.class">SkNd\MediaBundle\MediaAPI\AmazonAPI</parameter>
@@ -33,6 +34,7 @@
                 <argument type="service" id="amazonapi" key="amazonapi" />
                 <argument type="service" id="youtubeapi" key="youtubeapi" />
             </argument>
+            <argument>%mediaapi.cache_path%</argument>
         </service>
         
         <!--amazon services-->

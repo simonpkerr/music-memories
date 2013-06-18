@@ -16,6 +16,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     protected $processDetailsStrategy;
     protected $mediaResource;
     protected $em;
+    protected $xmlFileManager;
     
     /**
      * @param array $params includes 
@@ -35,6 +36,15 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         $this->processDetailsStrategy = $params['processDetailsStrategy'];
         $this->em = $params['em'];
         parent::__construct($params);
+    }
+    
+    public function setXMLFileManager(XMLFileManager $xmlFileManager) {
+        $this->processDetailsStrategy->setXMLFileManager($xmlFileManager);
+        parent::setXMLFileManager($xmlFileManager);
+    }
+    
+    public function getXMLFileManager() {
+        parent::getXMLFileManager();
     }
     
     public function getMediaSelection(){
@@ -90,11 +100,8 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         parent::persistMergeFlush($obj, $immediateFlush);
     }
     
-    public function createXmlRef(\SimpleXMLElement $xmlData, $apiKey) {
-        return $this->processDetailsStrategy->createXMLRef($xmlData, $apiKey);
-        
-    }
-   
+    
+    
     
 }
 

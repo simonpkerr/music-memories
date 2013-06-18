@@ -10,15 +10,12 @@
  */
 
 namespace SkNd\MediaBundle\Tests\MediaAPI;
-use SkNd\MediaBundle\MediaAPI\MediaAPI;
-use SkNd\MediaBundle\MediaAPI\AmazonAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
 use SkNd\MediaBundle\MediaAPI\ProcessListingsStrategy;
-use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\MediaBundle\Entity\MediaResourceListingsCache;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Session;
+
 
 class ProcessListingsStrategyTest extends WebTestCase {
     private $mediaAPI;
@@ -29,6 +26,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
     private $liveXMLResponse;
     private $constructorParams;
     private $processListingsStrategy;
+    private $xmlFileManager;
     
     protected static $kernel;
     protected static $em;
@@ -92,13 +90,14 @@ class ProcessListingsStrategyTest extends WebTestCase {
         
         $this->mediaAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\MediaAPI')
                 ->setConstructorArgs(array(
-                        'true', 
+                        'true',
                         self::$em, 
                         self::$session,
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  $this->testYouTubeAPI,
-                        )))
+                        ),
+                        'bundles/SkNd/cache/test/'))
                 ->setMethods(array(
                     'flush',
                 ));
@@ -108,17 +107,28 @@ class ProcessListingsStrategyTest extends WebTestCase {
             'media' => 'film',
         ));
         
+        $this->xmlFileManager = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\XMLFileManager')
+                ->setConstructorArgs(array(
+                    'bundles/SkNd/cache/test/',
+                ))
+                ->setMethods(array(
+                    'createXmlRef',
+                    'deleteXmlData',
+                    'getXmlData',                    
+                ))
+                ->getMock();
+       
         $this->constructorParams = array(
             'em'                =>      self::$em,
             'mediaSelection'    =>      $this->mediaSelection,
             'apiStrategy'       =>      $this->testAmazonAPI,
+            'xmlFileManager'    =>      $this->xmlFileManager,
         );
         
         $this->processListingsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessListingsStrategy')
         ->setConstructorArgs(array($this->constructorParams))
         ->setMethods(array(
             'persistMergeFlush',
-            'createXmlRef',
         ));
     }
     
@@ -165,7 +175,10 @@ class ProcessListingsStrategyTest extends WebTestCase {
         $pls->getMedia();
     }
     
-    public function testNonExistentCachedListingsCallsLiveAPI(){
+    /**
+     * @expectedException RuntimeException
+     */    
+    public function testProcessMediaWithoutXMLFileManagerThrowsException(){
         $this->constructorParams = array(
             'em'                =>      self::$em,
             'mediaSelection'    =>      $this->mediaSelection,
@@ -176,9 +189,25 @@ class ProcessListingsStrategyTest extends WebTestCase {
                 ->setConstructorArgs(array($this->constructorParams))
                 ->getMock();
         
-        $pls->expects($this->any())
+        $pls->processMedia();
+    }
+    
+    public function testNonExistentCachedListingsCallsLiveAPI(){
+        
+        $this->xmlFileManager->expects($this->any())
                 ->method('createXmlRef')
                 ->will($this->returnValue('liveData'));
+        
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+            'xmlFileManager'    =>      $this->xmlFileManager,
+        );
+        
+        $pls = $this->processListingsStrategy
+                ->setConstructorArgs(array($this->constructorParams))
+                ->getMock();
         
         $pls->processMedia();
         $listings = $pls->getMedia();
@@ -192,10 +221,22 @@ class ProcessListingsStrategyTest extends WebTestCase {
             'keywords'=> 'testExistingCachedListingsReturnsCache',
         ));
         
+        $this->xmlFileManager->expects($this->any())
+                ->method('xmlRefExists')
+                ->will($this->returnValue(true));
+        $this->xmlFileManager->expects($this->any())
+                ->method('getXmlData')
+                ->will($this->returnValue($this->cachedXMLResponse));
+        $this->xmlFileManager->expects($this->any())
+                ->method('createXmlRef')
+                ->will($this->returnValue('cachedListings'));
+   
+        
         $this->constructorParams = array(
             'em'                =>      self::$em,
             'mediaSelection'    =>      $this->mediaSelection,
             'apiStrategy'       =>      $this->testAmazonAPI,
+            'xmlFileManager'    =>      $this->xmlFileManager,
         );
         
         $pls = $this->processListingsStrategy
@@ -222,20 +263,30 @@ class ProcessListingsStrategyTest extends WebTestCase {
         self::$em->flush();
     }
     
-    /**
-     * @expectedException RuntimeException
-     */
-    public function testCallingCachedListingsWithNullFileReferenceThrowsException(){
+    
+    
+    public function testCallingCachedListingsWithNullFileReferenceCallsLiveAPI(){
         $this->mediaSelection = $this->mediaAPI->getMock()->setMediaSelection(array(
             'api'     => 'amazonapi',
             'media'   => 'film',
             'keywords'=> 'testExistingCachedListingsReturnsCache',
         ));
         
+        $this->xmlFileManager->expects($this->any())
+                ->method('xmlRefExists')
+                ->will($this->returnValue(false));
+        $this->xmlFileManager->expects($this->any())
+                ->method('getXmlData')
+                ->will($this->returnValue($this->liveXMLResponse));
+        $this->xmlFileManager->expects($this->any())
+                ->method('createXmlRef')
+                ->will($this->returnValue('liveData'));
+        
         $this->constructorParams = array(
             'em'                =>      self::$em,
             'mediaSelection'    =>      $this->mediaSelection,
             'apiStrategy'       =>      $this->testAmazonAPI,
+            'xmlFileManager'    =>      $this->xmlFileManager,
         );
         
         $pls = $this->processListingsStrategy
@@ -256,31 +307,48 @@ class ProcessListingsStrategyTest extends WebTestCase {
         
         $pls->processMedia();
         $result = $pls->getMedia();
-        
-        //try to get the listings which tries to look for the cache file
-        $result['listings']->getXmlData();
-        
+        $this->assertEquals($result['listings']->getXmlRef(), 'liveData', 'live api data was not returned');
+        $this->assertEquals($result['listings']->getXmlData()->item->attributes()->id, 'liveData');
+               
         self::$em->remove($listings);
         self::$em->flush();
     }
     
-    //UPDATE - testExistingOutOfDateCachedListingsCreatesNewXMLFileDeletesOldAndNewRefFromLiveAPI
     public function testExistingOutOfDateCachedListingsUpdatesCacheFromLiveAPI(){
+        $this->xmlFileManager->expects($this->any())
+                ->method('xmlRefExists')
+                ->will($this->returnValue(true));
+        $this->xmlFileManager->expects($this->any())
+                ->method('getXmlData')
+                ->will($this->returnValue($this->liveXMLResponse));
+        $this->xmlFileManager->expects($this->any())
+                ->method('createXmlRef')
+                ->will($this->returnValue('liveData'));
+        
+        $this->constructorParams = array(
+            'em'                =>      self::$em,
+            'mediaSelection'    =>      $this->mediaSelection,
+            'apiStrategy'       =>      $this->testAmazonAPI,
+            'xmlFileManager'    =>      $this->xmlFileManager,
+        );
+        
+        $pls = $this->processListingsStrategy
+                ->setConstructorArgs(array($this->constructorParams))
+                ->getMock();        
+        
         //insert some listings
         $listings = new MediaResourceListingsCache();
         $listings->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('amazonapi'));
         $listings->setMediaType(self::$em->getRepository('SkNdMediaBundle:MediaType')->getMediaTypeBySlug('film'));
-        $listings->setXmlData($this->cachedXMLResponse->asXML());
+        $listings->setXmlRef('outOfDateCachedListings');
         $listings->setLastModified(new \DateTime("1st Jan 1980"));
-        
         self::$em->persist($listings);
         self::$em->flush();
         
-        $pls = $this->processListingsStrategy->getMock();
-        
         $pls->processMedia();
         $result = $pls->getMedia();
-        $this->assertEquals((string)$result['listings']->getXmlData()->item->attributes()->id, 'liveData');
+        $this->assertEquals($result['listings']->getXmlRef(), 'liveData', 'results returned werent the live listings');
+        $this->assertEquals($result['listings']->getXmlData()->item->attributes()->id, 'liveData');
         
         self::$em->remove($listings);
         self::$em->flush();
@@ -307,6 +375,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
             'em'                =>      self::$em,
             'mediaSelection'    =>      $this->mediaSelection,
             'apiStrategy'       =>      $this->testAmazonAPI,
+            'xmlFileManager'    =>      $this->xmlFileManager,
         );
         
         $pls = $this->processListingsStrategy
@@ -321,6 +390,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
     public function testGetRecommendationsReturnsMemoryWallsIfFound(){
         $mw = new MemoryWall();
         $mw->setAssociatedDecade(self::$em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug('1980s'));
+        $mw->setName('tempWall');
         self::$em->persist($mw);
         self::$em->flush();
         
@@ -334,6 +404,7 @@ class ProcessListingsStrategyTest extends WebTestCase {
             'em'                =>      self::$em,
             'mediaSelection'    =>      $this->mediaSelection,
             'apiStrategy'       =>      $this->testAmazonAPI,
+            'xmlFileManager'    =>      $this->xmlFileManager,                
         );
         
         $pls = $this->processListingsStrategy

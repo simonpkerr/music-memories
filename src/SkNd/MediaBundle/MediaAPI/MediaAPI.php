@@ -9,30 +9,23 @@
 
 namespace SkNd\MediaBundle\MediaAPI;
 
-use Symfony\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\ORM\EntityManager;
-use SkNd\MediaBundle\MediaAPI\IAPIStrategy;
 use SkNd\MediaBundle\MediaAPI\Utilities;
+use SkNd\MediaBundle\MediaAPI\XMLFileManager;
 use SkNd\MediaBundle\Entity\API;
 use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\Genre;
-use SkNd\MediaBundle\Entity\MediaResource;
-use SkNd\MediaBundle\Entity\MediaResourceCache;
-use SkNd\UserBundle\Entity\MemoryWall;
-use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Doctrine\Common\Collections\ArrayCollection;
 use \RuntimeException;
-use \SimpleXMLElement;
 
 class MediaAPI {
     const MEDIA_RESOURCE_RECOMMENDATION = 1;
     const MEMORY_WALL_RECOMMENDATION = 2;
-    const CACHE_PATH = 'bundles/SkNd/cache/';
-    
+    //const CACHE_PATH = 'bundles/SkNd/cache/';
+    protected $cachePath;
     protected $session;
     protected $apiStrategy;
     protected $apis;
@@ -51,14 +44,18 @@ class MediaAPI {
      * gets the current run mode, passes the doctrine object 
      * and an array of api objects
      */
-    public function __construct($debug_mode, EntityManager $em, Session $session, array $apis){
+    public function __construct($debug_mode, EntityManager $em, Session $session, array $apis, $cachePath){
         
         $this->debugMode = $debug_mode;
         $this->em = $em;
         $this->session = $session;
         $this->setAPIs($apis);        
         $this->mediaSelection = $this->setMediaSelection();
-        
+        $this->cachePath = $cachePath;
+    }
+    
+    public function getCachePath(){
+        return $this->cachePath;
     }
  
     public function getEntityManager(){
@@ -316,7 +313,7 @@ class MediaAPI {
      * 
      **/
     public function getMedia(IProcessMediaStrategy $processStrategy){
-        
+        $processStrategy->setXMLFileManager(new XMLFileManager($this->cachePath));
         $processStrategy->processMedia();
         $processStrategy->cacheMedia();
         

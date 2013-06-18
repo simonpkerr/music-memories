@@ -10,8 +10,8 @@
 namespace SkNd\MediaBundle\MediaAPI;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Doctrine\ORM\EntityManager;
-use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\MediaAPI\Utilities;
+use SkNd\MediaBundle\MediaAPI\XMLFileManager;
 
 class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $apis;
@@ -19,7 +19,9 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $mediaResources;
     protected $apiResponses;
     protected $utilities;
-    
+    protected $xmlFileManager;
+
+
     /**
      * @param EntityManager $em, 
      * @param array $apis, 
@@ -34,13 +36,27 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
         
         $this->em = $params['em'];
         $this->apis = $params['apis'];
-        if(isset($params['mediaResources']))
+        if(isset($params['mediaResources'])){
             $this->mediaResources = $params['mediaResources'];
+        }
+        if(isset($params['xmlFileManager']) && $params['xmlFileManager'] instanceof XMLFileManager){
+            $this->xmlFileManager = $params['xmlFileManager'];
+        }   
         
         $this->apiResponses = array();
         $this->utilities = new Utilities();
     }
     
+    public function setXMLFileManager(XMLFileManager $xmlFileManager) {
+        $this->xmlFileManager = $xmlFileManager;
+    }
+    
+    public function getXMLFileManager() {
+        if(is_null($this->xmlFileManager))
+            throw new \RuntimeException("xml file manager has not been set for " . get_class($this));
+        
+        return $this->xmlFileManager;
+    }
     public function getMediaSelection(){
         return null;
     }
@@ -82,7 +98,10 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
         //loop through each api, get the relevant media resources
         foreach($this->apis as $api){         
             $resources = array_filter($mrs, function($mr) use ($api){
-                return $mr->getAPI()->getName() == $api->getName() && ($mr->getMediaResourceCache() == null || $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime());
+                return $mr->getAPI()->getName() == $api->getName() && 
+                        ($mr->getMediaResourceCache() == null || 
+                        $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime() || 
+                        !$this->getXMLFileManager()->xmlRefExists($mr->getMediaResourceCache()->getXmlRef()));
             });
                         
             if(count($resources) > 0){
@@ -120,8 +139,11 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                     $cachedResource->setImageUrl($api->getImageUrlFromXML($itemXml));
                     $cachedResource->setTitle($api->getItemTitleFromXML($itemXml));
                     //delete the old xml file
-                    $cachedResource->deleteXmlRef();
-                    $cachedResource->setXmlRef($this->createXmlRef($itemXml, $mr->getAPI()->getName()));
+                    if(!is_null($mr->getMediaResourceCache())){
+                        $this->getXMLFileManager()->deleteXmlData($mr->getMediaResourceCache()->getXmlRef());
+                    }
+                    $cachedResource->setXmlRef($this->getXMLFileManager()->createXmlRef($itemXml, $mr->getAPI()->getName()));
+                    $cachedResource->setXmlData($this->getXMLFileManager()->getXmlData($cachedResource->getXmlRef()));
                     $cachedResource->setDateCreated(new \DateTime("now"));
                     if(is_null($mr->getDecade())){
                         $decade = $api->getDecadeFromXML($itemXml);
@@ -152,25 +174,12 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     
     public function persistMergeFlush($obj = null, $immediateFlush = true){
         $this->utilities->persistMergeFlush($this->em, $obj, $immediateFlush);
-    }
-    
+    }   
     
     //not needed
     public function getMediaResource(){
         return null;
     }
-    
-    public function createXmlRef(\SimpleXMLElement $xmlData, $apiKey){
-        //create the xml file and create a reference to it
-        $apiRef = substr($apiKey,0,1);
-        $timeStamp = new \DateTime("now");
-        $timeStamp = $timeStamp->format("Y-m-d_H-i-s");
-        $xmlRef = uniqid('d' . $apiRef . '-' . $timeStamp);
-        $xmlData->asXML(MediaAPI::CACHE_PATH . $xmlRef . '.xml');
-        
-        return $xmlRef;
-    }
-
     
 }
 
