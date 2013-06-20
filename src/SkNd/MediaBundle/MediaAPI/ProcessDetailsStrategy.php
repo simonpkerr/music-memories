@@ -145,26 +145,21 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
         $mediaResource->setAPI($this->apiStrategy->getAPIEntity()); 
         $mediaResource->setMediaType($this->mediaSelection->getMediaType());
         //decade classification is now done in the categoriseMediaResource method
-        //$mediaResource->setDecade($this->mediaSelection->getDecade());
-        //$mediaResource->setGenre($this->mediaSelection->getSelectedMediaGenre());
         
         return $mediaResource;
     }
     
     private function processCache(MediaResource $mediaResource){
-        if($mediaResource->getMediaResourceCache() != null ||
-                $mediaResource->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime() ||
-                !$this->getXMLFileManager()->xmlRefExists($mediaResource->getMediaResourceCache()->getXmlRef())){
-            //if a cached resource exists and is older than the threshold for the current api, delete it
-            //$dateCreated = $mediaResource->getMediaResourceCache()->getDateCreated();
-            //if($dateCreated->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime()){
-                //delete the xml file and remove the cache
+        if($mediaResource->getMediaResourceCache() != null){
+            if($mediaResource->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $this->apiStrategy->getValidCreationTime() || !$this->getXMLFileManager()->xmlRefExists($mediaResource->getMediaResourceCache()->getXmlRef())){
+                //if a cached resource exists and is older than the threshold for the current api, delete it
                 $this->getXMLFileManager()->deleteXmlData($mediaResource->getMediaResourceCache()->getXmlRef());
                 $mediaResource->deleteMediaResourceCache();
-                
                 $this->persistMergeFlush();
-            //}
+            }
         }
+            
+        
         return $mediaResource;
     }
     
@@ -177,6 +172,10 @@ class ProcessDetailsStrategy implements IProcessMediaStrategy, IMediaDetails {
             $cachedResource->setXmlRef($this->getXMLFileManager()->createXmlRef($this->apiResponse, $this->apiStrategy->getName()));
             $cachedResource->setXmlData($this->getXMLFileManager()->getXmlData($cachedResource->getXmlRef()));
             $cachedResource->setDateCreated(new \DateTime("now"));
+            /* 
+             * this could be refactored so that if the decade exists elsewhere in the xml, it could be 
+             * looked up here when the full xml data is available
+             */
             if(is_null($this->mediaResource->getDecade())){
                 $decade = $this->apiStrategy->getDecadeFromXML($this->apiResponse);
                 $decade = $this->em->getRepository('SkNdMediaBundle:Decade')->getDecadeBySlug($decade);
