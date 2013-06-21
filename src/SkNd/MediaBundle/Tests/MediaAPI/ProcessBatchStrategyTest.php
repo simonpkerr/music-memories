@@ -129,7 +129,8 @@ class ProcessBatchStrategyTest extends WebTestCase {
                 ->setMethods(array(
                     'createXmlRef',
                     'deleteXmlData',
-                    'getXmlData',                    
+                    'getXmlData',
+                    'xmlRefExists',
                 ))
                 ->getMock();
         
@@ -222,12 +223,17 @@ class ProcessBatchStrategyTest extends WebTestCase {
                 ->method('xmlRefExists')
                 ->will($this->returnValue(true));
         
-        $this->constructorParams['mediaResources'] = array(
-            'testMediaResource' => $this->mediaResource,
-        );
         $this->pbs = $this->pbs
             ->setConstructorArgs(array(
-                $this->constructorParams
+                array_merge(
+                    $this->constructorParams,
+                    array(
+                        'mediaResources' => array(
+                            'testMediaResource' => $this->mediaResource,
+                        ),
+                        'xmlFileManager' => $this->xmlFileManager,
+                    )
+                )
             ))->setMethods(array(
                 'persistMergeFlush'
             ))->getMock();
@@ -249,6 +255,16 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $cachedResource->setDateCreated(new \DateTime("1st jan 1980"));
         $this->mediaResource->setMediaResourceCache($cachedResource);
         
+        $this->xmlFileManager->expects($this->any())
+                ->method('xmlRefExists')
+                ->will($this->returnValue(true));
+        $this->xmlFileManager->expects($this->any())
+                ->method('setXmlRef')
+                ->will($this->returnValue('liveDataXmlRef'));
+        $this->xmlFileManager->expects($this->any())
+                ->method('getXmlData')
+                ->will($this->returnValue($this->liveXMLResponse));
+        
         $this->constructorParams['mediaResources'] = array(
             'liveData' => $this->mediaResource,
         );
@@ -263,11 +279,22 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $this->pbs->cacheMedia();
         $mrs = $this->pbs->getMedia();
                 
-        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData', 'media resources was not updated');
+        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData', 'media resources was not updated from live api');
         
     } 
     
     public function testProcessMediaResourcesWith1NonCachedAmazonResourceCallsLiveAPI(){
+        
+        $this->xmlFileManager->expects($this->any())
+            ->method('xmlRefExists')
+            ->will($this->returnValue(false));
+        $this->xmlFileManager->expects($this->any())
+            ->method('setXmlRef')
+            ->will($this->returnValue('liveDataXmlRef'));
+        $this->xmlFileManager->expects($this->any())
+            ->method('getXmlData')
+            ->will($this->returnValue($this->liveXMLResponse));
+        
         $this->mediaResource->setId('liveData');
         $this->constructorParams['mediaResources'] = array(
             'liveData' => $this->mediaResource,
@@ -283,7 +310,11 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $this->pbs->cacheMedia();
         $mrs = $this->pbs->getMedia();
                 
-        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData', 'media resources was not updated');
+        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData', 'media resources was not updated from live api');
+        
+    }
+    
+    public function testProcessMediaResourcesWith1CachedAmazonResourceAndNoXmlFileCallsLiveAPI(){
         
     }
     
