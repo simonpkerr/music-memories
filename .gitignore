@@ -15,7 +15,7 @@ web/bundles/*
 
 !web/bundles/SkNd
 web/bundles/SkNd/css/original/.sass-cache
-web/bundles/SkNd/cache
+web/bundles/SkNd/cache/*
 
 
 # Configuration files

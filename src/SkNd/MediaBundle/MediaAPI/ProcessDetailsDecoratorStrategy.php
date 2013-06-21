@@ -16,7 +16,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     protected $processDetailsStrategy;
     protected $mediaResource;
     protected $em;
-    protected $xmlFileManager;
+    private $xmlFileManager;
     
     /**
      * @param array $params includes 
@@ -44,7 +44,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     }
     
     public function getXMLFileManager() {
-        parent::getXMLFileManager();
+        return parent::getXMLFileManager();
     }
     
     public function getMediaSelection(){

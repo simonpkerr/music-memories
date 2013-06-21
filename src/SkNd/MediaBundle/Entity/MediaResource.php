@@ -9,17 +9,13 @@
  */
 
 namespace SkNd\MediaBundle\Entity;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Util;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use SkNd\MediaBundle\MediaAPI\MediaAPI;
 use SkNd\MediaBundle\Entity\Genre;
 use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaType;
 use SkNd\MediaBundle\Entity\API;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
-use Symfony\Component\HttpKernel\Exception;
 
 class MediaResource
 {

@@ -19,8 +19,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
     protected $mediaResources;
     protected $apiResponses;
     protected $utilities;
-    protected $xmlFileManager;
-
+    private $xmlFileManager;
 
     /**
      * @param EntityManager $em, 
@@ -77,7 +76,7 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
         //for show memory wall, nothing is required to be returned
         if(is_null($this->mediaResources))
             throw new \RuntimeException("MediaResources are null");
-            
+        
         return $this->mediaResources;
     }
     
@@ -94,14 +93,20 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
         $updatesMade = false;
         
         $mrs = $this->getAllMediaResources();
-        
+        $xmlfm = $this->getXMLFileManager();
         //loop through each api, get the relevant media resources
         foreach($this->apis as $api){         
-            $resources = array_filter($mrs, function($mr) use ($api){
-                return $mr->getAPI()->getName() == $api->getName() && 
+            $resources = array_filter($mrs, function($mr) use ($api,$xmlfm){
+                
+                if($mr->getAPI()->getName() == $api->getName() && 
                         ($mr->getMediaResourceCache() == null || 
                         $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime() || 
-                        !$this->getXMLFileManager()->xmlRefExists($mr->getMediaResourceCache()->getXmlRef()));
+                        !$xmlfm->xmlRefExists($mr->getMediaResourceCache()->getXmlRef()))){
+                    return $mr;
+                } else {
+                    $mr->getMediaResourceCache()->setXmlData($xmlfm->getXmlData($mr->getMediaResourceCache()->getXmlRef()));
+                    return null;
+                }
             });
                         
             if(count($resources) > 0){

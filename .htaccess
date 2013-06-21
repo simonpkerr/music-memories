@@ -23,7 +23,8 @@ AuthGroupFile /home/simonker/public_html/_vti_pvt/service.grp
 SetEnv PHPRC /home/simonker/public_html/php.ini
 
 #use gzip
-AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json
+#SetOutputFilter DEFLATE 
+#AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json
 
-ExpiresActive On
-ExpiresByType application/x-javascript "access plus 10 years"
+#ExpiresActive On
+#ExpiresByType application/x-javascript "access plus 10 years"

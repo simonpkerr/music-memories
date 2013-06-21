@@ -9,6 +9,7 @@
  */
 
 namespace SkNd\MediaBundle\Entity;
+
 class MediaResourceCache
 {
     private $id;

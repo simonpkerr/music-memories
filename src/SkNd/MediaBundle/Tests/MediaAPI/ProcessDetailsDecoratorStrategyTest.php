@@ -11,16 +11,10 @@
  */
 
 namespace SkNd\MediaBundle\Tests\MediaAPI;
-use SkNd\MediaBundle\MediaAPI\MediaAPI;
-use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
-use SkNd\MediaBundle\MediaAPI\ProcessDetailsDecoratorStrategy;
-use SkNd\MediaBundle\MediaAPI\AmazonAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
-use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Session;
 
 class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
     private $processDetailsStrategy;

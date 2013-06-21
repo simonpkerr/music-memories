@@ -11,15 +11,11 @@
  */
 
 namespace SkNd\MediaBundle\Tests\MediaAPI;
-use SkNd\MediaBundle\MediaAPI\MediaAPI;
-use SkNd\MediaBundle\MediaAPI\AmazonAPI;
 use SkNd\MediaBundle\MediaAPI\YouTubeAPI;
 use SkNd\MediaBundle\MediaAPI\ProcessBatchStrategy;
-use SkNd\MediaBundle\Entity\MediaSelection;
 use SkNd\MediaBundle\Entity\MediaResource;
 use SkNd\MediaBundle\Entity\MediaResourceCache;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Session;
 
 class ProcessBatchStrategyTest extends WebTestCase {
     private $mediaAPI;
@@ -31,6 +27,7 @@ class ProcessBatchStrategyTest extends WebTestCase {
     private $mediaResource;
     private $constructorParams;
     private $pbs;
+    private $xmlFileManager;
     
     protected static $kernel;
     protected static $em;
@@ -109,7 +106,8 @@ class ProcessBatchStrategyTest extends WebTestCase {
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  $this->testYouTubeAPI,
-                        )))
+                        ),
+                        'bundles/SkNd/cache/test',))
                 ->setMethods(array(
                     'flush',
                 ));
@@ -124,12 +122,24 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $this->mediaResource->setAPI($this->mediaSelection->getAPI());
         $this->mediaResource->setMediaType($this->mediaSelection->getMediaType());
         
+        $this->xmlFileManager = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\XMLFileManager')
+                ->setConstructorArgs(array(
+                    'bundles/SkNd/cache/test/',
+                ))
+                ->setMethods(array(
+                    'createXmlRef',
+                    'deleteXmlData',
+                    'getXmlData',                    
+                ))
+                ->getMock();
+        
         $this->constructorParams = array(
-            'em'    =>  self::$em,
-            'apis'  =>  array(
-                            'amazonapi'     =>  $this->testAmazonAPI,
-                            'youtubeapi'    =>  $this->testYouTubeAPI,
-                        )
+                'em'                =>  self::$em,
+                'apis'              =>  array(
+                    'amazonapi'     =>  $this->testAmazonAPI,
+                    'youtubeapi'    =>  $this->testYouTubeAPI,
+                ),
+                'xmlFileManager'    =>  $this->xmlFileManager,
         );
         
         $this->pbs = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\ProcessBatchStrategy')
@@ -203,9 +213,14 @@ class ProcessBatchStrategyTest extends WebTestCase {
         //then update the media resource
         $cachedResource = new MediaResourceCache();
         $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
+        $cachedResource->setXmlRef('oneCachedAmazonResource');
         $cachedResource->setId($this->mediaResource->getId());
         $cachedResource->setDateCreated(new \DateTime("now"));
         $this->mediaResource->setMediaResourceCache($cachedResource);
+        
+        $this->xmlFileManager->expects($this->any())
+                ->method('xmlRefExists')
+                ->will($this->returnValue(true));
         
         $this->constructorParams['mediaResources'] = array(
             'testMediaResource' => $this->mediaResource,
