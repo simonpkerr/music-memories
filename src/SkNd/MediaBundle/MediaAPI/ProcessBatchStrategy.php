@@ -122,7 +122,6 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                 $updatesMade = true;
             }
         }
-
     }
     
     //from a batch operation, take the xml data and resources and re-cache them

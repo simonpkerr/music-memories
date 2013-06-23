@@ -248,7 +248,6 @@ class ProcessBatchStrategyTest extends WebTestCase {
     
     public function testProcessMediaResourcesWith1CachedOutOfDateAmazonResourceCallsLiveAPI(){
         $this->mediaResource->setId('liveData');
-        
         $cachedResource = new MediaResourceCache();
         $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
         $cachedResource->setId($this->mediaResource->getId());
@@ -256,25 +255,30 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $this->mediaResource->setMediaResourceCache($cachedResource);
         
         $this->xmlFileManager->expects($this->any())
-                ->method('xmlRefExists')
-                ->will($this->returnValue(true));
+            ->method('xmlRefExists')
+            ->will($this->returnValue(true));
         $this->xmlFileManager->expects($this->any())
-                ->method('setXmlRef')
-                ->will($this->returnValue('liveDataXmlRef'));
+            ->method('setXmlRef')
+            ->will($this->returnValue('liveDataXmlRef'));
         $this->xmlFileManager->expects($this->any())
-                ->method('getXmlData')
-                ->will($this->returnValue($this->liveXMLResponse));
-        
-        $this->constructorParams['mediaResources'] = array(
-            'liveData' => $this->mediaResource,
-        );
+            ->method('getXmlData')
+            ->will($this->returnValue($this->liveXMLResponse));
+                    
         $this->pbs = $this->pbs
             ->setConstructorArgs(array(
-                $this->constructorParams
+                array_merge(
+                    $this->constructorParams,
+                    array(
+                        'mediaResources' => array(
+                            'liveData' => $this->mediaResource,
+                        ),
+                        'xmlFileManager' => $this->xmlFileManager,
+                    )
+                )
             ))->setMethods(array(
                 'persistMergeFlush'
             ))->getMock();
-             
+        
         $this->pbs->processMedia();
         $this->pbs->cacheMedia();
         $mrs = $this->pbs->getMedia();
@@ -296,12 +300,18 @@ class ProcessBatchStrategyTest extends WebTestCase {
             ->will($this->returnValue($this->liveXMLResponse));
         
         $this->mediaResource->setId('liveData');
-        $this->constructorParams['mediaResources'] = array(
-            'liveData' => $this->mediaResource,
-        );
+        
         $this->pbs = $this->pbs
             ->setConstructorArgs(array(
-                $this->constructorParams
+                array_merge(
+                    $this->constructorParams,
+                    array(
+                        'mediaResources' => array(
+                            'liveData' => $this->mediaResource,
+                        ),
+                        'xmlFileManager' => $this->xmlFileManager,
+                    )
+                )
             ))->setMethods(array(
                 'persistMergeFlush'
             ))->getMock();
@@ -315,24 +325,37 @@ class ProcessBatchStrategyTest extends WebTestCase {
     }
     
     public function testProcessMediaResourcesWith1CachedAmazonResourceAndNoXmlFileCallsLiveAPI(){
-        
-    }
-    
-    public function testProcessMediaResourcesWith1CachedYouTubeResourceReturnsCache(){
-        $this->mediaResource->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi'));
-        
+        //add a media resource and cached record first
+        //then update the media resource
         $cachedResource = new MediaResourceCache();
         $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
+        $cachedResource->setXmlRef('oneCachedAmazonResource');
         $cachedResource->setId($this->mediaResource->getId());
         $cachedResource->setDateCreated(new \DateTime("now"));
+        $this->mediaResource->setId('liveData');
         $this->mediaResource->setMediaResourceCache($cachedResource);
         
-        $this->constructorParams['mediaResources'] = array(
-            'testMediaResource' => $this->mediaResource,
-        );
+        $this->xmlFileManager->expects($this->any())
+            ->method('xmlRefExists')
+            ->will($this->returnValue(false));
+        $this->xmlFileManager->expects($this->any())
+            ->method('setXmlRef')
+            ->will($this->returnValue('liveDataXmlRef'));
+        $this->xmlFileManager->expects($this->any())
+            ->method('getXmlData')
+            ->will($this->returnValue($this->liveXMLResponse));
+        
         $this->pbs = $this->pbs
             ->setConstructorArgs(array(
-                $this->constructorParams
+                array_merge(
+                    $this->constructorParams,
+                    array(
+                        'mediaResources' => array(
+                            'testMediaResource' => $this->mediaResource,
+                        ),
+                        'xmlFileManager' => $this->xmlFileManager,
+                    )
+                )
             ))->setMethods(array(
                 'persistMergeFlush'
             ))->getMock();
@@ -341,39 +364,57 @@ class ProcessBatchStrategyTest extends WebTestCase {
         $this->pbs->cacheMedia();
         $mrs = $this->pbs->getMedia();
                 
-        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData', 'media resources was updated');
+        $this->assertEquals((string)array_pop($mrs)->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData', 'media resources was not updated from live');
         
     }
-    
+        
     public function testProcessMediaResourcesWith1OutOfDateCachedYouTubeResourceCallsLiveAPIAndDeletesCacheFile(){
         //for this to work the xml file loaded by TestYouTubeRequest must have a videoid param : ytBatch
         $this->mediaResource->setAPI(self::$em->getRepository('SkNdMediaBundle:API')->getAPIByName('youtubeapi'));
         $this->mediaResource->setId('ytBatch');
         $cachedResource = new MediaResourceCache();
+        $cachedResource->setXmlRef($this->xmlFileManager->createXmlRef($this->cachedXMLResponse->asXML()));
         $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
         $cachedResource->setId($this->mediaResource->getId());
         $cachedResource->setDateCreated(new \DateTime("1st jan 1980"));
         $this->mediaResource->setMediaResourceCache($cachedResource);
         
-        $this->constructorParams['mediaResources'] = array(
-            'ytBatch' => $this->mediaResource,
-        );
+        //$this->xmlFileManager->expects($this->any())
+        //    ->method('xmlRefExists')
+        //    ->will($this->returnValue(false));
+        //$this->xmlFileManager->expects($this->any())
+        //    ->method('setXmlRef')
+        //    ->will($this->returnValue('liveDataXmlRef'));
+        $this->xmlFileManager->expects($this->any())
+            ->method('getXmlData')
+            ->will($this->returnValue($this->liveXMLResponse));
+        
         $this->pbs = $this->pbs
             ->setConstructorArgs(array(
-                $this->constructorParams
+                array_merge(
+                    $this->constructorParams,
+                    array(
+                        'mediaResources' => array(
+                            'ytBatch' => $this->mediaResource,
+                        ),
+                        'xmlFileManager' => $this->xmlFileManager,
+                    )
+                )
             ))->setMethods(array(
                 'persistMergeFlush'
             ))->getMock();
-             
+                    
         $this->pbs->processMedia();
         $this->pbs->cacheMedia();
         $mrs = $this->pbs->getMedia();
                 
         $this->assertEquals((string)$mrs['ytBatch']->getMediaResourceCache()->getXmlData()->id, 'ytBatch', 'media resources were not updated');
+        //assert that live data is returned
+        
+        //delete the file that was created
+        $this->xmlFileManager->deleteXmlData($this->mediaResource->getMediaResourceCache()->getXmlRef());
            
     }
-    
-    
     
     public function testProcessMediaResourcesWith1NonCachedYouTubeResourceCallsLiveAPI(){
         //for this to work the xml file loaded by TestYouTubeRequest must have a videoid param : ytBatch
