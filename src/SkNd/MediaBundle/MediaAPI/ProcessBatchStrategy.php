@@ -98,15 +98,17 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
         foreach($this->apis as $api){         
             $resources = array_filter($mrs, function($mr) use ($api,$xmlfm){
                 
-                if($mr->getAPI()->getName() == $api->getName() && 
-                        ($mr->getMediaResourceCache() == null || 
+                if($mr->getAPI()->getName() == $api->getName()){
+                    if($mr->getMediaResourceCache() == null ||
                         $mr->getMediaResourceCache()->getDateCreated()->format("Y-m-d H:i:s") < $api->getValidCreationTime() || 
-                        !$xmlfm->xmlRefExists($mr->getMediaResourceCache()->getXmlRef()))){
-                    return $mr;
-                } else {
-                    $mr->getMediaResourceCache()->setXmlData($xmlfm->getXmlData($mr->getMediaResourceCache()->getXmlRef()));
-                    return null;
+                        !$xmlfm->xmlRefExists($mr->getMediaResourceCache()->getXmlRef())){
+                        return $mr;
+                    } else {
+                        $mr->getMediaResourceCache()->setXmlData($xmlfm->getXmlData($mr->getMediaResourceCache()->getXmlRef()));
+                        return null;
+                    }
                 }
+                  
             });
                         
             if(count($resources) > 0){
