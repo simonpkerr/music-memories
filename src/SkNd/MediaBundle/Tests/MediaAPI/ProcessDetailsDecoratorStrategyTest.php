@@ -28,6 +28,7 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
     private $mediaResource;
     private $constructorParams;
     private $decoratorConstructorParams;
+    private $xmlFileManager;
     
     protected static $kernel;
     protected static $em;
@@ -56,6 +57,17 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
         $this->cachedXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="cachedData"></item></items>');
         $this->liveXMLResponse = new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="liveData"></item></items>');
         
+        /*$this->liveBatchResponse = new \SimpleXMLElement(
+        '<?xml version="1.0" ?>
+        <items>
+            <item id="liveData1">
+                <ASIN>asin1</ASIN>
+            </item>
+            <item id="liveData2">
+                <ASIN>asin2</ASIN>
+            </item>
+        </items>');*/
+        
         //for the mock object, need to provide a fully qualified path 
         $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
                 ->disableOriginalConstructor()
@@ -76,6 +88,10 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
                 ->method('getDetails')
                 ->will($this->returnValue($this->liveXMLResponse));
         
+        /*$this->testAmazonAPI->expects($this->any())
+                ->method('getBatch')
+                ->will($this->returnValue($this->liveBatchResponse));
+           */     
         $this->testAmazonAPI->expects($this->any())
                 ->method('getImageUrlFromXML')
                 ->will($this->returnValue('imageUrl'));
@@ -83,9 +99,20 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
         $this->testAmazonAPI->expects($this->any())
                 ->method('getItemTitleFromXML')
                 ->will($this->returnValue('itemTitle'));
-        
-       
+               
         $this->testYouTubeAPI = new YouTubeAPI(new \SkNd\MediaBundle\MediaAPI\TestYouTubeRequest());
+                
+        $this->xmlFileManager = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\XMLFileManager')
+                ->setConstructorArgs(array(
+                    'bundles/SkNd/cache/test/',
+                ))
+                ->setMethods(array(
+                    'createXmlRef',
+                    'deleteXmlData',
+                    'getXmlData',
+                    'xmlRefExists',
+                ))
+                ->getMock();
         
         $this->mediaAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\MediaAPI')
                 ->setConstructorArgs(array(
@@ -95,7 +122,8 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  $this->testYouTubeAPI,
-                        )))
+                        ),
+                        'bundles/SkNd/cache/test/'))
                 ->setMethods(array(
                     'flush',
                 ));
@@ -111,7 +139,9 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
             'mediaSelection'    =>      $this->mediaSelection,
             'apiStrategy'       =>      $this->testAmazonAPI,
             'itemId'            =>      'testItemId',
+            'title'             =>      'test-item-title',
             'referrer'          =>      'search',
+            'xmlFileManager'    =>      $this->xmlFileManager,
         );
         
         $this->processDetailsStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsStrategy')
@@ -127,14 +157,15 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
             'apis'                      =>      array(
                 'amazonapi' =>  $this->testAmazonAPI,
                 'youtubeapi'=>  $this->testYouTubeAPI,
-            )
+            ),
+            'xmlFileManager'            =>  $this->xmlFileManager,
         );
         
         $this->processDetailsDecoratorStrategy = $this->getMockBuilder('\\SkNd\MediaBundle\\MediaAPI\\ProcessDetailsDecoratorStrategy')
-                ->setConstructorArgs(array($this->decoratorConstructorParams))
-                ->setMethods(array(
-                    'persistMergeFlush'
-                ));
+            ->setConstructorArgs(array($this->decoratorConstructorParams))
+            ->setMethods(array(
+                'persistMergeFlush'
+            ));
         
     }
     
@@ -203,8 +234,12 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
                 ->method('getRecommendations')
                 ->will($this->returnValue($emptyRecs));
         
-        $recs = $mr->getRelatedMediaResources();
-        $this->assertTrue(is_null($recs), "recommendations were saved incorrectly");        
+        $this->processDetailsDecoratorStrategy->processMedia();
+        $this->processDetailsDecoratorStrategy->cacheMedia();
+        $resultMr = $this->processDetailsDecoratorStrategy->getMedia();
+        
+        $recs = $resultMr->getRelatedMediaResources();
+        $this->assertNull($recs, "recommendations were saved incorrectly");        
     }
     
     
@@ -221,7 +256,8 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
         $rec->setId('RecMediaResource');
         
         $cachedResource = new MediaResourceCache();
-        $cachedResource->setXmlData($this->cachedXMLResponse->asXML());
+        $cachedResource->setXmlRef('cachedRec');
+        $cachedResource->setXmlData($this->cachedXMLResponse);
         $cachedResource->setId('RecMediaResource');
         $cachedResource->setTitle('RecMediaResource');
         $cachedResource->setDateCreated(new \DateTime("now"));
@@ -235,72 +271,30 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
         );
         
         $this->processDetailsDecoratorStrategy = $this->processDetailsDecoratorStrategy
-                ->setConstructorArgs(array(
-                    $this->decoratorConstructorParams
-                ))->setMethods(array(
-                    'persistMergeFlush',
-                    'getMediaResource',
-                    'getRecommendations',                   
-                ))->getMock();
+            ->setConstructorArgs(array(
+                $this->decoratorConstructorParams
+            ))->setMethods(array(
+                'persistMergeFlush',
+                'getMediaResource',
+                'getRecommendations',                   
+            ))->getMock();
         
         $this->processDetailsDecoratorStrategy->expects($this->any())
-                ->method('persistMergeFlush')
-                ->will($this->returnValue(true));
+            ->method('getMediaResource')
+            ->will($this->returnValue($mr));
         $this->processDetailsDecoratorStrategy->expects($this->any())
-                ->method('getMediaResource')
-                ->will($this->returnValue($mr));
-        $this->processDetailsDecoratorStrategy->expects($this->any())
-                ->method('getRecommendations')
-                ->will($this->returnValue($recs));
+            ->method('getRecommendations')
+            ->will($this->returnValue($recs));
         
         $this->processDetailsDecoratorStrategy->processMedia();
-        $mr = $this->processDetailsDecoratorStrategy->getMedia();
-        $recs = $mr->getRelatedMediaResources();
+        $this->processDetailsDecoratorStrategy->cacheMedia();
+        $resultMr = $this->processDetailsDecoratorStrategy->getMedia();
+        $recs = $resultMr->getRelatedMediaResources();
         $this->assertTrue(!is_null($recs), "recommendations weren't saved");
         $this->assertEquals((string)array_pop($recs['genericMatches'])->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'cachedData');
     }
     
     public function testProcessMediaWithNonCachedRecommendationsReturnsLiveRecords(){
-        //set up the testAmazonAPI to return 2 results
-        $this->liveXMLResponse = new \SimpleXMLElement(
-                '<?xml version="1.0" ?><items><item id="liveData1"><ASIN>NonCachedMR</ASIN></item><item id="liveData2"><ASIN>RecMediaResource</ASIN></item></items>');
- 
-        //for the mock object, need to provide a fully qualified path 
-        $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array(
-                    'getListings',
-                    'getDetails',
-                    'getImageUrlFromXML',
-                    'getItemTitleFromXML',
-                ))
-                ->getMock();
-        
-        $this->testAmazonAPI->expects($this->any())
-                ->method('getListings')
-                ->will($this->returnValue($this->liveXMLResponse));              
-        
-        $this->testAmazonAPI->expects($this->any())
-                ->method('getDetails')
-                ->will($this->returnValue($this->liveXMLResponse));
-        
-        $this->testAmazonAPI->expects($this->any())
-                ->method('getImageUrlFromXML')
-                ->will($this->returnValue('imageUrl'));
-        
-        $this->testAmazonAPI->expects($this->any())
-                ->method('getItemTitleFromXML')
-                ->will($this->returnValue('itemTitle'));
-        
-        $this->decoratorConstructorParams = array_merge(
-                $this->decoratorConstructorParams,
-                array(
-                    'apis' => array(
-                        'amazonapi' =>  $this->testAmazonAPI,
-                        'youtubeapi'=>  $this->testYouTubeAPI,
-                    )
-                ));
-        
         //set up a new media resource 
         $mr = new MediaResource();
         $mr->setId('NonCachedMR');
@@ -318,6 +312,49 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
             'exactMatches' => array(),
         );
         
+        //set up the testAmazonAPI to return 2 results
+        $this->liveXMLResponse = new \SimpleXMLElement(
+        '<?xml version="1.0" ?>
+        <items>
+            <item id="liveData1">
+                <ASIN>NonCachedMR</ASIN>
+            </item>
+            <item id="liveData2">
+                <ASIN>RecMediaResource</ASIN>
+            </item>
+        </items>');
+ 
+        //for the mock object, need to provide a fully qualified path 
+        $this->testAmazonAPI = $this->getMockBuilder('\\SkNd\\MediaBundle\\MediaAPI\\AmazonAPI')
+                ->disableOriginalConstructor()
+                ->setMethods(array(
+                    'getDetails',
+                ))
+                ->getMock();
+        
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getDetails')
+                ->will($this->returnValue($this->liveXMLResponse));
+        
+        /*$this->testAmazonAPI->expects($this->any())
+                ->method('getImageUrlFromXML')
+                ->will($this->returnValue('imageUrl'));
+        
+        $this->testAmazonAPI->expects($this->any())
+                ->method('getItemTitleFromXML')
+                ->will($this->returnValue('itemTitle'));
+        */
+        
+        $this->decoratorConstructorParams = array_merge(
+            $this->decoratorConstructorParams,
+            array(
+                'apis' => array(
+                    'amazonapi' =>  $this->testAmazonAPI,
+                    'youtubeapi'=>  $this->testYouTubeAPI,
+                )
+            )
+        );
+        
         $this->processDetailsDecoratorStrategy = $this->processDetailsDecoratorStrategy
                 ->setConstructorArgs(array(
                     $this->decoratorConstructorParams
@@ -328,9 +365,6 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
                 ))->getMock();
         
         $this->processDetailsDecoratorStrategy->expects($this->any())
-                ->method('persistMergeFlush')
-                ->will($this->returnValue(true));
-        $this->processDetailsDecoratorStrategy->expects($this->any())
                 ->method('getMediaResource')
                 ->will($this->returnValue($mr));
         $this->processDetailsDecoratorStrategy->expects($this->any())
@@ -339,12 +373,12 @@ class ProcessDetailsDecoratorStrategyTest extends WebTestCase {
         
         $this->processDetailsDecoratorStrategy->processMedia();
         $this->processDetailsDecoratorStrategy->cacheMedia();
-        $mr = $this->processDetailsDecoratorStrategy->getMedia();
+        $resultMr = $this->processDetailsDecoratorStrategy->getMedia();
         
-        $recs = $mr->getRelatedMediaResources();
+        $recs = $resultMr->getRelatedMediaResources();
         $this->assertTrue(!is_null($recs), "recommendations weren't saved");
-        $this->assertEquals((string)$mr->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData1');
-        $this->assertEquals((string)array_pop($recs['genericMatches'])->getMediaResourceCache()->getXmlData()->attributes()->id, 'liveData2');
+        $this->assertEquals((string)$resultMr->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData1');
+        $this->assertEquals((string)array_pop($recs['genericMatches'])->getMediaResourceCache()->getXmlData()->item->attributes()->id, 'liveData2');
         
     }
     

@@ -16,7 +16,7 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
     protected $processDetailsStrategy;
     protected $mediaResource;
     protected $em;
-    private $xmlFileManager;
+    //private $xmlFileManager;
     
     /**
      * @param array $params includes 
@@ -35,6 +35,11 @@ class ProcessDetailsDecoratorStrategy extends ProcessBatchStrategy implements IP
         
         $this->processDetailsStrategy = $params['processDetailsStrategy'];
         $this->em = $params['em'];
+        
+        if(isset($params['xmlFileManager']) && $params['xmlFileManager'] instanceof XMLFileManager){
+            $this->setXMLFileManager($params['xmlFileManager']);
+        }  
+        
         parent::__construct($params);
     }
     

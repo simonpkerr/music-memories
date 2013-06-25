@@ -116,10 +116,10 @@ class ProcessBatchStrategy implements IProcessMediaStrategy, IMediaDetails {
                 
                 //do batch process of ids 
                 array_push($this->apiResponses, array(
-                            'api'            => $api, 
-                            'xmlData'        => $api->getBatch($ids),
-                            'mediaResources' => $resources,
-                        ));
+                    'api'            => $api, 
+                    'xmlData'        => $api->getBatch($ids),
+                    'mediaResources' => $resources,
+                ));
                 
                 $updatesMade = true;
             }
