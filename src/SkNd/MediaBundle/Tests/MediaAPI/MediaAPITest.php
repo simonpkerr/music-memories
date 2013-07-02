@@ -95,7 +95,8 @@ class MediaAPITests extends WebTestCase {
                         array(
                             'amazonapi'     =>  $this->testAmazonAPI,
                             'youtubeapi'    =>  $this->testYouTubeAPI,
-                        )))
+                        ),
+                        'bundles/SkNd/cache/test',))
                 ->setMethods(array(
                     'getMedia',
                 ));

@@ -20,7 +20,7 @@ swiftmailer:
 sk_nd_media:
   mediaapi:
     debug_mode: true
-    cache_path: bundles/SkNd/cache/test/
+    cache_path: "%kernel.root_dir%/../web/bundles/SkNd/cache/test/"
     apis: 
       amazonapi:
         access_params:

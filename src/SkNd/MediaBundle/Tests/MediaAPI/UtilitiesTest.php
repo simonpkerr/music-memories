@@ -23,20 +23,20 @@ class UtilitiesTests extends PHPUnit_Framework_TestCase {
             'genre'     => 'all',
         );
         $this->searchKeywords = array(
-            'Trap Door Series 1 & 2 [DVD] [1984]'   => 'Trap Door|1984',
-            'Stig Of The Dump : Complete BBC Series [1981] [DVD]' => 'Stig Of The Dump|1981',
+            'Trap Door Series 1 & 2 [DVD] [1984]'   => 'Trap Door',
+            'Stig Of The Dump : Complete BBC Series [1981] [DVD]' => 'Stig Of The Dump',
             'The Chronicles Of Narnia 4 DVD Box Set' => 'The Chronicles Of Narnia',
-            'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy 3',
-            'Ripping Yarns - The Complete Series[DVD] [1976]' => 'Ripping Yarns|1976',
-            'Alien Anthology [Blu-ray] [1979] [6 Disc Set]' => 'Alien Anthology|1979',
+            'Matrix Trilogy 3-Disc Set: The Matrix, Matrix Reloaded and Matrix Revolutions [DVD]' => 'Matrix Trilogy',
+            'Ripping Yarns - The Complete Series[DVD] [1976]' => 'Ripping Yarns',
+            'Alien Anthology [Blu-ray] [1979] [6 Disc Set]' => 'Alien Anthology',
             'Saturday Night Fever:25th Anniversary Se [DVD]' => 'Saturday Night Fever:25th Anniversary Se',
             'Prometheus - Special Edition (Blu-ray 3D + Blu-ray + Digital Copy)' => 'Prometheus',
-            'Chitty Chitty Bang Bang (2 Disc Special Edition) [1968] [DVD]' => 'Chitty Chitty Bang Bang|1968',
+            'Chitty Chitty Bang Bang (2 Disc Special Edition) [1968] [DVD]' => 'Chitty Chitty Bang Bang',
             'Doctor Who: The Ambassadors of Death [DVD]' => 'Doctor Who: The Ambassadors of Death',
-            'The Complete Open All Hours - Series One-Four [1976]' => 'Open All Hours|1976',
-            'Only Fools and Horses Complete Series 1 - 7 Box Set [DVD] [1981]' => 'Only Fools and Horses|1981',
-	    'Willy Wonka & the Chocolate Factory (1971) [DVD]' => 'Willy Wonka and the Chocolate Factory',
-            'Thundercats: Season Two Vol 2 [DVD] [Region 1] [US Import] [NTSC]' => 'to do',
+            'The Complete Open All Hours - Series One-Four [1976]' => 'Open All Hours',
+            'Only Fools and Horses Complete Series 1 - 7 Box Set [DVD] [1981]' => 'Only Fools and Horses',
+	    'Willy Wonka & the Chocolate Factory (1971) [DVD]' => 'Willy Wonka & the Chocolate Factory',
+            'Thundercats: Season Two Vol 2 [DVD] [Region 1] [US Import] [NTSC]' => 'Thundercats: Season Two Vol 2',
         );
     }
     
@@ -46,7 +46,7 @@ class UtilitiesTests extends PHPUnit_Framework_TestCase {
                 'keywords'  => $originalString,
                 'media'     => 'film',
             ));
-            $this->assertEquals($result, strtolower($optimizedString));
+            $this->assertEquals($result['keywords'], strtolower($optimizedString));
             
         }
     }

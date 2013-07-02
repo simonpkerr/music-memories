@@ -14,12 +14,13 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use SkNd\MediaBundle\Entity\MediaResourceListingsCache;
-
+use SkNd\MediaBundle\MediaAPI\XMLFileManager;
 
 class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
     
     private $container; 
     private $em;
+    private $xmlFileManager;
     
     //in order to get access to methods controlled by the container, it can be automatically injected using this method
     public function setContainer(ContainerInterface $container = null){
@@ -28,6 +29,8 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
     }
     
     public function load(ObjectManager $manager){
+        $this->xmlFileManager = new XMLFileManager('web/bundles/SkNd/cache/test/');
+        
         //delete all records from the cached listings table first 
         $q = $this->em->createQuery('DELETE from SkNd\MediaBundle\Entity\MediaResourceListingsCache');
         $q->execute();
@@ -37,6 +40,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
         $cachedListing->setAPI($this->getAPI());
         $cachedListing->setMediaType($this->getMediaType("film"));
         $cachedListing->setDateCreated(new \DateTime("now"));
+        $cachedListing->setXmlRef($this->xmlFileManager->createXmlRef($this->getXmlData(), 'amazonapi'));
         $cachedListing->setXmlData($this->getXmlData());
         $manager->persist($cachedListing);
         
@@ -47,6 +51,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
         $cachedListing->setDecade($this->getDecade("1980s"));
         $cachedListing->setGenre($this->getGenre("science-fiction", "film"));
         $cachedListing->setDateCreated(new \DateTime("now"));
+        $cachedListing->setXmlRef($this->xmlFileManager->createXmlRef($this->getXmlData(), 'amazonapi'));
         $cachedListing->setXmlData($this->getXmlData());
         $manager->persist($cachedListing);
         
@@ -58,6 +63,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
         $cachedListing->setGenre($this->getGenre("science-fiction", "film"));
         $cachedListing->setKeywords("aliens");
         $cachedListing->setDateCreated(new \DateTime("now"));
+        $cachedListing->setXmlRef($this->xmlFileManager->createXmlRef($this->getXmlData(), 'amazonapi'));
         $cachedListing->setXmlData($this->getXmlData());
         $manager->persist($cachedListing);
         
@@ -70,6 +76,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
         $cachedListing->setKeywords("aliens");
         $cachedListing->setPage(2);
         $cachedListing->setDateCreated(new \DateTime("now"));
+        $cachedListing->setXmlRef($this->xmlFileManager->createXmlRef($this->getXmlData(), 'amazonapi'));
         $cachedListing->setXmlData($this->getXmlData());
         $manager->persist($cachedListing);
         
@@ -78,6 +85,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
         $cachedListing->setAPI($this->getAPI());
         $cachedListing->setMediaType($this->getMediaType("tv"));
         $cachedListing->setDateCreated(new \DateTime('2000-01-01'));
+        $cachedListing->setXmlRef($this->xmlFileManager->createXmlRef($this->getXmlData(), 'amazonapi'));
         $cachedListing->setXmlData($this->getXmlData());
         $manager->persist($cachedListing); 
         
@@ -104,7 +112,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
     
     
     private function getXmlData(){
-        return '<?xml version="1.0" ?><items><item id="1"></item></items>';
+        return new \SimpleXMLElement('<?xml version="1.0" ?><items><item id="1"></item></items>');
     }
     
     
