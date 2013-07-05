@@ -247,7 +247,7 @@ class MemoryWallController extends Controller
      * to add a resource, make sure the wall it's to be added to is valid and belongs to the current user
      * then look up the details based on the api and id and add it to the wall
      */
-    public function addMediaResourceAction($api, $id, $slug = 'personal', $mwid = '-', $title){
+    public function addMediaResourceAction($api, $id, $title, $slug = 'personal', $mwid = '-'){
         $session = $this->get('session');
         $this->em = $this->getEntityManager();
         $this->currentUser = $this->getCurrentUser();
