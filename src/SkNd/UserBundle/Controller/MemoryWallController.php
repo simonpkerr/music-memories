@@ -64,7 +64,7 @@ class MemoryWallController extends Controller
             $mws = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getPublicMemoryWalls();
         }else{
             $this->currentUser = $this->getCurrentUser();
-            if(is_object($this->currentUser) && ($this->currentUser->getUsername() == $scope)){
+            if(is_object($this->currentUser) && ($this->currentUser->getUsernameCanonical() == $scope)){
                 $pageTitle = 'My';
                 //get all public and private walls for this user
                 $mws = $this->currentUser->getMemoryWalls();

@@ -8,12 +8,10 @@
  */
 namespace SkNd\UserBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use SkNd\UserBundle\Entity\User;
 use SkNd\MediaBundle\Entity\Decade;
 use SkNd\MediaBundle\Entity\MediaResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\HttpKernel\Exception;
 
 class MemoryWall
 {

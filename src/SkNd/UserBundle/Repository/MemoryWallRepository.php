@@ -10,7 +10,6 @@
 namespace SkNd\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\MediaBundle\Entity\Decade;
 
 class MemoryWallRepository extends EntityRepository
