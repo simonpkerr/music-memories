@@ -4,7 +4,7 @@
 {% block content %}
 <h1>Select a Memory Wall</h1>
 <p class="strapline">Choose a wall from below to add to&hellip;</p>
-{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 <ul class="bullet-list">
 {% for mw in mws %}
         <li>

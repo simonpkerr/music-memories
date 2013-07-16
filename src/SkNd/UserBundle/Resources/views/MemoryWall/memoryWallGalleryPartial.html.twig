@@ -15,7 +15,7 @@
            <p>{{mw.description|slice(0,100)}}{%if mw.description|length > 100 %}&hellip;{% endif %}</p>
         {% endif %}
             <p>Related to &ndash; <strong>{{mw.associatedDecade is not null ? mw.associatedDecade.slug : 'all decades'}}</strong></p>
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and mw.user.username == app.user.username %}
+            {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") and mw.user.username == app.user.username %}
             <ul class="actions cf">
                 <li><a title="you can edit this wall!" class="button" href="{{ path('memoryWallEdit',{'id':mw.id, 'slug':mw.slug}) }}"><span class="sprites edit-icon">Edit</span></a></li>
                 <li><a title="delete the wall (if you really want)" class="button" href="{{ path('memoryWallDelete', {'id':mw.id, 'slug':mw.slug}) }}"><span class="sprites close-icon">Delete</span></a></li>

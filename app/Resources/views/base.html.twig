@@ -87,7 +87,7 @@
             <div id="footer" class="cf">
                 <ul>
                 <li class="third-width left">
-                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <h3>Explore your stuff</h3>
                     <ul>
                         <li><a class="button" href="{{path('memoryWallsPersonalIndex') }}">All your walls</a></li>

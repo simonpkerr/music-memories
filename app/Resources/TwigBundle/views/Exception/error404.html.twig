@@ -1,5 +1,5 @@
-{% extends '::base.html.twig' %}
-{% block title %}Error!{% endblock %}
+ {% extends '::base.html.twig' %}
+{% block title %}Page cannot be found{% endblock %}
 
 {% block topNavLinks %}
 {{ parent() }}
@@ -20,10 +20,5 @@
 {% block content %}
 <h1>Noooo! An error occurred</h1>
 <p>Don&rsquo;t worry about it, it happens to everyone sometimes.</p>
-<p>Just be a bit more careful in future, ok?</p>
-{% endblock %}
-
-    
-{% block javascripts %}
-    {{parent()}}
+<p>Please try again in a while</p>
 {% endblock %}
