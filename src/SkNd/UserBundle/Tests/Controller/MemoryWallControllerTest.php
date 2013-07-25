@@ -502,7 +502,10 @@ class MemoryWallControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('ul#memoryWallGallery li:first-child span.note:contains("0 items")')->count() > 0);
     }
     
-    
+    //layout methods
+    public function testChangeLayoutMethodUpdatesWallLayout(){
+        
+    }
     
     
 

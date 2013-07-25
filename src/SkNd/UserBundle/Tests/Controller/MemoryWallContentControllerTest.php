@@ -80,7 +80,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->selectButton('Login')->count() > 0);
     }
 
-    public function testAddMediaResourceToInvalidAPIThrowsException(){
+    public function testAddMediaResourceUsingInvalidAPIThrowsException(){
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
         
         $crawler = $this->client->request('GET', '/login');
@@ -382,12 +382,14 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->selectButton('Login')->count() > 0);
     }
     
-    /*public function testRemoveMultipleReferencedMediaResourceFromWallOnlyRemovesSingleReference(){
-        //if two users have the same media resource on their walls and one is removed, the other reference should remain in tact
+    //UGC tests
+    public function addUGCWithMissingTitleThrowsException(){
         
-    }*/
+    }
     
-    
+    public function addUGCWithMissingDescriptionThrowsException(){
+        
+    }
     
     
     
