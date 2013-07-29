@@ -503,11 +503,50 @@ class MemoryWallControllerTest extends WebTestCase
     }
     
     //layout methods
-    public function testChangeLayoutMethodUpdatesWallLayout(){
+    public function testChangeLayoutToGridUpdatesWallLayout(){
         
     }
     
+    public function testChangeLayoutToCustomUpdatesWallLayoutAndMovesItems(){
+        
+    }
     
+    public function testChangeLayoutToCustomUpdatesWallLayoutAndMovesItemsToDefaultLocationsIfNoCoordsSpecified(){
+        
+    }
+    
+    public function testResetCustomViewRevertsToGridLayout(){
+        
+    }
+    
+    public function testAddMWAvatarWhenNotLoggedInRedirectsToLogin() {
+        
+    }
+    
+    public function testAddMWAvatarUpdatesWall() {
+        
+    }
+    
+    public function testAddMWAvatarWithInvalidFileTypeThrowsException() {
+        
+    }
+    
+    public function testEditMWAvatarUpdatesMW(){
+        
+    }
+    
+    public function deleteMWAvatarUpdatesMW(){
+        
+    }
+    
+    public function deleteOthersMWAvatarThrowsException(){
+        
+    }
+    
+    public function deleteMWAvatarThatDoesntHaveAnAvatarThrowsException(){
+        
+    }
 
+    
     
 }

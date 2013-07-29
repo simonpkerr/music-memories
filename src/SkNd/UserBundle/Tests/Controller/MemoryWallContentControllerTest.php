@@ -382,18 +382,163 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->selectButton('Login')->count() > 0);
     }
     
-    //UGC tests
-    public function addUGCWithMissingTitleThrowsException(){
+    //similar to re-tweeting, the same item is added to the users wall
+    public function testAddingAMediaResourceFromOtherWallAddsMediaResource(){
         
     }
     
-    public function addUGCWithMissingDescriptionThrowsException(){
+    public function testAddUGCToInvalidWallThrowsException(){
         
     }
     
+    public function testAddUGCToNonExistentWallThrowsException(){
+        
+    }
     
+    //for UGC that is added by wall owners (photos, notes)
+    public function testAddMemoryWallUGCWithMissingTitleThrowsException(){
+        
+    }
     
+    public function testAddUGCWithTooLongTitleThrowsException(){
+        
+    }
     
+    public function testAddUGCWithTooShortTitleThrowsException(){
+        
+    }
+    
+    //for UGC that is added by wall owners (photos, notes)
+    public function testAddMemoryWallUGCWithMissingCommentsFieldThrowsException(){
+        
+    }
+    
+    public function testAddUGCWithTooShortCommentsFieldThrowsException(){
+        
+    }
+    
+    public function testAddUGCWithTooLongCommentsFieldThrowsException(){
+        
+    }
+    
+    public function testAddUGCWithInvalidFileTypeThrowsException() {
+        
+    }
+    
+    public function testAddUGCCommentsToUGCDoesNotRequireTitleOrImageField() {
+        
+    }
+    
+    public function testAddUGCWhenNotLoggedInRedirectsToLogin() {
+        
+    }
+    
+    public function testAddMemoryWallUGCToOthersWallThrowsException() {
+        
+    }
+    
+    public function testEditMemoryWallUGCOnOthersWallThrowsException() {
+        
+    }
+    
+    public function testEditMemoryWallUGCWithMissingTitleThrowsException() {
+        
+    }
+    
+    //only applies to comments on items
+    public function testEditOwnUGCWithinEditingTimeThresholdAllowsEdit() {
+        
+    }
+    
+    public function testDeleteOwnUGCUpdatesWallContent() {
+        
+    }    
+        
+    //if a photo/note etc has a thread of comments coming off it
+    public function testDeleteOwnUGCDeletesAllRelatedUGC() {
+        
+    }
+    
+    public function testDeleteUGCOnOthersWallThrowsException() {
+        
+    }
+    
+    public function testDeleteUGCOnOthersWallIfSuperAdminDeletesUGC() {
+        
+    }
+    
+    //comments can be obscured or deleted by superadmin or wall owner
+    public function testObscureUGCOnOthersWallIfSuperAdminOrWallOwnerObscuresUGC() {
+        
+    }
+    
+    public function testObscuringUGCEmailsTheWallOwnerAndUGCCreatorIfTheyAreNotTheSame() {
+        
+    }
+    
+    public function testObscuringUGCOnOthersWallIfNotAuthorisedThrowsException() {
+        
+    }    
+    
+    //entire set of comments on an item can be hidden by super admin or wall owner
+    public function testHideCommentsOnUGCIfSuperAdminOrWallOwnerHidesComments() {
+        
+    }
+    
+    public function testHideCommentsOnUGCOnOthersWallThrowsException() {
+        
+    }
+    
+    public function testFlagUGCWithMissingCommentsFieldThrowsException() {
+        
+    }
+    
+    public function testFlagAFlaggedUGCShowsMessageInsteadOfForm() {
+        
+    }
+    
+    public function testFlagUGCEmailsWallOwnerAndUGCCreator(){
+        
+    }
+    
+    public function testFlagInvalidUGCThrowsException(){
+        
+    }
+    
+    public function testUneditedFlaggedUGCIsObscuredAfterTheFlaggingExpirationThresholdExpires() {
+        
+    }
+    
+    public function testEditFlaggedUGCHasTheFlagRemoved() {
+        
+    }
+    
+    public function testMoveMemoryWallUGCUpdatesCoords(){
+        
+    }
+    
+    public function testChangeIndexOfMRInGridViewUpdatesIndex(){
+        
+    }
+    
+    public function testChangeIndexOfMROnOthersWallThrowsException(){
+        
+    }
+    
+    //if items are obscured, there should still be a way to move them out of the way but not save the position
+    public function testMoveMemoryWallUGCWhenNotLoggedInDoesNotUpdateCoords(){
+        
+    }
+    
+    //each item on a wall only loads the most recent comment, and lazily loads others if necessary
+    public function testExpandUGCCommentsLoadsLatest20Comments(){
+        
+    }
+    
+    //once lazily loaded, should not re-load again
+    public function testExpandedUGCCommentsDoesNotLoadTwice(){
+        
+    }
     
 }
 
