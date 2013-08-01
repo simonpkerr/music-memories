@@ -489,6 +489,10 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
+    public function testTurnOffMemoryWallCommentsOnOthersWallThrowsException() {
+        
+    }
+    
     public function testFlagUGCWithMissingCommentsFieldThrowsException() {
         
     }
@@ -501,7 +505,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
-    public function testFlagInvalidUGCThrowsException(){
+    public function testFlagNonExistentUGCThrowsException(){
         
     }
     
@@ -513,9 +517,18 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
-    public function testMoveMemoryWallUGCUpdatesCoords(){
+    //if items are obscured, there should still be a way to move them out of the way but not save the position
+    public function testMoveMemoryWallUGCWhenNotLoggedInDoesNotUpdateCoords(){
         
     }
+    
+    public function testMoveOwnMemoryWallItemsSavesCoordsOnPublish(){
+        
+    }
+    
+    public function testMoveOwnMemoryWallItemsShowsSaveConfirmationMessageIfUserTriesToNavigateAway(){
+        
+    }    
     
     public function testChangeIndexOfMRInGridViewUpdatesIndex(){
         
@@ -524,21 +537,18 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     public function testChangeIndexOfMROnOthersWallThrowsException(){
         
     }
-    
-    //if items are obscured, there should still be a way to move them out of the way but not save the position
-    public function testMoveMemoryWallUGCWhenNotLoggedInDoesNotUpdateCoords(){
         
-    }
-    
     //each item on a wall only loads the most recent comment, and lazily loads others if necessary
     public function testExpandUGCCommentsLoadsLatest20Comments(){
         
     }
     
     //once lazily loaded, should not re-load again
-    public function testExpandedUGCCommentsDoesNotLoadTwice(){
+    public function testExpandUGCCommentsTwiceDoesNotLoadTwice(){
         
     }
+    
+    
     
 }
 
