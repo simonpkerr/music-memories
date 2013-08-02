@@ -23,8 +23,10 @@ body {
         .multiplebgs & {
             background-color: #CEDEE8;
             background-image: url("/SkNd/web/bundles/SkNd/images/bg-footer.png"), url("/SkNd/web/bundles/SkNd/images/bg-v2.jpg");
-            background-position: 50% 100%, 50% top;
+            background-position: 50% 100%, top center;
             background-repeat: repeat-x, no-repeat;
+            background-attachment: scroll, fixed;
+            background-size: auto auto, cover;
         }
         
     }
