@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="user.registration.class">SkNd\UserBundle\Form\Type\RegistrationFormType</parameter>
+        <parameter key="user.profile.class">SkNd\UserBundle\Form\Type\ProfileFormType</parameter>
+        <parameter key="mw_access_manager.class">SkNd\UserBundle\Controller\MemoryWallAccessManager</parameter>
+    </parameters>
+    
+    <services>
+        <service id="sk_nd_user.registration.form.type" class="%user.registration.class%">
+            <argument>%fos_user.model.user.class%</argument>
+            <tag name="form.type" alias="sk_nd_user_registration" />
+        </service>
+        <service id="sk_nd_user.profile.form.type" class="%user.profile.class%">
+            <argument>%fos_user.model.user.class%</argument>
+            <tag name="form.type" alias="sk_nd_user_profile" />
+        </service>
+        
+        <service id="sk_nd_user.mw_access_manager" class="%mw_access_manager.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="fos_user.user_manager" />
+            <argument type="service" id="session" />
+            <argument type="service" id="security.context" />
+        </service>
+    </services>
+</container>
+

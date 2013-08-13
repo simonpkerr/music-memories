@@ -246,6 +246,15 @@ class MemoryWallControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('h1:contains("Testuser2s")')->count() > 0, "Wall name not using users username");
     }
     
+    //create a load of custom avatars that the user can choose from (based on decades) with an option to upload a new one
+    public function testCreateMemoryWallUsesUserCustomAvatarIfAvailable() {
+        
+    }
+    
+    public function testCreateMemoryWallUsesUserDefaultAvatarIfNecessary(){
+        
+    }
+    
     public function testEditNonExistentMemoryWallThrowsException(){
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
@@ -518,35 +527,6 @@ class MemoryWallControllerTest extends WebTestCase
     public function testResetCustomViewRevertsToGridLayout(){
         
     }
-    
-    public function testAddMWAvatarWhenNotLoggedInRedirectsToLogin() {
-        
-    }
-    
-    public function testAddMWAvatarUpdatesWall() {
-        
-    }
-    
-    public function testAddMWAvatarWithInvalidFileTypeThrowsException() {
-        
-    }
-    
-    public function testEditMWAvatarUpdatesMW(){
-        
-    }
-    
-    public function deleteMWAvatarUpdatesMW(){
-        
-    }
-    
-    public function deleteOthersMWAvatarThrowsException(){
-        
-    }
-    
-    public function deleteMWAvatarThatDoesntHaveAnAvatarThrowsException(){
-        
-    }
-
     
     
 }

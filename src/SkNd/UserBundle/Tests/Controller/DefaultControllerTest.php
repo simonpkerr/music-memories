@@ -148,6 +148,11 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('ul#memoryWallGallery li:first-child > div:contains("testUserCreateWall")')->count() > 0);
     }
     
+    //for each user, a random avatar is generated (bottle cap, random object from db)
+    public function testRegisterWithValidCredentialsSelectsRandomAvatar(){
+        
+    }
+    
     public function testResetPasswordWithInvalidCredentialsShowsErrors(){
         $crawler = $this->client->request('GET', '/resetting/request');
         $form = $crawler->selectButton('Reset password')->form();

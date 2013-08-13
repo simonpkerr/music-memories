@@ -387,7 +387,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
-    public function testAddUGCToInvalidWallThrowsException(){
+    public function testAddUGCToUnauthorisedWallThrowsException(){
         
     }
     
@@ -425,7 +425,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
-    public function testAddUGCCommentsToUGCDoesNotRequireTitleOrImageField() {
+    public function testAddUGCCommentsToMemoryWallUGCDoesNotRequireTitleOrImageField() {
         
     }
     
@@ -455,7 +455,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     }    
         
     //if a photo/note etc has a thread of comments coming off it
-    public function testDeleteOwnUGCDeletesAllRelatedUGC() {
+    public function testDeleteOwnMemoryWallUGCDeletesAllRelatedUGCComments() {
         
     }
     
@@ -467,19 +467,6 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
-    //comments can be obscured or deleted by superadmin or wall owner
-    public function testObscureUGCOnOthersWallIfSuperAdminOrWallOwnerObscuresUGC() {
-        
-    }
-    
-    public function testObscuringUGCEmailsTheWallOwnerAndUGCCreatorIfTheyAreNotTheSame() {
-        
-    }
-    
-    public function testObscuringUGCOnOthersWallIfNotAuthorisedThrowsException() {
-        
-    }    
-    
     //entire set of comments on an item can be hidden by super admin or wall owner
     public function testHideCommentsOnUGCIfSuperAdminOrWallOwnerHidesComments() {
         
@@ -490,6 +477,18 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     }
     
     public function testTurnOffMemoryWallCommentsOnOthersWallThrowsException() {
+        
+    }
+    
+    public function testCloseCommentsOnOthersWallThrowsException(){
+        
+    }
+    
+    public function testAddCommentsToClosedCommentsUGCThrowsException(){
+        
+    }
+    
+    public function testAddCommentsToClosedCommentsMemoryWallThrowsException(){
         
     }
     
@@ -509,7 +508,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
-    public function testUneditedFlaggedUGCIsObscuredAfterTheFlaggingExpirationThresholdExpires() {
+    public function testUneditedFlaggedUGCIsRemovedAfterTheFlaggingExpirationThresholdExpires() {
         
     }
     
@@ -517,11 +516,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
-    //if items are obscured, there should still be a way to move them out of the way but not save the position
-    public function testMoveMemoryWallUGCWhenNotLoggedInDoesNotUpdateCoords(){
-        
-    }
-    
+    //when moving items around or clicking the 'generate' layout button, users still need to publish the wall to save changes
     public function testMoveOwnMemoryWallItemsSavesCoordsOnPublish(){
         
     }
@@ -529,6 +524,10 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     public function testMoveOwnMemoryWallItemsShowsSaveConfirmationMessageIfUserTriesToNavigateAway(){
         
     }    
+    
+    public function testUpdateOthersWallItemPositionsThrowsException(){
+        
+    }
     
     public function testChangeIndexOfMRInGridViewUpdatesIndex(){
         
