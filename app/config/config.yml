@@ -14,7 +14,7 @@ framework:
     validation:      { enable_annotations: true }
     templating:      
       engines: ['twig']
-      assets_version: 20130705
+      #assets_version: SomeVersionScheme
       assets_base_urls:
         http: ["/SkNd/web"]
     default_locale:  "%locale%"
@@ -88,6 +88,12 @@ swiftmailer:
 
 sonata_cache:
     caches:
+#        esi:
+#            token: ~
+#            servers:
+#                - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
+#        ssi:
+#            token: ~
         apc:
             token:  s3cur3   # token used to clear the related cache
             prefix: sknd_apc     # prefix to ensure there is no clash between instances
@@ -108,6 +114,12 @@ sonata_user:
     user: SkNd\UserBundle\Entity\User
   security_acl: true
   manager_type: orm 
+#  profile:
+#    form:
+#      type: sonata_user_profile
+#      handler: sonata.user.profile.form.handler.default
+#      name: sonata_user_profile_form
+#      validation_groups: [Profile]
   profile:
     form:
       type: fos_user_profile
