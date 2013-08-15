@@ -9,10 +9,8 @@
  */
 namespace SkNd\UserBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\MediaBundle\Entity\MediaResource;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class MemoryWallMediaResource
 {
