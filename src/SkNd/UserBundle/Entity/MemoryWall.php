@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Original code Copyright (c) 2011 Simon Kerr
+ * Original code Copyright (c) 2014 Simon Kerr
  * MemoryWall gets and sets memory walls
  * @author Simon Kerr
  * @version 1.0
@@ -27,12 +27,13 @@ class MemoryWall
     protected $isPublic;
     protected $lastUpdated;
     protected $associatedDecade;
-    protected $mediaResources;
+    protected $memoryWallUGC;
     protected $memoryWallMediaResources;
 
     public function __construct(User $user = null, $memoryWallName = null){
         $this->mediaResources = new ArrayCollection();
         $this->memoryWallMediaResources = new ArrayCollection();
+        $this->memoryWallUGC = new ArrayCollection();
         
         $this->setIsPublic(true);
         if($user != null){

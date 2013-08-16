@@ -39,6 +39,13 @@ SkNd\UserBundle\Entity\MemoryWall:
           on: update
   lifecycleCallbacks: {  }
   oneToMany:
+    memoryWallUGC:
+      targetEntity: UGC
+      mappedBy: memoryWall
+      cascade: ["persist", "remove"]
+      orphanRemoval: true
+      orderBy:
+        dateAdded: desc
     memoryWallMediaResources:
       targetEntity: MemoryWallMediaResource
       mappedBy: memoryWall

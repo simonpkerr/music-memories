@@ -11,21 +11,28 @@ namespace SkNd\UserBundle\Entity;
 
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\MediaBundle\Entity\MediaResource;
+use SkNd\UserBundle\Entity\MemoryWallContent;
 
-class MemoryWallMediaResource
+class MemoryWallMediaResource extends MemoryWallContent
 {
     protected $api_id;
-    protected $memoryWall;
     protected $mediaResource_id;
     protected $mediaResource;
-    protected $userTitle;
-    protected $slug;
-    protected $dateAdded;
+    
+    public function __construct(MemoryWall $mw, MediaResource $mr){
+        parent::__construct($mw);
+        
+        $this->mediaResource = $mr;             
+        $this->mediaResource_id = $mr->getId();
+        $this->api_id = $mr->getAPI()->getId();
+ 
+    }
     
     public function getMemoryWallId()
     {
         return $this->memoryWall->getId();
     }
+    
     public function getMediaResourceId()
     {
         return $this->mediaResource_id;
@@ -42,23 +49,6 @@ class MemoryWallMediaResource
         return $this->api_id;
     }
     
-    public function __construct(MemoryWall $mw, MediaResource $mr){
-        $this->memoryWall = $mw;
-        $this->mediaResource = $mr;             
-        $this->mediaResource_id = $mr->getId();
-        $this->api_id = $mr->getAPI()->getId();
-    }
-
-    public function setMemoryWall(MemoryWall $memoryWall)
-    {
-        $this->memoryWall = $memoryWall;
-    }
-
-    public function getMemoryWall()
-    {
-        return $this->memoryWall;
-    }
-
     public function setMediaResource(MediaResource $mediaResource)
     {
         $this->mediaResource = $mediaResource;
@@ -68,29 +58,5 @@ class MemoryWallMediaResource
     {
         return $this->mediaResource;
     }
-
-    public function setUserTitle($userTitle = null)
-    {
-        $this->userTitle = $userTitle;
-    }
-
-    public function getUserTitle()
-    {
-        return $this->userTitle;
-    }
-
-    public function getSlug()
-    {
-        return $this->slug;
-    }
- 
-    public function setDateAdded($dateAdded)
-    {
-        $this->dateAdded = $dateAdded;
-    }
-
-    public function getDateAdded()
-    {
-        return $this->dateAdded;
-    }
+    
 }

@@ -20,16 +20,17 @@ use SkNd\UserBundle\Entity\MemoryWall;
 
 class MemoryWallAccessManager {
     protected $em;
-    protected $um;
+    protected $userManager;
     protected $currentUser;
     protected $session;
     protected $securityContext;
     
-    public function __construct(EntityManager $em, UserManager $um, Session $session, SecurityContext $securityContext) {
+    public function __construct(EntityManager $em, UserManager $userManager, Session $session, SecurityContext $securityContext) {
         $this->em = $em;
-        $this->um = $um;
+        $this->userManager = $userManager;
         $this->session = $session;
         $this->securityContext = $securityContext;
+        $this->currentUser = $this->getCurrentUser();
     }
     
     public function getOwnWall($id, $exceptionMessage = 'memoryWall.show.flash.accessDenied'){
@@ -42,7 +43,7 @@ class MemoryWallAccessManager {
     }
     
     public function getUserManager(){
-        return $this->um;
+        return $this->userManager;
     }
     
     public function currentUserIsAuthenticated(){
@@ -67,6 +68,38 @@ class MemoryWallAccessManager {
         //if the memory wall is private and the selected wall doesn't belong to the current user throw exception
         return $this->currentUserIsAuthenticated() && $mw->getUser() == $this->getCurrentUser();        
         
+    }
+    
+    public function getViewParams($scope){
+        $pageTitle = "";
+        
+        if($scope == 'public'){
+            $pageTitle = "All Public";
+            //get all the public memory walls
+            $mws = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getPublicMemoryWalls();
+        }else{
+            if(is_object($this->currentUser) && ($this->currentUser->getUsernameCanonical() == $scope)){
+                $pageTitle = 'My';
+                //get all public and private walls for this user
+                $mws = $this->currentUser->getMemoryWalls();
+            }else{
+                //get all public walls for the given user
+                $user = $this->userManager->findUserByUsername($scope);
+                if($user == null || !is_object($user) || !$user instanceof UserInterface)
+                    throw new NotFoundHttpException("User not found");
+                
+                $pageTitle = $scope . htmlentities("'s");
+                //call to getMemoryWalls with false indicates only get public walls
+                $mws = $user->getMemoryWalls(false);
+            }
+        }
+        
+        $viewParams = array(
+            'pageTitle'     => $pageTitle,
+            'mws'           => $mws,
+        );
+        
+        return $viewParams;
     }
     
 }

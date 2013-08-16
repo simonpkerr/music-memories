@@ -47,6 +47,16 @@
                     {% if api.name == 'amazonapi' and mr.mediaResourceCache.xmlData.DetailPageURL is defined %} 
                         <li><a class="orange button" title="buy this from Amazon" target="_blank" href="{{mr.mediaResourceCache.xmlData.DetailPageURL}}"><span class="sprites buy-icon">Buy</span></a></li>    
                     {% endif %}
+                    {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
+                        with {
+                            'api'       : api.name,
+                            'itemId'    : mr.id,
+                            'itemTitle' : mr.mediaResourceCache.title,
+                            'titleSlug' : mr.urlize(mr.mediaResourceCache.title),
+                            'linkType'  : 'button'
+                        } 
+                    %}
+                            
                     {% if wallBelongsToThisUser %}
                     {#<li class="edit-it">Edit</li>#}
                     <li><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'mwid':mw.id, 'slug': mw.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span class="sprites close-icon">Remove</span></a></li>

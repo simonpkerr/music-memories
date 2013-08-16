@@ -51,18 +51,18 @@ memoryWallDeleteConfirm:
 memoryWallAddMediaResource:
   pattern: /memorywall/{mwid}/{slug}/add/{api}/{id}/{title}
   defaults:
-    _controller: SkNdUserBundle:MemoryWall:addMediaResource
+    _controller: SkNdUserBundle:MemoryWallContent:addMediaResource
     slug: personal
     mwid: "-"
 
 memoryWallDeleteMediaResource:
   pattern: /memorywall/{mwid}/{slug}/delete/{id}
   defaults:
-    _controller: SkNdUserBundle:MemoryWall:deleteMediaResource
+    _controller: SkNdUserBundle:MemoryWallContent:deleteMediaResource
 
 memoryWallDeleteMediaResourceConfirm:
   pattern: /memorywall/{mwid}/{slug}/delete/{id}/{confirmed}
   defaults:
-    _controller: SkNdUserBundle:MemoryWall:deleteMediaResource
+    _controller: SkNdUserBundle:MemoryWallContent:deleteMediaResource
   requirements:
     confirmed: "true"

@@ -1,0 +1,18 @@
+SkNd\UserBundle\Entity\MemoryWallMediaResource:
+  type: entity
+  table: null
+  fields:
+    comments:
+      type: string
+      length: 255
+    thumbnailImageUrl:
+      type: string
+      length: 150
+    originalImageUrl:
+      type: string
+      length: 150
+  manyToOne:
+    memoryWall:
+      targetEntity: MemoryWall
+      inversedBy: memoryWallUGC
+  lifecycleCallbacks: {  }

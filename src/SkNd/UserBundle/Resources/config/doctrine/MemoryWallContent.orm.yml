@@ -1,0 +1,65 @@
+SkNd\UserBundle\Entity\MemoryWallContent:
+    type: entity
+    table: memorywallcontent
+    repositoryClass: SkNd\UserBundle\Entity\MemoryWallContentRepository
+    fields:
+        id:
+          type: integer
+          id: true
+          generator:
+              strategy: AUTO
+        dateCreated:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: create
+        lastModified:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: update
+        title:
+          type: string
+          length: 255
+          nullable: true
+        slug:
+          type: string
+          length: 255
+          nullable: true
+          gedmo:
+            slug:
+              fields:
+                - title
+        comments:
+          type: string
+          length: 140
+          nullable: true
+        coords:
+          type: simple_array
+          nullable: true
+        flaggedComments:
+            type: string
+            length: 255
+            nullable: true
+        flaggedDate:
+            type: datetime
+            nullable: true
+        isFlagged:
+            type: boolean
+            nullable: true
+        wallIndex:
+            type: integer
+            nullable: true
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discr
+      type: string
+      length: 255
+    discriminatorMap:
+      ugc: UGC
+      memorywallmediaresource: MemoryWallMediaResource
+#    manyToOne:
+#      memoryWall:
+#        targetEntity: MemoryWall
+#        inversedBy: memoryWallContents
+    lifecycleCallbacks: {  }

@@ -1,11 +1,11 @@
 SkNd\UserBundle\Entity\MemoryWallMediaResource:
   type: entity
-  table: memorywallmediaresource
-  id:
-    mediaResource:
-      associationKey: true
-    memoryWall:
-      associationKey: true
+  table: null
+  #id:
+  #  mediaResource:
+  #    associationKey: true
+  #  memoryWall:
+  #    associationKey: true
   fields:
     #this has been made a unique field so it can be indexed by memory wall entity
     mediaResource_id:
@@ -13,23 +13,6 @@ SkNd\UserBundle\Entity\MemoryWallMediaResource:
     api_id:
       type: integer
       nullable: false
-    userTitle:
-      type: string
-      length: 255
-      nullable: true
-    slug:
-      type: string
-      length: 255
-      nullable: true
-      gedmo:
-        slug:
-          fields:
-            - userTitle
-    dateAdded:
-      type: datetime
-      gedmo:
-        timestampable:
-          on: create
   manyToOne:
     mediaResource:
       targetEntity: SkNd\MediaBundle\Entity\MediaResource

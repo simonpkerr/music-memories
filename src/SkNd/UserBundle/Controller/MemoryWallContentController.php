@@ -14,7 +14,7 @@ use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
  * @version 2.0
  */
 
-class MemoryWallController extends Controller
+class MemoryWallContentController extends Controller
 {
     protected $currentUser;
     protected $em;
@@ -51,7 +51,7 @@ class MemoryWallController extends Controller
                 $mw = $this->currentUser->getMemoryWalls()->first();
             }else{
                 $session->getFlashBag()->add('notice', 'mediaResource.add.flash.selectWall');
-                $viewParams = $this->getViewParams($this->currentUser->getUsernameCanonical());
+                $viewParams = $this->mwAccessManager->getViewParams($this->currentUser->getUsernameCanonical());
                 $viewParams = array_merge($viewParams, array(
                     'api'   => $api,
                     'id'    => $id,
