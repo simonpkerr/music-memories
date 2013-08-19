@@ -2,6 +2,7 @@
 
 namespace SkNd\UserBundle\Repository;
 use Doctrine\ORM\EntityRepository;
+use SkNd\UserBundle\Entity\MemoryWall;
 
 /**
  * MemoryWallContentRepository
@@ -11,4 +12,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class MemoryWallContentRepository extends EntityRepository
 {
+    
+    public function getMemoryWallContent(MemoryWall $mw){
+        //get all memory wall content then filter and return based on discr
+        $mwmrs = $this->createQueryBuilder('mwc')
+                ->where('mwc.memoryWall = :mw')
+                ->andWhere('mwc.disc = :disc')
+                ->addOrderBy('mwc.lastModified', 'DESC')
+                ->setParameter('mw', $mw)
+                ->setParameter('disc', 'memorywallmediaresource')
+                ->getQuery()
+                ->getResult();
+        
+        $ugc = $this->createQueryBuilder('mwc')
+                ->where('mwc.memoryWall = :mw')
+                ->andWhere('mwc.disc = :disc')
+                ->addOrderBy('mwc.lastModified', 'DESC')
+                ->setParameter('mw', $mw)
+                ->setParameter('disc', 'ugc')
+                ->getQuery()
+                ->getResult();
+        
+        return array(
+            'mwmrs' => $mwmrs,
+            'ugc'   => $ugc,
+        )
+    }
+    
 }

@@ -43,7 +43,6 @@ class MemoryWall
                 $this->setName($this->getRandomName($user));
             }
             $this->setUser($user);
-
         }
     }
  
@@ -91,6 +90,15 @@ class MemoryWall
         
         return $this->memoryWallMediaResources->toArray();                
     }
+    
+    public function setMemoryWallMediaResources(ArrayCollection $mwmrs){
+        $this->memoryWallMediaResources = $mwmrs;
+    }
+    
+    public function setMemoryWallUGC(ArrayCollection $mwUGC){
+        $this->memoryWallUGC = $mwUGC;
+    }
+    
  
     public function addMediaResource(MediaResource $mr){
         if(isset($this->memoryWallMediaResources[$mr->getId()]))

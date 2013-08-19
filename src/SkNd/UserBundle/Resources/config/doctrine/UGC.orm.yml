@@ -1,10 +1,7 @@
-SkNd\UserBundle\Entity\MemoryWallMediaResource:
+SkNd\UserBundle\Entity\UGC:
   type: entity
   table: null
   fields:
-    comments:
-      type: string
-      length: 255
     thumbnailImageUrl:
       type: string
       length: 150

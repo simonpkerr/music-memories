@@ -10,13 +10,16 @@ SkNd\UserBundle\Entity\MemoryWallMediaResource:
     #this has been made a unique field so it can be indexed by memory wall entity
     mediaResource_id:
       type: string
+      length: 30
+      nullable: true
     api_id:
       type: integer
-      nullable: false
+      nullable: true
   manyToOne:
-    mediaResource:
-      targetEntity: SkNd\MediaBundle\Entity\MediaResource
-      inversedBy: memoryWallMediaResources
+    #mediaResource:
+    #  targetEntity: SkNd\MediaBundle\Entity\MediaResource
+    #  inversedBy: memoryWallMediaResources
+    #  nullable: true
     memoryWall:
       targetEntity: MemoryWall
       inversedBy: memoryWallMediaResources

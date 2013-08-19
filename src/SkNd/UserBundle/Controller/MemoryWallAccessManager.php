@@ -61,6 +61,11 @@ class MemoryWallAccessManager {
         if(is_null($mw))
             throw new NotFoundHttpException("Memory wall not found");
         
+        //get all the memory wall content - TO DO TO REDUCE THE NUMBER OF DB CALLS
+        $mwContent = $this->em->getRepository('SkNdUserBundle:MemoryWallContent')->getMemoryWallContent($mw);
+        $mw->setMemoryWallMediaResources($mwContent['mwmrs']);
+        $mw->setMemoryWallUGC($mwContent['mwUGC']);
+        
         return $mw;
     }
     

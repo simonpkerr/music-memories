@@ -12,7 +12,6 @@ namespace SkNd\UserBundle\Entity;
 use SkNd\UserBundle\Entity\MemoryWallContent;
 
 class UGC extends MemoryWallContent {
-    protected $comments;
     protected $thumbnailImageUrl;
     protected $originalImageUrl;
     
@@ -30,14 +29,6 @@ class UGC extends MemoryWallContent {
     
     public function getOriginalImageUrl(){
         return $this->originalImageUrl;
-    }
-    
-    public function setComments($comments){
-        $this->comments = $comments;
-    }
-    
-    public function getComments(){
-        return $this->comments;
     }
     
     public function getAbsolutePath()
