@@ -1,13 +1,14 @@
 SkNd\UserBundle\Entity\MemoryWallContent:
     type: entity
-    table: memorywallcontent
-    repositoryClass: SkNd\UserBundle\Entity\MemoryWallContentRepository
+    table: null
+    repositoryClass: SkNd\UserBundle\Repository\MemoryWallContentRepository
     fields:
         id:
-          type: integer
+          type: string
           id: true
+          unique: true
           generator:
-              strategy: AUTO
+            strategy: NONE
         dateCreated:
           type: datetime
           gedmo:
@@ -38,28 +39,44 @@ SkNd\UserBundle\Entity\MemoryWallContent:
           type: simple_array
           nullable: true
         flaggedComments:
-            type: string
-            length: 255
-            nullable: true
+          type: string
+          length: 255
+          nullable: true
         flaggedDate:
-            type: datetime
-            nullable: true
+          type: datetime
+          nullable: true
         isFlagged:
-            type: boolean
-            nullable: true
+          type: boolean
+          nullable: true
         wallIndex:
-            type: integer
-            nullable: true
-    inheritanceType: SINGLE_TABLE
-    discriminatorColumn:
-      name: discr
-      type: string
-      length: 255
-    discriminatorMap:
-      ugc: UGC
-      memorywallmediaresource: MemoryWallMediaResource
-#    manyToOne:
-#      memoryWall:
-#        targetEntity: MemoryWall
-#        inversedBy: memoryWallContents
+          type: integer
+          nullable: true
+        thumbnailImageUrl:
+          type: string
+          length: 150
+          nullable: true
+        originalImageUrl:
+          type: string
+          length: 150
+          nullable: true
+#    inheritanceType: SINGLE_TABLE
+#    discriminatorColumn:
+#      name: discr
+#      type: string
+#      length: 255
+#    discriminatorMap:
+#      ugc: UGC
+#      memorywallmediaresource: MemoryWallMediaResource
+    manyToOne:
+      mediaResource:
+        targetEntity: SkNd\MediaBundle\Entity\MediaResource
+        #inversedBy: memoryWallContent
+        joinColumn:
+          name: mediaResource_id
+          referencedColumnName: id
+          nullable: true
+          onDelete: set null
+      memoryWall:
+        targetEntity: MemoryWall
+        inversedBy: memoryWallContent
     lifecycleCallbacks: {  }

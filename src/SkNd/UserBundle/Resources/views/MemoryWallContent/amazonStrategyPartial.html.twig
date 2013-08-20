@@ -1,0 +1,29 @@
+{% import 'SkNdUserBundle:MemoryWallContent:mwcMacros.html.twig' as mwcMacros %}
+
+{% set mr = mwc.mediaResource %}
+<li class="mwc">
+    <p class="note">Added on {{ mwc.dateCreated|date("d/m/y \\a\\t g:ia") }}</p>    
+    <a href="{{path('mediaDetails', {'id':mr.id, 'api':mr.api.name, 'title':mr.mediaResourceCache.slug})}}" title="click to explore {{mr.mediaResourceCache.title}}">
+        <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
+    </a>
+    <strong><a href="{{path('mediaDetails',{'id':mr.id, 'api':mr.api.name, 'title':mr.mediaResourceCache.slug} )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mwcMacros.shortenTitle(mr.mediaResourceCache.title)}}</a></strong>    
+    
+    <ul class="actions fl full-width">
+        {% if mr.mediaResourceCache.xmlData.DetailPageURL is defined %} 
+            <li><a class="orange button" title="buy this from Amazon" target="_blank" href="{{mr.mediaResourceCache.xmlData.DetailPageURL}}"><span class="sprites buy-icon">Buy</span></a></li>    
+        {% endif %}
+        {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
+            with {
+                'api'       : mr.api.name,
+                'itemId'    : mr.id,
+                'itemTitle' : mr.mediaResourceCache.title,
+                'titleSlug' : mr.urlize(mr.mediaResourceCache.title),
+                'linkType'  : 'button'
+            } 
+        %}
+
+        {% if wallBelongsToThisUser %}
+        <li><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span class="sprites close-icon">Remove</span></a></li>
+        {% endif %}
+    </ul>
+</li>

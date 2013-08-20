@@ -57,14 +57,18 @@ class MemoryWallAccessManager {
     
     public function getMemoryWall($id){
         $mw = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallById($id);
+                
         //if memory wall doesn't exist
-        if(is_null($mw))
+        if(count($mw) == 0)
             throw new NotFoundHttpException("Memory wall not found");
         
         //get all the memory wall content - TO DO TO REDUCE THE NUMBER OF DB CALLS
-        $mwContent = $this->em->getRepository('SkNdUserBundle:MemoryWallContent')->getMemoryWallContent($mw);
-        $mw->setMemoryWallMediaResources($mwContent['mwmrs']);
-        $mw->setMemoryWallUGC($mwContent['mwUGC']);
+        $mw = array_pop($mw);
+        /*$mwc = $this->em->getRepository('SkNdUserBundle:MemoryWallContent')->getMemoryWallContent($mw);
+        
+        if(!is_null($mwc)){
+            $mw->setMemoryWallContent($mwc);
+        }*/
         
         return $mw;
     }

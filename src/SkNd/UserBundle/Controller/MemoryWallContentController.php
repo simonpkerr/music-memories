@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
+use SkNd\UserBundle\Entity\MemoryWallContent;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -27,6 +28,28 @@ class MemoryWallContentController extends Controller
     
     private function getEntityManager(){
         return $this->container->get('sk_nd_media.mediaapi')->getEntityManager();
+    }
+    
+    /**
+     * 
+     * @param type $params (array - mwc (MemoryWallContent), wallBelongsToThisUser (bool)
+     * @return type view
+     */
+    public function showMemoryWallContentAction($params){
+        //ugc strategy
+        if(is_null($params['mwc']->getMediaResource())){
+            return $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', $params);
+        }
+        
+        switch ($params['mwc']->getMediaResource()->getAPI()->getName()){
+            case 'amazonapi' :
+                return $this->render('SkNdUserBundle:MemoryWallContent:amazonStrategyPartial.html.twig', $params);
+                break;
+            case 'youtubeapi' :
+                return $this->render('SkNdUserBundle:MemoryWallContent:youTubeStrategyPartial.html.twig', $params);
+                break;
+        }
+        
     }
         
     /*
@@ -96,7 +119,6 @@ class MemoryWallContentController extends Controller
             'slug'  => $mw->getSlug(),
             )
         ));
-              
     }
     
     public function deleteMediaResourceAction($mwid, $slug, $id, $confirmed = false){

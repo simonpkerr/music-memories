@@ -113,7 +113,7 @@ class MemoryWallController extends Controller
         }
         
         //check the mediaresources related to this wall and refresh from api if necessary
-        $mediaResources = $mw->getMediaResources(); //SHOULD THIS BE DONE FROM THE REPOSITORY?
+        $mediaResources = $mw->getMediaResources(); 
         if(count($mediaResources) > 0){
             $processStrategy = new ProcessBatchStrategy(array(
                 'em'                => $this->em,

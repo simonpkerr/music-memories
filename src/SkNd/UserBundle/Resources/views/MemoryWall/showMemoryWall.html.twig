@@ -57,7 +57,7 @@ Memory walls, memories, {{mw.associatedDecade is not null ? mw.associatedDecade.
 {% if returnUrl is not null %}
 <a class="go-back" href="{{returnUrl}}">go back to the previous page</a>
 {% endif %}
-{% include "SkNdUserBundle:MemoryWall:memoryWallMediaResourcesPartial.html.twig" 
+{% include "SkNdUserBundle:MemoryWallContent:memoryWallContentPartial.html.twig" 
     with {
         'wallBelongsToThisUser' : wallBelongsToThisUser,
         'mw'    : mw,

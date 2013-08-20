@@ -27,13 +27,15 @@ class MemoryWall
     protected $isPublic;
     protected $lastUpdated;
     protected $associatedDecade;
-    protected $memoryWallUGC;
-    protected $memoryWallMediaResources;
+    //protected $memoryWallUGC;
+    //protected $memoryWallMediaResources;
+    protected $memoryWallContent;
 
     public function __construct(User $user = null, $memoryWallName = null){
         $this->mediaResources = new ArrayCollection();
         $this->memoryWallMediaResources = new ArrayCollection();
         $this->memoryWallUGC = new ArrayCollection();
+        $this->memoryWallContent = new ArrayCollection();
         
         $this->setIsPublic(true);
         if($user != null){
@@ -61,17 +63,49 @@ class MemoryWall
         return $wallname;
     }
     
+    public function getMemoryWallContent(){
+        return $this->memoryWallContent;
+    }
+    
+    public function setMemoryWallContent(ArrayCollection $mwc){
+        $this->memoryWallContent = $mwc;
+    }
+    
+    
     /**
      * gets all referenced mediaresources for this memory wall
      * for the purpose of batch processing
      * @return type arraycollection
      */
-    public function getMediaResources(){
-        $mrs = new ArrayCollection();
+    public function getMediaResources($apiId = null){
+        /*$mrs = new ArrayCollection();
         foreach($this->memoryWallMediaResources as $mwMr){
             $mrs->set($mwMr->getMediaResource()->getId(), $mwMr->getMediaResource());
         }
-        return $mrs->toArray();
+        return $mrs->toArray();*/
+        
+        if($apiId != null){
+            return array_map(function($mwc) use ($apiId){
+                $mr = $mwc->getMediaResource();
+                if(!is_null($mr) && $mr->getApi()->getId() == $apiId){
+                    return $mr;
+                }
+            }, $this->memoryWallContent->toArray());
+    
+        }        
+        
+        return array_map(function($mwc){
+            $mr = $mwc->getMediaResource();
+            if(!is_null($mr)){
+                return $mr;
+            }
+        }, $this->memoryWallContent->toArray());
+    }
+    
+    public function getUGC(){
+        return $this->memoryWallContent->filter(function($mwc){
+            return !is_null($mwc->getComments());
+        })->toArray();
     }
     
     public function getMediaResourceById($mrId){
@@ -81,7 +115,7 @@ class MemoryWall
         return $this->memoryWallMediaResources[$mrId]->getMediaResource();
     }
     
-    public function getMemoryWallMediaResources($apiId = null){
+    /*public function getMemoryWallMediaResources($apiId = null){
         if($apiId != null){
             return $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
                 return $mwmr->getApi_id() == $apiId;
@@ -89,27 +123,33 @@ class MemoryWall
         }
         
         return $this->memoryWallMediaResources->toArray();                
-    }
+    }*/
     
-    public function setMemoryWallMediaResources(ArrayCollection $mwmrs){
+    /*public function setMemoryWallMediaResources(ArrayCollection $mwmrs){
         $this->memoryWallMediaResources = $mwmrs;
     }
     
     public function setMemoryWallUGC(ArrayCollection $mwUGC){
         $this->memoryWallUGC = $mwUGC;
-    }
+    }*/
     
  
     public function addMediaResource(MediaResource $mr){
         if(isset($this->memoryWallMediaResources[$mr->getId()]))
             throw new \InvalidArgumentException('Duplicate Media Resource found');
         
-        if($mr->getAPI()->getName() == 'amazonapi' && count($this->getMemoryWallMediaResources('amazonapi')) >= 10)
+        if($mr->getAPI()->getName() == 'amazonapi' && count($this->getMediaResources('amazonapi')) >= 10)
             throw new \RuntimeException('Only 10 Amazon items can be added to a wall');
         
         $mr->incrementSelectedCount();
-        $mwMr = new MemoryWallMediaResource($this, $mr);        
-        $this->memoryWallMediaResources->set($mr->getId(), $mwMr);
+        //$mwMr = new MemoryWallMediaResource($this, $mr);        
+        $mwc = new MemoryWallContent(array(
+            'mw'    =>  $this,
+            'mr'    =>  $mr,
+        ));
+        
+        //$this->memoryWallMediaResources->set($mr->getId(), $mwMr);
+        $this->memoryWallContent->set($mr->getId(), $mwc);
     }
     
     public function deleteMediaResourceById($id){

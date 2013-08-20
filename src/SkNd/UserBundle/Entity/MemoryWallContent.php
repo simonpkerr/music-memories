@@ -1,14 +1,15 @@
 <?php
 
 namespace SkNd\UserBundle\Entity;
+
 use SkNd\UserBundle\Entity\MemoryWall;
+use SkNd\MediaBundle\Entity\MediaResource;
 
 /**
  * MemoryWallContent
  */
 class MemoryWallContent
 {
-
     protected $id;
     protected $coords;
     protected $dateCreated;
@@ -21,10 +22,25 @@ class MemoryWallContent
     protected $title;
     protected $comments;
     protected $memoryWall;
+    protected $mediaResource;
+    protected $thumbnailImageUrl;
+    protected $originalImageUrl;
     //protected $parent --to implement when doing item UGC
     
-    public function __construct(MemoryWall $mw){
-        $this->memoryWall = $mw;
+    public function __construct($params){
+        if(!isset($params['mw'])){
+            throw new \RuntimeException('memory wall not supplied');
+        }
+        if(!$params['mw'] instanceof MemoryWall){
+            throw new \RuntimeException('invalid parameters for MemoryWallContent');
+        }
+        
+        $this->memoryWall = $params['mw'];
+        $this->id = uniqid('ugc-');
+        if(isset($params['mr']) && $params['mr'] instanceof MediaResource){
+            $this->mediaResource = $params['mr'];
+            $this->id = $this->getMediaResource()->getId();
+        }
     }
 
     /**
@@ -226,5 +242,54 @@ class MemoryWallContent
     {
         return $this->memoryWall;
     }
+    
+    public function setMediaResource(MediaResource $mr = null)
+    {
+        if(!is_null($mr)){
+            $this->mediaResource = $mr;
+        }
+    }
+
+    public function getMediaResource()
+    {
+        return $this->mediaResource;
+    }
+    
+    public function getAbsolutePath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadRootDir().'/'.$this->originalImageUrl;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadDir().'/'.$this->originalImageUrl;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'bundles/SkNd/upload';
+    }
+    
+    
+    protected function getThumbnailUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'bundles/SkNd/upload/thumbs';
+    }
+    
 
 }
