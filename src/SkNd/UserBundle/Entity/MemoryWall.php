@@ -108,13 +108,6 @@ class MemoryWall
         })->toArray();
     }
     
-    public function getMediaResourceById($mrId){
-        if(!isset($this->memoryWallMediaResources[$mrId]))
-            throw new \InvalidArgumentException('Media Resource not found');
-        
-        return $this->memoryWallMediaResources[$mrId]->getMediaResource();
-    }
-    
     /*public function getMemoryWallMediaResources($apiId = null){
         if($apiId != null){
             return $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
@@ -133,9 +126,15 @@ class MemoryWall
         $this->memoryWallUGC = $mwUGC;
     }*/
     
+    public function getMediaResourceById($mrId){
+        if(!isset($this->memoryWallContent[$mrId]))
+            throw new \InvalidArgumentException('Media Resource not found');
+        
+        return $this->memoryWallContent[$mrId]->getMediaResource();
+    }
  
     public function addMediaResource(MediaResource $mr){
-        if(isset($this->memoryWallMediaResources[$mr->getId()]))
+        if(isset($this->memoryWallContent[$mr->getId()]))
             throw new \InvalidArgumentException('Duplicate Media Resource found');
         
         if($mr->getAPI()->getName() == 'amazonapi' && count($this->getMediaResources('amazonapi')) >= 10)
@@ -153,10 +152,10 @@ class MemoryWall
     }
     
     public function deleteMediaResourceById($id){
-        if(!isset($this->memoryWallMediaResources[$id]))
+        if(!isset($this->memoryWallContent[$id]))
             throw new \InvalidArgumentException('Media Resource not found');
         
-        $this->memoryWallMediaResources->remove($id);
+        $this->memoryWallContent->remove($id);
     }
     
 

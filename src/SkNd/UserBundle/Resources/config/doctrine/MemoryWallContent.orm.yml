@@ -4,11 +4,13 @@ SkNd\UserBundle\Entity\MemoryWallContent:
     repositoryClass: SkNd\UserBundle\Repository\MemoryWallContentRepository
     fields:
         id:
-          type: string
-          id: true
-          unique: true
-          generator:
-            strategy: NONE
+          mwcid:
+            type: string
+            unique: true
+            generator:
+              strategy: NONE
+          memoryWall:
+            associationKey: true
         dateCreated:
           type: datetime
           gedmo:

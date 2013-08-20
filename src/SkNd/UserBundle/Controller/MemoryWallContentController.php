@@ -19,7 +19,6 @@ class MemoryWallContentController extends Controller
 {
     protected $currentUser;
     protected $em;
-    //protected $userManager;
     protected $mwAccessManager;
     
     private function getMWAccessManager(){
