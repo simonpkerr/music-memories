@@ -11,7 +11,6 @@ use SkNd\MediaBundle\Entity\MediaResource;
 class MemoryWallContent
 {
     protected $id;
-    protected $mwcid;
     protected $coords;
     protected $dateCreated;
     protected $flaggedComments;
@@ -37,10 +36,10 @@ class MemoryWallContent
         }
         
         $this->memoryWall = $params['mw'];
-        $this->mwcid = uniqid('ugc-');
+        $this->id = uniqid('ugc-');
         if(isset($params['mr']) && $params['mr'] instanceof MediaResource){
             $this->mediaResource = $params['mr'];
-            $this->mwcid = $this->getMediaResource()->getId();
+            $this->id = $this->getMediaResource()->getId();
         }
     }
 

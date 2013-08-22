@@ -2,15 +2,13 @@ SkNd\UserBundle\Entity\MemoryWallContent:
     type: entity
     table: null
     repositoryClass: SkNd\UserBundle\Repository\MemoryWallContentRepository
+    id:
+      id:
+        type: string
+        length: 50
+      memoryWall:
+        associationKey: true
     fields:
-        id:
-          mwcid:
-            type: string
-            unique: true
-            generator:
-              strategy: NONE
-          memoryWall:
-            associationKey: true
         dateCreated:
           type: datetime
           gedmo:

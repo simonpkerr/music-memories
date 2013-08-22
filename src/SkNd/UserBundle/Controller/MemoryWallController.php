@@ -142,12 +142,6 @@ class MemoryWallController extends Controller
         $session = $this->get('session');
         $mw = $this->mwAccessManager->getOwnWall($id, 'memoryWall.edit.flash.accessDenied');
         
-        //if the wall belongs to this user allow edit
-        //if(!$this->mwAccessManager->memoryWallBelongsToUser($mw)){
-        //    $session->getFlashBag()->add('notice', 'memoryWall.edit.flash.accessDenied');
-        //    throw new AccessDeniedException('This user does not have access to this section.');
-        //}
-        
         $form = $this->createForm(new MemoryWallType(), $mw); 
         
         if("POST" === $request->getMethod()){

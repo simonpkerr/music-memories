@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
 use SkNd\UserBundle\Entity\MemoryWallContent;
+use SkNd\UserBundle\Form\Type\MemoryWallContentType;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -153,6 +154,48 @@ class MemoryWallContentController extends Controller
                 'mr'    => $mr,
             ));
         }
+    }
+        
+    public function addUGCAction($id, $slug, Request $request = null){
+        $this->mwAccessManager = $this->getMWAccessManager();
+        $this->em = $this->getEntityManager();
+        $session = $this->get('session');
+        $this->userManager = $this->mwAccessManager->getUserManager();
+        $this->currentUser = $this->mwAccessManager->getCurrentUser();
+        $mw = $this->mwAccessManager->getOwnWall($id, 'memoryWall.ugc.add.flash.accessDenied');
+        
+        if(!$this->mwAccessManager->currentUserIsAuthenticated()){
+            $session->getFlashBag()->add('notice', 'memoryWall.create.flash.accessDenied');
+            throw new AccessDeniedException('This user does not have access to this section.');
+        }
+        
+        $mwc = new MemoryWallContent(array(
+            'mw'    =>  $mw,
+        ));
+        $form = $this->createForm(new MemoryWallContentType(), $mwc); 
+        if($request->getMethod() == 'POST'){
+            $form->bindRequest($request);
+            //check form is valid 
+            if($form->isValid()){
+                $mwc = $form->getData();
+                $mw->addUGC($mwc);
+                $this->em->flush();                
+                
+                //persist data and redirect to new memory wall
+                $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.success');
+                
+                return $this->redirect($this->generateUrl('memoryWallShow', array(
+                    'id'    => $mw->getId(),
+                    'slug'  => $mw->getSlug(),
+                    )
+                ));
+            }            
+        }
+        return $this->render('SkNdUserBundle:MemoryWall:createMemoryWall.html.twig', array(
+            'form'   => $form->createView() 
+        ));
+        
+        
     }
     
 }
