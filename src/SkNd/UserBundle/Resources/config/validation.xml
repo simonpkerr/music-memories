@@ -61,5 +61,36 @@
         </property>
     </class>
     
+    <class name="SkNd\UserBundle\Entity\MemoryWallContent">
+        <property name="file">
+            <constraint name="File">
+                <option name="maxSize">2M</option>
+                <option name="maxSizeMessage">memory_wall.ugc.add.file.too_big</option>
+                <option name="mimeTypes">
+                    <value>application/pdf</value>
+                    <value>application/x-pdf</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="title">
+            <constraint name="Length">
+                <option name="max">50</option>
+                <option name="maxMessage">memory_wall.ugc.title.long</option>
+            </constraint>
+            <constraint name="NotBlank">
+                <option name="message">memory_wall.ugc.title.blank</option>
+            </constraint>
+        </property>
+        <property name="comments">
+            <constraint name="Length">
+                <option name="max">140</option>
+                <option name="maxMessage">memory_wall.ugc.comments.long</option>
+            </constraint>
+            <constraint name="NotBlank">
+                <option name="message">memory_wall.ugc.comments.blank</option>
+            </constraint>
+        </property>
+    </class>
+    
     
 </constraint-mapping>

@@ -108,23 +108,9 @@ class MemoryWall
         })->toArray();
     }
     
-    /*public function getMemoryWallMediaResources($apiId = null){
-        if($apiId != null){
-            return $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
-                return $mwmr->getApi_id() == $apiId;
-            })->toArray();
-        }
-        
-        return $this->memoryWallMediaResources->toArray();                
-    }*/
-    
-    /*public function setMemoryWallMediaResources(ArrayCollection $mwmrs){
-        $this->memoryWallMediaResources = $mwmrs;
+    public function addUGC(MemoryWallContent $mwc){
+        $this->memoryWallContent->set($mwc->getId(), $mwc);
     }
-    
-    public function setMemoryWallUGC(ArrayCollection $mwUGC){
-        $this->memoryWallUGC = $mwUGC;
-    }*/
     
     public function getMediaResourceById($mrId){
         if(!isset($this->memoryWallContent[$mrId]))

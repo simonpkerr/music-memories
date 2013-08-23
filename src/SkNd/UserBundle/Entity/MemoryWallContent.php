@@ -4,6 +4,7 @@ namespace SkNd\UserBundle\Entity;
 
 use SkNd\UserBundle\Entity\MemoryWall;
 use SkNd\MediaBundle\Entity\MediaResource;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * MemoryWallContent
@@ -25,6 +26,8 @@ class MemoryWallContent
     protected $mediaResource;
     protected $thumbnailImageUrl;
     protected $originalImageUrl;
+    private $tempImageUrl;
+    protected $image;
     //protected $parent --to implement when doing item UGC
     
     public function __construct($params){
@@ -255,18 +258,57 @@ class MemoryWallContent
         return $this->mediaResource;
     }
     
+    public function getImage(){
+        return $this->image;
+    }
+    
+    public function setImage(UploadedFile $image = null){
+        $this->image = $image;
+        
+        if(isset($this->originalImageUrl)){
+            $this->tempImageUrl = $this->originalImageUrl;
+            $this->originalImageUrl = null;
+        } else {
+            $this->originalImageUrl = 'initial';
+        }
+    }
+    
+    public function preUpload(){
+        if(null !== $this->getFile()){
+            $fn = sha1(uniqid(mt_rand(0, 99999), true));
+            $this->originalImageUrl = $fn . '.' . $this->getFile()->guessExtension();
+        }
+    }
+    
+    public function upload(){
+        if(null === $this->getFile()){
+            return;
+        }
+        
+        $this->getFile()->move($this->getUploadRootDir(), $this->originalImageUrl);
+        
+        if(isset($this->tempImageUrl)){
+            unlink($this->getUploadRootDir(). '/' . $this->tempImageUrl);
+            $this->tempImageUrl = null;
+        }
+        $this->originalImageUrl = null;
+    }
+    
+    public function removeUpload()
+    {
+        if (isset($this->tempImageUrl)) {
+            unlink($this->tempImageUrl);
+        }
+    }
+    
     public function getAbsolutePath()
     {
-        return null === $this->path
-            ? null
-            : $this->getUploadRootDir().'/'.$this->originalImageUrl;
+        return null === $this->originalImageUrl ? null : $this->getUploadRootDir().'/'.$this->originalImageUrl;
     }
 
     public function getWebPath()
     {
-        return null === $this->path
-            ? null
-            : $this->getUploadDir().'/'.$this->originalImageUrl;
+        return null === $this->originalImageUrl ? null : $this->getUploadDir().'/'.$this->originalImageUrl;
     }
 
     protected function getUploadRootDir()

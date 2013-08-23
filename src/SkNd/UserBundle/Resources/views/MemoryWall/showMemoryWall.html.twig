@@ -46,8 +46,12 @@ Memory walls, memories, {{mw.associatedDecade is not null ? mw.associatedDecade.
             </li>
             <li>
                 <a class="button" title="Add your own stuff" href="#"><span class="sprites add-icon">Add your own stuff</span></a>
-                <div>
-                    {# form #}
+                <div id="add-ugc-container">
+                    {{ render(controller('SkNdUserBundle:MemoryWallContent:addUGC', {
+                        'mwid': mw.id,
+                        'slug': mw.slug
+                        })) 
+                    }}
                 </div>
             </li>
         </li>

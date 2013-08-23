@@ -9,6 +9,7 @@ use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
 use SkNd\UserBundle\Entity\MemoryWallContent;
 use SkNd\UserBundle\Form\Type\MemoryWallContentType;
 
+
 /*
  * Original code Copyright (c) 2011 Simon Kerr
  * MemoryWallContentController controls also aspects of showing, editing, deleting memory wall content
@@ -156,18 +157,13 @@ class MemoryWallContentController extends Controller
         }
     }
         
-    public function addUGCAction($id, $slug, Request $request = null){
+    public function addUGCAction($mwid, $slug, Request $request = null){
         $this->mwAccessManager = $this->getMWAccessManager();
         $this->em = $this->getEntityManager();
         $session = $this->get('session');
         $this->userManager = $this->mwAccessManager->getUserManager();
         $this->currentUser = $this->mwAccessManager->getCurrentUser();
-        $mw = $this->mwAccessManager->getOwnWall($id, 'memoryWall.ugc.add.flash.accessDenied');
-        
-        if(!$this->mwAccessManager->currentUserIsAuthenticated()){
-            $session->getFlashBag()->add('notice', 'memoryWall.create.flash.accessDenied');
-            throw new AccessDeniedException('This user does not have access to this section.');
-        }
+        $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWall.ugc.add.flash.accessDenied');
         
         $mwc = new MemoryWallContent(array(
             'mw'    =>  $mw,
@@ -183,16 +179,20 @@ class MemoryWallContentController extends Controller
                 
                 //persist data and redirect to new memory wall
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.success');
+                $flash = $session->getFlashBag()->get('notice');
                 
-                return $this->redirect($this->generateUrl('memoryWallShow', array(
-                    'id'    => $mw->getId(),
-                    'slug'  => $mw->getSlug(),
-                    )
+                //script will have to show flash message
+                return $this->render('SkNdUserBundle:showUGCPartial.html.twig', array(
+                    'mwc'   => $mwc,
+                    'flash' => $flash,
                 ));
             }            
         }
-        return $this->render('SkNdUserBundle:MemoryWall:createMemoryWall.html.twig', array(
-            'form'   => $form->createView() 
+        
+        return $this->render('SkNdUserBundle:MemoryWallContent:addUGCPartial.html.twig', array(
+            'mwid'   => $mwid,
+            'slug'   => $slug,
+            'form'   => $form->createView(),
         ));
         
         

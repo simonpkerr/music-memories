@@ -21,7 +21,7 @@ SkNd\UserBundle\Entity\MemoryWallContent:
               on: update
         title:
           type: string
-          length: 255
+          length: 50
           nullable: true
         slug:
           type: string
@@ -79,4 +79,10 @@ SkNd\UserBundle\Entity\MemoryWallContent:
       memoryWall:
         targetEntity: MemoryWall
         inversedBy: memoryWallContent
-    lifecycleCallbacks: {  }
+    lifecycleCallbacks: 
+      prePersist: [preUpload]
+      preUpdate: [preUpload]
+      postPersist: [upload]
+      postUpdate: [upload]
+      postRemove: [removeUpload]
+      

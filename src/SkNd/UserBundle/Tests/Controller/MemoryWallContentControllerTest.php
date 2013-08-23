@@ -445,7 +445,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     }
     
     public function testAddUGCWithInvalidFileTypeThrowsException() {
-        
+        //only jpg,gif,png file types allowed
     }
     
     public function testAddUGCCommentsToMemoryWallUGCDoesNotRequireTitleOrImageField() {
