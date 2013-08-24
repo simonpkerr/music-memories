@@ -39,16 +39,31 @@ SkNd\UserBundle\Entity\MemoryWall:
           on: update
   lifecycleCallbacks: {  }
   oneToMany:
-    memoryWallMediaResources:
-      targetEntity: MemoryWallMediaResource
+    memoryWallContent:
+      targetEntity: MemoryWallContent
       mappedBy: memoryWall
       cascade: ["persist", "remove"]
       orphanRemoval: true
+      orderBy:
+        dateCreated: desc
+      indexBy: id
+#    memoryWallUGC:
+#      targetEntity: UGC
+#      mappedBy: memoryWall
+#      cascade: ["persist", "remove"]
+#      orphanRemoval: true
+#      orderBy:
+#        dateCreated: desc
+#    memoryWallMediaResources:
+#      targetEntity: MemoryWallMediaResource
+#      mappedBy: memoryWall
+#      cascade: ["persist", "remove"]
+#      orphanRemoval: true
       #the indexBy key means that the resulting array collection in memory wall will be indexed by media resource ids
       #meaning that searches for specific media resources are easier
-      indexBy: mediaResource_id
-      orderBy:
-        dateAdded: desc
+#      indexBy: mediaResource_id
+#      orderBy:
+#        dateCreated: desc
   manyToOne:
     associatedDecade:
       targetEntity: SkNd\MediaBundle\Entity\Decade

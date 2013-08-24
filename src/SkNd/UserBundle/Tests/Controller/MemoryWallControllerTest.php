@@ -246,14 +246,10 @@ class MemoryWallControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('h1:contains("Testuser2s")')->count() > 0, "Wall name not using users username");
     }
     
-    //create a load of custom avatars that the user can choose from (based on decades) with an option to upload a new one
-    public function testCreateMemoryWallUsesUserCustomAvatarIfAvailable() {
+    public function testCreateMemoryWallUsesUserDefaultAvatar(){
         
     }
     
-    public function testCreateMemoryWallUsesUserDefaultAvatarIfNecessary(){
-        
-    }
     
     public function testEditNonExistentMemoryWallThrowsException(){
         $crawler = $this->client->request('GET', '/login');
@@ -478,7 +474,6 @@ class MemoryWallControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $url);
         
         $this->assertTrue($crawler->filter('div.flashMessages ul li:contains("That was your last Memory Wall")')->count() > 0);
-        $this->assertTrue($crawler->filter('ul#memoryWallGallery:contains("testuser")')->count() > 0);
     }
     
     public function testDeleteMemoryWallAlsoRemovesAssociatedMediaResources(){
@@ -509,6 +504,27 @@ class MemoryWallControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $url);
         
         $this->assertTrue($crawler->filter('ul#memoryWallGallery li:first-child span.note:contains("0 items")')->count() > 0);
+    }
+    
+    public function testDeleteMemoryWallAlsoRemovesAllUGCIncludingUploadedPhotoFiles(){
+        
+    }
+    
+    public function testSortByDateAddedUpdatesView(){
+        
+    }
+    
+    public function testSetDefaultSortMethodOnOthersWallThrowsException(){
+        
+    }
+    
+    public function testSetDefaultSortMethodToTitleAscUpdatesWallItems(){
+        //item a new mr title beginning with 'a'
+        
+    }
+    
+    public function testSetDefaultSortMethodToDateAddedDescUpdatesWallItems(){
+        //add a new item and make sure its first
     }
     
     //layout methods

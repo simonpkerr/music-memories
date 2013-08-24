@@ -4,6 +4,10 @@ form:
     description: Description
     associated_decade: Associated decade
     is_public: Memory wall is public
+    ugc:
+      title: Title
+      comments: Comments
+      image: Image
 
 memoryWall:
   links:
@@ -34,6 +38,12 @@ memoryWall:
   showOwnWalls:
     flash:
       accessDenied: Naughty naughty. You have to log in first to see your own Memory Walls
+  ugc:
+    add:
+      flash:
+        accessDenied: No, no, no! You can&rsquo;t add stuff to this wall, sorry
+        success: Ah yeah! You just added some stuff
+      submit: Add it now
 mediaResource:
   add:
     flash:

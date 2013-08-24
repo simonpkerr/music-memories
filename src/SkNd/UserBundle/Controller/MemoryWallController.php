@@ -33,10 +33,6 @@ class MemoryWallController extends Controller
         return $this->container->get('sk_nd_media.mediaapi')->getEntityManager();
     }
         
-    //protected function getUserManager(){
-    //    return $this->container->get('fos_user.user_manager');
-    //}
-    
     /**
      * @method indexAction is used to show all public memory walls,
      * public memory walls for a given user, or all private and public 
@@ -46,46 +42,12 @@ class MemoryWallController extends Controller
      */
     public function indexAction($scope = 'public')
     {
-        $viewParams = $this->getViewParams($scope);
+        $this->mwAccessManager = $this->getMWAccessManager();
+        $viewParams = $this->mwAccessManager->getViewParams($scope);
         return $this->render('SkNdUserBundle:MemoryWall:index.html.twig', $viewParams);
     }
     
-    private function getViewParams($scope){
-        $this->mwAccessManager = $this->getMWAccessManager();
-        $this->userManager = $this->mwAccessManager->getUserManager();
-        $this->em = $this->getEntityManager();
-        
-        $pageTitle = "";
-        
-        if($scope == 'public'){
-            $pageTitle = "All Public";
-            //get all the public memory walls
-            $mws = $this->em->getRepository('SkNdUserBundle:MemoryWall')->getPublicMemoryWalls();
-        }else{
-            $this->currentUser = $this->mwAccessManager->getCurrentUser();
-            if(is_object($this->currentUser) && ($this->currentUser->getUsernameCanonical() == $scope)){
-                $pageTitle = 'My';
-                //get all public and private walls for this user
-                $mws = $this->currentUser->getMemoryWalls();
-            }else{
-                //get all public walls for the given user
-                $user = $this->userManager->findUserByUsername($scope);
-                if($user == null || !is_object($user) || !$user instanceof UserInterface)
-                    throw $this->createNotFoundException("User not found");
-                
-                $pageTitle = $scope . htmlentities("'s");
-                //call to getMemoryWalls with false indicates only get public walls
-                $mws = $user->getMemoryWalls(false);
-            }
-        }
-        
-        $viewParams = array(
-            'pageTitle'     => $pageTitle,
-            'mws'           => $mws,
-        );
-        
-        return $viewParams;
-    }
+    
     
     public function personalIndexAction()
     {
@@ -151,7 +113,7 @@ class MemoryWallController extends Controller
         }
         
         //check the mediaresources related to this wall and refresh from api if necessary
-        $mediaResources = $mw->getMediaResources();
+        $mediaResources = $mw->getMediaResources(); 
         if(count($mediaResources) > 0){
             $processStrategy = new ProcessBatchStrategy(array(
                 'em'                => $this->em,
@@ -179,12 +141,6 @@ class MemoryWallController extends Controller
         $this->em = $this->getEntityManager();
         $session = $this->get('session');
         $mw = $this->mwAccessManager->getOwnWall($id, 'memoryWall.edit.flash.accessDenied');
-        
-        //if the wall belongs to this user allow edit
-        //if(!$this->mwAccessManager->memoryWallBelongsToUser($mw)){
-        //    $session->getFlashBag()->add('notice', 'memoryWall.edit.flash.accessDenied');
-        //    throw new AccessDeniedException('This user does not have access to this section.');
-        //}
         
         $form = $this->createForm(new MemoryWallType(), $mw); 
         
@@ -232,13 +188,13 @@ class MemoryWallController extends Controller
         else{
             $session->remove('tokens/SkNd-delete-token');
         }
-        $mw = $this->getOwnWall($id);
+        $mw = $this->mwAccessManager->getOwnWall($id);
         $this->em->remove($mw);
         
         //if this was the last wall, delete but create a new default one
         if($this->currentUser->getMemoryWalls()->count() == 1){
             $session->getFlashBag()->add('notice', 'memoryWall.delete.flash.successCreatedDefault');
-            $this->getCurrentUser()->createDefaultMemoryWall();
+            $this->currentUser->createDefaultMemoryWall();
         }else{
             $session->getFlashBag()->add('notice', 'memoryWall.delete.flash.success');
         }

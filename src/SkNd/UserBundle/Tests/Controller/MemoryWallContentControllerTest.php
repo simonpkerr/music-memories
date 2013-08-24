@@ -384,14 +384,37 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     
     //similar to re-tweeting, the same item is added to the users wall
     public function testAddingAMediaResourceFromOtherWallAddsMediaResource(){
+        //memory-wall-1 belongs to testuser2
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-1');  
+        
+        //login as testuser3
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+        );
+        $crawler = $this->client->submit($form, $params);
+        
+        //wall belonging to testuser3
+        $url = self::$router->generate('memoryWallShow', array(
+            'id'    => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+        ));
+        $crawler = $this->client->request('GET', $url);
+        $addLink = $crawler->filter('a.add-it')->first()->link();
+        $this->client->click($addLink);
+        
+        $this->assertTrue($crawler->filter('li.mw-MediaResource > strong > a')->first()->text() == 'Elf [DVD] [2003]', 'item not added');
+                
+    }
+    
+    //only wall owners can add memory wall UGC (notes, comments, photos)
+    public function testAddMemoryWallUGCToUnauthorisedWallThrowsException(){
         
     }
     
-    public function testAddUGCToUnauthorisedWallThrowsException(){
-        
-    }
-    
-    public function testAddUGCToNonExistentWallThrowsException(){
+    public function testAddMemoryWallUGCToNonExistentWallThrowsException(){
         
     }
     
@@ -400,11 +423,11 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
-    public function testAddUGCWithTooLongTitleThrowsException(){
+    public function testAddMemoryWallUGCWithTooLongTitleThrowsException(){
         
     }
     
-    public function testAddUGCWithTooShortTitleThrowsException(){
+    public function testAddMemoryWallUGCWithTooShortTitleThrowsException(){
         
     }
     
@@ -422,7 +445,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     }
     
     public function testAddUGCWithInvalidFileTypeThrowsException() {
-        
+        //only jpg,gif,png file types allowed
     }
     
     public function testAddUGCCommentsToMemoryWallUGCDoesNotRequireTitleOrImageField() {

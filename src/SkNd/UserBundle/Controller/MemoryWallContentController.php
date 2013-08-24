@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
+use SkNd\UserBundle\Entity\MemoryWallContent;
+use SkNd\UserBundle\Form\Type\MemoryWallContentType;
+
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -14,11 +17,10 @@ use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
  * @version 2.0
  */
 
-class MemoryWallController extends Controller
+class MemoryWallContentController extends Controller
 {
     protected $currentUser;
     protected $em;
-    //protected $userManager;
     protected $mwAccessManager;
     
     private function getMWAccessManager(){
@@ -27,6 +29,28 @@ class MemoryWallController extends Controller
     
     private function getEntityManager(){
         return $this->container->get('sk_nd_media.mediaapi')->getEntityManager();
+    }
+    
+    /**
+     * 
+     * @param type $params (array - mwc (MemoryWallContent), wallBelongsToThisUser (bool)
+     * @return type view
+     */
+    public function showMemoryWallContentAction($params){
+        //ugc strategy
+        if(is_null($params['mwc']->getMediaResource())){
+            return $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', $params);
+        }
+        
+        switch ($params['mwc']->getMediaResource()->getAPI()->getName()){
+            case 'amazonapi' :
+                return $this->render('SkNdUserBundle:MemoryWallContent:amazonStrategyPartial.html.twig', $params);
+                break;
+            case 'youtubeapi' :
+                return $this->render('SkNdUserBundle:MemoryWallContent:youTubeStrategyPartial.html.twig', $params);
+                break;
+        }
+        
     }
         
     /*
@@ -51,7 +75,7 @@ class MemoryWallController extends Controller
                 $mw = $this->currentUser->getMemoryWalls()->first();
             }else{
                 $session->getFlashBag()->add('notice', 'mediaResource.add.flash.selectWall');
-                $viewParams = $this->getViewParams($this->currentUser->getUsernameCanonical());
+                $viewParams = $this->mwAccessManager->getViewParams($this->currentUser->getUsernameCanonical());
                 $viewParams = array_merge($viewParams, array(
                     'api'   => $api,
                     'id'    => $id,
@@ -96,7 +120,6 @@ class MemoryWallController extends Controller
             'slug'  => $mw->getSlug(),
             )
         ));
-              
     }
     
     public function deleteMediaResourceAction($mwid, $slug, $id, $confirmed = false){
@@ -132,6 +155,47 @@ class MemoryWallController extends Controller
                 'mr'    => $mr,
             ));
         }
+    }
+        
+    public function addUGCAction($mwid, $slug, Request $request = null){
+        $this->mwAccessManager = $this->getMWAccessManager();
+        $this->em = $this->getEntityManager();
+        $session = $this->get('session');
+        $this->userManager = $this->mwAccessManager->getUserManager();
+        $this->currentUser = $this->mwAccessManager->getCurrentUser();
+        $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWall.ugc.add.flash.accessDenied');
+        
+        $mwc = new MemoryWallContent(array(
+            'mw'    =>  $mw,
+        ));
+        $form = $this->createForm(new MemoryWallContentType(), $mwc); 
+        if($request->getMethod() == 'POST'){
+            $form->bindRequest($request);
+            //check form is valid 
+            if($form->isValid()){
+                $mwc = $form->getData();
+                $mw->addUGC($mwc);
+                $this->em->flush();                
+                
+                //persist data and redirect to new memory wall
+                $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.success');
+                $flash = $session->getFlashBag()->get('notice');
+                
+                //script will have to show flash message
+                return $this->render('SkNdUserBundle:showUGCPartial.html.twig', array(
+                    'mwc'   => $mwc,
+                    'flash' => $flash,
+                ));
+            }            
+        }
+        
+        return $this->render('SkNdUserBundle:MemoryWallContent:addUGCPartial.html.twig', array(
+            'mwid'   => $mwid,
+            'slug'   => $slug,
+            'form'   => $form->createView(),
+        ));
+        
+        
     }
     
 }

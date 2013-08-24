@@ -1,0 +1,88 @@
+SkNd\UserBundle\Entity\MemoryWallContent:
+    type: entity
+    table: null
+    repositoryClass: SkNd\UserBundle\Repository\MemoryWallContentRepository
+    id:
+      id:
+        type: string
+        length: 50
+      memoryWall:
+        associationKey: true
+    fields:
+        dateCreated:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: create
+        lastModified:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: update
+        title:
+          type: string
+          length: 50
+          nullable: true
+        slug:
+          type: string
+          length: 255
+          nullable: true
+          gedmo:
+            slug:
+              fields:
+                - title
+        comments:
+          type: string
+          length: 140
+          nullable: true
+        coords:
+          type: simple_array
+          nullable: true
+        flaggedComments:
+          type: string
+          length: 255
+          nullable: true
+        flaggedDate:
+          type: datetime
+          nullable: true
+        isFlagged:
+          type: boolean
+          nullable: true
+        wallIndex:
+          type: integer
+          nullable: true
+        thumbnailImageUrl:
+          type: string
+          length: 150
+          nullable: true
+        originalImageUrl:
+          type: string
+          length: 150
+          nullable: true
+#    inheritanceType: SINGLE_TABLE
+#    discriminatorColumn:
+#      name: discr
+#      type: string
+#      length: 255
+#    discriminatorMap:
+#      ugc: UGC
+#      memorywallmediaresource: MemoryWallMediaResource
+    manyToOne:
+      mediaResource:
+        targetEntity: SkNd\MediaBundle\Entity\MediaResource
+        #inversedBy: memoryWallContent
+        joinColumn:
+          name: mediaResource_id
+          referencedColumnName: id
+          nullable: true
+          onDelete: set null
+      memoryWall:
+        targetEntity: MemoryWall
+        inversedBy: memoryWallContent
+    lifecycleCallbacks: 
+      prePersist: [preUpload]
+      preUpdate: [preUpload]
+      postPersist: [upload]
+      postUpdate: [upload]
+      postRemove: [removeUpload]
+      

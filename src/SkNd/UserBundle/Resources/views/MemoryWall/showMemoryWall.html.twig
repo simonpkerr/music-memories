@@ -11,10 +11,57 @@ Memory walls, memories, {{mw.associatedDecade is not null ? mw.associatedDecade.
 {% block content %}
 {% set wallBelongsToThisUser = app.user is not null and mw.user.username == app.user.username %}
 <h1>{{ mw.name|capitalize }}</h1>
+<div id="mw-options">
+    <ul>
+        <li>
+            <li>
+                <a class="button" title="Memory Wall Info" href="#"><span class="sprites info-icon">Info</span></a>
+                <div>
+                    <p><a title="view all of {{mw.user.username}}&rsquo;s Memory Walls)" href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}"><strong>{{mw.user.username}}</strong></a> made this wall on <strong>{{mw.dateCreated|date("d/m/y")}}</strong> and {% if mw.description is not null %}described it as &ldquo;{{mw.description}}&rdquo;{%else%} didn&rsquo;t bother to give it a description (typical){% endif %}.
+                    </p>
+                </div>
+            </li> 
+            <li>
+                <a class="button" title="Options" href="#"><span class="sprites options-icon">Options</span></a>
+                <div>
+                    <dl>
+                    {% if wallBelongsToThisUser %}
+                        <dt>Wall Actions<dt>
+                        <dd><a title="edit this wall" href="{{ path('memoryWallEdit',{'id':mw.id, 'slug':mw.slug}) }}"><span class="sprites edit-icon">Edit</span></a></dd>
+                        <dd><a title="delete this wall" href="{{ path('memoryWallDelete', {'id': mw.id, 'slug':mw.slug}) }}"><span class="sprites close-icon">Delete</span></a></dd>
+                    {% endif %}
+                        <dt>Sort<dt>
+                        <dd><a title="sort by date" href="#"><span class="sprites date-sort-icon">by date added</span></a></dd>
+                        <dd><a title="sort by name" href="#"><span class="sprites date-sort-icon">by name</span></a></dd>
+                        
+                        {#<dd>group by provider</dd>
+                        <dd>no grouping</dd>
+                        
+                        <dt>Layout</dt>
+                        <dd>list</dd>
+                        <dd>grid</dd>
+                        <dd>custom</dd>#}
+                    </dl>
+                </div>
+            </li>
+            <li>
+                <a class="button" title="Add your own stuff" href="#"><span class="sprites add-icon">Add your own stuff</span></a>
+                <div id="add-ugc-container">
+                    {{ render(controller('SkNdUserBundle:MemoryWallContent:addUGC', {
+                        'mwid': mw.id,
+                        'slug': mw.slug
+                        })) 
+                    }}
+                </div>
+            </li>
+        </li>
+    </ul>
+</div>
+
 {% if returnUrl is not null %}
 <a class="go-back" href="{{returnUrl}}">go back to the previous page</a>
 {% endif %}
-{% include "SkNdUserBundle:MemoryWall:memoryWallMediaResourcesPartial.html.twig" 
+{% include "SkNdUserBundle:MemoryWallContent:memoryWallContentPartial.html.twig" 
     with {
         'wallBelongsToThisUser' : wallBelongsToThisUser,
         'mw'    : mw,
@@ -23,29 +70,8 @@ Memory walls, memories, {{mw.associatedDecade is not null ? mw.associatedDecade.
 %}
 
 <div class="third-width fr right">
-    <h3>Details</h3>
-    <dl id="memoryWallDetails">
-        <dt>Description</dt>
-        <dd>{{mw.description is not null ? mw.description : 'No description available'}}</dd>
-        <dt>Associated Decade</dt>
-        <dd>{{mw.associatedDecade is not null ? mw.associatedDecade.decadeName : 'All decades'}}</dd>
-        <dt>Date Created</dt>
-        <dd>{{mw.dateCreated|date("d/m/y")}}</dd>
-        {# if the wall is public and belongs to someone else, give a link to show all their memory walls #}
-        {% if mw.isPublic and not wallBelongsToThisUser %}
-        <dt>Created by</dt>
-        <dd><a title="view all of {{mw.user.username}}&rsquo;s Memory Walls)" href="{{path('memoryWallsIndex', {'scope' : mw.user.usernameCanonical}) }}">{{mw.user.username}}</a></dd>
-        {% endif %}
-    </dl> 
-    {# if the memory wall being shown belongs to the current user, show further actions #}
-    {% if wallBelongsToThisUser %}
-    <div id="memoryWallActions">
-        <h3>Actions</h3>
-        <ul class="actions">
-            <li><a title="edit this wall" class="button" href="{{ path('memoryWallEdit',{'id':mw.id, 'slug':mw.slug}) }}"><span class="sprites edit-icon">Edit this wall</span></a> &ndash; Update the details of this wall, go nuts.</li>
-            <li><a title="delete this wall" class="button" href="{{ path('memoryWallDelete', {'id': mw.id, 'slug':mw.slug}) }}"><span class="sprites close-icon">Delete this wall</span></a> &ndash; If you really want to, you can delete it, but where&rsquo;s the fun in that?</li>
-        </ul>
-    </div>
-    {% endif %}
+    <h3>Comments</h3>
+     
+    
 </div>
 {% endblock content %}

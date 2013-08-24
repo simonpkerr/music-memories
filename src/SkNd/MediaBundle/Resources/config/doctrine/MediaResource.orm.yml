@@ -46,11 +46,11 @@ SkNd\MediaBundle\Entity\MediaResource:
         name: mediaResourceCache_id
         referencedColumnName: id
         onDelete: set null
-  oneToMany:
-    memoryWallMediaResources:
-      targetEntity: SkNd\UserBundle\Entity\MemoryWallMediaResource
-      mappedBy: mediaResource
-      cascade: ["persist", "merge", "remove"]
-      orphanRemoval: true
+#  oneToMany:
+#    memoryWallMediaResources:
+#      targetEntity: SkNd\UserBundle\Entity\MemoryWallMediaResource
+#      mappedBy: mediaResource
+#      cascade: ["persist", "merge", "remove"]
+#      orphanRemoval: true
 
       

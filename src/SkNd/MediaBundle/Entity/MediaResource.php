@@ -42,7 +42,7 @@ class MediaResource
     
     protected $memoryWalls;
 
-    protected $memoryWallMediaResources;
+    //protected $memoryWallMediaResources;
     
     //by setting this as private, it is private to the class only and 
     //not persisted to the db
@@ -52,8 +52,8 @@ class MediaResource
         $this->viewCount = 0;
         $this->selectedCount = 0;
         $this->memoryWalls = new ArrayCollection();
-        $this->memoryWallMediaResources = new ArrayCollection();
-        $this->memoryWalls = $this->getMemoryWalls();
+        //$this->memoryWallMediaResources = new ArrayCollection();
+        //$this->memoryWalls = $this->getMemoryWalls();
         
     }
         

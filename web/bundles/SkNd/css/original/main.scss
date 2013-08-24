@@ -22,7 +22,7 @@ body {
         
         .multiplebgs & {
             background-color: #CEDEE8;
-            background-image: url("/SkNd/web/bundles/SkNd/images/bg-footer.png"), url("/SkNd/web/bundles/SkNd/images/bg-v2.jpg");
+            background-image: url("/SkNd/web/bundles/SkNd/images/bg-footer.png"), url("/SkNd/web/bundles/SkNd/images/bg-v3.jpg");
             background-position: 50% 100%, top center;
             background-repeat: repeat-x, no-repeat;
             background-attachment: scroll, fixed;
@@ -1406,14 +1406,14 @@ li.mw-MediaResource {
     @media #{$desktop}{ 
         position: relative;
         float: left;
-        height: 17em;
+        height: auto;
         margin: 0 0 20px 20px;
         width: 45%;
     }
     
     div#youtubeapiItems & { 
         @media #{$desktop}{ 
-            height: 12.5em;
+            height: auto;
         }
     }
     

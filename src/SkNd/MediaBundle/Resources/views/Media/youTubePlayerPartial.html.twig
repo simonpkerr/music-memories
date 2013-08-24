@@ -1,5 +1,5 @@
 <div id="ytapiplayerContainer">
-    <h4 id="ytapiplayerTitle">{{firstVideo.title}}</h4>
+    <h4 id="ytapiplayerTitle">{{firstVideo.title|default("YouTube Player")}}</h4>
     <div id="ytapiplayer">
         <p>You need Flash player 8+ and JavaScript enabled to view this video.</p>
     </div>
@@ -25,6 +25,7 @@
     var params = { allowScriptAccess: "always" };
     var atts = { id: "noodledig-ytplayer" };
     
-    swfobject.embedSWF("http://www.youtube.com/e/{{firstVideo.id}}?enablejsapi=1&playerapiid=ytplayer",
+    swfobject.embedSWF("http://www.youtube.com/e/{{firstVideo.id|default('')}}?enablejsapi=1&playerapiid=ytplayer",
                    "ytapiplayer", "420", "280", "8", null, null, params, atts);
+    
 </script>
