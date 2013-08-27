@@ -62,14 +62,16 @@
     </class>
     
     <class name="SkNd\UserBundle\Entity\MemoryWallContent">
-        <property name="file">
-            <constraint name="File">
+        <property name="image">
+            <constraint name="Image">
                 <option name="maxSize">2M</option>
-                <option name="maxSizeMessage">memory_wall.ugc.add.file.too_big</option>
+                <option name="maxSizeMessage">memory_wall.ugc.add.image.max_size</option>
                 <option name="mimeTypes">
-                    <value>application/pdf</value>
-                    <value>application/x-pdf</value>
+                    <value>application/jpeg</value>
+                    <value>application/gif</value>
+                    <value>application/png</value>
                 </option>
+                <option name="mimeTypesMessage">memory_wall.ugc.add.image.invalid</option>
             </constraint>
         </property>
         <property name="title">

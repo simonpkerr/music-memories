@@ -258,6 +258,16 @@ class MemoryWallContent
         return $this->mediaResource;
     }
     
+    public function getOriginalImageUrl(){
+        return $this->originalImageUrl;
+    }
+     
+    
+    public function getThumbnnailImageUrl(){
+        return $this->thumbnailImageUrl;
+    }
+     
+    
     public function getImage(){
         return $this->image;
     }
@@ -274,18 +284,19 @@ class MemoryWallContent
     }
     
     public function preUpload(){
-        if(null !== $this->getFile()){
+        if(null !== $this->getImage()){
             $fn = sha1(uniqid(mt_rand(0, 99999), true));
-            $this->originalImageUrl = $fn . '.' . $this->getFile()->guessExtension();
+            $this->originalImageUrl = $fn . '.' . $this->getImage()->guessExtension();
         }
     }
     
     public function upload(){
-        if(null === $this->getFile()){
+        if(null === $this->getImage()){
             return;
         }
         
-        $this->getFile()->move($this->getUploadRootDir(), $this->originalImageUrl);
+        $this->getImage()->move($this->getUploadRootDir(), $this->originalImageUrl);
+        //create the thumbnail and move that as well
         
         if(isset($this->tempImageUrl)){
             unlink($this->getUploadRootDir(). '/' . $this->tempImageUrl);

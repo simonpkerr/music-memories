@@ -138,8 +138,8 @@ class MemoryWallContentController extends Controller
             $this->em->flush();
             $this->get('session')->getFlashBag()->add('notice', 'mediaResource.delete.flash.success');
             return $this->redirect($this->generateUrl('memoryWallShow', array(
-                'id'    => $mw->getId(),
-                'slug'  => $mw->getSlug(),
+                'id'    => $mwid,
+                'slug'  => $slug,
                 )
             ));
 
@@ -182,10 +182,17 @@ class MemoryWallContentController extends Controller
                 $flash = $session->getFlashBag()->get('notice');
                 
                 //script will have to show flash message
-                return $this->render('SkNdUserBundle:showUGCPartial.html.twig', array(
+                /*return $this->render('SkNdUserBundle:MemoryWallContent:showUGCPartial.html.twig', array(
                     'mwc'   => $mwc,
                     'flash' => $flash,
+                ));*/
+                
+                return $this->redirect($this->generateUrl('memoryWallShow', array(
+                    'id'    => $mwid,
+                    'slug'  => $slug,
+                    )
                 ));
+                
             }            
         }
         
@@ -194,8 +201,5 @@ class MemoryWallContentController extends Controller
             'slug'   => $slug,
             'form'   => $form->createView(),
         ));
-        
-        
     }
-    
 }

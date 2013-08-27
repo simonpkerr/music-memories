@@ -69,7 +69,7 @@ memoryWallDeleteMediaResourceConfirm:
 
 #route for wall owners to add UGC (with images)
 addUGC:
-  pattern: /memorywall/addugc/{mwid}/{slug}/
+  pattern: /ugc/add/{mwid}/{slug}/
   defaults:
     _controller: SkNdUserBundle:MemoryWallContent:addUGC
   requirements:

@@ -36,3 +36,14 @@ memory_wall:
   description:
     short: The description is too short. Please tell us what the wall is about
     long: The description is too long. Only 255 characters maximum please
+  ugc:
+    add:
+      image:
+        max_size: Sorry, that image is a bit big. (max size of 2MB please)
+        invalid: Sorry, we can only accept jpgs, gifs or pngs.
+      title:
+        long: That title&rsquo;s too long, sorry
+        blank: You have to give a title you know
+      comments:
+        long: Sorry, your comments are too long. 140 characters please
+        blank: Go on, tell us something about your stuff

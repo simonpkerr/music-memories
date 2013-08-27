@@ -27,7 +27,6 @@ class MemoryWallContentType extends AbstractType{
         //entity field mapped to the mediatype class displaying the id and mediaName properties
         $builder->add('comments', 'textarea', array(
             'trim'      => true,
-            'required'  => false,
             'max_length'=> 140,
             'label'     => 'form.memory_wall.ugc.comments',
             'translation_domain' => 'SkNdUserBundle',
