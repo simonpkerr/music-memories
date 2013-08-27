@@ -1,1 +1,8 @@
-
+<li class="mwc">
+    <p class="note">Added on {{ mwc.dateCreated|date("d/m/y \\a\\t g:ia") }}</p>    
+    <h3>{{ mwc.title }}</h3>
+    <p>{{ mwc.comments }}</p>
+    {% if mwc.thumbnailImageUrl is defined %}
+        <a href="{{ mwc.originalImageUrl }}" class="lightbox"><img src="{{ mwc.thumbnailImageUrl }}" alt="{{ mwc.title }}" /></a>
+    {% endif %}
+</li>
