@@ -66,18 +66,20 @@
             <constraint name="Image">
                 <option name="maxSize">2M</option>
                 <option name="maxSizeMessage">memory_wall.ugc.add.image.max_size</option>
-                <option name="mimeTypes">
+                <!--option name="mimeTypes">
                     <value>application/jpeg</value>
                     <value>application/gif</value>
                     <value>application/png</value>
                 </option>
-                <option name="mimeTypesMessage">memory_wall.ugc.add.image.invalid</option>
+                <option name="mimeTypesMessage">memory_wall.ugc.add.image.invalid</option-->
             </constraint>
         </property>
         <property name="title">
             <constraint name="Length">
                 <option name="max">50</option>
                 <option name="maxMessage">memory_wall.ugc.title.long</option>
+                <option name="min">2</option>
+                <option name="minMessage">memory_wall.ugc.title.short</option>
             </constraint>
             <constraint name="NotBlank">
                 <option name="message">memory_wall.ugc.title.blank</option>

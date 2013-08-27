@@ -28,6 +28,8 @@ class MemoryWallContent
     protected $originalImageUrl;
     private $tempImageUrl;
     protected $image;
+    const defaultThumbnailWidth = 150;
+
     //protected $parent --to implement when doing item UGC
     
     public function __construct($params){
@@ -297,6 +299,7 @@ class MemoryWallContent
         
         $this->getImage()->move($this->getUploadRootDir(), $this->originalImageUrl);
         //create the thumbnail and move that as well
+        $this->createThumbnail();
         
         if(isset($this->tempImageUrl)){
             unlink($this->getUploadRootDir(). '/' . $this->tempImageUrl);
@@ -341,7 +344,19 @@ class MemoryWallContent
     {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
-        return 'bundles/SkNd/upload/thumbs';
+        return $this->getUploadRootDir() . '/thumbs';
+    }
+    
+    private function createThumbnail(){
+        $img = imagecreatefromjpeg($this->getAbsolutePath());
+        $w = imagesx($img);
+        $h = imagesy($img);
+        $newWidth = self::defaultThumbnailWidth;
+        $newHeight = floor($h * ($newWidth / $w));
+        $tmpImg = imagecreatetruecolor($newWidth, $newHeight);
+        imagecopyresized($tmpImg, $img, 0, 0, 0, 0, $newWidth, $newHeight, $w, $h);
+        imagejpeg($tmpImg, $this->getThumbnailUploadDir() . '/' . $this->originalImageUrl);
+                
     }
     
 

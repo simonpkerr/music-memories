@@ -78,28 +78,17 @@ class MemoryWall
      * @return type arraycollection
      */
     public function getMediaResources($apiId = null){
-        /*$mrs = new ArrayCollection();
-        foreach($this->memoryWallMediaResources as $mwMr){
-            $mrs->set($mwMr->getMediaResource()->getId(), $mwMr->getMediaResource());
-        }
-        return $mrs->toArray();*/
-        
-        if($apiId != null){
-            return array_map(function($mwc) use ($apiId){
-                $mr = $mwc->getMediaResource();
-                if(!is_null($mr) && $mr->getApi()->getId() == $apiId){
-                    return $mr;
-                }
-            }, $this->memoryWallContent->toArray());
-    
-        }        
-        
-        return array_map(function($mwc){
-            $mr = $mwc->getMediaResource();
-            if(!is_null($mr)){
-                return $mr;
+        $mrs = $this->memoryWallContent->filter(function($mwc) use ($apiId){
+            if(!is_null($apiId)){
+                return !is_null($mwc->getMediaResource()) && $mwc->getMediaResource()->getApi()->getId() == $apiId;
             }
-        }, $this->memoryWallContent->toArray());
+            
+            return !is_null($mwc->getMediaResource());
+        })->toArray();
+        
+        return array_map(function ($mwc){
+            return $mwc->getMediaResource();
+        }, $mrs);
     }
     
     public function getUGC(){
