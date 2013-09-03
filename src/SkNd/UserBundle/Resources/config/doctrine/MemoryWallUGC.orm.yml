@@ -1,0 +1,25 @@
+SkNd\UserBundle\Entity\MemoryWallUGC:
+    type: entity
+    table: null
+    fields:
+        thumbnailImageUrl:
+          type: string
+          length: 150
+        originalImageUrl:
+          type: string
+          length: 150
+        title:
+          type: string
+          length: 50
+            
+#    manyToOne:
+#      memoryWall:
+#        targetEntity: MemoryWall
+#        inversedBy: memoryWallUGC
+    lifecycleCallbacks: 
+      prePersist: [preUpload]
+      preUpdate: [preUpload]
+      postPersist: [upload]
+      postUpdate: [upload]
+      postRemove: [removeUpload]
+      

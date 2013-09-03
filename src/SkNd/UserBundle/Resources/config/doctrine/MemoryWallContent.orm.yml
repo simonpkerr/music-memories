@@ -19,18 +19,6 @@ SkNd\UserBundle\Entity\MemoryWallContent:
           gedmo:
             timestampable:
               on: update
-        title:
-          type: string
-          length: 50
-          nullable: true
-        slug:
-          type: string
-          length: 255
-          nullable: true
-          gedmo:
-            slug:
-              fields:
-                - title
         comments:
           type: string
           length: 140
@@ -51,38 +39,17 @@ SkNd\UserBundle\Entity\MemoryWallContent:
         wallIndex:
           type: integer
           nullable: true
-        thumbnailImageUrl:
-          type: string
-          length: 150
-          nullable: true
-        originalImageUrl:
-          type: string
-          length: 150
-          nullable: true
-#    inheritanceType: SINGLE_TABLE
-#    discriminatorColumn:
-#      name: discr
-#      type: string
-#      length: 255
-#    discriminatorMap:
-#      ugc: UGC
-#      memorywallmediaresource: MemoryWallMediaResource
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discr
+      type: string
+      length: 255
+    discriminatorMap:
+      memorywallcontent: MemoryWallContent
+      memorywallugc: MemoryWallUGC
+      memorywallmediaresource: MemoryWallMediaResource
     manyToOne:
-      mediaResource:
-        targetEntity: SkNd\MediaBundle\Entity\MediaResource
-        #inversedBy: memoryWallContent
-        joinColumn:
-          name: mediaResource_id
-          referencedColumnName: id
-          nullable: true
-          onDelete: set null
       memoryWall:
         targetEntity: MemoryWall
-        inversedBy: memoryWallContent
-    lifecycleCallbacks: 
-      prePersist: [preUpload]
-      preUpdate: [preUpload]
-      postPersist: [upload]
-      postUpdate: [upload]
-      postRemove: [removeUpload]
+#        inversedBy: memoryWallContent
       

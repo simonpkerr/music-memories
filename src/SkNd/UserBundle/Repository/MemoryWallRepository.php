@@ -36,11 +36,11 @@ class MemoryWallRepository extends EntityRepository
      public function getMemoryWallById($id){
          //left join gets the left hand table (memory wall), regardless of whether matches were found in the joined tables
          $mw = $this->createQueryBuilder('mw')
-                 ->select('mw, mwc, mr, mrc')
+                 //->select('mw, mwmr, mr, mrc')
                  ->where('mw.id = :id')
-                 ->leftJoin('mw.memoryWallContent', 'mwc')
-                 ->leftJoin('mwc.mediaResource', 'mr')
-                 ->leftJoin('mr.mediaResourceCache', 'mrc')
+                 //->leftJoin('mw.memoryWallMediaResources', 'mwmr')
+                 //->leftJoin('mwmr.mediaResource', 'mr')
+                 //->leftJoin('mr.mediaResourceCache', 'mrc')
                  ->setParameter('id', $id)
                  ->getQuery();
          $mw = $mw->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT);

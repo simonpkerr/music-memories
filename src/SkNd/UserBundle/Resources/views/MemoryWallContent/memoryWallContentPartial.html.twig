@@ -1,7 +1,7 @@
 <div id="memoryWallContents" class="two-thirds-width fl left">
 {% if mw.memoryWallContent|length > 0 %}
     <ul>
-    {% for mwc in mw.memoryWallContent  %}
+    {% for mwc in mw.allMemoryWallContent  %}
         {{ render(controller('SkNdUserBundle:MemoryWallContent:showMemoryWallContent', {
             'params' : {
                 'mwc': mwc,

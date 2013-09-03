@@ -1,0 +1,17 @@
+SkNd\UserBundle\Entity\MemoryWallMediaResource:
+  type: entity
+  table: null
+  fields:
+  manyToOne:
+    mediaResource:
+      targetEntity: SkNd\MediaBundle\Entity\MediaResource
+      #inversedBy: memoryWallMediaResources
+      joinColumn:
+        name: mediaResource_id
+        referencedColumnName: id
+        nullable: true
+        onDelete: set null
+    #memoryWall:
+    #  targetEntity: MemoryWall
+    #  inversedBy: memoryWallMediaResources
+  lifecycleCallbacks: {  }

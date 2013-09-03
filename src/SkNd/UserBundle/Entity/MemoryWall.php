@@ -27,8 +27,8 @@ class MemoryWall
     protected $isPublic;
     protected $lastUpdated;
     protected $associatedDecade;
-    //protected $memoryWallUGC;
-    //protected $memoryWallMediaResources;
+    protected $memoryWallUGC;
+    protected $memoryWallMediaResources;
     protected $memoryWallContent;
 
     public function __construct(User $user = null, $memoryWallName = null){
@@ -63,6 +63,12 @@ class MemoryWall
         return $wallname;
     }
     
+    //get aggregated media resources and ugc sorted by date or title
+    public function getAllMemoryWallContent($sort = 'dateCreated', $order = 'ASC'){
+        $allContent = array_merge($this->memoryWallUGC->toArray(), $this->memoryWallMediaResources->toArray());
+        return $allContent;
+    }
+    
     public function getMemoryWallContent(){
         return $this->memoryWallContent;
     }
@@ -72,18 +78,33 @@ class MemoryWall
     }
     
     
+    public function getMemoryWallUGC(){
+        return $this->memoryWallUGC;
+    }
+    
+    public function setMemoryWallUGC(ArrayCollection $mwugc){
+        $this->memoryWallUGC = $mwugc;
+    }
+    
+    public function addMemoryWallUGC(MemoryWallUGC $mwugc){
+        $this->memoryWallUGC->set($mwugc->getId(), $mwugc);
+    }
+    
     /**
      * gets all referenced mediaresources for this memory wall
      * for the purpose of batch processing
      * @return type arraycollection
      */
     public function getMediaResources($apiId = null){
-        $mrs = $this->memoryWallContent->filter(function($mwc) use ($apiId){
+        if($this->memoryWallMediaResources->count() === 0)
+            return null;
+        
+        $mrs = $this->memoryWallMediaResources->filter(function($mwmr) use ($apiId){
             if(!is_null($apiId)){
-                return !is_null($mwc->getMediaResource()) && $mwc->getMediaResource()->getApi()->getId() == $apiId;
+                return !is_null($mwmr->getMediaResource()) && $mwmr->getMediaResource()->getApi()->getId() == $apiId;
             }
             
-            return !is_null($mwc->getMediaResource());
+            return !is_null($mwmr->getMediaResource());
         })->toArray();
         
         return array_map(function ($mwc){
@@ -91,25 +112,15 @@ class MemoryWall
         }, $mrs);
     }
     
-    public function getUGC(){
-        return $this->memoryWallContent->filter(function($mwc){
-            return !is_null($mwc->getComments());
-        })->toArray();
-    }
-    
-    public function addUGC(MemoryWallContent $mwc){
-        $this->memoryWallContent->set($mwc->getId(), $mwc);
-    }
-    
     public function getMediaResourceById($mrId){
-        if(!isset($this->memoryWallContent[$mrId]))
+        if(!isset($this->memoryWallMediaResources[$mrId]))
             throw new \InvalidArgumentException('Media Resource not found');
         
-        return $this->memoryWallContent[$mrId]->getMediaResource();
+        return $this->memoryWallMediaResources[$mrId]->getMediaResource();
     }
  
     public function addMediaResource(MediaResource $mr){
-        if(isset($this->memoryWallContent[$mr->getId()]))
+        if(isset($this->memoryWallMediaResources[$mr->getId()]))
             throw new \InvalidArgumentException('Duplicate Media Resource found');
         
         if($mr->getAPI()->getName() == 'amazonapi' && count($this->getMediaResources('amazonapi')) >= 10)
@@ -117,20 +128,20 @@ class MemoryWall
         
         $mr->incrementSelectedCount();
         //$mwMr = new MemoryWallMediaResource($this, $mr);        
-        $mwc = new MemoryWallContent(array(
+        $mwc = new MemoryWallMediaResource(array(
             'mw'    =>  $this,
             'mr'    =>  $mr,
         ));
         
         //$this->memoryWallMediaResources->set($mr->getId(), $mwMr);
-        $this->memoryWallContent->set($mr->getId(), $mwc);
+        $this->memoryWallMediaResources->set($mr->getId(), $mwc);
     }
     
     public function deleteMediaResourceById($id){
-        if(!isset($this->memoryWallContent[$id]))
+        if(!isset($this->memoryWallMediaResources[$id]))
             throw new \InvalidArgumentException('Media Resource not found');
         
-        $this->memoryWallContent->remove($id);
+        $this->memoryWallMediaResources->remove($id);
     }
     
 

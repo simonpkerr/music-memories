@@ -6,8 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
-use SkNd\UserBundle\Entity\MemoryWallContent;
+use SkNd\UserBundle\Entity\MemoryWallUGC;
 use SkNd\UserBundle\Form\Type\MemoryWallContentType;
+use SkNd\UserBundle\Form\Type\MemoryWallUGCType;
 
 
 /*
@@ -38,7 +39,11 @@ class MemoryWallContentController extends Controller
      */
     public function showMemoryWallContentAction($params){
         //ugc strategy
-        if(is_null($params['mwc']->getMediaResource())){
+        if(is_null($params['mwc'])){
+            throw new \RuntimeException("required parameters not supplied for showMemoryWallContentAction");
+        }
+        
+        if($params['mwc'] instanceof MemoryWallUGC) {
             return $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', $params);
         }
         
@@ -165,16 +170,16 @@ class MemoryWallContentController extends Controller
         $this->currentUser = $this->mwAccessManager->getCurrentUser();
         $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWall.ugc.add.flash.accessDenied');
         
-        $mwc = new MemoryWallContent(array(
+        $mwugc = new MemoryWallUGC(array(
             'mw'    =>  $mw,
         ));
-        $form = $this->createForm(new MemoryWallContentType(), $mwc); 
+        $form = $this->createForm(new MemoryWallUGCType(), $mwugc); 
         if($request->getMethod() == 'POST'){
             $form->bindRequest($request);
             //check form is valid 
             if($form->isValid()){
-                $mwc = $form->getData();
-                $mw->addUGC($mwc);
+                $mwugc = $form->getData();
+                $mw->addMemoryWallUGC($mwugc);
                 $this->em->flush();                
                 
                 //persist data and redirect to new memory wall

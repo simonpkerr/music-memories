@@ -61,7 +61,7 @@
         </property>
     </class>
     
-    <class name="SkNd\UserBundle\Entity\MemoryWallContent">
+    <class name="SkNd\UserBundle\Entity\MemoryWallUGC">
         <property name="image">
             <constraint name="Image">
                 <option name="maxSize">2M</option>
@@ -89,9 +89,8 @@
             <constraint name="Length">
                 <option name="max">140</option>
                 <option name="maxMessage">memory_wall.ugc.comments.long</option>
-            </constraint>
-            <constraint name="NotBlank">
-                <option name="message">memory_wall.ugc.comments.blank</option>
+                <option name="min">2</option>
+                <option name="minMessage">memory_wall.ugc.comments.short</option>
             </constraint>
         </property>
     </class>
