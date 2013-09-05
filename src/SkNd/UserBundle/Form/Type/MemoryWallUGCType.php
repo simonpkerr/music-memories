@@ -49,7 +49,8 @@ class MemoryWallUGCType extends AbstractType {
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'SkNd\UserBundle\Entity\MemoryWallUGC',
-            'intention' => 'memory_wall_content'
+            'intention' => 'memory_wall_content',
+            'validation_groups' => array('memoryWallContent'),
         ));
     }
 

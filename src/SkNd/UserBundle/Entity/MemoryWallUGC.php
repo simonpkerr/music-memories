@@ -11,16 +11,25 @@ namespace SkNd\UserBundle\Entity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MemoryWallUGC extends MemoryWallContent{
+   // protected $ugcMemoryWall;
     protected $title;
-    protected $thumbnailImageUrl;
-    protected $originalImageUrl;
-    private $tempImageUrl;
+    protected $imagePath;
+    private $tempImage;
     protected $image;
     const defaultThumbnailWidth = 150;
     
     public function __construct($params){
         parent::__construct($params);
+        //$this->ugcMemoryWall = $params['mw'];
     }
+    
+//    public function getUGCMemoryWall(){
+//        return $this->ugcMemoryWall;
+//    }
+//    
+//    public function setUGCMemoryWall($mw){
+//        $this->ugcMemoryWall = $mw;
+//    }
     
     public function setTitle($title){
         $this->title = $title;
@@ -30,12 +39,12 @@ class MemoryWallUGC extends MemoryWallContent{
         return $this->title;
     }
     
-    public function getOriginalImageUrl(){
-        return $this->originalImageUrl;
+    public function getImagePath(){
+        return $this->imagePath;
     }
     
-    public function getThumbnnailImageUrl(){
-        return $this->thumbnailImageUrl;
+    public function setImagePath($imagePath){
+        return $this->imagePath = $imagePath;
     }
     
     public function getImage(){
@@ -45,18 +54,18 @@ class MemoryWallUGC extends MemoryWallContent{
     public function setImage(UploadedFile $image = null){
         $this->image = $image;
         
-        if(isset($this->originalImageUrl)){
-            $this->tempImageUrl = $this->originalImageUrl;
-            $this->originalImageUrl = null;
+        if(isset($this->imagePath)){
+            $this->tempImage = $this->imagePath;
+            $this->imagePath = null;
         } else {
-            $this->originalImageUrl = 'initial';
+            $this->imagePath = 'initial';
         }
     }
     
     public function preUpload(){
         if(null !== $this->getImage()){
             $fn = sha1(uniqid(mt_rand(0, 99999), true));
-            $this->originalImageUrl = $fn . '.' . $this->getImage()->guessExtension();
+            $this->imagePath = $fn . '.' . $this->getImage()->guessExtension();
         }
     }
     
@@ -64,33 +73,43 @@ class MemoryWallUGC extends MemoryWallContent{
         if(null === $this->getImage()){
             return;
         }
-        
-        $this->getImage()->move($this->getUploadRootDir(), $this->originalImageUrl);
-        //create the thumbnail and move that as well
         $this->createThumbnail();
+        $this->getImage()->move($this->getUploadRootDir(), $this->imagePath);
+        //create the thumbnail and move that as well
         
-        if(isset($this->tempImageUrl)){
-            unlink($this->getUploadRootDir(). '/' . $this->tempImageUrl);
-            $this->tempImageUrl = null;
+        
+        if(isset($this->tempImage)){
+            unlink($this->getUploadRootDir(). '/' . $this->tempImage);
+            $this->tempImage = null;
         }
-        $this->originalImageUrl = null;
+        $this->image = null;
     }
     
     public function removeUpload()
     {
-        if (isset($this->tempImageUrl)) {
-            unlink($this->tempImageUrl);
+        if (isset($this->tempImage)) {
+            unlink($this->tempImage);
         }
     }
     
     public function getAbsolutePath()
     {
-        return null === $this->originalImageUrl ? null : $this->getUploadRootDir().'/'.$this->originalImageUrl;
+        return null === $this->imagePath ? null : $this->getUploadRootDir().'/'.$this->imagePath;
     }
 
     public function getWebPath()
     {
-        return null === $this->originalImageUrl ? null : $this->getUploadDir().'/'.$this->originalImageUrl;
+        return null === $this->imagePath ? null : '/SkNd/web/' . $this->getUploadDir().'/'.$this->imagePath;
+    }
+    
+    public function getThumbnailAbsolutePath()
+    {
+        return null === $this->imagePath ? null : $this->getUploadRootDir().'/thumbs/'.$this->imagePath;
+    }
+
+    public function getThumbnailWebPath()
+    {
+        return null === $this->imagePath ? null : '/SkNd/web/' . $this->getUploadDir().'/thumbs/'.$this->imagePath;
     }
 
     protected function getUploadRootDir()
@@ -108,22 +127,43 @@ class MemoryWallUGC extends MemoryWallContent{
     }
     
     
-    protected function getThumbnailUploadDir()
-    {
-        // get rid of the __DIR__ so it doesn't screw up
-        // when displaying uploaded doc/image in the view.
-        return $this->getUploadRootDir() . '/thumbs';
-    }
-    
     private function createThumbnail(){
-        $img = imagecreatefromjpeg($this->getAbsolutePath());
+        $ext = $this->getImage()->getClientMimeType();
+        $commands = null;
+        switch($ext){
+            case "image/png":
+                $commands = array(
+                    'imagecreatefrompng',
+                    'imagepng',
+                );
+                break;
+            case "image/jpeg":
+                $commands = array(
+                    'imagecreatefromjpeg',
+                    'imagejpeg',
+                );
+                break;
+            case "image/gif":
+                $commands = array(
+                    'imagecreatefromgif',
+                    'imagegif',
+                );
+                break;
+        }
+        
+        $img = call_user_func($commands[0],$this->getImage());
         $w = imagesx($img);
         $h = imagesy($img);
         $newWidth = self::defaultThumbnailWidth;
         $newHeight = floor($h * ($newWidth / $w));
         $tmpImg = imagecreatetruecolor($newWidth, $newHeight);
+        if($ext === "image/png" || $ext === "image/gif"){
+            imagealphablending($tmpImg, false);
+            imagesavealpha($tmpImg, true);
+        }
+        
         imagecopyresized($tmpImg, $img, 0, 0, 0, 0, $newWidth, $newHeight, $w, $h);
-        imagejpeg($tmpImg, $this->getThumbnailUploadDir() . '/' . $this->originalImageUrl);
+        call_user_func($commands[1], $tmpImg, $this->getUploadRootDir() . '/thumbs/' . $this->imagePath);
                 
     }
 }

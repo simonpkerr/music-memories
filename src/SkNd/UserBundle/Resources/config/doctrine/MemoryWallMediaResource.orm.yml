@@ -11,7 +11,7 @@ SkNd\UserBundle\Entity\MemoryWallMediaResource:
         referencedColumnName: id
         nullable: true
         onDelete: set null
-    #memoryWall:
-    #  targetEntity: MemoryWall
-    #  inversedBy: memoryWallMediaResources
+#    mwmrMemoryWall:
+#      targetEntity: MemoryWall
+#      inversedBy: memoryWallMediaResources
   lifecycleCallbacks: {  }

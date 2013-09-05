@@ -2,10 +2,7 @@ SkNd\UserBundle\Entity\MemoryWallUGC:
     type: entity
     table: null
     fields:
-        thumbnailImageUrl:
-          type: string
-          length: 150
-        originalImageUrl:
+        imagePath:
           type: string
           length: 150
         title:
@@ -13,7 +10,7 @@ SkNd\UserBundle\Entity\MemoryWallUGC:
           length: 50
             
 #    manyToOne:
-#      memoryWall:
+#      ugcMemoryWall:
 #        targetEntity: MemoryWall
 #        inversedBy: memoryWallUGC
     lifecycleCallbacks: 

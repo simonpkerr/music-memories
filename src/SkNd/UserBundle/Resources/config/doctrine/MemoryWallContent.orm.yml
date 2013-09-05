@@ -51,5 +51,5 @@ SkNd\UserBundle\Entity\MemoryWallContent:
     manyToOne:
       memoryWall:
         targetEntity: MemoryWall
-#        inversedBy: memoryWallContent
+        inversedBy: memoryWallContent
       

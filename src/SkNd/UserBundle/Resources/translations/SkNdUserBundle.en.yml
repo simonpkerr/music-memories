@@ -7,7 +7,7 @@ form:
     ugc:
       title: Title
       comments: Comments
-      image: Image
+      image: Image (only jpg, gif or png please)
 
 memoryWall:
   links:

@@ -66,12 +66,15 @@
             <constraint name="Image">
                 <option name="maxSize">2M</option>
                 <option name="maxSizeMessage">memory_wall.ugc.add.image.max_size</option>
-                <!--option name="mimeTypes">
-                    <value>application/jpeg</value>
-                    <value>application/gif</value>
-                    <value>application/png</value>
+                <option name="mimeTypes">
+                    <value>image/jpeg</value>
+                    <value>image/gif</value>
+                    <value>image/png</value>
                 </option>
-                <option name="mimeTypesMessage">memory_wall.ugc.add.image.invalid</option-->
+                <option name="mimeTypesMessage">memory_wall.ugc.add.image.invalid</option>
+                <option name="groups">
+                    <value>memoryWallContent</value>
+                </option>
             </constraint>
         </property>
         <property name="title">
@@ -80,9 +83,15 @@
                 <option name="maxMessage">memory_wall.ugc.title.long</option>
                 <option name="min">2</option>
                 <option name="minMessage">memory_wall.ugc.title.short</option>
+                <option name="groups">
+                    <value>memoryWallContent</value>
+                </option>
             </constraint>
             <constraint name="NotBlank">
                 <option name="message">memory_wall.ugc.title.blank</option>
+                <option name="groups">
+                    <value>memoryWallContent</value>
+                </option>
             </constraint>
         </property>
         <property name="comments">
@@ -91,6 +100,9 @@
                 <option name="maxMessage">memory_wall.ugc.comments.long</option>
                 <option name="min">2</option>
                 <option name="minMessage">memory_wall.ugc.comments.short</option>
+                <option name="groups">
+                    <value>memoryWallContent</value>
+                </option>
             </constraint>
         </property>
     </class>
