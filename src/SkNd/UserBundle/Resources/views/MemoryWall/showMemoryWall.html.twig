@@ -44,6 +44,7 @@ Memory walls, memories, {{mw.associatedDecade is not null ? mw.associatedDecade.
                     </dl>
                 </div>
             </li>
+            {% if wallBelongsToThisUser %}
             <li>
                 <a class="button" title="Add your own stuff" href="#"><span class="sprites add-icon">Add your own stuff</span></a>
                 <div id="add-ugc-container">
@@ -54,6 +55,7 @@ Memory walls, memories, {{mw.associatedDecade is not null ? mw.associatedDecade.
                     }}
                 </div>
             </li>
+            {% endif %}
         </li>
     </ul>
 </div>
