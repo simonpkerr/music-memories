@@ -78,7 +78,7 @@ div#header {
         position: absolute;
         margin: -3.3em 0 0 0;
         width: 100%;
-        height: 6em;
+        height: 3.2em;
         z-index: 2;
         li li {
             ul, form {
@@ -1333,113 +1333,145 @@ ul#memoryWallGallery {
 
 /*------- memory wall details page --------*/
 
-dl#memoryWallDetails { 
-    dt { 
-        float: none;
-        font-size: 0.9em;
-        margin: 10px 0 5px 0;
-        text-align: left!important;
-        width: auto;
-    }
-    
-    dd {
-        line-height: 1.3em;
-        margin-bottom: 10px;
-        margin-left: 20px;
-        font-size: 1.1em;
-    }
-}
+div#content {
 
-div#memoryWallActions {
-    margin-top: 20px;
-    ul.actions {
-        a {
-            font-size: 1em;
-            display: block;
-            height: auto;
-            margin: 20px 0 10px;
-            padding: 5px;
-        }
-    }
-}
-
-#memoryWallContents {
-    > div {
-        margin-top: 20px;
-        
-        > ul { 
-            @media #{$desktop}{ 
-                margin: 0 0 0 -20px;
-            }
-        }
-    }
-    ul.actions { 
-        li { 
-            @media #{$desktop}{ 
+    div#mw-options {
+        float: right;
+        ul { 
+            > li { 
+                z-index: 1;
                 float: left;
-                margin-right: 0.5em;
+                position: relative;
+                margin-left: 10px;
+                > a { 
+                    position: relative;
+                    display: block;
+                    padding: 0;
+                    z-index: 2;
+
+                    span { 
+                        display: block;
+                        text-indent: -9999em;
+                    }
+                }
+
+                > div { 
+                    padding: 0 1em 0.5em 0;
+                    z-index: 1;
+                    position: absolute;
+                    top: -9999em;
+                    right: 20px;
+                    width: 100%;
+                    @media #{$desktop}{ 
+                        width: auto;
+                    }
+                    background-color: #fff;
+                    border: 1px solid #6A99DF;
+                    @include border-radius(10px);
+
+                }
+
+                &:hover { 
+                    > div { 
+                        top: 20px;
+                    }
+                }
+
+                &.first {
+                    z-index: 1;
+                    > div { 
+                        width: 20em;
+                    }
+                }
+                &.second {
+                    z-index: 2;
+                    > div { 
+                        width: 20em;
+                        dt { 
+                            width: auto;
+                            float: none;
+                            text-align: left;
+                            margin: 0;
+                            clear: both;
+                        }
+                        dd { 
+                            float: left;
+                            margin: 10px 10px 10px 0;
+                            a { 
+                                float: left;
+                                margin: 0;
+                                padding: 2px 8px 2px 3px;
+                                span {
+                                    display: block;
+                                    padding-left: 32px;
+                                    width: auto;
+                                                                        
+                                    
+                                }
+                            }
+
+                        }
+                    }
+                }
+                &.third { 
+                    z-index: 3;
+                }
             }
         }
     }
-    li#ytPlayer {
-        margin-bottom: 20px;
-        @media #{$desktop}{ 
-            margin: 0 0 20px 20px;
-        }
-   }
-}
 
-li.mw-MediaResource {
-    width: 94%;
-    border: 2px solid #ACC5EC;
-    background: #fff;
-    padding: 10px;
-    margin: 0 0 20px 0;
-    .borderradius & {
-        @include border-radius(10px);
-    }
-    &:hover {
-        background-color: #E4EAF1;
-        border: 2px solid #6A99DF;
-    }
-    
-    @media #{$desktop}{ 
-        position: relative;
-        float: left;
-        height: auto;
-        margin: 0 0 20px 20px;
-        width: 45%;
-    }
-    
-    div#youtubeapiItems & { 
-        @media #{$desktop}{ 
-            height: auto;
-        }
-    }
-    
-    img {
-        @extend %details-images;
-        margin-right: 10px;
-        .border-radius & {
+    li.mw-MediaResource {
+        width: 94%;
+        border: 2px solid #ACC5EC;
+        background: #fff;
+        padding: 10px;
+        margin: 0 0 20px 0;
+        .borderradius & {
             @include border-radius(10px);
         }
+        &:hover {
+            background-color: #E4EAF1;
+            border: 2px solid #6A99DF;
+        }
+
         @media #{$desktop}{ 
+            position: relative;
             float: left;
+            height: auto;
+            margin: 0 0 20px 20px;
             width: 45%;
         }
-    }
-    ul.actions {
-        margin-top: 10px;
-    }
-}
 
-img.mw-MediaResource {
-    margin-right: 10px; 
-    @media #{$desktop}{ 
-        float: left;
-    }
-}
+        div#youtubeapiItems & { 
+            @media #{$desktop}{ 
+                height: auto;
+            }
+        }
 
+        img {
+            @extend %details-images;
+            margin-right: 10px;
+            .border-radius & {
+                @include border-radius(10px);
+            }
+            @media #{$desktop}{ 
+                float: left;
+                width: 45%;
+            }
+        }
+        ul.actions {
+            margin-top: 10px;
+        }
+    }
+
+    img.mw-MediaResource {
+        margin-right: 10px; 
+        @media #{$desktop}{ 
+            float: left;
+        }
+    }
+
+}
 /********** FOOTER ***********/
 div#footer {
     padding: 20px;
