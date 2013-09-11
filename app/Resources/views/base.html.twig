@@ -45,7 +45,7 @@
             <div id="header">
                 {# the 'path' function can be used to target any particular route defined in the routing config file #}
                 <a id="siteLogo" href="{{path('index')}}" title="Go back to noodleDig home page">
-                    <img src="{{ asset('bundles/SkNd/images/site-logo-v2.png') }}" alt="noodleDig" />
+                    <img src="{#{ asset('bundles/SkNd/images/site-logo-v2.png') }#}" alt="noodleDig" />
                 </a>
                 <ul id="top-nav">
                     <li><a href="#" id="menu-popup" class="button" title="Menu"><span class="sprites menu-icon">&nbsp;</span>Menu</a>
@@ -130,8 +130,8 @@
         {#% block javascripts %} 
             <script src="{{ asset('bundles/SkNd/js/original/jquery-1.8.3.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/SkNd/js/original/nd-scripts.js') }}" type="text/javascript"></script>
-
         {% endblock %#}
+            
         {% javascripts output='bundles/SkNd/js/compiled/nd-scripts.js' filter='yui_js'
             'bundles/SkNd/js/original/jquery-1.8.3.min.js'
             'bundles/SkNd/js/original/nd-scripts.js'
@@ -139,7 +139,9 @@
             <script type="text/javascript" src="{{ asset_url }}"></script>
 
         {% endjavascripts %}
-            
+        {% block javascript %}
+            {#any additional scripts for pages#}
+        {% endblock %}
            
     </body>
 </html>

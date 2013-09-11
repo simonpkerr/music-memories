@@ -122,7 +122,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
             'title' => 'valid-mr-title',
         ));
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("Elf")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mwc:contains("Elf")')->count() > 0);
     }
   
     public function testAddMediaResourceToMemoryWallWhenNotLoggedInRedirectsToLoginThenToSelectWallViewIfMoreThanOneWallExists(){
@@ -243,8 +243,8 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         ));
         $crawler = $this->client->request('GET', $url);
         
-        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("Elf")')->count() > 0);
-        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("The Running Man")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mwc:contains("Elf")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mwc:contains("The Running Man")')->count() > 0);
     }
     
     //testuser-mr1 is a cached record in the db
@@ -267,7 +267,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
             'title' => 'testuser-mr1',
         ));
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("Elf")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mwc:contains("Elf")')->count() > 0);
         
     }
     
@@ -292,7 +292,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         ));
         
         $crawler = $this->client->request('GET', $url);
-        $this->assertTrue($crawler->filter('li.mw-MediaResource:contains("Elf")')->count() > 0);
+        $this->assertTrue($crawler->filter('li.mwc:contains("Elf")')->count() > 0);
         
     }
     
@@ -344,7 +344,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $crawler = $this->client->request('GET', $url);
         
         $this->assertTrue($crawler->filter('div.flashMessages li.notice')->count() > 0, 'flash messages not shown');
-        $this->assertTrue($crawler->filter('li.mw-MediaResource')->count() == 0, 'media resources not all removed');
+        $this->assertTrue($crawler->filter('li.mwc')->count() == 0, 'media resources not all removed');
         $this->assertTrue($crawler->filter('div#memoryWallContents p:contains("Sorry")')->count() > 0, 'Contents div not empty');
     }
     
@@ -405,8 +405,20 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $addLink = $crawler->filter('a.add-it')->first()->link();
         $this->client->click($addLink);
         
-        $this->assertTrue($crawler->filter('li.mw-MediaResource > strong > a')->first()->text() == 'Elf [DVD] [2003]', 'item not added');
+        $this->assertTrue($crawler->filter('li.mwc > strong > a')->first()->text() == 'Elf [DVD] [2003]', 'item not added');
                 
+    }
+    
+    public function testAddMemoryWallUGCWhenNotLoggedInRedirectsToLogin(){
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
+        $url = self::$router->generate('addUGC', array(
+            'mwid'  => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+        ));
+        $crawler = $this->client->request('GET', $url);
+        //$this->assertTrue($crawler->filter(('Login')->count() > 1);
+        $this->assertTrue($crawler->filter('div.flashMessages li:contains("Please log in first")')->count() > 0, 'did not redirect to login');
+        
     }
     
     //only wall owners can add memory wall UGC (notes, comments, photos)

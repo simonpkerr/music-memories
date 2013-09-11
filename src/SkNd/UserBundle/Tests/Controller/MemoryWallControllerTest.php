@@ -89,7 +89,7 @@ class MemoryWallControllerTest extends WebTestCase
     public function testShowMemoryWallForNonExistentWallThrowsException(){
         $url = self::$router->generate('memoryWallShow', 
                 array(
-                    'id' => 1,
+                    'id' => 12345,
                     'slug' => 'bogus-wall')
                 );
         $this->client->request('GET', $url);
@@ -260,7 +260,7 @@ class MemoryWallControllerTest extends WebTestCase
             
         );       
         $crawler = $this->client->submit($form, $params);
-        $url = self::$router->generate('memoryWallEdit', array('id' => 1, 'slug' => 'bogus-wall'));
+        $url = self::$router->generate('memoryWallEdit', array('id' => 123456, 'slug' => 'bogus-wall'));
         $crawler = $this->client->request('GET', $url);
         
         $this->assertTrue($this->client->getResponse()->isNotFound());
@@ -362,7 +362,7 @@ class MemoryWallControllerTest extends WebTestCase
             
         );       
         $crawler = $this->client->submit($form, $params);
-        $url = self::$router->generate('memoryWallDelete', array('id' => 1, 'slug' => 'non-existent-wall'));
+        $url = self::$router->generate('memoryWallDelete', array('id' => 12345, 'slug' => 'non-existent-wall'));
         $crawler = $this->client->request('GET', $url);
         
         $this->assertTrue($this->client->getResponse()->isNotFound());
@@ -463,15 +463,21 @@ class MemoryWallControllerTest extends WebTestCase
             '_username' => 'testuser',
             '_password' => 'testuser',
             
-        );       
+        );
         $crawler = $this->client->submit($form, $params);
-        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall');
         
-        $url = self::$router->generate('memoryWallDelete', array('id' => $mw->getId(), 'slug' => 'my-memory-wall'));
-        $crawler = $this->client->request('GET', $url);
+        $mwAccessManager = self::$kernel->getContainer()->get('sk_nd_user.mw_access_manager');
+        $currentUser = $mwAccessManager->getCurrentUser();
+        
+        foreach ($currentUser->getMemoryWalls() as $mw) {
+            $url = self::$router->generate('memoryWallDelete', array('id' => $mw->getId(), 'slug' => $mw->getSlug()));
+            $crawler = $this->client->request('GET', $url);
 
-        $url = self::$router->generate('memoryWallDeleteConfirm', array('id' => $mw->getId(), 'slug' => 'my-memory-wall'));
-        $crawler = $this->client->request('GET', $url);
+            $url = self::$router->generate('memoryWallDeleteConfirm', array('id' => $mw->getId(), 'slug' => $mw->getSlug()));
+            $crawler = $this->client->request('GET', $url);
+        }
+        
+        //$mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall');
         
         $this->assertTrue($crawler->filter('div.flashMessages ul li:contains("That was your last Memory Wall")')->count() > 0);
     }

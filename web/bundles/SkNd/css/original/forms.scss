@@ -56,7 +56,9 @@ form {
         
         &[type="text"],
         &[type="email"],
-        &[type="password"] {
+        &[type="password"],
+        &[type="file"]
+        {
             @extend %input-wide-widths;
         }
         &[type="checkbox"] {
@@ -200,7 +202,7 @@ a.button {
         @include css-gradient(rgb(165,190,222),rgb(110,152,215),rgb(165,190,222));
         &:hover
         {
-            background-color: #6384B5;
+            background: #6384B5!important;
             background-image: none;
         }
     }
@@ -209,7 +211,7 @@ a.button {
         @include css-gradient(rgb(245,146,54),rgb(245,118,33),rgb(245,146,54));
         &:hover
         {
-            background-color: #E05316;
+            background: #E05316!important;
             background-image: none;
         }
         

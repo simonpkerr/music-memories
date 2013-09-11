@@ -938,6 +938,9 @@ a.go-back {
     display: block;
     font-size: 0.9em;
     padding-left: 20px;
+    @media #{$desktop}{ 
+        width: 20em;
+    }
 }
 
 
@@ -1356,7 +1359,7 @@ div#content {
                 }
 
                 > div { 
-                    padding: 0 1em 0.5em 0;
+                    padding: 0 1em 0.5em 1em;
                     z-index: 1;
                     position: absolute;
                     top: -9999em;
@@ -1415,6 +1418,12 @@ div#content {
                 }
                 &.third { 
                     z-index: 3;
+                    > div { 
+                        @media #{$desktop}{ 
+                            width: 28em;
+                        }
+                        
+                    }
                 }
             }
         }

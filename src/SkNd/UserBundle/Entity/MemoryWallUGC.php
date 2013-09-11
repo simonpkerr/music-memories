@@ -154,7 +154,7 @@ class MemoryWallUGC extends MemoryWallContent{
         $img = call_user_func($commands[0],$this->getImage());
         $w = imagesx($img);
         $h = imagesy($img);
-        $newWidth = self::defaultThumbnailWidth;
+        $newWidth = $w > self::defaultThumbnailWidth ? self::defaultThumbnailWidth : $w;
         $newHeight = floor($h * ($newWidth / $w));
         $tmpImg = imagecreatetruecolor($newWidth, $newHeight);
         if($ext === "image/png" || $ext === "image/gif"){

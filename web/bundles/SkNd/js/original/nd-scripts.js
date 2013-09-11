@@ -46,3 +46,6 @@ $(document).ready(function () {
 
 Modernizr.load('/SkNd/web/bundles/SkNd/js/compiled/ga.js');
 
+if($('#memoryWallContents')) {
+    Modernizr.load('/SkNd/web/bundles/SkNd/js/compiled/mw.js');
+}
