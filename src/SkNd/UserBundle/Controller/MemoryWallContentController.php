@@ -192,11 +192,11 @@ class MemoryWallContentController extends Controller
                     'flash' => $flash,
                 ));*/
                 
-                return $this->redirect($this->generateUrl('memoryWallShow', array(
+                /*return $this->redirect($this->generateUrl('memoryWallShow', array(
                     'id'    => $mwid,
                     'slug'  => $slug,
                     )
-                ));
+                ));*/
                 
             }            
         }

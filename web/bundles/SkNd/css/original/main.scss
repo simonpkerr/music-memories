@@ -1371,6 +1371,10 @@ div#content {
                     background-color: #fff;
                     border: 1px solid #6A99DF;
                     @include border-radius(10px);
+                    
+                    &.open {
+                        top: 20px;
+                    }
 
                 }
 
@@ -1378,6 +1382,7 @@ div#content {
                     > div { 
                         top: 20px;
                     }
+                    
                 }
 
                 &.first {

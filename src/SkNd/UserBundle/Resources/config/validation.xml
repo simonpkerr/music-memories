@@ -80,15 +80,15 @@
         <property name="title">
             <constraint name="Length">
                 <option name="max">50</option>
-                <option name="maxMessage">memory_wall.ugc.title.long</option>
+                <option name="maxMessage">memory_wall.ugc.add.title.long</option>
                 <option name="min">2</option>
-                <option name="minMessage">memory_wall.ugc.title.short</option>
+                <option name="minMessage">memory_wall.ugc.add.title.short</option>
                 <option name="groups">
                     <value>memoryWallContent</value>
                 </option>
             </constraint>
             <constraint name="NotBlank">
-                <option name="message">memory_wall.ugc.title.blank</option>
+                <option name="message">memory_wall.ugc.add.title.blank</option>
                 <option name="groups">
                     <value>memoryWallContent</value>
                 </option>
@@ -97,9 +97,9 @@
         <property name="comments">
             <constraint name="Length">
                 <option name="max">140</option>
-                <option name="maxMessage">memory_wall.ugc.comments.long</option>
+                <option name="maxMessage">memory_wall.ugc.add.comments.long</option>
                 <option name="min">2</option>
-                <option name="minMessage">memory_wall.ugc.comments.short</option>
+                <option name="minMessage">memory_wall.ugc.add.comments.short</option>
                 <option name="groups">
                     <value>memoryWallContent</value>
                 </option>

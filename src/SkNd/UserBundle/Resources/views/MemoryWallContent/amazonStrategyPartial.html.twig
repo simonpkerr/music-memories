@@ -12,7 +12,7 @@
         {% if mr.mediaResourceCache.xmlData.DetailPageURL is defined %} 
             <li><a class="orange button" title="buy this from Amazon" target="_blank" href="{{mr.mediaResourceCache.xmlData.DetailPageURL}}"><span class="sprites buy-icon">Buy</span></a></li>    
         {% endif %}
-        {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
+        {% include "SkNdUserBundle:MemoryWallContent:addToMemoryWallListPartial.html.twig" 
             with {
                 'api'       : mr.api.name,
                 'itemId'    : mr.id,

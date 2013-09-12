@@ -1,4 +1,4 @@
-<form class="full-width" action="{{ path('addUGC',{'mwid':mwid, 'slug':slug }) }}" {{ form_enctype(form) }} method="POST">
+<form id="add-ugc-form" class="full-width" action="{{ path('addUGC',{'mwid':mwid, 'slug':slug }) }}" {{ form_enctype(form) }} method="POST">
     <fieldset>
     <legend>Add yer own stuff</legend>
     {{ form_widget(form) }}
