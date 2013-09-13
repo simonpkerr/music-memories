@@ -181,8 +181,6 @@ class MemoryWallContentController extends Controller
                 $mwugc = $form->getData();
                 $mw->addMemoryWallUGC($mwugc);
                 $this->em->flush();                
-                
-                //persist data and redirect to new memory wall
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.success');
                 $flash = $session->getFlashBag()->get('notice');
                 
@@ -200,7 +198,7 @@ class MemoryWallContentController extends Controller
                 
             } else {
                 $errors = array();
-                foreach ($form->getChildren() as $formElement) {
+                foreach ($form->all() as $formElement) {
                     if(count($formElement->getErrors()) > 0){
                         $e = $formElement->getErrors();
                         array_push($errors, array( 

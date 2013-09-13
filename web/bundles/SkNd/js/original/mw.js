@@ -1,4 +1,6 @@
 (function ($) {
+    var bar, percentVal;
+    
     $('div#mw-options li').hover(function () {
         if(!$('> div', this).hasClass('open')) {
             $('> div', this).css('top', '-9999em');
@@ -20,30 +22,25 @@
         }
         return false;
     });
-    
-    function submitMWUGC () {
-        var form = $(this),
-            formData = form.serialize(),
-            formUrl = form.attr('action'),
-            formMethod = form.attr('method'),
-            formEncType = form.attr('enctype'),
-            req;
-        
-        req = $.ajax({
-            url: formUrl,
-            type: formMethod,
-            data: formData,
-            enctype: formEncType,
-            dataType: "json",
-            success: function (data) {
-                //form.parent().html(data);
-                //$('#add-ugc-form').submit(submitMWUGC);
-            }
-        });
 
-        return false;
-    }
-    
-    $('#add-ugc-form').submit(submitMWUGC);
+    bar = $('#add-ugc-container #bar');
+    $('#add-ugc-form').ajaxForm({
+        dataType: 'json',
+        beforeSend: function () {
+            percentVal = '0%';
+            bar.width(percentVal);
+        },
+        uploadProgress: function (event, position, total, percentComplete) {
+            percentVal = percentComplete + '%';
+            bar.width(percentVal);
+        },
+        success: function() {
+            percentVal = '100%';
+            bar.width(percentVal);
+        },
+        complete: function(xhr) {
+            var json = JSON.parse(xhr.responseText);
+        }        
+    });
 
 }(jQuery));

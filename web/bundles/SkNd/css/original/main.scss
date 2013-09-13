@@ -1432,6 +1432,16 @@ div#content {
                 }
             }
         }
+        #ugc-progress {
+            width: 26em;
+            position: relative;
+            #bar { 
+                background-color: #6B94CE; 
+                width:0%; 
+                height:5px; 
+                @include border-radius(3px);
+            }
+        }
     }
 
     li.mw-MediaResource {
