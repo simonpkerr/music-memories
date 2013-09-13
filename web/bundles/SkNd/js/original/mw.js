@@ -4,7 +4,6 @@
             $('> div', this).css('top', '-9999em');
         }
     }, function () {
-        //$('div', this).css('top', '-9999em');
     });
 
     $('div#mw-options li > a').on("click", function () {
@@ -22,7 +21,7 @@
         return false;
     });
     
-    $('#add-ugc-form').submit(function (e) {
+    function submitMWUGC () {
         var form = $(this),
             formData = form.serialize(),
             formUrl = form.attr('action'),
@@ -35,12 +34,16 @@
             type: formMethod,
             data: formData,
             enctype: formEncType,
+            dataType: "json",
             success: function (data) {
-                form.parent().html(data);
+                //form.parent().html(data);
+                //$('#add-ugc-form').submit(submitMWUGC);
             }
         });
 
         return false;
-    });
+    }
+    
+    $('#add-ugc-form').submit(submitMWUGC);
 
 }(jQuery));

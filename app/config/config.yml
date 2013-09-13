@@ -33,7 +33,8 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ ]
+    bundles:        
+      - SkNdUserBundle
     java:           "C:/Program Files/Java/jre7/bin/java.exe" 
     #write_to:       "%kernel.root_dir%/Resources/assets/"
     #read_from:      "%kernel.root_dir%/Resources/assets/"

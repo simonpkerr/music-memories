@@ -175,7 +175,7 @@ class MemoryWallContentController extends Controller
         ));
         $form = $this->createForm(new MemoryWallUGCType(), $mwugc); 
         if($request->getMethod() == 'POST'){
-            $form->bindRequest($request);
+            $form->bind($request);
             //check form is valid 
             if($form->isValid()){
                 $mwugc = $form->getData();
@@ -198,7 +198,20 @@ class MemoryWallContentController extends Controller
                     )
                 ));*/
                 
-            }            
+            } else {
+                $errors = array();
+                foreach ($form->getChildren() as $formElement) {
+                    if(count($formElement->getErrors()) > 0){
+                        $e = $formElement->getErrors();
+                        array_push($errors, array( 
+                            $formElement->getName() => $e[0]->getMessage(),
+                        ));
+                    }
+                }
+                $response = new \Symfony\Component\HttpFoundation\JsonResponse();
+                $response->setData($errors);
+                return $response;
+            }           
         }
         
         return $this->render('SkNdUserBundle:MemoryWallContent:addUGCPartial.html.twig', array(

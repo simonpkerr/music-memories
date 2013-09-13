@@ -77,4 +77,10 @@ Memory walls, memories, {{mw.associatedDecade is not null ? mw.associatedDecade.
 </div>
 {% endblock content %}
 
-      
+{% block javascript %}
+    {% javascripts output='bundles/SkNd/js/compiled/mw.js' filter='?yui_js'
+        'bundles/SkNd/js/original/mw.js'
+    %} 
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
