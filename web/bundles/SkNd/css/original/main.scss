@@ -1424,8 +1424,18 @@ div#content {
                 &.third { 
                     z-index: 3;
                     > div { 
-                        @media #{$desktop}{ 
+                        @media #{$desktop}{
                             width: 28em;
+                            div.controls { 
+                                margin-left: 8em;
+                                input[type="submit"], 
+                                input[type="reset"] {
+                                    float: left;
+                                    margin: 0 0 0 16px;
+                                    width: 38%;
+                                }
+                            }
+                            
                         }
                         
                     }
@@ -1435,11 +1445,11 @@ div#content {
         #ugc-progress {
             width: 26em;
             position: relative;
+            margin-top: 5px;
             #bar { 
                 background-color: #6B94CE; 
                 width:0%; 
                 height:5px; 
-                @include border-radius(3px);
             }
         }
     }

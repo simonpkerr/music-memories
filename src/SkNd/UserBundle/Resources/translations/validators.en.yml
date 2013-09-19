@@ -47,5 +47,5 @@ memory_wall:
         blank: You have to give a title you know
       comments:
         long: Sorry, your comments are too long. 140 characters please
-        short: Sorry, your comments are a bit too short. Tell us a bit more
+        short: Sorry, your comments are a bit short. Tell us more 
         blank: Go on, tell us something about your stuff

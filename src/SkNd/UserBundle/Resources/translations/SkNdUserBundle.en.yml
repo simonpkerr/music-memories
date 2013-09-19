@@ -43,7 +43,8 @@ memoryWall:
       flash:
         accessDenied: Please log in first, then you can add stuff to this wall
         success: Ah yeah! You just added some stuff
-      submit: Add it now
+      submit: Add it
+      reset: Reset
 mediaResource:
   add:
     flash:

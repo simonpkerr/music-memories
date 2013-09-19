@@ -2,8 +2,10 @@
     <fieldset>
     <legend>Add yer own stuff</legend>
     {{ form_widget(form) }}
-    <div>
+    <div class="controls">
+        <input type="reset" class="grey button" value="{{ 'memoryWall.ugc.add.reset'|trans({}, 'SkNdUserBundle') }}" />
         <input type="submit" value="{{ 'memoryWall.ugc.add.submit'|trans({}, 'SkNdUserBundle') }}" />
+        
     </div>
     </fieldset>
 </form>

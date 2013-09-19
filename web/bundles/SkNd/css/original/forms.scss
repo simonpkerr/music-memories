@@ -67,6 +67,7 @@ form {
         }
         
         &[type="submit"],
+        &[type="reset"],
         &#_submit {
             font-size: 1em;
             margin-top: 0.2em;
@@ -102,8 +103,12 @@ form {
     	}
     }
     
-    div.error input {
-        border: 1px solid #dd0000;
+    div.error {
+        input,
+        textarea, 
+        select {
+            border: 1px solid #dd0000;
+        }
     }
     
     .form-errors {
@@ -153,7 +158,8 @@ span {
 .button,
 .basic-button,
 input#_submit,
-input[type="submit"] {
+input[type="submit"],
+input[type="reset"] {
     background-color: #6B94CE;
     border: 2px solid #fff;
     cursor: pointer;
@@ -215,6 +221,15 @@ a.button {
             background-image: none;
         }
         
+    }
+    
+    .grey {
+        @include css-gradient(rgb(200,200,200),rgb(170,170,170),rgb(170,170,170));
+        &:hover
+        {
+            background: #666666!important;
+            background-image: none;
+        }
     }
 }
 

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use SkNd\MediaBundle\MediaAPI\ProcessDetailsStrategy;
 use SkNd\UserBundle\Entity\MemoryWallUGC;
-use SkNd\UserBundle\Form\Type\MemoryWallContentType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use SkNd\UserBundle\Form\Type\MemoryWallUGCType;
 
 
@@ -177,6 +177,11 @@ class MemoryWallContentController extends Controller
         if($request->getMethod() == 'POST'){
             $form->bind($request);
             //check form is valid 
+            $response = new JsonResponse();
+            $errors = array();
+            $content = array();
+                    
+            
             if($form->isValid()){
                 $mwugc = $form->getData();
                 $mw->addMemoryWallUGC($mwugc);
@@ -184,32 +189,32 @@ class MemoryWallContentController extends Controller
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.success');
                 $flash = $session->getFlashBag()->get('notice');
                 
-                //script will have to show flash message
-                /*return $this->render('SkNdUserBundle:MemoryWallContent:showUGCPartial.html.twig', array(
-                    'mwc'   => $mwc,
-                    'flash' => $flash,
-                ));*/
+                $content = array(
+                    'title'     => $mwugc->getTitle(),
+                    'comments'  => $mwugc->getComments(),
+                    'imagePath' => $mwugc->getWebPath(),
+                    'webPath'   => $mwugc->getThumbnailWebPath(),
+                );
                 
-                /*return $this->redirect($this->generateUrl('memoryWallShow', array(
-                    'id'    => $mwid,
-                    'slug'  => $slug,
-                    )
-                ));*/
+                $response->setData(array(
+                    'status'    => 'success',
+                    'content'   => $content,
+                ));
                 
             } else {
-                $errors = array();
                 foreach ($form->all() as $formElement) {
                     if(count($formElement->getErrors()) > 0){
                         $e = $formElement->getErrors();
-                        array_push($errors, array( 
-                            $formElement->getName() => $e[0]->getMessage(),
-                        ));
+                        $content[$formElement->getName()] = $e[0]->getMessage();
+                        
                     }
                 }
-                $response = new \Symfony\Component\HttpFoundation\JsonResponse();
-                $response->setData($errors);
-                return $response;
+                $response->setData(array(
+                    'status'    =>  'fail',
+                    'content'   =>  $content,
+                ));
             }           
+            return $response;
         }
         
         return $this->render('SkNdUserBundle:MemoryWallContent:addUGCPartial.html.twig', array(
