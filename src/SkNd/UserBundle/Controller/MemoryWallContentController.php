@@ -180,7 +180,6 @@ class MemoryWallContentController extends Controller
             $response = new JsonResponse();
             $errors = array();
             $content = array();
-                    
             
             if($form->isValid()){
                 $mwugc = $form->getData();
