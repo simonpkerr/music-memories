@@ -42,10 +42,12 @@ $(document).ready(function () {
         return false;
     });
 
+    // hide flash messages
+    $("ul.flashMessages a.sprites").on("click", function () {
+        $(this).parent().hide();
+        return false;
+    });
+
 });
 
 Modernizr.load('/SkNd/web/bundles/SkNd/js/compiled/ga.js');
-
-/*if($('#memoryWallContents')) {
-    Modernizr.load('/SkNd/web/bundles/SkNd/js/compiled/mw.js');
-}*/

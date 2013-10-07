@@ -1,5 +1,8 @@
 (function ($) {
-    var bar, percentVal, ugcForm;
+    var bar,
+        percentVal,
+        ugcForm,
+        flashMessages;
 
     $('div#mw-options li').hover(function () {
         if (!$('> div', this).hasClass('open')) {
@@ -25,6 +28,7 @@
 
     bar = $('#add-ugc-container #bar');
     ugcForm = $('#add-ugc-form');
+    flashMessages = $('<div class="flashMessages fr"><a class="sprites close-icon">hide this message</a><ul></ul></div>');
     ugcForm.ajaxForm({
         dataType: 'json',
         beforeSend: function () {
@@ -38,6 +42,7 @@
         success: function () {
             $('.error', ugcForm).removeClass('error');
             $('ul.form-errors').remove();
+            $('div.flashMessages').remove();
             percentVal = '100%';
             bar.width(percentVal);
         },
@@ -46,11 +51,18 @@
                 error,
                 errorList,
                 ugcContent,
-                ugcImage;
+                ugcImage,
+                makeFlashMessage = function (status) {
+                    var flashMessage = status === 'fail' ? 'Sorry, there was a problem with that. Please try again' : 'Yay, you just added something';
+                    $('<li class="info">' + flashMessage + '</li>').appendTo($('ul', flashMessages));
+                    $('div#header').after(flashMessages);
+                };
+            makeFlashMessage(json.status);
             if (json.status === 'fail') {
+                
                 for (error in json.content) {
                     if (json.content.hasOwnProperty(error)) {
-                        errorList = $('<ul class="form-errors" />').append('<li>'+ json.content[error] +'</li>');
+                        errorList = $('<ul class="form-errors" />').append('<li>' + json.content[error] + '</li>');
                         $('[name*="' + error + '"]', ugcForm)
                             .parent()
                             .addClass('error')
@@ -77,7 +89,7 @@
                 ugcForm.clearForm().parent().removeClass('open');
 
             }
-            
+
             bar.width(0);
         }
     });

@@ -70,6 +70,7 @@
                 {#{ dump(app.session.flashbag.peekAll()) }#}
             {% if app.session.flashbag.peekAll() %}    
             <div class="flashMessages fr">
+                <a class="sprites close-icon" href="#">hide this message</a>
                 <ul>
                 {% for type, flashMessages in app.session.flashbag.all() %}
                     {% for flashMessage in flashMessages %}
@@ -127,7 +128,7 @@
 
             </div>
         </div>
-        {% javascripts output='bundles/SkNd/js/compiled/nd-scripts.js' filter='yui_js'
+        {% javascripts output='bundles/SkNd/js/compiled/nd-scripts.js' filter='?yui_js'
             'bundles/SkNd/js/original/jquery-1.8.3.min.js'
             'bundles/SkNd/js/original/nd-scripts.js'
         %} 

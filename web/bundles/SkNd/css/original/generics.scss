@@ -141,37 +141,7 @@ a:hover {
     }
 }
 
-
-/********** FLASH MESSAGES ***********/
-
-.flashMessages {
-    @media #{$desktop}{
-        margin: -20px 10px 0 0;
-        width: 65%;
-    }
-    ul {
-        background-color: #C9E9A9;
-        border: 1px solid #86B121;
-        color: #336600;
-        font-size: 0.8em;
-        padding: 0.3em 0.7em;
-        
-        .borderradius & {
-            @include border-radius(10px);
-        }
-        .boxshadow & {
-            @include box-shadow(2px, 2px, 0, 0, rgba(15, 15, 15, 0.2));
-        }
-    }
-}
-
-
-.drop-down {
-    position: absolute;
-    left: -9999em;
-    @media #{$desktop}{
-        position: static;
-        left: auto;
-    }
+.sprites { 
+    text-indent: -9999em;
 }
 
