@@ -12,7 +12,7 @@ use SkNd\UserBundle\Form\Type\MemoryWallUGCType;
 
 
 /*
- * Original code Copyright (c) 2011 Simon Kerr
+ * Original code Copyright (c) 2013 Simon Kerr
  * MemoryWallContentController controls also aspects of showing, editing, deleting memory wall content
  * @author Simon Kerr
  * @version 2.0
@@ -188,12 +188,24 @@ class MemoryWallContentController extends Controller
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.success');
                 $flash = $session->getFlashBag()->get('notice');
                 
-                $content = array(
+                $deleteUGCUrl = $this->generateUrl('memoryWallDeleteMediaResource', array(
+                    'mwid'  => $mw->getId(),
+                    'slug'  => $mw->getSlug(),
+                    'id'    => $mwugc->getId(),
+                    )
+                );
+                
+                /*$content = array(
                     'title'     => $mwugc->getTitle(),
                     'comments'  => $mwugc->getComments(),
                     'imagePath' => $mwugc->getWebPath(),
                     'webPath'   => $mwugc->getThumbnailWebPath(),
-                );
+                );*/
+                
+                $content = $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', array(
+                    'mwc' => $mwugc,
+                    'mw'  => $mw,
+                ));
                 
                 $response->setData(array(
                     'status'    => 'success',

@@ -28,7 +28,10 @@
 
     bar = $('#add-ugc-container #bar');
     ugcForm = $('#add-ugc-form');
-    flashMessages = $('<div class="flashMessages fr"><a class="sprites close-icon">hide this message</a><ul></ul></div>');
+    flashMessages = $('<div class="flashMessages fr"><ul></ul></div>');
+    $('<a class="sprites close-icon">hide this message</a>').click(function (){
+        $(this).parent().hide();
+    }).prependTo(flashMessages);
     ugcForm.ajaxForm({
         dataType: 'json',
         beforeSend: function () {
@@ -42,7 +45,6 @@
         success: function () {
             $('.error', ugcForm).removeClass('error');
             $('ul.form-errors').remove();
-            $('div.flashMessages').remove();
             percentVal = '100%';
             bar.width(percentVal);
         },
@@ -53,6 +55,7 @@
                 ugcContent,
                 ugcImage,
                 makeFlashMessage = function (status) {
+                    $('div.flashMessages').attr('style', '').children('ul').empty();
                     var flashMessage = status === 'fail' ? 'Sorry, there was a problem with that. Please try again' : 'Yay, you just added something';
                     $('<li class="info">' + flashMessage + '</li>').appendTo($('ul', flashMessages));
                     $('div#header').after(flashMessages);

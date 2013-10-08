@@ -43,7 +43,7 @@ $(document).ready(function () {
     });
 
     // hide flash messages
-    $("ul.flashMessages a.sprites").on("click", function () {
+    $("div.flashMessages a.sprites").click(function () {
         $(this).parent().hide();
         return false;
     });
