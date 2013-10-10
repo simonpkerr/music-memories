@@ -62,7 +62,7 @@
                 };
             makeFlashMessage(json.status);
             if (json.status === 'fail') {
-                
+
                 for (error in json.content) {
                     if (json.content.hasOwnProperty(error)) {
                         errorList = $('<ul class="form-errors" />').append('<li>' + json.content[error] + '</li>');
@@ -73,22 +73,10 @@
                     }
                 }
             } else {
-                ugcContent = $('<li class="mwc" />')
-                    .append('<p class="note">added just now</p>')
-                    .append('<h3>' + json.content.title + '</h3>');
-
-                if (json.content.comments) {
-                    ugcContent.append('<p>' + json.content.comments + '</p>');
-                }
-
-                if (json.content.imagePath) {
-                    ugcImage = $('<a href="' + json.content.imagePath + '" class="lightbox" />')
-                        .append('<img alt="' + json.content.title  + '" src="' + json.content.webPath  + '" />');
-
-                    ugcContent.append(ugcImage);
-                }
-
-                ugcContent.hide().prependTo($('div#memoryWallContents > ul')).fadeIn(1000);
+                ugcContent = $(json.content)
+                    .hide()
+                    .prependTo($('div#memoryWallContents > ul'))
+                    .fadeIn(1000);
                 ugcForm.clearForm().parent().removeClass('open');
 
             }

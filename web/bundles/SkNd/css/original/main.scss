@@ -778,17 +778,18 @@ ul.actions {
             font-weight: bold;
             color: #fff;
             font-size: 1em;
-            padding: 5px 0 5px 40px;
+            //padding: 5px 0 5px 40px;
+            padding: 0;
             text-transform: lowercase;
             text-align: center;
             &.button {
-                display: block;
-                height: auto;
-                margin: 0 0 10px 0;
-                padding: 3px 5px;
-                width: auto;
-                text-align: left;
-                font-size: 0.9em;
+                //display: block;
+                //height: auto;
+                //margin: 0;
+                padding: 0;
+                //width: auto;
+                //text-align: left;
+                //font-size: 0.9em;
 
                 &:hover {
                     background-image: none;
@@ -797,9 +798,9 @@ ul.actions {
 
             > span {
                 display: block;
-                width: auto;
-                padding: 3px 0 0 35px;
-                margin: 0 5px;
+                //width: auto;
+                //padding: 3px 0 0 35px;
+                //margin: 0 5px;
             }
 
             @media #{$desktop}{

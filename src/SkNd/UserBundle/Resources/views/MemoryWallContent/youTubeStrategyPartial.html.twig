@@ -10,7 +10,7 @@
     {% endif %}
     <strong><a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}','{{mr.mediaResourceCache.title|escape('js')}}');">{{ mwcMacros.shortenTitle(mr.mediaResourceCache.title) }}</a></strong>
     
-    <ul class="actions fl full-width">
+    <ul class="actions fl">
         {% include "SkNdUserBundle:MemoryWallContent:addToMemoryWallListPartial.html.twig" 
             with {
                 'api'       : mr.api.name,

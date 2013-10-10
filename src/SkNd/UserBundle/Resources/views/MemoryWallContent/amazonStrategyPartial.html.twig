@@ -8,7 +8,7 @@
     </a>
     <strong><a href="{{path('mediaDetails',{'id':mr.id, 'api':mr.api.name, 'title':mr.mediaResourceCache.slug} )}}" title="click to explore {{mr.mediaResourceCache.title}}">{{mwcMacros.shortenTitle(mr.mediaResourceCache.title)}}</a></strong>    
     
-    <ul class="actions fl full-width">
+    <ul class="actions fl">
         {% if mr.mediaResourceCache.xmlData.DetailPageURL is defined %} 
             <li><a class="orange button" title="buy this from Amazon" target="_blank" href="{{mr.mediaResourceCache.xmlData.DetailPageURL}}"><span class="sprites buy-icon">Buy</span></a></li>    
         {% endif %}

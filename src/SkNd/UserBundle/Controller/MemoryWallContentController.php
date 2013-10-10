@@ -188,24 +188,10 @@ class MemoryWallContentController extends Controller
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.success');
                 $flash = $session->getFlashBag()->get('notice');
                 
-                $deleteUGCUrl = $this->generateUrl('memoryWallDeleteMediaResource', array(
-                    'mwid'  => $mw->getId(),
-                    'slug'  => $mw->getSlug(),
-                    'id'    => $mwugc->getId(),
-                    )
-                );
-                
-                /*$content = array(
-                    'title'     => $mwugc->getTitle(),
-                    'comments'  => $mwugc->getComments(),
-                    'imagePath' => $mwugc->getWebPath(),
-                    'webPath'   => $mwugc->getThumbnailWebPath(),
-                );*/
-                
                 $content = $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', array(
                     'mwc' => $mwugc,
-                    'mw'  => $mw,
-                ));
+                    'wallBelongsToThisUser' => $this->mwAccessManager->memoryWallBelongsToUser($mw),
+                ))->getContent();
                 
                 $response->setData(array(
                     'status'    => 'success',
