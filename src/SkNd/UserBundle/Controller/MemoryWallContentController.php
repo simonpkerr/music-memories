@@ -186,32 +186,45 @@ class MemoryWallContentController extends Controller
                 $mw->addMemoryWallUGC($mwugc);
                 $this->em->flush();                
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.success');
-                $flash = $session->getFlashBag()->get('notice');
                 
-                $content = $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', array(
-                    'mwc' => $mwugc,
-                    'wallBelongsToThisUser' => $this->mwAccessManager->memoryWallBelongsToUser($mw),
-                ))->getContent();
-                
-                $response->setData(array(
-                    'status'    => 'success',
-                    'content'   => $content,
-                ));
+                //if come from ajax request return json, otherwise redirect to show wall
+                if($request->isXmlHttpRequest()){
+                    $flash = $session->getFlashBag()->get('notice');
+                    $content = $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', array(
+                        'mwc' => $mwugc,
+                        'wallBelongsToThisUser' => $this->mwAccessManager->memoryWallBelongsToUser($mw),
+                    ))->getContent();
+
+                    $response->setData(array(
+                        'status'    => 'success',
+                        'content'   => $content,
+                    ));
+                    return $response;
+                } else {
+                    return $this->redirect($this->generateUrl('memoryWallShow', array(
+                        'id'    => $mw->getId(),
+                        'slug'  => $mw->getSlug(),
+                        )
+                    ));
+                }
                 
             } else {
-                foreach ($form->all() as $formElement) {
-                    if(count($formElement->getErrors()) > 0){
-                        $e = $formElement->getErrors();
-                        $content[$formElement->getName()] = $e[0]->getMessage();
-                        
+                if($request->isXmlHttpRequest()){
+                    foreach ($form->all() as $formElement) {
+                        if(count($formElement->getErrors()) > 0){
+                            $e = $formElement->getErrors();
+                            $content[$formElement->getName()] = $e[0]->getMessage();
+
+                        }
                     }
+                    $response->setData(array(
+                        'status'    =>  'fail',
+                        'content'   =>  $content,
+                    ));
+                    return $response;
                 }
-                $response->setData(array(
-                    'status'    =>  'fail',
-                    'content'   =>  $content,
-                ));
             }           
-            return $response;
+            
         }
         
         return $this->render('SkNdUserBundle:MemoryWallContent:addUGCPartial.html.twig', array(

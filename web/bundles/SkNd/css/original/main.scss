@@ -367,13 +367,22 @@ a#siteLogo img {
         width: 65%;
     }
     a.sprites {
-        position: absolute;
-        right: 0;
-        top: 0;
-        margin: 0;
-        text-indent: -9999em;
+        background-color: #89AA68;
         cursor: pointer;
+        margin: 0;
+        position: absolute;
+        right: 2px;
+        text-indent: -9999em;
+        top: 2px;
         
+        .borderradius & { 
+            @include border-radius(10px);
+        }
+        
+        &:hover { 
+            background-color:#708E52;
+        }
+
     }
     
     ul {

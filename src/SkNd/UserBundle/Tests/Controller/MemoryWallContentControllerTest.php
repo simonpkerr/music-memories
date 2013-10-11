@@ -464,28 +464,140 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     
     //for UGC that is added by wall owners (photos, notes)
     public function testAddMemoryWallUGCWithMissingTitleThrowsException(){
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
+                
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+        );
+        $crawler = $this->client->submit($form, $params);
         
+        $url = self::$router->generate('addUGC', array(
+            'mwid'  => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+        ));
+        $crawler = $this->client->request('GET', $url);
+        //select the form
+        $form = $crawler->selectButton('Add it')->form();
+        $crawler->selectButton('Add it')->addContent('formnovalidate="formnovalidate"');
+        $params = array(
+            'memoryWallUGC[comments]' => 'some comments',                        
+        );
+        $crawler = $this->client->submit($form, $params);
+                
+        $this->assertTrue($crawler->filter('ul.form-errors:contains("You have to give a title you know")')->count() > 0, 'did not show error message');
     }
     
     public function testAddMemoryWallUGCWithTooLongTitleThrowsException(){
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
+                
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+        );
+        $crawler = $this->client->submit($form, $params);
         
+        $url = self::$router->generate('addUGC', array(
+            'mwid'  => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+        ));
+        $crawler = $this->client->request('GET', $url);
+        //select the form
+        $form = $crawler->selectButton('Add it')->form();
+        $crawler->selectButton('Add it')->addContent('formnovalidate="formnovalidate"');
+        $params = array(
+            'memoryWallUGC[title]' => 'some long title, some long title, some long title, some long title, some long title, some long title, some long title, some long title, some long title, some long title',                        
+        );
+        $crawler = $this->client->submit($form, $params);
+                
+        $this->assertTrue($crawler->filter('ul.form-errors:contains("too long")')->count() > 0, 'did not show max length error message');
     }
     
     public function testAddMemoryWallUGCWithTooShortTitleThrowsException(){
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
+                
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+        );
+        $crawler = $this->client->submit($form, $params);
         
-    }
-    
-    //for UGC that is added by wall owners (photos, notes)
-    public function testAddMemoryWallUGCWithMissingCommentsFieldThrowsException(){
-        
+        $url = self::$router->generate('addUGC', array(
+            'mwid'  => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+        ));
+        $crawler = $this->client->request('GET', $url);
+        //select the form
+        $form = $crawler->selectButton('Add it')->form();
+        $crawler->selectButton('Add it')->addContent('formnovalidate="formnovalidate"');
+        $params = array(
+            'memoryWallUGC[title]' => 'a',                        
+        );
+        $crawler = $this->client->submit($form, $params);
+                
+        $this->assertTrue($crawler->filter('ul.form-errors:contains("too short")')->count() > 0, 'did not show min length error message');
     }
     
     public function testAddUGCWithTooShortCommentsFieldThrowsException(){
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
+                
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+        );
+        $crawler = $this->client->submit($form, $params);
         
+        $url = self::$router->generate('addUGC', array(
+            'mwid'  => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+        ));
+        $crawler = $this->client->request('GET', $url);
+        //select the form
+        $form = $crawler->selectButton('Add it')->form();
+        $crawler->selectButton('Add it')->addContent('formnovalidate="formnovalidate"');
+        $params = array(
+            'memoryWallUGC[title]' => 'a title',
+            'memoryWallUGC[comments]' => 'a',
+        );
+        $crawler = $this->client->submit($form, $params);
+                
+        $this->assertTrue($crawler->filter('ul.form-errors:contains("comments are a bit short")')->count() > 0, 'did not show min length error message');
     }
     
     public function testAddUGCWithTooLongCommentsFieldThrowsException(){
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
+                
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+        );
+        $crawler = $this->client->submit($form, $params);
         
+        $url = self::$router->generate('addUGC', array(
+            'mwid'  => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+        ));
+        $crawler = $this->client->request('GET', $url);
+        //select the form
+        $form = $crawler->selectButton('Add it')->form();
+        $crawler->selectButton('Add it')->addContent('formnovalidate="formnovalidate"');
+        $params = array(
+            'memoryWallUGC[title]' => 'a title',
+            'memoryWallUGC[comments]' => 'too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments, too long comments,',
+        );
+        $crawler = $this->client->submit($form, $params);
+                
+        $this->assertTrue($crawler->filter('ul.form-errors:contains("comments are too long")')->count() > 0, 'did not show max length error message');
     }
     
     public function testAddUGCWithInvalidFileTypeThrowsException() {

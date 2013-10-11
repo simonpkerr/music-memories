@@ -53,7 +53,6 @@
                 error,
                 errorList,
                 ugcContent,
-                ugcImage,
                 makeFlashMessage = function (status) {
                     $('div.flashMessages').attr('style', '').children('ul').empty();
                     var flashMessage = status === 'fail' ? 'Sorry, there was a problem with that. Please try again' : 'Yay, you just added something';
