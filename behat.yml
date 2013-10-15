@@ -6,7 +6,13 @@ default:
     Behat\Symfony2Extension\Extension:
       mink_driver: true
     Behat\MinkExtension\Extension:
-      default_session: 'symfony2'
+      default_session: symfony2
+      javascript_session: selenium2
+      goutte: ~
+      selenium2: ~
+  context:
+    parameters:
+      base_url: http://localhost/SkNd/web/app_dev.php
 annotations:
   paths:
     features: features/annotations
