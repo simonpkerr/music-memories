@@ -32,7 +32,11 @@
         "sonata-project/doctrine-orm-admin-bundle": "dev-master",
         "sonata-project/admin-bundle": "dev-master",
         "sonata-project/easy-extends-bundle": "dev-master",
-        "sonata-project/user-bundle": "dev-master"
+        "sonata-project/user-bundle": "dev-master",
+        "behat/symfony2-extension": "*",
+        "behat/mink-extension": "*",
+        "behat/mink-browserkit-driver": "*",
+        "behat/mink-selenium2-driver": "*"
         
     },
     "scripts": {

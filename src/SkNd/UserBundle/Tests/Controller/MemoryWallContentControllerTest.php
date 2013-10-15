@@ -409,7 +409,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
                 
     }
     
-    public function testAddMemoryWallUGCWhenNotLoggedInRedirectsToLogin(){
+    public function testAddMWUGCWhenNotLoggedInRedirectsToLogin(){
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
         $url = self::$router->generate('addUGC', array(
             'mwid'  => $mw->getId(),
@@ -422,7 +422,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     }
     
     //only wall owners can add memory wall UGC (notes, comments, photos)
-    public function testAddMemoryWallUGCToUnauthorisedWallThrowsException(){
+    public function testAddMWUGCToUnauthorisedWallThrowsException(){
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-1');  
         
         //login as testuser3
@@ -443,7 +443,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         
     }
     
-    public function testAddMemoryWallUGCToNonExistentWallThrowsException(){
+    public function testAddMWUGCToNonExistentWallThrowsException(){
         //login as testuser3
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
@@ -463,7 +463,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     }
     
     //for UGC that is added by wall owners (photos, notes)
-    public function testAddMemoryWallUGCWithMissingTitleThrowsException(){
+    public function testAddMWUGCWithMissingTitleThrowsException(){
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
                 
         $crawler = $this->client->request('GET', '/login');
@@ -490,7 +490,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->filter('ul.form-errors:contains("You have to give a title you know")')->count() > 0, 'did not show error message');
     }
     
-    public function testAddMemoryWallUGCWithTooLongTitleThrowsException(){
+    public function testAddMWUGCWithTooLongTitleThrowsException(){
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
                 
         $crawler = $this->client->request('GET', '/login');
@@ -517,7 +517,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->filter('ul.form-errors:contains("too long")')->count() > 0, 'did not show max length error message');
     }
     
-    public function testAddMemoryWallUGCWithTooShortTitleThrowsException(){
+    public function testAddMWUGCWithTooShortTitleThrowsException(){
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
                 
         $crawler = $this->client->request('GET', '/login');
@@ -544,7 +544,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->filter('ul.form-errors:contains("too short")')->count() > 0, 'did not show min length error message');
     }
     
-    public function testAddUGCWithTooShortCommentsFieldThrowsException(){
+    public function testAddMWUGCWithTooShortCommentsFieldThrowsException(){
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
                 
         $crawler = $this->client->request('GET', '/login');
@@ -572,7 +572,7 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->filter('ul.form-errors:contains("comments are a bit short")')->count() > 0, 'did not show min length error message');
     }
     
-    public function testAddUGCWithTooLongCommentsFieldThrowsException(){
+    public function testAddMWUGCWithTooLongCommentsFieldThrowsException(){
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
                 
         $crawler = $this->client->request('GET', '/login');
@@ -600,100 +600,123 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         $this->assertTrue($crawler->filter('ul.form-errors:contains("comments are too long")')->count() > 0, 'did not show max length error message');
     }
     
-    public function testAddUGCWithInvalidFileTypeThrowsException() {
+    public function testAddMWUGCWithInvalidFileTypeThrowsException() {
         //only jpg,gif,png file types allowed
     }
     
-    public function testAddUGCCommentsToMemoryWallUGCDoesNotRequireTitleOrImageField() {
+//    public function testAddUGCCommentsToMemoryWallUGCDoesNotRequireTitleOrImageField() {
+//        
+//    }
+    
+    public function testEditMWUGCOnOthersWallThrowsException() {
         
     }
     
-    public function testAddUGCWhenNotLoggedInRedirectsToLogin() {
+    public function testEditMWUGCWithMissingTitleThrowsException() {
         
     }
     
-    public function testAddMemoryWallUGCToOthersWallThrowsException() {
+    public function testEditMWUGCClearImageDeletesImage(){
         
     }
     
-    public function testEditMemoryWallUGCOnOthersWallThrowsException() {
+    public function testDeleteMWUGCWhenNotLoggedInRedirectsToLogin(){
         
     }
     
-    public function testEditMemoryWallUGCWithMissingTitleThrowsException() {
+    public function testDeleteNonExistentMWUGCThrowsException(){
+        
+    }
+    
+    public function testDeleteMWUGCOnNonExistentWallThrowsException(){
+        
+    }
+    
+    public function testDeleteMWUGCOnOthersWallThrowsException(){
+        
+    }
+    
+    public function testDeleteMWUGCWhenSuperUserDeletesUGC(){
+        
+    }
+    
+    public function testDeleteMWUGCAlsoDeletesAssociatedImage(){
         
     }
     
     //only applies to comments on items
-    public function testEditOwnUGCWithinEditingTimeThresholdAllowsEdit() {
-        
-    }
+//    public function testEditOwnUGCWithinEditingTimeThresholdAllowsEdit() {
+//        
+//    }
     
-    public function testDeleteOwnUGCUpdatesWallContent() {
-        
-    }    
+//    public function testDeleteOwnUGCUpdatesWallContent() {
+//        
+//    }    
         
     //if a photo/note etc has a thread of comments coming off it
-    public function testDeleteOwnMemoryWallUGCDeletesAllRelatedUGCComments() {
-        
-    }
+//    public function testDeleteOwnMemoryWallUGCDeletesAllRelatedUGCComments() {
+//        
+//    }
     
-    public function testDeleteUGCOnOthersWallThrowsException() {
         
-    }
-    
-    public function testDeleteUGCOnOthersWallIfSuperAdminDeletesUGC() {
-        
-    }
-    
     //entire set of comments on an item can be hidden by super admin or wall owner
-    public function testHideCommentsOnUGCIfSuperAdminOrWallOwnerHidesComments() {
+//    public function testHideCommentsOnUGCIfSuperAdminOrWallOwnerHidesComments() {
+//        
+//    }
+    
+//    public function testHideCommentsOnUGCOnOthersWallThrowsException() {
+//        
+//    }
+    
+    public function testTurnOffMWCommentsOnOthersWallThrowsException() {
         
     }
     
-    public function testHideCommentsOnUGCOnOthersWallThrowsException() {
+    public function testCloseMWCommentsOnOthersWallThrowsException(){
         
     }
     
-    public function testTurnOffMemoryWallCommentsOnOthersWallThrowsException() {
+    public function testAddCommentsToClosedMWCommentsThrowsException(){
         
     }
     
-    public function testCloseCommentsOnOthersWallThrowsException(){
+    public function testAddCommentsToMWWhenNotLoggedInRedirectsToLogin(){
         
     }
     
-    public function testAddCommentsToClosedCommentsUGCThrowsException(){
+    public function testAddCommentsToNonExistentWallThrowsException(){
         
     }
     
-    public function testAddCommentsToClosedCommentsMemoryWallThrowsException(){
-        
-    }
     
-    public function testFlagUGCWithMissingCommentsFieldThrowsException() {
-        
-    }
     
-    public function testFlagAFlaggedUGCShowsMessageInsteadOfForm() {
-        
-    }
+//    public function testAddCommentsToClosedCommentsMemoryWallThrowsException(){
+//        
+//    }
     
-    public function testFlagUGCEmailsWallOwnerAndUGCCreator(){
-        
-    }
+//    public function testFlagUGCWithMissingCommentsFieldThrowsException() {
+//        
+//    }
     
-    public function testFlagNonExistentUGCThrowsException(){
-        
-    }
+//    public function testFlagAFlaggedUGCShowsMessageInsteadOfForm() {
+//        
+//    }
     
-    public function testUneditedFlaggedUGCIsRemovedAfterTheFlaggingExpirationThresholdExpires() {
-        
-    }
+//    public function testFlagUGCEmailsWallOwnerAndUGCCreator(){
+//        
+//    }
+//    
+//    public function testFlagNonExistentUGCThrowsException(){
+//        
+//    }
+//    
+//    public function testUneditedFlaggedUGCIsRemovedAfterTheFlaggingExpirationThresholdExpires() {
+//        
+//    }
     
-    public function testEditFlaggedUGCHasTheFlagRemoved() {
-        
-    }
+//    public function testEditFlaggedUGCHasTheFlagRemoved() {
+//        
+//    }
     
     //when moving items around or clicking the 'generate' layout button, users still need to publish the wall to save changes
     public function testMoveOwnMemoryWallItemsSavesCoordsOnPublish(){
@@ -717,14 +740,17 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     }
         
     //each item on a wall only loads the most recent comment, and lazily loads others if necessary
-    public function testExpandUGCCommentsLoadsLatest20Comments(){
-        
-    }
+//    public function testExpandUGCCommentsLoadsLatest20Comments(){
+//        
+//    }
     
     //once lazily loaded, should not re-load again
-    public function testExpandUGCCommentsTwiceDoesNotLoadTwice(){
-        
-    }
+//    public function testExpandUGCCommentsTwiceDoesNotLoadTwice(){
+//        
+//    }
+    
+  
+    
     
     
     

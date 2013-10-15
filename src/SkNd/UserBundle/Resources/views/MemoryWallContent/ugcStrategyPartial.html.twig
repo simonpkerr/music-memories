@@ -9,7 +9,8 @@
     {% endif %}
     <ul class="actions fl">
         {% if wallBelongsToThisUser %}
-        <li><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'id': mwc.id }) }}" title="Remove {{ mwc.title }} from this wall"><span class="sprites close-icon">Remove</span></a></li>
+        <li><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'id': mwc.id }) }}" title="Remove {{ mwc.title }} from this wall"><span class="sprites close-icon">Remove</span></a>
+        </li>
         {% endif %}
     </ul>
 </li>
