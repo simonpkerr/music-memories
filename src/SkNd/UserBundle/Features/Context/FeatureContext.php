@@ -47,16 +47,29 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->kernel = $kernel;
     }
 
-//
-// Place your definition and hook methods here:
-//
-//    /**
-//     * @Given /^I have done something with "([^"]*)"$/
-//     */
-//    public function iHaveDoneSomethingWith($argument)
-//    {
-//        $container = $this->kernel->getContainer();
-//        $container->get('some_service')->doSomethingWith($argument);
-//    }
-//
+
+    /**
+     * @Then /^I wait for errors to show$/
+     */
+    public function iWaitForErrorsToShow()
+    {
+        //$container = $this->kernel->getContainer();
+        //$container->get('some_service')->doSomethingWith($argument);
+        $this->getSession()->wait(5000, "$('div.error').children().length > 0");
+    }
+    
+    /**
+     * @Given /^I am logged in as "([^"]*)" "([^"]*)"$/
+     */
+    public function iAmLoggedInAs($username, $password){
+        $this->getSession()->visit($this->locatePath('/login'));
+        $this->fillField('username', $username);
+        $this->fillField('password', $password);
+        $this->pressButton('Login');
+        //$this->getSession('goutte')->setBasicAuth($username, $password);
+                
+    }
+    
+   
+
 }
