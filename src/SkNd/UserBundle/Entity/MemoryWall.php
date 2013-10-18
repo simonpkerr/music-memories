@@ -30,13 +30,18 @@ class MemoryWall
     protected $memoryWallUGC;
     protected $memoryWallMediaResources;
     protected $memoryWallContent;
+    protected $mwContent;
 
     public function __construct(User $user = null, $memoryWallName = null){
-        $this->mediaResources = new ArrayCollection();
+        //$this->mediaResources = new ArrayCollection();
         $this->memoryWallMediaResources = new ArrayCollection();
         $this->memoryWallUGC = new ArrayCollection();
         $this->memoryWallContent = new ArrayCollection();
-        
+        $this->mwContent = array(
+            'mwmr'  => $this->memoryWallMediaResources,
+            'mwugc' => $this->memoryWallUGC,
+            'mwc'   => $this->memoryWallContent,
+        );        
         $this->setIsPublic(true);
         if($user != null){
             if(!is_null($memoryWallName)){
@@ -107,16 +112,27 @@ class MemoryWall
             return !is_null($mwmr->getMediaResource());
         })->toArray();
         
-        return array_map(function ($mwc){
-            return $mwc->getMediaResource();
+        return array_map(function ($mwmr){
+            return $mwmr->getMediaResource();
         }, $mrs);
     }
     
-    public function getMediaResourceById($mrId){
-        if(!isset($this->memoryWallMediaResources[$mrId]))
+    public function getMWContentById($mrId, $type = 'mwc'){
+        if(!isset($this->mwContent[$type][$mrId]))
+        //if(!isset($this->memoryWallMediaResources[$mrId]))
             throw new \InvalidArgumentException('Media Resource not found');
         
-        return $this->memoryWallMediaResources[$mrId]->getMediaResource();
+        //return $this->memoryWallMediaResources[$mrId]->getMediaResource();
+        return $this->mwContent[$type][$mrId];
+    }
+    
+    public function deleteMWContentById($id, $type = 'mwc'){
+        if(!isset($this->mwContent[$type][$id]))
+        //if(!isset($this->memoryWallMediaResources[$id]))
+            throw new \InvalidArgumentException('Media Resource not found');
+        
+        $this->mwContent[$type]->remove($id);
+        //$this->memoryWallMediaResources->remove($id);
     }
  
     public function addMediaResource(MediaResource $mr){
@@ -127,24 +143,14 @@ class MemoryWall
             throw new \RuntimeException('Only 10 Amazon items can be added to a wall');
         
         $mr->incrementSelectedCount();
-        //$mwMr = new MemoryWallMediaResource($this, $mr);        
-        $mwc = new MemoryWallMediaResource(array(
+        $mwmr = new MemoryWallMediaResource(array(
             'mw'    =>  $this,
             'mr'    =>  $mr,
         ));
         
-        //$this->memoryWallMediaResources->set($mr->getId(), $mwMr);
-        $this->memoryWallMediaResources->set($mr->getId(), $mwc);
+        $this->memoryWallMediaResources->set($mr->getId(), $mwmr);
     }
     
-    public function deleteMediaResourceById($id){
-        if(!isset($this->memoryWallMediaResources[$id]))
-            throw new \InvalidArgumentException('Media Resource not found');
-        
-        $this->memoryWallMediaResources->remove($id);
-    }
-    
-
     public function setUser(User $user)
     {
         $this->user = $user;

@@ -44,6 +44,7 @@ SkNd\UserBundle\Entity\MemoryWallContent:
       name: discr
       type: string
       length: 255
+    #for single table inheritance, the base class defines the discriminator to be used in the db
     discriminatorMap:
       memorywallcontent: MemoryWallContent
       memorywallugc: MemoryWallUGC

@@ -53,11 +53,13 @@ mediaResource:
       amazonResourcesThresholdError: Sorry, you can only add 10 Amazon items to your wall
       selectWall: You&rsquo;ve got more than 1 wall. Please select one first
       success: Yay. Your item was added successfully
+memoryWallContent:
   delete:
     confirm: I&rsquo;m sure. Delete it
     cancel: No, I don&rsquo;t think I will.
     flash:
       accessDenied: Oh behave! You have to log in first, then you can delete stuff
+      contentNotFound: Memory wall content cannot be deleted
       success: The item was successfully deleted. 
   
 registration:

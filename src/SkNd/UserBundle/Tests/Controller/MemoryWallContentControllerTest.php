@@ -4,6 +4,7 @@ namespace SkNd\UserBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use SkNd\MediaBundle\Entity\MediaResource;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /*
  * Original code Copyright (c) 2011 Simon Kerr
@@ -602,23 +603,40 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     
     public function testAddMWUGCWithInvalidFileTypeThrowsException() {
         //only jpg,gif,png file types allowed
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
+                
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Login')->form();
+        $params = array(
+            '_username' => 'testuser3',
+            '_password' => 'testuser3',
+        );
+        $crawler = $this->client->submit($form, $params);
+        
+        $url = self::$router->generate('addUGC', array(
+            'mwid'  => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+        ));
+        $crawler = $this->client->request('GET', $url);
+        //select the form
+        $form = $crawler->selectButton('Add it')->form();
+        $invalidImage = new UploadedFile(
+                'src\SkNd\UserBundle\Tests\Controller\SampleImages\invalidimage.txt',
+                'invalidimage.txt',
+                'text/plain'
+                );
+        $params = array(
+            'memoryWallUGC[title]' => 'a title',
+            'memoryWallUGC[image]' => $invalidImage,
+            
+        );
+        $crawler = $this->client->submit($form, $params);
+        $this->assertTrue($crawler->filter('ul.form-errors:contains("Sorry, we can only accept jpgs, gifs or pngs")')->count() > 0, 'did not show file type error message');
     }
     
 //    public function testAddUGCCommentsToMemoryWallUGCDoesNotRequireTitleOrImageField() {
 //        
 //    }
-    
-    public function testEditMWUGCOnOthersWallThrowsException() {
-        
-    }
-    
-    public function testEditMWUGCWithMissingTitleThrowsException() {
-        
-    }
-    
-    public function testEditMWUGCClearImageDeletesImage(){
-        
-    }
     
     public function testDeleteMWUGCWhenNotLoggedInRedirectsToLogin(){
         
@@ -643,6 +661,20 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     public function testDeleteMWUGCAlsoDeletesAssociatedImage(){
         
     }
+    
+    public function testEditMWUGCOnOthersWallThrowsException() {
+        
+    }
+    
+    public function testEditMWUGCWithMissingTitleThrowsException() {
+        
+    }
+    
+    public function testEditMWUGCClearImageDeletesImage(){
+        
+    }
+    
+    
     
     //only applies to comments on items
 //    public function testEditOwnUGCWithinEditingTimeThresholdAllowsEdit() {

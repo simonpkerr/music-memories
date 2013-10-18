@@ -59,6 +59,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
     
     /**
+     * @Then /^I wait for ugc to appear$/
+     */
+    public function iWaitForUgcToAppear()
+    {
+        $this->getSession()->wait(5000, "$('div.error').children().length > 0");
+    }
+    
+    
+    /**
      * @Given /^I am logged in as "([^"]*)" "([^"]*)"$/
      */
     public function iAmLoggedInAs($username, $password){

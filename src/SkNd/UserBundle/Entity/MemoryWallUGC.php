@@ -23,14 +23,6 @@ class MemoryWallUGC extends MemoryWallContent{
         //$this->ugcMemoryWall = $params['mw'];
     }
     
-//    public function getUGCMemoryWall(){
-//        return $this->ugcMemoryWall;
-//    }
-//    
-//    public function setUGCMemoryWall($mw){
-//        $this->ugcMemoryWall = $mw;
-//    }
-    
     public function setTitle($title){
         $this->title = $title;
     }
@@ -76,7 +68,6 @@ class MemoryWallUGC extends MemoryWallContent{
         $this->createThumbnail();
         $this->getImage()->move($this->getUploadRootDir(), $this->imagePath);
         //create the thumbnail and move that as well
-        
         
         if(isset($this->tempImage)){
             unlink($this->getUploadRootDir(). '/' . $this->tempImage);

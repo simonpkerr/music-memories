@@ -15,7 +15,7 @@ class SkNdMediaExtensionTest extends WebTestCase
      */
     public function testGetNonExistentMediaResourceByIdThrowsException(){
         $mw = new MemoryWall();
-        $mw->getMediaResourceById('id');
+        $mw->getMWContentById('id', 'mwmr');
     }
     
     /**

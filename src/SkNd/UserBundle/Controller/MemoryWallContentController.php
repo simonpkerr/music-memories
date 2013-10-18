@@ -127,21 +127,21 @@ class MemoryWallContentController extends Controller
         ));
     }
     
-    public function deleteMediaResourceAction($mwid, $slug, $id, $confirmed = false){
+    public function deleteContentAction($mwid, $slug, $id, $type, $confirmed = false){
         $this->mwAccessManager = $this->getMWAccessManager();
         $this->em = $this->getEntityManager();
-        $mw = $this->mwAccessManager->getOwnWall($mwid, 'mediaResource.delete.flash.accessDenied');
+        $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWallContent.delete.flash.accessDenied');
         try{
-            $mr = $mw->getMediaResourceById($id);
+            $mwc = $mw->getMWContentById($id, $type);
         } catch(\InvalidArgumentException $iae) {
-            throw $this->createNotFoundException("Media Resource cannot be deleted");
+            throw $this->createNotFoundException("memoryWallContent.delete.flash.contentNotFound");
         }
         
         //if the token is set, delete the media resource, else show the confirmation screen
         if($confirmed){ 
-            $mw->deleteMediaResourceById($id);
+            $mw->deleteMWContentById($id, $type);
             $this->em->flush();
-            $this->get('session')->getFlashBag()->add('notice', 'mediaResource.delete.flash.success');
+            $this->get('session')->getFlashBag()->add('notice', 'memoryWallContent.delete.flash.success');
             return $this->redirect($this->generateUrl('memoryWallShow', array(
                 'id'    => $mwid,
                 'slug'  => $slug,
@@ -155,9 +155,10 @@ class MemoryWallContentController extends Controller
              * in which case, all the media resources will have been cached, so there is no need
              * to look up the resource again
              */
-            return $this->render('SkNdUserBundle:MemoryWall:deleteMediaResource.html.twig', array(
+            return $this->render('SkNdUserBundle:MemoryWallContent:deleteMWContent.html.twig', array(
                 'mw'    => $mw,
-                'mr'    => $mr,
+                'mwc'   => $mwc,
+                'type'  => $type,
             ));
         }
     }

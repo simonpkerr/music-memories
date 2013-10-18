@@ -23,7 +23,7 @@
         %}
 
         {% if wallBelongsToThisUser %}
-        <li><a class="button" href="{{ path('memoryWallDeleteMediaResource', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span class="sprites close-icon">Remove</span></a></li>
+        <li><a class="button" href="{{ path('memoryWallDeleteContent', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'type':'mwmr', 'id': mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span class="sprites close-icon">Remove</span></a></li>
         {% endif %}
     </ul>
 </li>
