@@ -18,5 +18,5 @@ SkNd\UserBundle\Entity\MemoryWallUGC:
       preUpdate: [preUpload]
       postPersist: [upload]
       postUpdate: [upload]
-      postRemove: [removeUpload]
+      preRemove: [removeUpload]
       

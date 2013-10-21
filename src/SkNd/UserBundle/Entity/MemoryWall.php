@@ -30,18 +30,12 @@ class MemoryWall
     protected $memoryWallUGC;
     protected $memoryWallMediaResources;
     protected $memoryWallContent;
-    protected $mwContent;
-
+   
     public function __construct(User $user = null, $memoryWallName = null){
         //$this->mediaResources = new ArrayCollection();
         $this->memoryWallMediaResources = new ArrayCollection();
         $this->memoryWallUGC = new ArrayCollection();
         $this->memoryWallContent = new ArrayCollection();
-        $this->mwContent = array(
-            'mwmr'  => $this->memoryWallMediaResources,
-            'mwugc' => $this->memoryWallUGC,
-            'mwc'   => $this->memoryWallContent,
-        );        
         $this->setIsPublic(true);
         if($user != null){
             if(!is_null($memoryWallName)){
@@ -117,22 +111,26 @@ class MemoryWall
         }, $mrs);
     }
     
+    //get array collection based on string passed to function (mwc, ugc, mr)
+    private function getContentArray($type){
+         return $type == 'mwc' ? $this->memoryWallContent : $type = 'ugc' ? $this->memoryWallUGC : $this->memoryWallMediaResources;
+    }
+    
     public function getMWContentById($mrId, $type = 'mwc'){
-        if(!isset($this->mwContent[$type][$mrId]))
-        //if(!isset($this->memoryWallMediaResources[$mrId]))
+        $contentArray = $this->getContentArray($type);
+        
+        if(!isset($contentArray[$mrId]))
             throw new \InvalidArgumentException('Media Resource not found');
         
-        //return $this->memoryWallMediaResources[$mrId]->getMediaResource();
-        return $this->mwContent[$type][$mrId];
+        return $contentArray[$mrId];
     }
     
     public function deleteMWContentById($id, $type = 'mwc'){
-        if(!isset($this->mwContent[$type][$id]))
-        //if(!isset($this->memoryWallMediaResources[$id]))
+        $contentArray = $this->getContentArray($type);
+        if(!isset($contentArray[$id]))
             throw new \InvalidArgumentException('Media Resource not found');
         
-        $this->mwContent[$type]->remove($id);
-        //$this->memoryWallMediaResources->remove($id);
+        $contentArray->remove($id);
     }
  
     public function addMediaResource(MediaResource $mr){

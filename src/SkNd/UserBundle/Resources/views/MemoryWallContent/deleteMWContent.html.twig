@@ -3,19 +3,16 @@
 
 {% block content %}
 <h1>Delete an item from your Memory Wall</h1>
-{% 
-if type = 'mwmr' and mwc.mediaResource.mediaResourceCache is not null 
-set mrc = mwc.mediaResource.mediaResourceCache
-set title = mrc.title
-%}
-
+{% if type == 'mr' and mwc.mediaResource.mediaResourceCache is not null %}
+{% set mrc = mwc.mediaResource.mediaResourceCache %}
+{% set title = mrc.title %}
 <img class="mw-MediaResource" src="{{mrc.imageUrl}}" alt="{{mrc.title}}" />
 {% else %}
-set title = mwc.title
+{% set title = mwc.title %}
 {% endif %}
 <p>Are you <span class="italic">really</span> sure you want to remove &ldquo;<strong>{{ title|default('this item') }}&rdquo;</strong> from your Memory Wall &ndash; <strong>{{ mw.name }}</strong>?</p>
 <ul class="bullet-list fl">
-    <li><a href="{{ path('memoryWallDeleteContentConfirm', {'mwid':mw.id, 'slug':mw.slug, 'type':type, 'id': mr.id, 'confirmed':'true' }) }}" title="remove the item">{{ 'memoryWallContent.delete.confirm'|trans({}, 'SkNdUserBundle')|raw }}</a></li> 
+    <li><a href="{{ path('memoryWallDeleteContentConfirm', {'mwid':mw.id, 'slug':mw.slug, 'type':type, 'id': mwc.id, 'confirmed':'true' }) }}" title="remove the item">{{ 'memoryWallContent.delete.confirm'|trans({}, 'SkNdUserBundle')|raw }}</a></li> 
     <li><a href="{{ path('memoryWallShow', {'id': mw.id, 'slug' : mw.slug }) }}" title="Cancel removing the item">{{ 'memoryWallContent.delete.cancel'|trans({}, 'SkNdUserBundle')|raw }}</a></li> 
 </ul>
 {% endblock content %}
