@@ -15,7 +15,7 @@
             <a href="javascript:void(0)" onclick="play('{{ytResult.id}}','{{ytResult.title|escape('js')}}')" title="Click to play {{ ytResult.title }}">
                 {{ ytResult.title|title|slice(0,35) }}{% if ytResult.title|title|length > 35 %}&hellip;{%endif%}</a>
             <ul class="actions">
-            {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
+            {% include "SkNdUserBundle:MemoryWallContent:addToMemoryWallListPartial.html.twig" 
             with {
             'api'       : listings.api.name,
             'itemId'    : ytResult.id,

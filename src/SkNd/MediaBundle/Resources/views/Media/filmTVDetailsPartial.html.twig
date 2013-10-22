@@ -35,7 +35,7 @@
         <p>{{ item.EditorialReviews.EditorialReview.Content }}</p>
         {% endif %#}
         <ul class="actions fl two-thirds-width">
-            {% include "SkNdUserBundle:MemoryWall:addToMemoryWallListPartial.html.twig" 
+            {% include "SkNdUserBundle:MemoryWallContent:addToMemoryWallListPartial.html.twig" 
                 with {
                 'api'       : mediaResource.api.name,
                 'itemId'    : item.ASIN,

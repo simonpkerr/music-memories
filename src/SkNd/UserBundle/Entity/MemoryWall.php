@@ -113,11 +113,21 @@ class MemoryWall
     
     //get array collection based on string passed to function (mwc, ugc, mr)
     private function getContentArray($type){
-         return $type == 'mwc' ? $this->memoryWallContent : $type = 'ugc' ? $this->memoryWallUGC : $this->memoryWallMediaResources;
+        switch($type){
+            case 'mr':
+                return $this->memoryWallMediaResources;
+                break;
+            case 'ugc':
+                return $this->memoryWallUGC;
+                break;
+            default:
+                return $this->memoryWallContent;               
+        } 
     }
     
     public function getMWContentById($mrId, $type = 'mwc'){
         $contentArray = $this->getContentArray($type);
+        $c = $contentArray->count();
         
         if(!isset($contentArray[$mrId]))
             throw new \InvalidArgumentException('Media Resource not found');
