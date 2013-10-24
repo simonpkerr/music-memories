@@ -11,7 +11,7 @@ use SkNd\UserBundle\Entity\MemoryWall;
  * Original code Copyright (c) 2011 Simon Kerr
  * MWCMediaResourcesTest for all operations of memory walls related to mediaresources
  * the DataFixtures/ORM/LoadUsers fixtures file should be loaded first
- * php app/console doctrine:fixtures:load --fixtures=src/SkNd/UserBundle/DataFixtures/ORM --append
+ * php app/console doctrine:fixtures:load --fixtures=src/SkNd/UserBundle/DataFixtures/ORM --append --env=test
  * @author Simon Kerr
  * @version 1.0
  * debug cmd: set XDEBUG_CONFIG=idekey=netbeans-xdebug 
@@ -548,8 +548,6 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     
     public function testDeleteMWUGCOnOthersWallThrowsException(){
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
-        $this->login('testuser3', 'testuser3');
- 
         $ugc = $this->getNewUGC($mw);
         $mw->addMemoryWallUGC($ugc);
         self::$em->persist($mw);
@@ -571,8 +569,28 @@ class MemoryWallMediaResourcesTest extends WebTestCase
         self::$em->flush();
     }
     
-    public function testDeleteMWUGCWhenSuperUserDeletesUGC(){
+    public function testDeleteMWUGCWhenSuperAdminDeletesUGC(){
+        //create ugc as testuser 3
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
+        $ugc = $this->getNewUGC($mw);
+        $mw->addMemoryWallUGC($ugc);
+        self::$em->persist($mw);
+        self::$em->flush();
         
+        //login as testadmin and try to delete ugc
+        $this->login('testadmin', 'testadmin');
+        $crawler = $this->client->request('GET', self::$router->generate('memoryWallDeleteContentConfirm', array(
+            'mwid'  => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+            'type'  => 'ugc',
+            'id'    => $ugc->getId(),
+            'confirmed' => 'true',
+        )));
+        $this->assertTrue($crawler->filter('div.flashMessages li:contains("The item was successfully deleted")')->count() > 0, 'did not delete item');
+                
+        $mw->deleteMWContentById($ugc->getId(), 'ugc');
+        self::$em->persist($mw);
+        self::$em->flush();
     }
     
     public function testDeleteMWUGCAlsoDeletesAssociatedImage(){

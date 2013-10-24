@@ -77,7 +77,7 @@ class MemoryWallController extends Controller
         $mw = new MemoryWall($this->currentUser);
         $form = $this->createForm(new MemoryWallType(), $mw); 
         if($request->getMethod() == 'POST'){
-            $form->bindRequest($request);
+            $form->bind($request);
             //check form is valid 
             if($form->isValid()){
                 $mw = $form->getData();

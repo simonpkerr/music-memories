@@ -5,7 +5,7 @@
         {{ render(controller('SkNdUserBundle:MemoryWallContent:showMemoryWallContent', {
             'params' : {
                 'mwc': mwc,
-                'wallBelongsToThisUser' : wallBelongsToThisUser
+                'wallBelongsToCurrentUser' : wallBelongsToCurrentUser
             }
         })) }}
     {% endfor %}        

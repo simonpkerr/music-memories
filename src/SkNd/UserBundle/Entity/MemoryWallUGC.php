@@ -78,7 +78,7 @@ class MemoryWallUGC extends MemoryWallContent{
     
     public function removeUpload()
     {
-        if (null !== $this->imagePath) {
+        if (null !== $this->imagePath && file_exists($this->getAbsolutePath())) {
             unlink($this->getAbsolutePath());
             unlink($this->getThumbnailAbsolutePath());
         }

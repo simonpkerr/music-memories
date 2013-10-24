@@ -35,7 +35,7 @@ class MemoryWallAccessManager {
     
     public function getOwnWall($id, $exceptionMessage = 'memoryWall.show.flash.accessDenied'){
         $mw = $this->getMemoryWall($id);
-        if(!$this->memoryWallBelongsToUser($mw)){
+        if(!($this->memoryWallBelongsToUser($mw) || $this->securityContext->isGranted('ROLE_ADMIN'))){
             $this->session->getFlashBag()->add('notice', $exceptionMessage);
             throw new AccessDeniedException('This user does not have access to this section.');
         }
@@ -75,7 +75,7 @@ class MemoryWallAccessManager {
     
     public function memoryWallBelongsToUser(MemoryWall $mw){
         //if the memory wall is private and the selected wall doesn't belong to the current user throw exception
-        return $this->currentUserIsAuthenticated() && $mw->getUser() == $this->getCurrentUser();        
+        return ($this->currentUserIsAuthenticated() && $mw->getUser() == $this->getCurrentUser()) || $this->securityContext->isGranted('ROLE_ADMIN') == 1;        
         
     }
     

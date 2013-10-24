@@ -8,7 +8,7 @@
         <a href="{{ mwc.webPath }}" class="lightbox"><img src="{{ mwc.thumbnailWebPath }}" alt="{{ mwc.title }}" /></a>
     {% endif %}
     <ul class="actions fl">
-        {% if wallBelongsToThisUser %}
+        {% if wallBelongsToCurrentUser %}
         <li><a class="button" href="{{ path('memoryWallDeleteContent', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'type': 'ugc', 'id': mwc.id }) }}" title="Remove {{ mwc.title }} from this wall"><span class="sprites close-icon">Remove</span></a>
         </li>
         {% endif %}

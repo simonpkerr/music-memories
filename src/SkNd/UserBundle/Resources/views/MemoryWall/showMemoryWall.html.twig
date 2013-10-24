@@ -64,7 +64,7 @@ Memory walls, memories, {{mw.associatedDecade is not null ? mw.associatedDecade.
 {% endif %}
 {% include "SkNdUserBundle:MemoryWallContent:memoryWallContentPartial.html.twig" 
     with {
-        'wallBelongsToThisUser' : wallBelongsToThisUser,
+        'wallBelongsToCurrentUser' : wallBelongsToCurrentUser,
         'mw'    : mw,
         'apis'  : apis
     } 

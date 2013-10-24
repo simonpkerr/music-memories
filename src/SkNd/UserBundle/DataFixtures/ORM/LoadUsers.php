@@ -28,7 +28,7 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface {
     //in order to get access to methods controlled by the container, it can be automatically injected using this method
     public function setContainer(ContainerInterface $container = null){
         $this->container = $container;
-        $this->em = $this->container->get('doctrine')->getEntityManager();
+        $this->em = $this->container->get('doctrine')->getManager();
         $this->userManager = $this->container->get('fos_user.user_manager');
         
     }
@@ -53,8 +53,8 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface {
         array_push($mrs, $this->getNewMediaResource('testuser-mr1',$manager));
         array_push($mrs, $this->getNewMediaResource('testuser-mr2',$manager));
         array_push($mrs, $this->getNewMediaResource('testuser-mr3',$manager));
-        
-        //3 sample users
+                
+        //3 sample users and 1 admin
         $user = $this->userManager->createUser();
         $user->setDateofbirth(new \DateTime("now"));
         $user->setUsername('testuser');
@@ -95,6 +95,16 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface {
         $this->userManager->updateUser($user, true);
         $mw = $user->getMemoryWalls()->first();
         $mw->addMediaResource($mrs[2]);
+        
+        $user = $this->userManager->createUser();
+        $user->setDateofbirth(new \DateTime("now"));
+        $user->setUsername('testadmin');
+        $user->setEmail('testadmin@testadmin.com');
+        $user->setPlainPassword('testadmin');
+        $user->setEnabled(true);
+        $user->addRole('ROLE_SUPER_ADMIN');
+        $user->createDefaultMemoryWall('my-memory-wall-3');
+        $this->userManager->updateUser($user, true);
         
         $manager->flush();
         

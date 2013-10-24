@@ -37,6 +37,7 @@
         beforeSend: function () {
             percentVal = '0%';
             bar.width(percentVal);
+            $('div.flashMessages').empty();
         },
         uploadProgress: function (event, position, total, percentComplete) {
             percentVal = percentComplete + '%';
@@ -72,6 +73,10 @@
                     }
                 }
             } else {
+                //if there's nothing on the wall
+                if($('div#memoryWallContents > ul').length === 0) {
+                   $('div#memoryWallContents').empty().prepend($('<ul />'));
+                }
                 ugcContent = $(json.content)
                     .hide()
                     .prependTo($('div#memoryWallContents > ul'))

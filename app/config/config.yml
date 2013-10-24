@@ -18,7 +18,7 @@ framework:
       assets_base_urls:
         http: ["/SkNd/web"]
     default_locale:  "%locale%"
-    trust_proxy_headers: false # Deprecated in 2.0; will be removed in 2.3 (used trusted_proxies instead)
+    #trust_proxy_headers: false # Deprecated in 2.0; will be removed in 2.3 (used trusted_proxies instead)
     trusted_proxies: ~
     session:         ~
 

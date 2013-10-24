@@ -25,7 +25,7 @@ class LoadCachedListings implements FixtureInterface, ContainerAwareInterface {
     //in order to get access to methods controlled by the container, it can be automatically injected using this method
     public function setContainer(ContainerInterface $container = null){
         $this->container = $container;
-        $this->em = $this->container->get('doctrine')->getEntityManager();
+        $this->em = $this->container->get('doctrine')->getManager();
     }
     
     public function load(ObjectManager $manager){

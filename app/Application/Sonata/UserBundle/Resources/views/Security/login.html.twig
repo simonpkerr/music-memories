@@ -1,0 +1,43 @@
+{% extends 'SkNdUserBundle::layout.html.twig' %}
+
+{% block title %}Log In{% endblock %}
+
+{% block fos_user_content %}
+<h1>Get yourself logged in</h1>
+
+<form class="half-width fl left" action="{{ path("fos_user_security_check") }}" method="post">
+    <fieldset>
+        <legend>Enter your stuff</legend>
+    
+        {% if error %}
+        <div class="errors">
+            
+            <p>{{ error|trans({}, 'FOSUserBundle') }}</p>
+        </div>
+        {% endif %}
+        
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+    <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+    <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+    <input type="password" id="password" name="_password" />
+
+    <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+    
+
+    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+    </fieldset>
+</form>
+
+<div class="half-width fr right"> 
+    <h2>Some options</h2>
+    <ul class="bullet-list">
+        <li><a href="{{ path('fos_user_resetting_request') }}">Forgotten your password?</a> Get it back here.</li>
+        <li>Not signed up yet?! Come on! What are you waiting for? <a href="{{ path('fos_user_registration_register') }}">Get Signed Up Today!</a></li>
+    </ul>
+</div>
+    
+{% endblock fos_user_content %}

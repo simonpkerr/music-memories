@@ -1,0 +1,1 @@
+the login view that is being picked up now is in the Sonata UserBundle bundle
