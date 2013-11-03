@@ -175,8 +175,9 @@ class MemoryWallContentController extends Controller
             'mw'    =>  $mw,
         ));
         $form = $this->createForm(new MemoryWallUGCType(), $mwugc); 
+        $form->handleRequest($request);
         if($request->getMethod() == 'POST'){
-            $form->bind($request);
+            //$form->bind($request);
             //check form is valid 
             $response = new JsonResponse();
             $errors = array();
@@ -193,7 +194,7 @@ class MemoryWallContentController extends Controller
                     $flash = $session->getFlashBag()->get('notice');
                     $content = $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', array(
                         'mwc' => $mwugc,
-                        'wallBelongsToThisUser' => $this->mwAccessManager->memoryWallBelongsToUser($mw),
+                        'wallBelongsToCurrentUser' => $this->mwAccessManager->memoryWallBelongsToUser($mw),
                     ))->getContent();
 
                     $response->setData(array(
@@ -228,10 +229,27 @@ class MemoryWallContentController extends Controller
             
         }
         
-        return $this->render('SkNdUserBundle:MemoryWallContent:addUGCPartial.html.twig', array(
+        return $this->render('SkNdUserBundle:MemoryWallContent:UGCPartial.html.twig', array(
             'mwid'   => $mwid,
             'slug'   => $slug,
             'form'   => $form->createView(),
         ));
+    }
+    
+    public function editUGCAction($id, $slug, Request $request = null){
+        $this->mwAccessManager = $this->getMWAccessManager();
+        $this->em = $this->getEntityManager();
+        $session = $this->get('session');
+        $this->userManager = $this->mwAccessManager->getUserManager();
+        $this->currentUser = $this->mwAccessManager->getCurrentUser();
+        $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWall.ugc.edit.flash.accessDenied');
+        
+        $mwugc = new MemoryWallUGC(array(
+            'mw'    =>  $mw,
+        ));
+        $form = $this->createForm(new MemoryWallUGCType(), $mwugc);
+        $form->handleRequest($request);
+        
+        
     }
 }

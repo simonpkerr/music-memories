@@ -143,23 +143,21 @@ class MemoryWallController extends Controller
         $mw = $this->mwAccessManager->getOwnWall($id, 'memoryWall.edit.flash.accessDenied');
         
         $form = $this->createForm(new MemoryWallType(), $mw); 
-        
-        if("POST" === $request->getMethod()){
-            $form->bindRequest($request);
-            //check form is valid 
-            if($form->isValid()){
-                $mw = $form->getData();
-                $this->em->persist($mw);
-                $this->em->flush();
-                $session->getFlashBag()->add('notice', 'memoryWall.edit.flash.success');
-                return $this->redirect($this->generateUrl('memoryWallShow', array(
-                    'id'    => $mw->getId(),
-                    'slug'  => $mw->getSlug(),
-                    )
-                ));
-            }    
-        }
-        
+        $form->handleRequest($request);
+                    
+        //check form is valid 
+        if($form->isValid()){
+            $mw = $form->getData();
+            $this->em->persist($mw);
+            $this->em->flush();
+            $session->getFlashBag()->add('notice', 'memoryWall.edit.flash.success');
+            return $this->redirect($this->generateUrl('memoryWallShow', array(
+                'id'    => $mw->getId(),
+                'slug'  => $mw->getSlug(),
+                )
+            ));
+        }    
+                
         return $this->render('SkNdUserBundle:MemoryWall:editMemoryWall.html.twig', array(
             'form'          => $form->createView(),
             'mw'            => $mw,

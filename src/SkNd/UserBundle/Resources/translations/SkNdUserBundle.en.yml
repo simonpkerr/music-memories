@@ -45,6 +45,12 @@ memoryWall:
         success: Ah yeah! You just added some stuff
       submit: Add it
       reset: Reset
+    edit:
+        flash:
+            accessDenied: Please log in first, then you can edit your stuff
+            success: All changed. Nice one.
+        submit: Update
+        reset: Reset
 mediaResource:
   add:
     flash:

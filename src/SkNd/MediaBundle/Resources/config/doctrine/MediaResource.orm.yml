@@ -42,6 +42,7 @@ SkNd\MediaBundle\Entity\MediaResource:
       targetEntity: MediaResourceCache
       cascade: ["persist", "merge", "remove"]
       orphanRemoval: true
+      nullable: true
       joinColumn:
         name: mediaResourceCache_id
         referencedColumnName: id

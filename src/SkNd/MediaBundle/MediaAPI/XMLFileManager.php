@@ -23,11 +23,14 @@ class XMLFileManager {
         $timeStamp = new \DateTime("now");
         $timeStamp = $timeStamp->format("Y-m-d_H-i-s");
         $xmlRef = uniqid('d' . $apiRef . '-' . $timeStamp);
-        try {
+        if(file_exists($this->cache_path . $xmlRef . '.xml')){
             $xmlData->asXML($this->cache_path . $xmlRef . '.xml');
+        }
+        /*try {
+            
         } catch (\Exception $ex) {
             throw new \Exception("error creating cache file for " . $xmlRef);
-        }
+        }*/
         
         return $xmlRef;
     }

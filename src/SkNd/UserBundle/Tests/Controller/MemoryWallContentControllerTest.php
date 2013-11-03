@@ -594,6 +594,30 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     }
     
     public function testDeleteMWUGCAlsoDeletesAssociatedImage(){
+        //create ugc with image and store image location
+        $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
+        $ugc = $this->getNewUGC($mw);
+        $ugc->setTitle("valid ugc");
+        $image = new UploadedFile(
+                'src\SkNd\UserBundle\Tests\Controller\SampleImages\validimage.jpg',
+                'validimage.jpg',
+                'image/jpeg'
+                );
+        $ugc->setImage($image);
+        $mw->addMemoryWallUGC($ugc);
+        self::$em->persist($mw);
+        self::$em->flush();
+        
+        //assert that image exists
+        $this->assertTrue(file_exists($ugc->getAbsolutePath()), "image does not exist");
+        
+        //delete ugc
+        $mw->deleteMWContentById($ugc->getId(), 'ugc');
+        self::$em->persist($mw);
+        self::$em->flush();
+        
+        //assert that image doesn't exist
+        $this->assertTrue(!file_exists($ugc->getAbsolutePath()), "image still exists");
         
     }
     

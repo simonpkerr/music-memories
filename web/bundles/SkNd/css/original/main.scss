@@ -8,9 +8,14 @@
 
 $desktop: "only screen and (min-width: 600px)";
 $mobile: "only screen and (max-width: 599px)";
-@import "mixins","normalize.scss","boilerplate.scss","generics.scss","typography.scss","forms.scss","sprites.scss";
+@import "mixins",
+"normalize.scss",
+"boilerplate.scss",
+"generics.scss",
+"typography.scss",
+"forms.scss",
+"sprites.scss";
 //$tablet: "only screen and (min-width: 481px)";
-
 
 /*------ main styles for all width devices -----------*/
 body {
@@ -1025,9 +1030,7 @@ a.go-back {
                     margin-top: 10px;
                     width: auto;
                     background-position: left 50%;
-                    //@media #{$desktop}{ 
-                    //    width: 10em;
-                    //}
+                    
                 }
 
                 div { 
