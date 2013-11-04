@@ -229,7 +229,7 @@ class MemoryWallContentController extends Controller
             
         }
         
-        return $this->render('SkNdUserBundle:MemoryWallContent:UGCPartial.html.twig', array(
+        return $this->render('SkNdUserBundle:MemoryWallContent:addUGCPartial.html.twig', array(
             'mwid'   => $mwid,
             'slug'   => $slug,
             'form'   => $form->createView(),

@@ -596,25 +596,40 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     public function testDeleteMWUGCAlsoDeletesAssociatedImage(){
         //create ugc with image and store image location
         $mw = self::$em->getRepository('SkNdUserBundle:MemoryWall')->getMemoryWallBySlug('my-memory-wall-2');
-        $ugc = $this->getNewUGC($mw);
-        $ugc->setTitle("valid ugc");
         $image = new UploadedFile(
                 'src\SkNd\UserBundle\Tests\Controller\SampleImages\validimage.jpg',
                 'validimage.jpg',
                 'image/jpeg'
                 );
-        $ugc->setImage($image);
-        $mw->addMemoryWallUGC($ugc);
-        self::$em->persist($mw);
-        self::$em->flush();
         
+        $this->login('testuser3', 'testuser3');
+        $url = self::$router->generate('addUGC', array(
+            'mwid'  => $mw->getId(),
+            'slug'  => $mw->getSlug(),
+        ));
+        $crawler = $this->client->request('GET', $url);
+        //select the form
+        $form = $crawler->selectButton('Add it')->form();
+        $params = array(
+            'memoryWallUGC[title]' => 'a title',
+            'memoryWallUGC[image]' => $image,
+        );
+        $crawler = $this->client->submit($form, $params);
+        
+        //get ugc
+        $ugc = $mw->getMemoryWallUGC()->last();
+                
         //assert that image exists
         $this->assertTrue(file_exists($ugc->getAbsolutePath()), "image does not exist");
         
         //delete ugc
+        //$this->client->click($crawler->filter('#memoryWallContents ul li:first-child a.button')->link());
+        //click confirm
+        //$this->client->click($crawler->filter('#content ul li:first-child a')->link());
         $mw->deleteMWContentById($ugc->getId(), 'ugc');
         self::$em->persist($mw);
         self::$em->flush();
+        
         
         //assert that image doesn't exist
         $this->assertTrue(!file_exists($ugc->getAbsolutePath()), "image still exists");

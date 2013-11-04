@@ -79,6 +79,7 @@ class MemoryWall
     
     public function getMemoryWallUGC(){
         return $this->memoryWallUGC;
+        
     }
     
     public function setMemoryWallUGC(ArrayCollection $mwugc){
