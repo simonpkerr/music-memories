@@ -236,7 +236,7 @@ class MemoryWallContentController extends Controller
         ));
     }
     
-    public function editUGCAction($id, $slug, Request $request = null){
+    public function editUGCAction($mwid, $slug, $mwugcid, Request $request = null){
         $this->mwAccessManager = $this->getMWAccessManager();
         $this->em = $this->getEntityManager();
         $session = $this->get('session');
@@ -249,7 +249,63 @@ class MemoryWallContentController extends Controller
         ));
         $form = $this->createForm(new MemoryWallUGCType(), $mwugc);
         $form->handleRequest($request);
+        if($request->getMethod() == 'POST'){
+            $response = new JsonResponse();
+            $errors = array();
+            $content = array();
+            
+            if($form->isValid()){
+                $mwugc = $form->getData();
+                //$mw->addMemoryWallUGC($mwugc);
+                $this->em->persist($mwugc);
+                $this->em->flush();                
+                $session->getFlashBag()->add('notice', 'memoryWall.ugc.edit.flash.success');
+                
+                //if come from ajax request return json, otherwise redirect to show wall
+                if($request->isXmlHttpRequest()){
+                    $flash = $session->getFlashBag()->get('notice');
+                    $content = $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', array(
+                        'mwc' => $mwugc,
+                        'wallBelongsToCurrentUser' => $this->mwAccessManager->memoryWallBelongsToUser($mw),
+                    ))->getContent();
+
+                    $response->setData(array(
+                        'status'    => 'success',
+                        'content'   => $content,
+                    ));
+                    return $response;
+                } else {
+                    return $this->redirect($this->generateUrl('memoryWallShow', array(
+                        'id'    => $mw->getId(),
+                        'slug'  => $mw->getSlug(),
+                        )
+                    ));
+                }
+                
+            } else {
+                if($request->isXmlHttpRequest()){
+                    foreach ($form->all() as $formElement) {
+                        if(count($formElement->getErrors()) > 0){
+                            $e = $formElement->getErrors();
+                            $content[$formElement->getName()] = $e[0]->getMessage();
+
+                        }
+                    }
+                    $response->setData(array(
+                        'status'    =>  'fail',
+                        'content'   =>  $content,
+                    ));
+                    return $response;
+                }
+            }           
+            
+        }
         
+        return $this->render('SkNdUserBundle:MemoryWallContent:addUGCPartial.html.twig', array(
+            'mwid'   => $mwid,
+            'slug'   => $slug,
+            'form'   => $form->createView(),
+        ));
         
     }
 }
