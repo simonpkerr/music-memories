@@ -1,8 +1,13 @@
 (function ($) {
-    var bar,
-        percentVal,
-        ugcForm,
-        flashMessages;
+    var percentVal = '0%',
+        ugcForm = ugcForm = $('#add-ugc-form'),
+        bar = $('#add-ugc-container #bar'),
+        flashMessages = $('<div class="flashMessages fr"><ul></ul></div>');
+        
+    
+    $('<a class="sprites close-icon">hide this message</a>').click(function (){
+        $(this).parent().hide();
+    }).prependTo(flashMessages);
 
     $('div#mw-options li').hover(function () {
         if (!$('> div', this).hasClass('open')) {
@@ -26,12 +31,6 @@
         return false;
     });
 
-    bar = $('#add-ugc-container #bar');
-    ugcForm = $('#add-ugc-form');
-    flashMessages = $('<div class="flashMessages fr"><ul></ul></div>');
-    $('<a class="sprites close-icon">hide this message</a>').click(function (){
-        $(this).parent().hide();
-    }).prependTo(flashMessages);
     ugcForm.ajaxForm({
         dataType: 'json',
         beforeSend: function () {
@@ -54,15 +53,13 @@
                 error,
                 errorList,
                 ugcContent,
-                makeFlashMessage = function (status) {
+                makeFlashMessage = function (flash) {
                     $('div.flashMessages').attr('style', '').children('ul').empty();
-                    var flashMessage = status === 'fail' ? 'Sorry, there was a problem with that. Please try again' : 'Yay, you just added something';
-                    $('<li class="info">' + flashMessage + '</li>').appendTo($('ul', flashMessages));
+                    $('<li class="info">' + flash + '</li>').appendTo($('ul', flashMessages));
                     $('div#header').after(flashMessages);
                 };
-            makeFlashMessage(json.status);
+            makeFlashMessage(json.flash);
             if (json.status === 'fail') {
-
                 for (error in json.content) {
                     if (json.content.hasOwnProperty(error)) {
                         errorList = $('<ul class="form-errors" />').append('<li>' + json.content[error] + '</li>');

@@ -40,6 +40,8 @@ class MemoryWallUGCType extends AbstractType {
             'label' => 'form.memory_wall.ugc.image',
             'translation_domain' => 'SkNdUserBundle',
         ));
+        
+        //$builder->add('id', 'hidden');
     }
 
     public function getName() {

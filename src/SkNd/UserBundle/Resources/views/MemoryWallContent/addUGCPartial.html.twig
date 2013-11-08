@@ -1,9 +1,9 @@
-<form id="add-ugc-form" class="full-width" action="{{ path('addUGC',{'mwid':mwid, 'slug':slug }) }}" {{ form_enctype(form) }} method="POST">
+<form id="add-ugc-form" class="full-width" action="{{ path('memoryWallAddUGC',{'mwid':mwid, 'slug':slug }) }}" {{ form_enctype(form) }} method="POST">
     <fieldset>
     <legend>Add yer own stuff</legend>
     {{ form_widget(form) }}
     <div class="controls">
-        <input type="reset" class="grey button" value="{{ 'memoryWall.ugc.add.reset'|trans({}, 'SkNdUserBundle') }}" />
+        <input type="reset" class="grey button" value="{{ 'memoryWall.ugc.form.reset'|trans({}, 'SkNdUserBundle') }}" />
         <input type="submit" value="{{ 'memoryWall.ugc.add.submit'|trans({}, 'SkNdUserBundle') }}" />
         
     </div>

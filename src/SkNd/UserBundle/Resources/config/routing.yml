@@ -68,10 +68,16 @@ memoryWallDeleteContentConfirm:
     confirmed: "true"
 
 #route for wall owners to add UGC (with images)
-addUGC:
-  pattern: /ugc/add/{mwid}/{slug}/
+memoryWallAddUGC:
+  pattern: /memorywall/{mwid}/{slug}/ugc/add
   defaults:
     _controller: SkNdUserBundle:MemoryWallContent:addUGC
   requirements:
     _method: GET|POST
-   
+
+memoryWallEditUGC:
+  pattern: /memorywall/{mwid}/{slug}/ugc/edit/{id}
+  defaults:
+    _controller: SkNdUserBundle:MemoryWallContent:editUGC
+  requirements:
+    _method: GET|POST

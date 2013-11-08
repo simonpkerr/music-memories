@@ -167,8 +167,8 @@ class MemoryWallContentController extends Controller
         $this->mwAccessManager = $this->getMWAccessManager();
         $this->em = $this->getEntityManager();
         $session = $this->get('session');
-        $this->userManager = $this->mwAccessManager->getUserManager();
-        $this->currentUser = $this->mwAccessManager->getCurrentUser();
+        //$this->userManager = $this->mwAccessManager->getUserManager();
+        //$this->currentUser = $this->mwAccessManager->getCurrentUser();
         $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWall.ugc.add.flash.accessDenied');
         
         $mwugc = new MemoryWallUGC(array(
@@ -180,7 +180,6 @@ class MemoryWallContentController extends Controller
             //$form->bind($request);
             //check form is valid 
             $response = new JsonResponse();
-            $errors = array();
             $content = array();
             
             if($form->isValid()){
@@ -200,6 +199,7 @@ class MemoryWallContentController extends Controller
                     $response->setData(array(
                         'status'    => 'success',
                         'content'   => $content,
+                        'flash'     => $flash,
                     ));
                     return $response;
                 } else {
@@ -211,6 +211,7 @@ class MemoryWallContentController extends Controller
                 }
                 
             } else {
+                $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.fail');
                 if($request->isXmlHttpRequest()){
                     foreach ($form->all() as $formElement) {
                         if(count($formElement->getErrors()) > 0){
@@ -222,6 +223,7 @@ class MemoryWallContentController extends Controller
                     $response->setData(array(
                         'status'    =>  'fail',
                         'content'   =>  $content,
+                        'flash'     => $flash,
                     ));
                     return $response;
                 }
@@ -236,22 +238,19 @@ class MemoryWallContentController extends Controller
         ));
     }
     
-    public function editUGCAction($mwid, $slug, $mwugcid, Request $request = null){
+    public function editUGCAction($id, $mwid, $slug, Request $request = null){
         $this->mwAccessManager = $this->getMWAccessManager();
         $this->em = $this->getEntityManager();
         $session = $this->get('session');
-        $this->userManager = $this->mwAccessManager->getUserManager();
-        $this->currentUser = $this->mwAccessManager->getCurrentUser();
+        //$this->userManager = $this->mwAccessManager->getUserManager();
+        //$this->currentUser = $this->mwAccessManager->getCurrentUser();
         $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWall.ugc.edit.flash.accessDenied');
         
-        $mwugc = new MemoryWallUGC(array(
-            'mw'    =>  $mw,
-        ));
+        $mwugc = $mw->getMWContentById($id, 'ugc');
         $form = $this->createForm(new MemoryWallUGCType(), $mwugc);
         $form->handleRequest($request);
         if($request->getMethod() == 'POST'){
             $response = new JsonResponse();
-            $errors = array();
             $content = array();
             
             if($form->isValid()){
@@ -272,6 +271,7 @@ class MemoryWallContentController extends Controller
                     $response->setData(array(
                         'status'    => 'success',
                         'content'   => $content,
+                        'flash' => $flash,
                     ));
                     return $response;
                 } else {
@@ -283,6 +283,7 @@ class MemoryWallContentController extends Controller
                 }
                 
             } else {
+                $session->getFlashBag()->add('notice', 'memoryWall.ugc.edit.flash.fail');
                 if($request->isXmlHttpRequest()){
                     foreach ($form->all() as $formElement) {
                         if(count($formElement->getErrors()) > 0){
@@ -294,6 +295,7 @@ class MemoryWallContentController extends Controller
                     $response->setData(array(
                         'status'    =>  'fail',
                         'content'   =>  $content,
+                        'flash'     =>  $flash,
                     ));
                     return $response;
                 }
@@ -301,11 +303,22 @@ class MemoryWallContentController extends Controller
             
         }
         
-        return $this->render('SkNdUserBundle:MemoryWallContent:addUGCPartial.html.twig', array(
+        $content = $this->render('SkNdUserBundle:MemoryWallContent:editUGCPartial.html.twig', array(
+            'id'=> $id,
             'mwid'   => $mwid,
             'slug'   => $slug,
             'form'   => $form->createView(),
         ));
         
+        //if was called from ajax request
+        if($request->isXmlHttpRequest()){
+            $response = new JsonResponse();
+            $response->setData(array(
+                'content' => $content,
+            ));
+            return $response;
+        }
+        
+        return $content;
     }
 }

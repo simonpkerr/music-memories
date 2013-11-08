@@ -5,15 +5,24 @@
     <p>{{ mwc.comments }}</p>
     {% endif %}
     {% if mwc.imagePath is not empty %}
-        <a href="{{ mwc.webPath }}" class="lightbox"><img src="{{ mwc.thumbnailWebPath }}" alt="{{ mwc.title }}" /></a>
+    <a href="{{ mwc.webPath }}" class="lightbox"><img src="{{ mwc.thumbnailWebPath }}" alt="{{ mwc.title }}" /></a>
     {% endif %}
-    <ul class="actions fl">
+        <ul class="actions fl">
         {% if wallBelongsToCurrentUser %}
-        <li>
-            <a class="button" href="{{ path('memoryWallDeleteContent', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'type': 'ugc', 'id': mwc.id }) }}" title="Remove {{ mwc.title }} from this wall">
-                <span class="sprites delete-icon">Remove</span>
-            </a>
-        </li>
+                <li>
+                    <a class="button" href="{{ path('memoryWallDeleteContent', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'type': 'ugc', 'id': mwc.id }) }}" title="Remove {{ mwc.title }} from this wall">
+                        <span class="sprites delete-icon">Remove</span>
+                    </a>
+                    <a class="button" href="{{ path('memoryWallEditContent', {
+    'id': mwc.id,    
+    'mwid':mwc.memoryWall.id, 
+    'slug': mwc.memoryWall.slug, 
+    'type': 'ugc', 
+    
+    }) }}" title="Edit {{ mwc.title }}">
+                           <span class="sprites edit-icon">Edit</span>
+                       </a>
+                    </li>
         {% endif %}
-    </ul>
-</li>
+                </ul>
+            </li>
