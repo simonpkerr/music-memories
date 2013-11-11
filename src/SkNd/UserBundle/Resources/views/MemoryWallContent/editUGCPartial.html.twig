@@ -1,10 +1,17 @@
-<form id="edit-ugc-form" class="full-width" action="{{ path('memoryWallEditUGC',{'id': id, 'mwid':mwid, 'slug':slug }) }}" {{ form_enctype(form) }} method="POST">
-    <fieldset>
-    <legend>Update some stuff</legend>
-    {{ form_widget(form) }}
+<form id="edit-ugc-form" class="ugc-ajax-form small" action="{{ path('memoryWallEditUGC',{'mwid':mwid, 'slug':slug, type: 'ugc', 'id': id }) }}" {{ form_enctype(form) }} method="POST">
+    {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.comments) }}
+        {% if image is not null %}
+            {{ form_row(removeImage) }}
+            <img src="{{ image }}" alt="{{ remove this image }}" />
+        {% endif %}
+        {{ form_row(form.image) }}
+    {{ form_end(form) }}
+    {#{ form_widget(form) }#}
     <div class="controls">
-        <input type="reset" class="grey button" value="{{ 'memoryWall.ugc.form.reset'|trans({}, 'SkNdUserBundle') }}" />
         <input type="submit" value="{{ 'memoryWall.ugc.edit.submit'|trans({}, 'SkNdUserBundle') }}" />
+        <a class="cancel" href="{{ path('memoryWallShow',{ 'id': mwid, 'slug': slug } }}">Cancel</a>
     </div>
     </fieldset>
 </form>

@@ -32,6 +32,17 @@ form {
                 margin: 0 20px 0 0;
             }
     }
+    
+    &.small { 
+        label { 
+            @media #{$desktop}{
+                float: none;
+                width: auto;
+                margin: 0 0 5px 0;
+                text-align: left;
+            }
+        }
+    }
 	
     %inputs {
         border: 1px solid #808DA0;
@@ -48,6 +59,13 @@ form {
         width: 95%;
         @media #{$desktop}{
             width: 13em;
+        }
+    }
+    
+    %input-narrow-widths { 
+        width: 95%;
+        @media #{$desktop}{
+            width: 95%;
         }
     }
 	

@@ -1,28 +1,26 @@
 <li class="mwc">
-    <p class="note">Added on {{ mwc.dateCreated|date("d/m/y \\a\\t g:ia") }}</p>    
-    <h3>{{ mwc.title }}</h3>
-    {% if mwc.comments is not empty %}
-    <p>{{ mwc.comments }}</p>
-    {% endif %}
-    {% if mwc.imagePath is not empty %}
-    <a href="{{ mwc.webPath }}" class="lightbox"><img src="{{ mwc.thumbnailWebPath }}" alt="{{ mwc.title }}" /></a>
-    {% endif %}
+    <div class="mwc-view">
         <ul class="actions fl">
         {% if wallBelongsToCurrentUser %}
-                <li>
-                    <a class="button" href="{{ path('memoryWallDeleteContent', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'type': 'ugc', 'id': mwc.id }) }}" title="Remove {{ mwc.title }} from this wall">
-                        <span class="sprites delete-icon">Remove</span>
-                    </a>
-                    <a class="button" href="{{ path('memoryWallEditContent', {
-    'id': mwc.id,    
-    'mwid':mwc.memoryWall.id, 
-    'slug': mwc.memoryWall.slug, 
-    'type': 'ugc', 
-    
-    }) }}" title="Edit {{ mwc.title }}">
-                           <span class="sprites edit-icon">Edit</span>
-                       </a>
-                    </li>
-        {% endif %}
-                </ul>
+            <li>
+                <a class="button delete" href="{{ path('memoryWallDeleteContent', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'type': 'ugc', 'id': mwc.id }) }}" title="Remove {{ mwc.title }} from this wall">
+                    <span class="sprites delete-icon">Remove</span>
+                </a>
+                <a class="button edit" href="{{ path('memoryWallEditUGC', {'id': mwc.id,'mwid':mwc.memoryWall.id,'slug': mwc.memoryWall.slug,'type': 'ugc'}) }}" title="Edit {{ mwc.title }}">
+                    <span class="sprites edit-icon">Edit</span>
+                </a>
             </li>
+        {% endif %}
+        </ul>
+    
+        <p class="note">Added on {{ mwc.dateCreated|date("d/m/y \\a\\t g:ia") }}</p>    
+        <h3>{{ mwc.title }}</h3>
+        {% if mwc.comments is not empty %}
+        <p>{{ mwc.comments }}</p>
+        {% endif %}
+        {% if mwc.imagePath is not empty %}
+        <a href="{{ mwc.webPath }}" class="lightbox"><img src="{{ mwc.thumbnailWebPath }}" alt="{{ mwc.title }}" /></a>
+        {% endif %}
+    </div>
+        
+</li>

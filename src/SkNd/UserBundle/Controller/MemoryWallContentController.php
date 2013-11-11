@@ -308,13 +308,14 @@ class MemoryWallContentController extends Controller
             'mwid'   => $mwid,
             'slug'   => $slug,
             'form'   => $form->createView(),
+            'image' => $mwugc->getThumbnailWebPath(),
         ));
         
         //if was called from ajax request
         if($request->isXmlHttpRequest()){
             $response = new JsonResponse();
             $response->setData(array(
-                'content' => $content,
+                'content' => $content->getContent(),
             ));
             return $response;
         }

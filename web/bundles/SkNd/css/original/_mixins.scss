@@ -43,3 +43,15 @@
     
     
 }
+
+@mixin columns($colCount, $colGap){
+    -webkit-column-count: $colCount;
+    -moz-column-count: $colCount;
+    -o-column-count: $colCount;
+    column-count: $colCount;
+    
+    -webkit-column-gap: $colGap;
+    -moz-column-gap: $colGap;
+    -o-column-gap: $colGap;
+    column-gap: $colGap;
+}

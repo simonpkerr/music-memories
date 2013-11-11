@@ -1513,57 +1513,122 @@ div#content {
             }
         }
     }
-
-    li.mw-MediaResource {
-        width: 94%;
-        border: 2px solid #ACC5EC;
-        background: #fff;
-        padding: 10px;
-        margin: 0 0 20px 0;
-        .borderradius & {
-            @include border-radius(10px);
-        }
-        &:hover {
-            background-color: #E4EAF1;
-            border: 2px solid #6A99DF;
-        }
-
+    
+    #memoryWallComments { 
+        width: 100%;
         @media #{$desktop}{ 
-            position: relative;
-            float: left;
-            height: auto;
-            margin: 0 0 20px 20px;
-            width: 45%;
+            width: 20%;
+            padding: 0 20px;
         }
+    }
+    
+    #memoryWallContents {
+        width: 100%;
+        @media #{$desktop}{ 
+            width: 80%;
+        }
+        > ul {
+            @include columns(3,20px);
+        
+            li.mwc {
+                position: relative;
+                //width: 33%;
+                border: 2px solid #ACC5EC;
+                background: #fff;
+                padding: 10px;
+                margin: 0 0 20px 0;
+                .borderradius & {
+                    @include border-radius(10px);
+                }
+                &:hover {
+                    background-color: #E4EAF1;
+                    border: 2px solid #6A99DF;
+                }
 
-        div#youtubeapiItems & { 
-            @media #{$desktop}{ 
-                height: auto;
+                @media #{$desktop}{ 
+                    position: relative;
+                    float: left;
+                    height: auto;
+                    margin: 0 0 20px 0;
+                    width: 100%;
+                }
+
+                div#youtubeapiItems & { 
+                    @media #{$desktop}{ 
+                        height: auto;
+                    }
+                }
+
+                img {
+                    background-color: #E1E8F0;
+                    padding: 12px;
+                    margin-right: 10px;
+                    .border-radius & {
+                        @include border-radius(10px);
+                    }
+                }
+                ul.actions {
+                    margin-top: 10px;
+                    position: relative;
+                    @media #{$desktop}{
+                        float: right;
+                    }
+
+                    a { 
+                        position: relative;
+                        z-index: 2;
+                        margin-bottom: 5px;
+                        color: #fff;
+                        font-size: 0.9em;
+                    }
+
+                    .edit-form-container { 
+                        background: none repeat scroll 0 0 #FFFFFF;
+                        @include border-radius(10px);
+                        @include box-shadow(0,0,10px,0,rgba(0,0,0,0.5));
+                        left: 40px;
+                        padding: 10px;
+                        position: absolute;
+                        top: 0;
+                        z-index: 100;
+                    }
+                    
+                    li.addToMemoryWall { 
+                        
+                        ul.userMemoryWalls { 
+                            position: absolute;
+                            right: -9999em;
+                            top: 0;
+                            padding-right: 40px;
+                            text-align: left;
+                            width: 13em;
+                            li { 
+                                color: #fff;
+                            }
+                        }
+                        
+                        &:hover { 
+                            ul.userMemoryWalls { 
+                                position: absolute;
+                                right: 0;
+                                
+                            }
+                        }
+                    }
+                }
             }
         }
-
-        img {
-            @extend %details-images;
-            margin-right: 10px;
-            .border-radius & {
-                @include border-radius(10px);
-            }
+        
+        img.mwc {
+            margin-right: 10px; 
             @media #{$desktop}{ 
                 float: left;
-                width: 45%;
             }
         }
-        ul.actions {
-            margin-top: 10px;
-        }
+    
     }
 
-    img.mw-MediaResource {
-        margin-right: 10px; 
-        @media #{$desktop}{ 
-            float: left;
-        }
-    }
+    
 
 }
 /********** FOOTER ***********/

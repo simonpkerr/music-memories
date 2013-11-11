@@ -2,14 +2,6 @@
 
 {% set mr = mwc.mediaResource %}
 <li class="mwc">
-    <p class="note">Added on {{ mwc.dateCreated|date("d/m/y \\a\\t g:ia") }}</p>    
-    {% if mr.mediaResourceCache.imageUrl != 'na' %}
-    <a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}','{{mr.mediaResourceCache.title|escape('js')}}')">
-        <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
-    </a>
-    {% endif %}
-    <strong><a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}','{{mr.mediaResourceCache.title|escape('js')}}');">{{ mwcMacros.shortenTitle(mr.mediaResourceCache.title) }}</a></strong>
-    
     <ul class="actions fl">
         {% include "SkNdUserBundle:MemoryWallContent:addToMemoryWallListPartial.html.twig" 
             with {
@@ -25,4 +17,13 @@
         <li><a class="button" href="{{ path('memoryWallDeleteContent', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, type: 'mr', id: mr.id }) }}" title="Remove {{ mr.mediaResourceCache.title }} from this wall"><span class="sprites close-icon">Remove</span></a></li>
         {% endif %}
     </ul>
+    <p class="note">Added on {{ mwc.dateCreated|date("d/m/y \\a\\t g:ia") }}</p>    
+    {% if mr.mediaResourceCache.imageUrl != 'na' %}
+    <a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}','{{mr.mediaResourceCache.title|escape('js')}}')">
+        <img src="{{mr.mediaResourceCache.imageUrl}}" alt="{{mr.mediaResourceCache.title}}" />
+    </a>
+    {% endif %}
+    <strong><a href="javascript:void(0)" title="click to play {{mr.mediaResourceCache.title}}" onclick="play('{{mr.id}}','{{mr.mediaResourceCache.title|escape('js')}}');">{{ mwcMacros.shortenTitle(mr.mediaResourceCache.title) }}</a></strong>
+    
+    
 </li>

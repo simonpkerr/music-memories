@@ -12,6 +12,7 @@ namespace SkNd\UserBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use SkNd\UserBundle\Form\EventListener\DeleteImageFieldSubcriber;
 
 class MemoryWallUGCType extends AbstractType {
 
@@ -41,6 +42,7 @@ class MemoryWallUGCType extends AbstractType {
             'translation_domain' => 'SkNdUserBundle',
         ));
         
+        $builder->addEventSubscriber(new DeleteImageFieldSubscriber());
         //$builder->add('id', 'hidden');
     }
 

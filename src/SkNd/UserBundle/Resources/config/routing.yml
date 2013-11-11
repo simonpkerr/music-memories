@@ -76,7 +76,7 @@ memoryWallAddUGC:
     _method: GET|POST
 
 memoryWallEditUGC:
-  pattern: /memorywall/{mwid}/{slug}/ugc/edit/{id}
+  pattern: /memorywall/{mwid}/{slug}/{type}/edit/{id}
   defaults:
     _controller: SkNdUserBundle:MemoryWallContent:editUGC
   requirements:
