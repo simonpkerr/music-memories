@@ -1582,23 +1582,19 @@ div#content {
                         font-size: 0.9em;
                     }
 
-                    .edit-form-container { 
-                        background: none repeat scroll 0 0 #FFFFFF;
-                        @include border-radius(10px);
-                        @include box-shadow(0,0,10px,0,rgba(0,0,0,0.5));
-                        left: 40px;
-                        padding: 10px;
-                        position: absolute;
-                        top: 0;
-                        z-index: 100;
+                    .mwc-edit { 
+                        label {
+                            text-align: left;
+                            margin: 0 0 5px 0;
+                        }
                     }
                     
                     li.addToMemoryWall { 
                         
                         ul.userMemoryWalls { 
                             position: absolute;
-                            right: -9999em;
-                            top: 0;
+                            right: 0;
+                            top: -9999em;
                             padding-right: 40px;
                             text-align: left;
                             width: 13em;
@@ -1610,7 +1606,7 @@ div#content {
                         &:hover { 
                             ul.userMemoryWalls { 
                                 position: absolute;
-                                right: 0;
+                                top: 0;
                                 
                             }
                         }

@@ -648,7 +648,10 @@ class MemoryWallMediaResourcesTest extends WebTestCase
     public function testEditMWUGCClearImageDeletesImage(){
         
     }
+    
+    public function testEditMWUGCChooseNewImageWhenOldOneExistsOverwritesOldImage(){
         
+    }
     
     //only applies to comments on items
 //    public function testEditOwnUGCWithinEditingTimeThresholdAllowsEdit() {

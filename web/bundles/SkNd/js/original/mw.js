@@ -1,7 +1,7 @@
 (function ($) {
     var percentVal = '0%',
         ugcForm = $('.ugc-ajax-form'),
-        bar = $('#add-ugc-container #bar'),
+        bar = $('.progress-bar'),
         flashMessages = $('<div class="flashMessages fr"><ul></ul></div>'),
         ajaxFormOptions = {
             dataType: 'json',
@@ -84,37 +84,42 @@
         return false;
     });
 
-    ugcForm.ajaxForm(ajaxFormOptions);
+    //make the add ugc form ajax-able
+    $('#add-ugc-form').ajaxForm(ajaxFormOptions);
 
     /* ajax call edit form
      * if form already exists, just show it
      */
     $('li.mwc ul.actions a.edit').click(function () {
         var obj = $(this),
-            originalContent = obj.parents('div.mwc-view'),
-            ugcListItem = originalContent.parent(),
+            mwcView = obj.parents('div.mwc-view'),
+            ugcListItem = mwcView.parent(),
             content,
-            mwcEdit = $('<div class="mwc-edit" />');
+            mwcEdit = $('.mwc-edit', ugcListItem).length > 0 ? $('.mwc-edit', ugcListItem) : $('<div class="mwc-edit" />');
 
         //if the form hasn't been loaded yet
-        if (originalContent.siblings('.mwc-edit').length === 0) {
+        if (mwcEdit.children('form').length === 0) {
             $.get(obj.attr('href'), function (data) {
                 content = data.content;
-                mwcEdit.append(content);
-                ugcListItem.empty().append(mwcEdit);
+                mwcEdit.append(content).show();
+                ugcListItem.append(mwcEdit);
+                mwcView.hide();
+                
                 $('a.cancel', mwcEdit).click(function () {
-                    ugcListItem.empty().append(originalContent);
-                })
+                    mwcEdit.hide();
+                    mwcView.show();
+                    return false;
+                });
                 //may need to rebind the form to the ajax method
-                //$('.ugc-ajax-form',formContainer).ajaxForm(ajaxFormOptions);
+                $('#edit-ugc-form', mwcEdit).ajaxForm(ajaxFormOptions);
             }, 'json');
         } else {
-            ugcListItem.empty().append(mwcEdit);
+            mwcEdit.show();
+            mwcView.hide();
         }
-
 
         return false;
     });
-   // $('#edit-ugc-form').complete
+
 
 }(jQuery));

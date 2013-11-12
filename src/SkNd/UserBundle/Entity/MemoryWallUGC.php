@@ -17,10 +17,18 @@ class MemoryWallUGC extends MemoryWallContent{
     private $tempImage;
     protected $image;
     const defaultThumbnailWidth = 150;
+    protected $removeImage = false;
     
     public function __construct($params){
         parent::__construct($params);
         //$this->ugcMemoryWall = $params['mw'];
+    }
+    
+    public function setRemoveImage($removeImage){
+        $this->removeImage = $removeImage;
+    }
+    public function getRemoveImage(){
+        return $this->removeImage;
     }
     
     public function setTitle($title){

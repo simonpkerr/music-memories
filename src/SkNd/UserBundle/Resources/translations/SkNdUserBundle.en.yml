@@ -8,7 +8,7 @@ form:
       title: Title
       comments: Comments
       image: Image (only jpg, gif or png please)
-
+      remove_image: remove image
 memoryWall:
   links:
     public_index: Memory walls

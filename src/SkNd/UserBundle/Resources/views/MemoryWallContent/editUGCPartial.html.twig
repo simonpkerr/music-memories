@@ -2,19 +2,18 @@
     {{ form_start(form) }}
         {{ form_row(form.title) }}
         {{ form_row(form.comments) }}
-        {% if image is not null %}
-            {{ form_row(removeImage) }}
-            <img src="{{ image }}" alt="{{ remove this image }}" />
-        {% endif %}
         {{ form_row(form.image) }}
+        {% if mwc.imagePath is not empty %}
+            <img src="{{ mwc.thumbnailWebPath }}" alt="{{ mwc.title }}" />
+            {{ form_row(form.removeImage) }}
+        {% endif %}
     {{ form_end(form) }}
     {#{ form_widget(form) }#}
     <div class="controls">
         <input type="submit" value="{{ 'memoryWall.ugc.edit.submit'|trans({}, 'SkNdUserBundle') }}" />
-        <a class="cancel" href="{{ path('memoryWallShow',{ 'id': mwid, 'slug': slug } }}">Cancel</a>
+        <a class="cancel" href="{{ path('memoryWallShow', { 'id': mwid, 'slug': slug }) }}">Cancel</a>
     </div>
-    </fieldset>
+    <div class="ugc-progress">
+        <div class="progress-bar"></div>
+    </div>
 </form>
-<div id="ugc-progress">
-    <div id="bar"></div>
-</div>

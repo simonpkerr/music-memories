@@ -255,7 +255,11 @@ class MemoryWallContentController extends Controller
             
             if($form->isValid()){
                 $mwugc = $form->getData();
-                //$mw->addMemoryWallUGC($mwugc);
+                
+                //if removeImage is true, remove the image first
+                //if($removeImage){
+                //    $mwugc->removeUpload();
+                //}                
                 $this->em->persist($mwugc);
                 $this->em->flush();                
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.edit.flash.success');
@@ -308,7 +312,7 @@ class MemoryWallContentController extends Controller
             'mwid'   => $mwid,
             'slug'   => $slug,
             'form'   => $form->createView(),
-            'image' => $mwugc->getThumbnailWebPath(),
+            'mwc'   => $mwugc,
         ));
         
         //if was called from ajax request
