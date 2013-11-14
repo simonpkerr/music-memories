@@ -7,7 +7,7 @@
             <img src="{{ mwc.thumbnailWebPath }}" alt="{{ mwc.title }}" />
             {{ form_row(form.removeImage) }}
         {% endif %}
-    {{ form_end(form) }}
+    
     {#{ form_widget(form) }#}
     <div class="controls">
         <input type="submit" value="{{ 'memoryWall.ugc.edit.submit'|trans({}, 'SkNdUserBundle') }}" />
@@ -16,4 +16,4 @@
     <div class="ugc-progress">
         <div class="progress-bar"></div>
     </div>
-</form>
+{{ form_end(form) }}

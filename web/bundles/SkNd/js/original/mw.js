@@ -5,6 +5,11 @@
         flashMessages = $('<div class="flashMessages fr"><ul></ul></div>'),
         ajaxFormOptions = {
             dataType: 'json',
+            makeFlashMessage: function (flash) {
+                $('div.flashMessages').attr('style', '').children('ul').empty();
+                $('<li class="info">' + flash + '</li>').appendTo($('ul', flashMessages));
+                $('div#header').after(flashMessages);
+            },
             beforeSend: function () {
                 percentVal = '0%';
                 bar.width(percentVal);
@@ -24,12 +29,7 @@
                 var json = JSON.parse(xhr.responseText),
                     error,
                     errorList,
-                    ugcContent,
-                    makeFlashMessage = function (flash) {
-                        $('div.flashMessages').attr('style', '').children('ul').empty();
-                        $('<li class="info">' + flash + '</li>').appendTo($('ul', flashMessages));
-                        $('div#header').after(flashMessages);
-                    };
+                    ugcContent;
                 makeFlashMessage(json.flash);
                 if (json.status === 'fail') {
                     for (error in json.content) {
@@ -111,7 +111,7 @@
                     return false;
                 });
                 //may need to rebind the form to the ajax method
-                $('#edit-ugc-form', mwcEdit).ajaxForm(ajaxFormOptions);
+                $('#edit-ugc-form', ugcListItem).ajaxForm(ajaxFormOptions);
             }, 'json');
         } else {
             mwcEdit.show();

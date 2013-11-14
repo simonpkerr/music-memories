@@ -35,12 +35,10 @@ form {
     
     &.small { 
         label { 
-            @media #{$desktop}{
-                float: none;
-                width: auto;
-                margin: 0 0 5px 0;
-                text-align: left;
-            }
+            float: none;
+            width: auto;
+            margin: 0 0 5px 0;
+            text-align: left;
         }
     }
 	
@@ -96,6 +94,11 @@ form {
                 margin-left: 8.9em;
                 font-weight: bold;
             }
+            
+            
+        }
+        form.small & { 
+            width: auto!important;
         }
     }
     textarea {
