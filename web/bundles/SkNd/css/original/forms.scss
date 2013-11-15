@@ -33,15 +33,6 @@ form {
             }
     }
     
-    &.small { 
-        label { 
-            float: none;
-            width: auto;
-            margin: 0 0 5px 0;
-            text-align: left;
-        }
-    }
-	
     %inputs {
         border: 1px solid #808DA0;
         margin-bottom: 0.5em;
@@ -93,14 +84,13 @@ form {
                 width: 13em;
                 margin-left: 8.9em;
                 font-weight: bold;
+                
             }
             
             
         }
-        form.small & { 
-            width: auto!important;
-        }
     }
+    
     textarea {
         @extend %inputs;
         @extend %input-wide-widths;
@@ -144,6 +134,25 @@ form {
         @media #{$desktop}{
             margin: 0 0 3px 11em;
         }
+    }
+    
+    &.small { 
+        label { 
+            float: none;
+            width: auto;
+            margin: 0 0 5px 0;
+            text-align: left;
+        }
+        
+        input {
+            &[type="submit"],
+            &[type="reset"],
+            &#_submit {
+                width: auto;
+                margin-left: 0;
+            }
+        }
+        
     }
     
 }

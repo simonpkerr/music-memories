@@ -128,9 +128,11 @@ class MemoryWallContentController extends Controller
     }
     
     public function deleteContentAction($mwid, $slug, $id, $type, $confirmed = false){
+        $request = $this->get('request');
         $this->mwAccessManager = $this->getMWAccessManager();
         $this->em = $this->getEntityManager();
         $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWallContent.delete.flash.accessDenied');
+        $session = $this->get('session');
         try{
             $mwc = $mw->getMWContentById($id, $type);
         } catch(\InvalidArgumentException $iae) {
@@ -141,7 +143,20 @@ class MemoryWallContentController extends Controller
         if($confirmed){ 
             $mw->deleteMWContentById($id, $type);
             $this->em->flush();
-            $this->get('session')->getFlashBag()->add('notice', 'memoryWallContent.delete.flash.success');
+            $session->getFlashBag()->add('notice', 'memoryWallContent.delete.flash.success');
+            
+            //if xml http request, return json data passing flash, script will remove the item from wall
+            if($request->isXmlHttpRequest()){
+                $flash = $this->trans($session->getFlashBag()->get('notice'));
+                $response = new JsonResponse();
+                $response->setData(array(
+                    'status'    => 'success',
+                    'flash'     => $flash,
+                ));
+                return $response;
+            }
+            
+            //if not xml http request, redirect to show wall
             return $this->redirect($this->generateUrl('memoryWallShow', array(
                 'id'    => $mwid,
                 'slug'  => $slug,
@@ -162,7 +177,12 @@ class MemoryWallContentController extends Controller
             ));
         }
     }
-        
+      
+    private function trans($msg, $transDomain = 'SkNdUserBundle'){
+        $msg = array_pop($msg);
+        return $this->get('translator')->trans($msg, array(), $transDomain);
+    }
+    
     public function addUGCAction($mwid, $slug, Request $request = null){
         $this->mwAccessManager = $this->getMWAccessManager();
         $this->em = $this->getEntityManager();
@@ -190,7 +210,7 @@ class MemoryWallContentController extends Controller
                 
                 //if come from ajax request return json, otherwise redirect to show wall
                 if($request->isXmlHttpRequest()){
-                    $flash = $session->getFlashBag()->get('notice');
+                    $flash = $this->trans($session->getFlashBag()->get('notice'));
                     $content = $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', array(
                         'mwc' => $mwugc,
                         'wallBelongsToCurrentUser' => $this->mwAccessManager->memoryWallBelongsToUser($mw),
@@ -213,6 +233,7 @@ class MemoryWallContentController extends Controller
             } else {
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.add.flash.fail');
                 if($request->isXmlHttpRequest()){
+                    $flash = $this->trans($session->getFlashBag()->get('notice'));
                     foreach ($form->all() as $formElement) {
                         if(count($formElement->getErrors()) > 0){
                             $e = $formElement->getErrors();
@@ -266,7 +287,7 @@ class MemoryWallContentController extends Controller
                 
                 //if come from ajax request return json, otherwise redirect to show wall
                 if($request->isXmlHttpRequest()){
-                    $flash = $session->getFlashBag()->get('notice');
+                    $flash = $this->trans($session->getFlashBag()->get('notice'));
                     $content = $this->render('SkNdUserBundle:MemoryWallContent:ugcStrategyPartial.html.twig', array(
                         'mwc' => $mwugc,
                         'wallBelongsToCurrentUser' => $this->mwAccessManager->memoryWallBelongsToUser($mw),
@@ -275,7 +296,7 @@ class MemoryWallContentController extends Controller
                     $response->setData(array(
                         'status'    => 'success',
                         'content'   => $content,
-                        'flash' => $flash,
+                        'flash'     => $flash,
                     ));
                     return $response;
                 } else {
@@ -289,6 +310,7 @@ class MemoryWallContentController extends Controller
             } else {
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.edit.flash.fail');
                 if($request->isXmlHttpRequest()){
+                    $flash = $this->trans($session->getFlashBag()->get('notice'));
                     foreach ($form->all() as $formElement) {
                         if(count($formElement->getErrors()) > 0){
                             $e = $formElement->getErrors();

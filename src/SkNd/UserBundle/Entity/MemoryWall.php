@@ -131,7 +131,7 @@ class MemoryWall
         $c = $contentArray->count();
         
         if(!isset($contentArray[$mrId]))
-            throw new \InvalidArgumentException('Media Resource not found');
+            throw new \InvalidArgumentException('Memory Wall Content not found');
         
         return $contentArray[$mrId];
     }
@@ -139,7 +139,7 @@ class MemoryWall
     public function deleteMWContentById($id, $type = 'mwc'){
         $contentArray = $this->getContentArray($type);
         if(!isset($contentArray[$id]))
-            throw new \InvalidArgumentException('Media Resource not found');
+            throw new \InvalidArgumentException('Memory Wall Content not found');
         
         $contentArray->remove($id);
     }

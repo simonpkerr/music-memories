@@ -3,17 +3,26 @@
         ugcForm = $('.ugc-ajax-form'),
         bar = $('.progress-bar'),
         flashMessages = $('<div class="flashMessages fr"><ul></ul></div>'),
+        header = $('div#header'),
+        wrapper = $('div#wrapper'),
+        makeFlashMessage = function (flash) {
+            wrapper.remove('.flashMessages');
+            flashMessages
+                .empty()
+                .attr('style', '')
+                .append($('<ul />'));
+            $('<li class="info">' + flash + '</li>').appendTo($('ul', flashMessages));
+            header.after(flashMessages);
+            $('<a class="sprites close-icon">hide this message</a>').click(function () {
+                $(this).parent().hide();
+            }).prependTo(flashMessages);
+        },
         ajaxFormOptions = {
             dataType: 'json',
-            makeFlashMessage: function (flash) {
-                $('div.flashMessages').attr('style', '').children('ul').empty();
-                $('<li class="info">' + flash + '</li>').appendTo($('ul', flashMessages));
-                $('div#header').after(flashMessages);
-            },
             beforeSend: function () {
                 percentVal = '0%';
                 bar.width(percentVal);
-                $('div.flashMessages').empty();
+                flashMessages.empty();
             },
             uploadProgress: function (event, position, total, percentComplete) {
                 percentVal = percentComplete + '%';
@@ -26,10 +35,15 @@
                 bar.width(percentVal);
             },
             complete: function (xhr) {
-                var json = JSON.parse(xhr.responseText),
+                var json,
                     error,
                     errorList,
                     ugcContent;
+                if (xhr.status !== 200) {
+                    makeFlashMessage('An error occurred, please try again');
+                    return;
+                }
+                json = JSON.parse(xhr.responseText);
                 makeFlashMessage(json.flash);
                 if (json.status === 'fail') {
                     for (error in json.content) {
@@ -51,16 +65,10 @@
                         .prependTo($('div#memoryWallContents > ul'))
                         .fadeIn(1000);
                     ugcForm.clearForm().parent().removeClass('open');
-
                 }
-
                 bar.width(0);
             }
         };
-
-    $('<a class="sprites close-icon">hide this message</a>').click(function () {
-        $(this).parent().hide();
-    }).prependTo(flashMessages);
 
     $('div#mw-options li').hover(function () {
         if (!$('> div', this).hasClass('open')) {
@@ -104,7 +112,7 @@
                 mwcEdit.append(content).show();
                 ugcListItem.append(mwcEdit);
                 mwcView.hide();
-                
+
                 $('a.cancel', mwcEdit).click(function () {
                     mwcEdit.hide();
                     mwcView.show();
@@ -118,6 +126,26 @@
             mwcView.hide();
         }
 
+        return false;
+    });
+
+    $('li.mwc ul.actions a.delete').click(function () {
+        var obj = $(this),
+            mwc = obj.parents('li.mwc'),
+            url = obj.attr('href') + '/true';
+
+        if (confirm('Are you sure you want to remove this from your wall?')) {
+            $.get(url, function (data) {
+                if (data.status === 'success') {
+                    makeFlashMessage(data.flash);
+                    mwc.fadeOut(500, function () {
+                        mwc.remove();
+                    });
+                } else {
+                    makeFlashMessage('An error occurred, please try again');
+                }
+            });
+        }
         return false;
     });
 

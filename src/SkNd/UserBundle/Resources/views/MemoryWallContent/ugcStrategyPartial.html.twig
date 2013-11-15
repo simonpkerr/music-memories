@@ -3,11 +3,11 @@
         <ul class="actions fl">
         {% if wallBelongsToCurrentUser %}
             <li>
-                <a class="button delete" href="{{ path('memoryWallDeleteContent', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'type': 'ugc', 'id': mwc.id }) }}" title="Remove {{ mwc.title }} from this wall">
-                    <span class="sprites delete-icon">Remove</span>
-                </a>
                 <a class="button edit" href="{{ path('memoryWallEditUGC', {'id': mwc.id,'mwid':mwc.memoryWall.id,'slug': mwc.memoryWall.slug,'type': 'ugc'}) }}" title="Edit {{ mwc.title }}">
                     <span class="sprites edit-icon">Edit</span>
+                </a>
+                <a class="button delete" href="{{ path('memoryWallDeleteContent', {'mwid':mwc.memoryWall.id, 'slug': mwc.memoryWall.slug, 'type': 'ugc', 'id': mwc.id }) }}" title="Remove {{ mwc.title }} from this wall">
+                    <span class="sprites delete-icon">Remove</span>
                 </a>
             </li>
         {% endif %}

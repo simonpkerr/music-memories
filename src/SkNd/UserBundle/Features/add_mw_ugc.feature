@@ -11,7 +11,7 @@ Feature: Add Memory Wall UGC
         And I fill in "Title" with "t"
         When I press "Add it"
         When I wait for errors to show
-        Then I should see "there was a problem with that"
+        Then I should see "Something went wrong there"
 
     @javascript
     Scenario: ajax adding ugc with valid details shows ugc
@@ -22,7 +22,11 @@ Feature: Add Memory Wall UGC
         When I wait for ugc to appear
         Then I should see "simons ugc title"
         
-        
+    @javascript
+    Scenario: ajax adding ugc with valid details shows ugc and can be immediately deleted
+
+    @javascript
+    Scenario: ajax adding ugc with valid details shows ugc and can be immediately edited
 
     
     
