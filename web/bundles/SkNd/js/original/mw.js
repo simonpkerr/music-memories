@@ -19,7 +19,9 @@
         },
         ajaxFormOptions = {
             dataType: 'json',
+            percentBar: $('.progress-bar', this),
             beforeSend: function () {
+        
                 percentVal = '0%';
                 bar.width(percentVal);
                 flashMessages.empty();

@@ -10,3 +10,8 @@ Feature: Edit Memory Wall UGC
     @javascript
     Scenario: ajax editing ugc with valid parameters updates ugc immediately
     
+    @javascript
+    Scenario: edited ugc can be deleted immediately
+
+    @javascript
+    Scenario: edited ugc can be edited again immediately

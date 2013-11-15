@@ -187,8 +187,6 @@ class MemoryWallContentController extends Controller
         $this->mwAccessManager = $this->getMWAccessManager();
         $this->em = $this->getEntityManager();
         $session = $this->get('session');
-        //$this->userManager = $this->mwAccessManager->getUserManager();
-        //$this->currentUser = $this->mwAccessManager->getCurrentUser();
         $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWall.ugc.add.flash.accessDenied');
         
         $mwugc = new MemoryWallUGC(array(
@@ -263,8 +261,6 @@ class MemoryWallContentController extends Controller
         $this->mwAccessManager = $this->getMWAccessManager();
         $this->em = $this->getEntityManager();
         $session = $this->get('session');
-        //$this->userManager = $this->mwAccessManager->getUserManager();
-        //$this->currentUser = $this->mwAccessManager->getCurrentUser();
         $mw = $this->mwAccessManager->getOwnWall($mwid, 'memoryWall.ugc.edit.flash.accessDenied');
         
         $mwugc = $mw->getMWContentById($id, 'ugc');
