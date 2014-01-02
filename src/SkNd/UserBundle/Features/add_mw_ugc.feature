@@ -24,9 +24,18 @@ Feature: Add Memory Wall UGC
         
     @javascript
     Scenario: ajax adding ugc with valid details shows ugc and can be immediately deleted
+        Given I am logged in as "simon" "simon"
+        When I am on "/memorywall/show/3/simons-awesome-wall"
+        And I fill in "Title" with "simons ugc title"
+        When I press "Add it"
+        When I wait for ugc to appear
+        When I press "Remove simons ugc title from this wall"
+        Then I should not see "simons ugc title"
 
     @javascript
     Scenario: ajax adding ugc with valid details shows ugc and can be immediately edited
 
+    @javascript
+    Scenario: ajax adding ugc with valid details clears add ugc form and hides it
     
     

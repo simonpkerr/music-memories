@@ -8,13 +8,13 @@
 
 $desktop: "only screen and (min-width: 600px)";
 $mobile: "only screen and (max-width: 599px)";
-@import "mixins",
-"normalize.scss",
-"boilerplate.scss",
-"generics.scss",
-"typography.scss",
-"forms.scss",
-"sprites.scss";
+@import "../SASS/mixins",
+"../SASS/normalize.scss",
+"../SASS/boilerplate.scss",
+"../SASS/generics.scss",
+"../SASS/typography.scss",
+"../SASS/forms.scss",
+"../SASS/sprites.scss";
 //$tablet: "only screen and (min-width: 481px)";
 
 /*------ main styles for all width devices -----------*/
@@ -1683,4 +1683,4 @@ div#footer {
 
 
 
-@import "helpers.scss";
+@import "../SASS/helpers.scss";
