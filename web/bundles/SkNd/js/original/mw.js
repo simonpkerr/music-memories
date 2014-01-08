@@ -37,27 +37,27 @@
             var form = this,
                 dataType = 'json',
                 percentVal = '0%',
-                percentBar = $('.progress-bar', form);                
+                percentBar = $('.progress-bar', form);
             return {
                 dataType: dataType,
                 percentVal: percentVal,
                 percentBar: percentBar,
-                beforeSend: arguments.beforeSend || function () {
+                beforeSend: form.beforeSend || function () {
                     percentVal = '0%';
                     percentBar.width(percentVal);
                     flashMessages.empty();
                 },
-                uploadProgress: arguments.uploadProgress || function (event, position, total, percentComplete) {
+                uploadProgress: form.uploadProgress || function (event, position, total, percentComplete) {
                     percentVal = percentComplete + '%';
                     percentBar.width(percentVal);
                 },
-                success: arguments.success || function () {
+                success: form.success || function () {
                     $('.error', form).removeClass('error');
                     $('ul.form-errors').remove();
                     percentVal = '100%';
                     percentBar.width(percentVal);
                 },
-                complete: arguments.complete || function (xhr) {
+                complete: form.complete || function (xhr) {
                     var json,
                         error,
                         errorList,
@@ -70,8 +70,8 @@
                     makeFlashMessage(json.flash);
                     if (json.status === 'fail') {
                         //if a completeFail function was found in arguments, use this one, otherwise fall back to default
-                        if (arguments.completeFail) {
-                            arguments.completeFail();
+                        if (form.completeFail) {
+                            form.completeFail();
                         } else {
                             for (error in json.content) {
                                 if (json.content.hasOwnProperty(error)) {
@@ -85,8 +85,8 @@
                         }
                     } else {
                         ugcContent = $(json.content);
-                        if (completeSuccess !== 'undefined' && typeof completeSuccess === 'function') {
-                            completeSuccess(ugcContent);
+                        if (form.completeSuccess) {
+                            form.completeSuccess(ugcContent);
                         } else {
                             //if there's nothing on the wall
                             if ($('div#memoryWallContents > ul').length === 0) {
@@ -106,23 +106,12 @@
                 }
             };
         },
-        editMWC = function (ugcContent) {
+        editMWC = function () {
             var obj = $(this),
                 mwcView = obj.parents('div.mwc-view'),
                 ugcListItem = mwcView.parent(),
                 content,
-                mwcEdit = $('.mwc-edit', ugcListItem).length > 0 ? $('.mwc-edit', ugcListItem) : $('<div class="mwc-edit" />'),
-                completeSuccess = function () {
-                    ugcListItem.empty();
-                    ugcContent.hide()
-                        .prependTo(ugcListItem)
-                        .fadeIn(1000);
-                    
-                    //bind delete event
-                    $('ul.actions a.delete', ugcContent).click(deleteMWC);
-                    //bind edit event
-                    $('ul.actions a.edit', ugcContent).click(editMWC);
-                };
+                mwcEdit = $('.mwc-edit', ugcListItem).length > 0 ? $('.mwc-edit', ugcListItem) : $('<div class="mwc-edit" />');
 
             //if the form hasn't been loaded yet
             if (mwcEdit.children('form').length === 0) {
@@ -131,15 +120,28 @@
                     mwcEdit.append(content).show();
                     ugcListItem.append(mwcEdit);
                     mwcView.hide();
+                    var editForm = $('#edit-ugc-form', mwcEdit),
+                        editFormOptions;
 
                     $('a.cancel', mwcEdit).click(function () {
                         mwcEdit.hide();
                         mwcView.show();
                         return false;
                     });
-                    var editFormOptions = getAjaxFormOptions.apply($('#edit-ugc-form', mwcEdit), [completeSuccess]);
+
+                    //specify a different complete success function for when submit is pressed
+                    editForm.completeSuccess = function (ugcContent) {
+                        ugcContent.hide();
+                        ugcListItem.replaceWith(ugcContent.fadeIn(1000));
+
+                        //bind delete event
+                        $('ul.actions a.delete', ugcContent).click(deleteMWC);
+                        //bind edit event
+                        $('ul.actions a.edit', ugcContent).click(editMWC);
+                    };
+                    editFormOptions = getAjaxFormOptions.apply(editForm);
                     //rebind the form to the ajax edit method and create a new 'completeSuccess' function for getAjaxFormOptions
-                    $('#edit-ugc-form', mwcEdit).ajaxForm(editFormOptions);
+                    editForm.ajaxForm(editFormOptions);
                 }, 'json');
             } else {
                 mwcEdit.show();
@@ -176,7 +178,6 @@
 
     // ajax call edit form, if form already exists, just show it
     $('li.mwc ul.actions a.edit').click(editMWC);
-    
     //bind existing delete buttons to the delete function
     $('li.mwc ul.actions a.delete').click(deleteMWC);
 
