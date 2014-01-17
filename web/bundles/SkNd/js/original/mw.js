@@ -14,13 +14,23 @@
                 $(this).parent().hide();
             }).prependTo(flashMessages);
         },
+        showHideLoader = function (obj, show) {
+            var loaderSprite = '<span class="loader-sprite">&nbsp;</span>';
+            if(show) {
+                obj.before(loaderSprite);
+            } else {
+                $('.loader-sprite', obj.parent()).remove();
+            }
+        },
         deleteMWC = function () {
             var obj = $(this),
                 mwc = obj.parents('li.mwc'),
                 url = obj.attr('href') + '/true';
 
             if (confirm('Are you sure you want to remove this from your wall?')) {
+                showHideLoader(obj, true);
                 $.get(url, function (data) {
+                    showHideLoader(obj, false);
                     if (data.status === 'success') {
                         makeFlashMessage(data.flash);
                         mwc.fadeOut(500, function () {
@@ -46,6 +56,7 @@
                     percentVal = '0%';
                     percentBar.width(percentVal);
                     flashMessages.empty();
+                    showHideLoader(form, true);
                 },
                 uploadProgress: form.uploadProgress || function (event, position, total, percentComplete) {
                     percentVal = percentComplete + '%';
@@ -62,6 +73,7 @@
                         error,
                         errorList,
                         ugcContent;
+                    showHideLoader(form, false);
                     if (xhr.status !== 200) {
                         makeFlashMessage('An error occurred, please try again');
                         return;
@@ -115,7 +127,9 @@
 
             //if the form hasn't been loaded yet
             if (mwcEdit.children('form').length === 0) {
+                showHideLoader(obj, true);
                 $.get(obj.attr('href'), function (data) {
+                    showHideLoader(obj, false);
                     content = data.content;
                     mwcEdit.append(content).show();
                     ugcListItem.append(mwcEdit);

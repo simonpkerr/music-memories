@@ -2051,7 +2051,9 @@ ul#memoryWallGallery img.mw-image {
 
 /*------- memory wall details page --------*/
 div#content div#mw-options {
-  float: right; }
+  float: right;
+  position: relative;
+  z-index: 10; }
   div#content div#mw-options ul > li {
     z-index: 1;
     float: left;
@@ -2121,11 +2123,11 @@ div#content div#mw-options {
               float: left;
               margin: 0 0 0 16px;
               width: 38%; } }
-  div#content div#mw-options #ugc-progress {
+  div#content div#mw-options .ugc-progress {
     width: 26em;
     position: relative;
     margin-top: 5px; }
-    div#content div#mw-options #ugc-progress #bar {
+    div#content div#mw-options .ugc-progress .progress-bar {
       background-color: #6B94CE;
       width: 0%;
       height: 5px; }
@@ -2212,6 +2214,14 @@ div#content #memoryWallContents {
     @media only screen and (min-width: 600px) {
       div#content #memoryWallContents img.mwc {
         float: left; } }
+div#content .loader-sprite {
+  background: url("/SkNd/web/bundles/SkNd/images/loader.gif") no-repeat scroll 50% 50% rgba(0, 0, 0, 0);
+  display: block;
+  height: 30px;
+  position: absolute;
+  right: -35px;
+  width: 30px;
+  z-index: 1000; }
 
 /********** FOOTER ***********/
 div#footer {

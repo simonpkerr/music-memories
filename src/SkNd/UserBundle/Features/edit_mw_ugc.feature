@@ -15,3 +15,6 @@ Feature: Edit Memory Wall UGC
 
     @javascript
     Scenario: edited ugc can be edited again immediately
+
+    @javascript
+    Scenario: edited ugc can have the photo removed

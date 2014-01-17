@@ -265,6 +265,9 @@ class MemoryWallContentController extends Controller
         
         $mwugc = $mw->getMWContentById($id, 'ugc');
         $form = $this->createForm(new MemoryWallUGCType(), $mwugc);
+        $originalImagePath = $mwugc->getImagePath();
+        //if removeImage is true, remove the image first
+        
         $form->handleRequest($request);
         if($request->getMethod() == 'POST'){
             $response = new JsonResponse();
@@ -272,11 +275,11 @@ class MemoryWallContentController extends Controller
             
             if($form->isValid()){
                 $mwugc = $form->getData();
-                
-                //if removeImage is true, remove the image first
-                //if($removeImage){
-                //    $mwugc->removeUpload();
-                //}                
+                //if(($form->has('removeImage') && $form->get('removeImage')->IsSubmitted()) || $form->get('image')->isSubmitted()){
+                if($mwugc->tempImage !== null && $mwugc->getImage() !== null){
+                    $mwugc->removeUpload($mwugc->tempImage);
+                }
+                                
                 $this->em->persist($mwugc);
                 $this->em->flush();                
                 $session->getFlashBag()->add('notice', 'memoryWall.ugc.edit.flash.success');

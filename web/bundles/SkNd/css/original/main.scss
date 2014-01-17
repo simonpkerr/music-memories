@@ -1400,6 +1400,8 @@ div#content {
 
     div#mw-options {
         float: right;
+        position: relative;
+        z-index: 10;
         ul { 
             > li { 
                 z-index: 1;
@@ -1502,11 +1504,11 @@ div#content {
                 }
             }
         }
-        #ugc-progress {
+        .ugc-progress {
             width: 26em;
             position: relative;
             margin-top: 5px;
-            #bar { 
+            .progress-bar { 
                 background-color: #6B94CE; 
                 width:0%; 
                 height:5px; 
@@ -1622,6 +1624,16 @@ div#content {
             }
         }
     
+    }
+    
+    .loader-sprite {
+        background: url("/SkNd/web/bundles/SkNd/images/loader.gif") no-repeat scroll 50% 50% rgba(0, 0, 0, 0);
+        display: block;
+        height: 30px;
+        position: absolute;
+        right: -35px;
+        width: 30px;
+        z-index: 1000;
     }
 
     

@@ -84,11 +84,18 @@ class MemoryWallUGC extends MemoryWallContent{
         $this->image = null;
     }
     
-    public function removeUpload()
+    public function removeUpload($originalImagePath = null)
     {
+        //when an old image is being removed and a new one adding, remove the old
+        if($originalImagePath !== null){
+            unlink($this->getUploadRootDir().'/'.$originalImagePath);
+            unlink($this->getUploadRootDir().'/thumbs/'.$originalImagePath);
+        }
+        
         if (null !== $this->imagePath && file_exists($this->getAbsolutePath())) {
             unlink($this->getAbsolutePath());
             unlink($this->getThumbnailAbsolutePath());
+            $this->imagePath = null;
         }
     }
     
