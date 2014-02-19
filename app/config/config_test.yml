@@ -8,7 +8,7 @@ framework:
 
 doctrine:
     dbal:
-        dbname: "SkNd_test"
+        dbname: "sknd_test"
 
 web_profiler:
     toolbar: false

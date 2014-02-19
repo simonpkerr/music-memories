@@ -9,7 +9,7 @@
  */
 namespace SkNd\UserBundle\Entity;
     
-//use FOS\UserBundle\Entity\User as BaseUser;
+//use FOS\UserBundle\Model\User as BaseUser;
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 use SkNd\UserBundle\Entity\MemoryWall;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,9 +32,9 @@ class User extends BaseUser {
     }
     
     public function getMemoryWalls($includePrivateWalls = true){
-        if($includePrivateWalls)
+        if($includePrivateWalls) {
             return $this->memoryWalls;
-        else{
+        } else{
             
             return $this->memoryWalls->filter(function($mw){
                 return $mw->getIsPublic() === true;
