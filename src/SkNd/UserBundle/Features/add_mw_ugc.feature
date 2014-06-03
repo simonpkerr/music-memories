@@ -1,8 +1,7 @@
 Feature: Add Memory Wall UGC
-    In order to post ugc content
+    In order to add ugc content
     as a website user
-    I can use ajax
-    and the resulting response should be shown immediately on the wall
+    I need the resulting response to be shown immediately on the wall
     
     @javascript
     Scenario: ajax adding ugc with invalid title shows errors 
