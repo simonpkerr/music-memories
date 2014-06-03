@@ -14,6 +14,7 @@ security:
               admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
       fos_userbundle:
         id: fos_user.user_provider.username
+        #id: fos_user.user_manager
       
 
     encoders:
@@ -23,7 +24,7 @@ security:
     firewalls:
         # -> custom firewall for the admin area of the URL
         admin:
-            switch_user:        true
+            #switch_user:        true
             context:            user
             pattern:            /admin(.*)
             form_login:
@@ -32,10 +33,10 @@ security:
                 use_forward:    false
                 check_path:     /admin/login_check
                 failure_path:   null
-                use_referer:    true
+                #use_referer:    true
             logout:
                 path:           /admin/logout
-                target:         /admin/login
+                #target:         /admin/login
 
             anonymous:    true
         # -> end custom configuration
@@ -51,10 +52,10 @@ security:
             check_path: /login_check
             failure_path: null
             csrf_provider: form.csrf_provider
-          logout: 
-            path: /logout
-            target: /
-            invalidate_session: false
+          logout: true 
+            #path: /logout
+            #target: /
+            #invalidate_session: false
           anonymous: true
           
         dev:
@@ -112,4 +113,4 @@ security:
         ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]        
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
         SONATA:
-          - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT  # if you are using acl then this line must be commented
+        #  - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT  # if you are using acl then this line must be commented

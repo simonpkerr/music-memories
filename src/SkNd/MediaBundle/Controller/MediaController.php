@@ -78,9 +78,10 @@ class MediaController extends Controller {
         }
 
         $form = $this->createForm(new MediaSelectionType(), $mediaSelection);
-
+        $form->handleRequest($request);
         if ($request->getMethod() == 'POST') {
-            $form->bindRequest($request);
+            //$form->bindRequest($request);
+            
             if ($form->isValid()) {
 
                 $mediaSelection = $form->getData();
