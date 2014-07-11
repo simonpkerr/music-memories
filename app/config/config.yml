@@ -35,8 +35,8 @@ assetic:
     use_controller: false
     bundles:        
       - SkNdUserBundle
-    #java:           "C:/Program Files/Java/jre7/bin/java.exe" 
-    java:           "/home/simon/java/jdk1.7.0_45/jre/bin/java"
+    java:           "C:/Program Files/Java/jre7/bin/java.exe" 
+    #java:           "/home/simon/java/jdk1.7.0_45/jre/bin/java"
     #write_to:       "%kernel.root_dir%/Resources/assets/"
     #read_from:      "%kernel.root_dir%/Resources/assets/"
     filters:

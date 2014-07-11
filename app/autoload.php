@@ -13,8 +13,8 @@ if (!function_exists('intl_get_error_code')) {
     $loader->add('', __DIR__.'/../vendor/symfony/symfony/src/Symfony/Component/Locale/Resources/stubs');
 }
 
-//require_once 'Zend/Loader.php';
-//\Zend_Loader::loadClass('Zend_Gdata_YouTube');
+require_once 'Zend/Loader.php';
+\Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
 //require_once 'FirePHPCore/FirePHP.class.php';
 

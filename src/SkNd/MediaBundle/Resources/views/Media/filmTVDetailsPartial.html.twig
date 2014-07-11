@@ -47,8 +47,8 @@
 
             <li class="buy-it">
                 <a class="orange button" target="_blank" href="{{item.DetailPageURL}}">
-                    <span class="sprites buy-icon">Buy this from Amazon {% if item.OfferSummary.LowestUsedPrice is defined %}for {{ item.OfferSummary.LowestUsedPrice.FormattedPrice }}{% elseif item.OfferSummary.LowestNewPrice is defined %}for {{ item.OfferSummary.LowestNewPrice.FormattedPrice }}{% endif %}
-                    </span>
+                    <span class="sprites buy-icon">&nbsp;</span>
+                    <span>Buy this from Amazon {% if item.OfferSummary.LowestUsedPrice is defined %}for {{ item.OfferSummary.LowestUsedPrice.FormattedPrice }}{% elseif item.OfferSummary.LowestNewPrice is defined %}for {{ item.OfferSummary.LowestNewPrice.FormattedPrice }}{% endif %}</span>
                 </a>
                     <span><a href="#pricesDisclaimer" class="fl" title="Amazon Prices Disclaimer message"><strong>*</strong></a></span>
             </li>
